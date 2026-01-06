@@ -7,30 +7,12 @@ import { Schema, Effect } from "effect"
 import { createYoga } from "graphql-yoga"
 import { getPort } from "./env"
 import { ServerStartError } from "./errors"
-
+import { server } from "./server"
 
 import "dotenv/config"
 
-const standard = Schema.standardSchemaV1
-
-const helloResolver = resolver({
-  hello: query(standard(Schema.String))
-    .input({
-      name: standard(Schema.NullishOr(Schema.String)),
-    })
-    .resolve(({ name }) => `Hello, ${name ?? "World"}!`),
-})
-
-const schema = weave(EffectWeaver, helloResolver)
-
-
-const yoga = createYoga({ schema })
-const server = createServer(yoga)
-
-const program = Effect.gen(function* () {
+const runServer = Effect.gen(function* () {
   const port = yield* getPort
-
-  // Start the server and wait for it to be ready
   return yield* Effect.tryPromise({
     try: () =>
       new Promise<void>((resolve) => {
@@ -41,10 +23,9 @@ const program = Effect.gen(function* () {
       }),
     catch: (error) => new ServerStartError({ error }),
   })
-
 })
 
-NodeRuntime.runMain(program,
+NodeRuntime.runMain(runServer,
   {
     teardown: function customTeardown(exit, onExit) {
       if (exit._tag === "Failure") {
