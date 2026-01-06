@@ -25,27 +25,34 @@ const schema = weave(EffectWeaver, helloResolver)
 const yoga = createYoga({ schema })
 const server = createServer(yoga)
 
-NodeRuntime.runMain(
-  Effect.async<void>((resume) => {
-    getPort.pipe(Effect.runPromise).then((port) => {
-      server.listen(port, () => {
-        console.info(`Server is running on http://localhost:${port}/graphql`)
-      })
-    })
+const program = Effect.gen(function* () {
+  const port = yield* getPort
 
-    const shutdown = () => {
-      server.close(() => {
-        console.info("Server closed. Exiting.")
-        resume()
-      })
-    }
-    process.once("SIGINT", shutdown)
-    process.once("SIGTERM", shutdown)
-    // If resume is called (e.g. by error), remove listeners
-    return () => {
-      process.off("SIGINT", shutdown)
-      process.off("SIGTERM", shutdown)
-      server.close()
-    }
+  // Start the server and wait for it to be ready
+  return yield* Effect.tryPromise({
+    try: () =>
+      new Promise<void>((resolve) => {
+        server.listen(port, () => {
+          console.info(`Server is running on http://localhost:${port}/graphql`)
+          resolve()
+        })
+      }),
+    catch: (error) => new Error(`Failed to start server: ${error}`),
   })
-)
+
+})
+
+NodeRuntime.runMain(program,
+  {
+    teardown: function customTeardown(exit, onExit) {
+      if (exit._tag === "Failure") {
+        console.error("Program ended with an error.")
+        onExit(1)
+      } else {
+        console.log("Program finished successfully.")
+        onExit(0)
+      }
+    }
+  }
+);
+

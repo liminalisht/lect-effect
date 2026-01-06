@@ -10,7 +10,7 @@ You are an AI coding agent collaborating on **lect-effect**. Your job is to prod
 
 ## 1. Building
 
-To build the project, run the following command in the terminal:
+After you make any code change, before thinking you're done, you should build the project and make sure that it compiles successfully:
 ```sh
 ./build.sh
 ```
