@@ -6,6 +6,9 @@ import { server } from "./server"
 
 import "dotenv/config"
 
+// todo: create layers, including Config, Logger, etc.
+// todo: make effect services available to resolvers
+
 const runServer = Effect.gen(function* () {
   const port = yield* getPort
   return yield* Effect.tryPromise({
