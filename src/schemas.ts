@@ -6,11 +6,12 @@ export const NameInputSchema = Schema.Struct({
 }).annotations({
   description: "Input schema for name",
 })
-
-
-export const NameInputSchemaArbitrary = Arbitrary.make(NameInputSchema)
+export type NameInput = Schema.Schema.Type<typeof NameInputSchema>
+export const NameInputArbitrary = Arbitrary.make(NameInputSchema)
 
 export const HelloResponseSchema = Schema.String.annotations({
   description: "Response schema for hello",
 })
-export const HelloResponseSchemaArbitrary = Arbitrary.make(HelloResponseSchema)
+export type HelloResponse = Schema.Schema.Type<typeof HelloResponseSchema>
+export const HelloResponseArbitrary = Arbitrary.make(HelloResponseSchema)
+
