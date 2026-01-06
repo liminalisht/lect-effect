@@ -6,6 +6,8 @@ import { EffectWeaver } from "@gqloom/effect"
 import { Schema, Effect } from "effect"
 import { createYoga } from "graphql-yoga"
 import { getPort } from "./env"
+import { ServerStartError } from "./errors"
+
 
 import "dotenv/config"
 
@@ -37,7 +39,7 @@ const program = Effect.gen(function* () {
           resolve()
         })
       }),
-    catch: (error) => new Error(`Failed to start server: ${error}`),
+    catch: (error) => new ServerStartError({ error }),
   })
 
 })
@@ -46,10 +48,9 @@ NodeRuntime.runMain(program,
   {
     teardown: function customTeardown(exit, onExit) {
       if (exit._tag === "Failure") {
-        console.error("Program ended with an error.")
+        console.error("Program ended with an error.", exit.cause)
         onExit(1)
       } else {
-        console.log("Program finished successfully.")
         onExit(0)
       }
     }
