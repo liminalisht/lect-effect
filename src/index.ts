@@ -1,10 +1,6 @@
 
-import { createServer } from "node:http"
 import { NodeRuntime } from "@effect/platform-node"
-import { query, resolver, weave } from "@gqloom/core"
-import { EffectWeaver } from "@gqloom/effect"
-import { Schema, Effect } from "effect"
-import { createYoga } from "graphql-yoga"
+import { Effect } from "effect"
 import { getPort } from "./env"
 import { ServerStartError } from "./errors"
 import { server } from "./server"
@@ -17,7 +13,8 @@ const runServer = Effect.gen(function* () {
     try: () =>
       new Promise<void>((resolve) => {
         server.listen(port, () => {
-          console.info(`Server is running on http://localhost:${port}/graphql`)
+          const url = `http://localhost:${port}/graphql`
+          console.info(`Server is running on ${url}`)
           resolve()
         })
       }),
