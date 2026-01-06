@@ -1,6 +1,5 @@
-
-import { NodeRuntime } from "@effect/platform-node"
 import { Effect } from "effect"
+import { NodeRuntime } from "@effect/platform-node"
 import { getPort } from "./env"
 import { ServerStartError } from "./errors"
 import { server } from "./server"
