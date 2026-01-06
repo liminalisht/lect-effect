@@ -8,6 +8,8 @@ pnpm add graphql @gqloom/core effect @gqloom/effect
 pnpm add graphql-yoga
 pnpm install xo --save-dev
 pnpm add -D @effect/language-service
+pnpm add dotenv
+pnpm add @effect/platform-node
 ```
 
 `.editorconfig`:
