@@ -1,7 +1,8 @@
 import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
-import { AppConfig, AppLayer} from "./env"
+import { AppLayer } from "./layers/appLayer"
+import { AppConfig } from "./services"
 import { listen, logSchema } from "./server"
 
 const program = Effect.scoped(

@@ -1,1 +1,1 @@
-export { type AppConfig } from "./appConfig"
+export { AppConfig } from "./appConfig"
