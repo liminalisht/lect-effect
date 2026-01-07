@@ -1,19 +1,22 @@
-import { NodeRuntime } from "@effect/platform-node"
-import { Effect } from "effect"
 import "dotenv/config"
+import { Effect } from "effect"
+import { NodeRuntime } from "@effect/platform-node"
 import { AppConfig, AppLayer, type AppEnv } from "./env"
 import { listen, logSchema } from "./server"
 
 const program = Effect.scoped(
   Effect.gen(function* () {
     const { port } = yield* AppConfig
-    const runtime = yield* Effect.runtime<AppEnv>()
+    const runtime  = yield* Effect.runtime<AppEnv>()
 
     yield* logSchema
 
     yield* listen(runtime, port)
-    yield* Effect.logInfo(`Server is running on http://localhost:${port}/graphql`)
-    yield* Effect.never
+
+    const url = `http://localhost:${port}/graphql`
+    yield* Effect.logInfo(`Server is running on ${url}`)
+
+    return yield* Effect.never
   })
 )
 

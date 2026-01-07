@@ -32,8 +32,8 @@ const LoggerConfigured: Layer.Layer<never, ConfigError.ConfigError, never> =
 export const AppLayer: Layer.Layer<AppEnv, ConfigError.ConfigError, never> =
   Layer.merge(AppConfigLive, LoggerConfigured)
 
-export const getPort: Effect.Effect<number, ConfigError.ConfigError, AppConfig> =
-  AppConfig.pipe(Effect.map((config) => config.port))
+// export const getPort: Effect.Effect<number, ConfigError.ConfigError, AppConfig> =
+//   AppConfig.pipe(Effect.map((config) => config.port))
 
-export const getLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigError.ConfigError, AppConfig> =
-  AppConfig.pipe(Effect.map((config) => config.logLevel))
+// export const getLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigError.ConfigError, AppConfig> =
+//   AppConfig.pipe(Effect.map((config) => config.logLevel))
