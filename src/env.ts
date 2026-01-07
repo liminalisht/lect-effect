@@ -1,32 +1,51 @@
-import { Config, ConfigError, Effect, Layer, LogLevel, Logger, ManagedRuntime } from "effect"
+import { Config as EffectConfig, ConfigError, Context, Effect, Layer, LogLevel, Logger, ManagedRuntime } from "effect"
 
-export interface AppConfig {
-  readonly port: number
-  readonly logLevel: LogLevel.LogLevel
-}
+class Config extends Context.Tag("Config")<
+  Config,
+  {
+    readonly getConfig: Effect.Effect<{
+      readonly logLevel: LogLevel.LogLevel
+      readonly port: number
+    }>
+  }
+>() {}
 
-export class AppConfigTag extends Effect.Tag("AppConfig")<AppConfigTag, AppConfig>() {}
-
-const appConfigConfig = Config.all([
-  Config.number("PORT").pipe(Config.withDefault(4000)),
-  Config.logLevel("LOGLEVEL").pipe(Config.withDefault(LogLevel.Info)),
-]).pipe(Config.map(([port, logLevel]) => ({ port, logLevel })))
-
-export const AppConfigLive: Layer.Layer<AppConfigTag, ConfigError.ConfigError, never> =
-  Layer.effect(AppConfigTag, appConfigConfig)
+export const ConfigLive: Layer.Layer<Config, ConfigError.ConfigError, never> =
+  Layer.effect(
+    Config,
+    Effect.gen(function* () {
+      const port = yield* EffectConfig.number("PORT").pipe(EffectConfig.withDefault(4000))
+      const logLevel = yield* EffectConfig.logLevel("LOGLEVEL").pipe(EffectConfig.withDefault(LogLevel.Info))
+      return {
+        getConfig: Effect.succeed({ port, logLevel })
+      }
+    })
+  )
 
 const LoggerFromConfig = Layer.unwrapEffect(
-  Effect.andThen(AppConfigTag, ({ logLevel }) => Logger.minimumLogLevel(logLevel)),
+  Effect.gen(function* () {
+    const config = yield* Config
+    const { logLevel } = yield* config.getConfig
+    return Logger.minimumLogLevel(logLevel)
+  })
 )
 
-const LoggerConfigured = Layer.provide(LoggerFromConfig, AppConfigLive)
+const LoggerConfigured = Layer.provide(LoggerFromConfig, ConfigLive)
 
-export const AppLayer = Layer.merge(AppConfigLive, LoggerConfigured)
+export const AppLayer = Layer.merge(ConfigLive, LoggerConfigured)
 
 export const appRuntime = ManagedRuntime.make(AppLayer)
 
-export const getPort: Effect.Effect<number, ConfigError.ConfigError, AppConfigTag> =
-  AppConfigTag.pipe(Effect.map((config) => config.port))
+export const getPort: Effect.Effect<number, ConfigError.ConfigError, Config> =
+  Effect.gen(function* () {
+    const config = yield* Config
+    const { port } = yield* config.getConfig
+    return port
+  })
 
-export const getLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigError.ConfigError, AppConfigTag> =
-  AppConfigTag.pipe(Effect.map((config) => config.logLevel))
+export const getLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigError.ConfigError, Config> =
+  Effect.gen(function* () {
+    const config = yield* Config
+    const { logLevel } = yield* config.getConfig
+    return logLevel
+  })
