@@ -1,7 +1,7 @@
 import type { Runtime } from "effect"
 import type { YogaInitialContext } from "graphql-yoga"
-import type { AppEnv } from "./env"
+import type { AppConfig } from "./services"
 
 export type GraphQLContext = YogaInitialContext & {
-  readonly runtime: Runtime.Runtime<AppEnv>
+  readonly runtime: Runtime.Runtime<AppConfig>
 }

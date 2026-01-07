@@ -1,10 +1,10 @@
 import { Effect, Runtime } from "effect"
 import { useContext } from "@gqloom/core/context"
-import type { AppEnv } from "./env"
+import type { AppConfig } from "./services"
 import type { GraphQLContext } from "./context"
 
 export const runEffect = <A, E>(
-  eff: Effect.Effect<A, E, AppEnv>,
+  eff: Effect.Effect<A, E, AppConfig>,
   ctx?: Partial<GraphQLContext> | null
 ): Promise<A> => {
   const context = ctx ?? useContext<GraphQLContext>()
