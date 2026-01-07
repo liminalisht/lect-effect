@@ -1,4 +1,3 @@
-import { asObjectType } from "@gqloom/effect"
 import { Arbitrary, Schema } from "effect"
 
 export const NameSchema = Schema.String

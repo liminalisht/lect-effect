@@ -14,3 +14,10 @@ After you make any code change, before thinking you're done, you should build th
 ```sh
 ./build.sh
 ```
+
+## 2. Running
+
+If we need to run the project, we can do so with:
+```sh
+./run.sh
+```

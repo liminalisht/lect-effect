@@ -10,6 +10,7 @@ class Config extends Context.Tag("Config")<
   }
 >() {}
 
+// todo: why isn't this called ConfigLayer, or ConfigLayerLive?
 export const ConfigLive: Layer.Layer<Config, ConfigError.ConfigError, never> =
   Layer.effect(
     Config,
@@ -22,6 +23,9 @@ export const ConfigLive: Layer.Layer<Config, ConfigError.ConfigError, never> =
     })
   )
 
+// todo: how come there's no Logger layer analogous to Config?
+
+// todo: what a shitty name
 const LoggerFromConfig = Layer.unwrapEffect(
   Effect.gen(function* () {
     const config = yield* Config
@@ -30,12 +34,18 @@ const LoggerFromConfig = Layer.unwrapEffect(
   })
 )
 
+// todo: what a shitty name
+// so, is this a Layer or what?
 const LoggerConfigured = Layer.provide(LoggerFromConfig, ConfigLive)
 
+// todo: what a shitty name. why not just App?
 export const AppLayer = Layer.merge(ConfigLive, LoggerConfigured)
 
+// what's the point of this ? am i going to manually thread this through to
+// makeResolvers or something ??
 export const appRuntime = ManagedRuntime.make(AppLayer)
 
+// todo: there's gotta be a better way to write this, like using map or something
 export const getPort: Effect.Effect<number, ConfigError.ConfigError, Config> =
   Effect.gen(function* () {
     const config = yield* Config
@@ -43,6 +53,7 @@ export const getPort: Effect.Effect<number, ConfigError.ConfigError, Config> =
     return port
   })
 
+// todo: there's gotta be a better way to write this, like using map or something
 export const getLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigError.ConfigError, Config> =
   Effect.gen(function* () {
     const config = yield* Config

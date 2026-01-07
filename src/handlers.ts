@@ -6,6 +6,8 @@ export const helloHandler = (
 ): Effect.Effect<schemas.HelloResponse> =>
 	Effect.gen(function* () {
 		const who = input.name ?? "World"
+    // todo: this should not use the effect default logger.
+    // todo: we should have a way to get the app logger
 		yield* Effect.logInfo(`helloHandler greeting ${who}`)
 		return { greeting: `Hello, ${who}!` }
 	})
