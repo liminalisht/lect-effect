@@ -1,29 +1,24 @@
-import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
-import { AppLayer, getPort } from "./env"
-import { ServerStartError } from "./errors"
-import { server } from "./server"
-
+import { Effect } from "effect"
 import "dotenv/config"
+import { AppConfig, AppLayer, type AppEnv } from "./env"
+import { listen, logSchema } from "./server"
 
-const runServer = Effect.gen(function* () {
-  console.info("Bootstrapping server...")
-  const port = yield* getPort
-  console.info(`Starting HTTP server on port ${port}...`)
-  return yield* Effect.tryPromise({
-    try: () =>
-      new Promise<void>((resolve) => {
-        server.listen(port, () => {
-          const url = `http://localhost:${port}/graphql`
-          console.info(`Server is running on ${url}`)
-          resolve()
-        })
-      }),
-    catch: (error) => new ServerStartError({ error }),
+const program = Effect.scoped(
+  Effect.gen(function* () {
+    const { port } = yield* AppConfig
+    const runtime = yield* Effect.runtime<AppEnv>()
+
+    yield* logSchema
+
+    yield* listen(runtime, port)
+    yield* Effect.logInfo(`Server is running on http://localhost:${port}/graphql`)
+    yield* Effect.never
   })
-})
+)
 
-NodeRuntime.runMain(runServer.pipe(Effect.provide(AppLayer)),
+NodeRuntime.runMain(
+  program.pipe(Effect.provide(AppLayer)),
   {
     teardown: function customTeardown(exit, onExit) {
       if (exit._tag === "Failure") {
@@ -32,7 +27,7 @@ NodeRuntime.runMain(runServer.pipe(Effect.provide(AppLayer)),
       } else {
         onExit(0)
       }
-    }
+    },
   }
-);
+)
 

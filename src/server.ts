@@ -1,15 +1,58 @@
-import {lexicographicSortSchema, printSchema} from 'graphql';
 import { weave } from "@gqloom/core"
 import { EffectWeaver } from "@gqloom/effect"
+import { lexicographicSortSchema, printSchema } from "graphql"
 import { createYoga } from "graphql-yoga"
-import { createServer } from "node:http"
+import { createServer, type Server } from "node:http"
+import { Effect } from "effect"
+import type { Runtime } from "effect"
 import { makeResolvers } from "./resolvers"
+import type { AppEnv } from "./env"
+import type { GraphQLContext } from "./context"
 
-const schema = weave(EffectWeaver, ...makeResolvers())
+export const schema = weave(EffectWeaver, ...makeResolvers())
 
-// todo: can we do this in effect? as a matter of fact, can we do the above
-// and below in effect too?
-console.log("Generated GraphQL Schema:\n", printSchema(lexicographicSortSchema(schema)))
+export const logSchema = Effect.sync(() => {
+	const sorted = lexicographicSortSchema(schema)
+	console.log("Generated GraphQL Schema:\n", printSchema(sorted))
+})
 
-const yoga = createYoga({ schema })
-export const server = createServer(yoga)
+export const listen = (runtime: Runtime.Runtime<AppEnv>, port: number) =>
+	Effect.acquireRelease(
+		Effect.async<Server, unknown>((resume, signal) => {
+			const yoga = createYoga<GraphQLContext>({
+				schema,
+				context: (initial) => ({ ...initial, runtime }),
+			})
+
+			const server = createServer(yoga)
+
+			const onError = (error: unknown) => resume(Effect.fail(error))
+			server.on("error", onError)
+
+			server.listen(port, () => resume(Effect.succeed(server)))
+
+			if (signal.aborted) {
+				return Effect.sync(() => {
+					server.off("error", onError)
+					server.close(() => undefined)
+				})
+			}
+
+			const onAbort = () => {
+				server.off("error", onError)
+				server.close(() => undefined)
+			}
+
+			signal.addEventListener("abort", onAbort)
+
+			return Effect.sync(() => {
+				signal.removeEventListener("abort", onAbort)
+				server.off("error", onError)
+				server.close(() => undefined)
+			})
+		}),
+		(server) =>
+			Effect.async<void>((resume) => {
+				server.close(() => resume(Effect.succeed(undefined)))
+			})
+	)
