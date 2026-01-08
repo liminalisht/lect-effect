@@ -1,10 +1,11 @@
 import { Effect, Runtime } from "effect"
 import { useContext } from "@gqloom/core/context"
-import type { AppConfig } from "./services"
+import type { AppConfigService } from "./services"
 import type { GraphQLContext } from "./context"
 
+//todo: this is specialized to AppConfigService, make generic utility? or make specific versions for different services?
 export const runEffect = <A, E>(
-  eff: Effect.Effect<A, E, AppConfig>,
+  eff: Effect.Effect<A, E, AppConfigService>,
   ctx?: Partial<GraphQLContext> | null
 ): Promise<A> => {
   const context = ctx ?? useContext<GraphQLContext>()

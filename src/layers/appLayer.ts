@@ -1,7 +1,9 @@
 import { ConfigError, Layer } from "effect"
-import { AppConfigLive } from "./appConfig"
+import { AppConfigLayer } from "./appConfig"
 import { LoggerFromConfig } from "./logger"
-import { type AppConfig } from "../services/"
+import { type AppConfigService } from "../services/"
 
-export const AppLayer: Layer.Layer<AppConfig, ConfigError.ConfigError, never> =
-  Layer.merge(AppConfigLive, LoggerFromConfig.pipe(Layer.provide(AppConfigLive)))
+const LoggerLayer = LoggerFromConfig.pipe(Layer.provide(AppConfigLayer));
+
+export const AppLayer: Layer.Layer<AppConfigService, ConfigError.ConfigError, never> =
+  Layer.merge(AppConfigLayer, LoggerLayer)
