@@ -2,7 +2,7 @@ import { Schema } from 'effect';
 import { query, resolver } from '@gqloom/core';
 import * as handlers from '../domain/handlers';
 import * as schemas from '../domain/schemas';
-import { runEffect } from '../runEffect';
+import { runEffect } from './effect';
 
 // todo: can't i make this use Effect?
 export const makeResolvers = () => {
