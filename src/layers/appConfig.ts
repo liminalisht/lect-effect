@@ -1,11 +1,11 @@
 import { Config as EffectConfig, ConfigError, Effect, Layer, LogLevel } from "effect"
-import { AppConfig } from "../services/appConfig"
+import { AppConfigService, Port } from "../services/appConfig"
 
-export const AppConfigLive: Layer.Layer<AppConfig, ConfigError.ConfigError> = Layer.effect(
-  AppConfig,
+export const AppConfigLive: Layer.Layer<AppConfigService, ConfigError.ConfigError> = Layer.effect(
+  AppConfigService,
   Effect.gen(function* () {
     const port = yield* EffectConfig.number("PORT").pipe(EffectConfig.withDefault(4000))
     const logLevel = yield* EffectConfig.logLevel("LOGLEVEL").pipe(EffectConfig.withDefault(LogLevel.Info))
-    return { port, logLevel }
+    return { port: Port(port), logLevel }
   })
 )

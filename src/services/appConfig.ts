@@ -1,10 +1,16 @@
-import { Context, LogLevel } from "effect"
+import { Brand, Context, LogLevel } from "effect"
 
-export class AppConfig extends Context.Tag("AppConfig")<
-  AppConfig,
+export type Port = number & Brand.Brand<"Port">
+
+// Constructor for nominally branded ports (no runtime validation yet)
+export const Port = Brand.nominal<Port>()
+
+export class AppConfigService extends Context.Tag("AppConfigService")<
+  AppConfigService,
   {
-    readonly port: number
+    readonly port: Port
     readonly logLevel: LogLevel.LogLevel
   }
 >() {}
+
 
