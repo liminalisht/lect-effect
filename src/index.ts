@@ -3,7 +3,7 @@ import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
 import { AppLayer } from "./layers/app"
 import { ConfigService } from "./services"
-import { listen, logSchema } from "./server"
+import { listen, logSchema } from "./graphql/server"
 
 const program = Effect.scoped(
   Effect.gen(function* () {

@@ -1,7 +1,7 @@
 import { query, resolver } from "@gqloom/core"
-import * as handlers from "./handlers"
-import * as schemas from "./schemas"
-import { runEffect } from "./runEffect"
+import * as handlers from "../domain/handlers"
+import * as schemas from "../domain/schemas"
+import { runEffect } from "../runEffect"
 
 export const makeResolvers = () => {
   const helloResolver = resolver({
