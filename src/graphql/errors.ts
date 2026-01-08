@@ -1,12 +1,19 @@
 import { Data } from 'effect';
 
-export class ServerStartError extends Data.TaggedError('ServerStartError')<{
+/**
+ * Server won't start
+ */
+export class ServerStartError extends Data.TaggedError('ServerStartError')<ServerStartErrorShape> {}
+
+type ServerStartErrorShape = {
   error: unknown;
-}> {}
+};
 
 /**
- * When GraphQLContext is missing the runtime (which resolvers need to run Effects against AppEnv Services)
+ * GraphQLContext is missing the runtime that resolvers depend on
  */
-export class RuntimeMissingFromContextError extends Data.TaggedError('RuntimeMissingFromContextError')<{
+export class RuntimeMissingFromContextError extends Data.TaggedError('RuntimeMissingFromContextError')<RuntimeMissingFromContextErrorShape> {}
+
+type RuntimeMissingFromContextErrorShape = {
   readonly message?: string;
-}> {}
+};

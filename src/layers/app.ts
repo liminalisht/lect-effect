@@ -1,7 +1,7 @@
 import { type ConfigError, Layer } from 'effect';
+import { type ConfigService } from '../services';
 import { configLayer } from './config';
 import { loggerLayer } from './logger';
-import { type ConfigService } from '../services';
 
 export const appLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
   = Layer.merge(
