@@ -11,16 +11,12 @@ import { makeYoga } from './graphql/yoga';
 const program: Effect.Effect<never, unknown, ConfigService>
   = Effect.scoped(Effect.gen(function * () {
     const config = yield * ConfigService;
-    const runtime = yield * Effect.runtime<ConfigService>();
+    // const runtime = yield * Effect.runtime<ConfigService>();
 
     // todo: maybe have some service that provides the schema? and logging and serving mechanisms?
     yield * logSchema(schema);
-    const yoga = yield* makeYoga;
-    yield* listen(yoga, config.port);
-
-    // // todo: rename
-    // yield * listen(schema, runtime, config.port);
-
+    const yoga = yield * makeYoga;
+    yield * listen(yoga, config.port);
     const url = `http://localhost:${config.port}/graphql`;
     yield * Effect.logInfo(`Server is running on ${url}`);
 
