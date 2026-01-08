@@ -1,7 +1,7 @@
 import { type Effect, Runtime } from 'effect';
 import { useContext } from '@gqloom/core/context';
-import type { GraphQLContext } from './context';
 import type { AppEnv } from '../services';
+import type { GraphQLContext } from './context';
 
 /**
  * Natural transformation: Effect<A,E,AppEnv> ~> Promise<A>

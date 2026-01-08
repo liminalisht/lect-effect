@@ -35,7 +35,7 @@ NodeRuntime.runMain(
   {
     teardown(exit, onExit) {
       if (exit._tag === 'Failure') {
-        console.error('Program ended with an error.', exit.cause);
+        console.error('program ended with an error', exit.cause);
         onExit(1);
       } else {
         onExit(0);
