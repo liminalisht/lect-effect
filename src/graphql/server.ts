@@ -5,11 +5,11 @@ import { createServer, type Server } from 'node:http';
 import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
 
-export const logSchema = (schema: GraphQLSchema) => Effect.gen(function * () {
-  const schemaString = printSchema(lexicographicSortSchema(schema));
-  yield * Effect.logDebug('generating graphql schema...');
-  yield * Effect.logDebug(`\n${schemaString}`);
-});
+// export const logSchema = (schema: GraphQLSchema) => Effect.gen(function * () {
+//   const schemaString = printSchema(lexicographicSortSchema(schema));
+//   yield * Effect.logDebug('generating graphql schema...');
+//   yield * Effect.logDebug(`\n${schemaString}`);
+// });
 
 // todo: grok Effect acquireRelease and Effect.async better
 export const listen = (
