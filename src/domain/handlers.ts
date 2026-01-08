@@ -3,11 +3,12 @@ import type * as schemas from './schemas';
 
 export const helloHandler = (input: schemas.NameInput): Effect.Effect<schemas.HelloResponse> =>
   Effect.gen(function * () {
-    const who = input.name ?? 'World';
-    // todo: this should not use the effect default logger.
-    // todo: we should have a way to get the app logger
-    yield * Effect.logInfo(`helloHandler greeting ${who}`);
-    yield * Effect.logDebug('helloHandler debug');
+    yield * Effect.logDebug(`helloHandler input:`, input);
 
-    return { greeting: `Hello, ${who}!` };
+    const who = input.name ?? 'World';
+    const greeting = `Hello, ${who}!`;
+    const response: schemas.HelloResponse = { greeting };
+
+    yield * Effect.logDebug(`helloHandler output:`, response);
+    return response;
   });
