@@ -12,7 +12,7 @@
 - [ ] determine where to create error types and how to organize across project
 - [ ] actually start separating domain
 - [ ] create a service that helloHandler calls, basically reifying this interface of providing an (optional) name and getting a Greeting
-- [ ] establish how it fits into layers / AppEnv
+- [ ] establish how it fits into layers / AppServices
 - [ ] create first test with vitest (https://github.com/Effect-TS/effect/blob/main/packages/vitest/README.md)
 - [ ] organize tests according to whether they test effects against the graphql boundary or not
 - [ ] create first test that uses arbitraries

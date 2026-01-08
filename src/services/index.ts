@@ -2,4 +2,4 @@ import { type ConfigService } from './config';
 
 export { ConfigService, type Port, makePort } from './config';
 
-export type AppEnv = ConfigService;
+export type AppServices = ConfigService;

@@ -36,7 +36,7 @@ This single change makes `useContext<GraphQLContext>()` *the* canonical way to g
 
 ---
 
-## 2) Make the runtime environment be the coproduct of *all* services (AppEnv), not `ConfigService`
+## 2) Make the runtime environment be the coproduct of *all* services (AppServices), not `ConfigService`
 
 Right now:
 
@@ -48,33 +48,33 @@ This is exactly what will hurt you as soon as you add `DbService`, `AuthService`
 
 ### The pattern to adopt
 
-Define a single alias `AppEnv` (a union of service Tags). This is the “ambient topos of dependencies” your runtime will interpret in:
+Define a single alias `AppServices` (a union of service Tags). This is the “ambient topos of dependencies” your runtime will interpret in:
 
 ```ts
 // src/services/index.ts
 export { ConfigService } from "./config"
 
 // As you add services, extend this union:
-export type AppEnv = ConfigService // | DbService | AuthService | ...
+export type AppServices = ConfigService // | DbService | AuthService | ...
 ```
 
-Now update the GraphQL context to carry a runtime for **AppEnv**:
+Now update the GraphQL context to carry a runtime for **AppServices**:
 
 ```ts
 // src/graphql/context.ts
 import type { Runtime } from "effect"
 import type { YogaInitialContext } from "graphql-yoga"
-import type { AppEnv } from "../services"
+import type { AppServices } from "../services"
 
 export type GraphQLContext = YogaInitialContext & {
-  readonly runtime: Runtime.Runtime<AppEnv>
+  readonly runtime: Runtime.Runtime<AppServices>
 }
 ```
 
 Why this scales:
 
 * Each handler can still demand only what it needs: `Effect<A, E, DbService | ConfigService>`.
-* A runtime for `AppEnv` can run any computation whose requirements are a **sub-union** of `AppEnv` (categorically: you have a canonical inclusion `R ↪ AppEnv`, and `Effect` is covariant in `R` in the way you want operationally).
+* A runtime for `AppServices` can run any computation whose requirements are a **sub-union** of `AppServices` (categorically: you have a canonical inclusion `R ↪ AppServices`, and `Effect` is covariant in `R` in the way you want operationally).
 
 ---
 
@@ -82,22 +82,22 @@ Why this scales:
 
 Once `asyncContextProvider` is enabled, you no longer need to pass `ctx` at all; you can just read the context via `useContext`.
 
-Also: `runEffect` should not mention `ConfigService` directly; it should mention `AppEnv`.
+Also: `runEffect` should not mention `ConfigService` directly; it should mention `AppServices`.
 
 ```ts
 // src/runEffect.ts
 import { Runtime, type Effect } from "effect"
 import { useContext } from "@gqloom/core/context"
 import type { GraphQLContext } from "./graphql/context"
-import type { AppEnv } from "./services"
+import type { AppServices } from "./services"
 
 /**
- * Natural transformation: Effect<_,_,AppEnv> ~> Promise<_>
+ * Natural transformation: Effect<_,_,AppServices> ~> Promise<_>
  *
  * Because Effect is usable with sub-requirements, you can pass an Effect whose
- * requirements are any sub-union of AppEnv.
+ * requirements are any sub-union of AppServices.
  */
-export const runEffect = <A, E>(eff: Effect.Effect<A, E, AppEnv>): Promise<A> => {
+export const runEffect = <A, E>(eff: Effect.Effect<A, E, AppServices>): Promise<A> => {
   const ctx = useContext<GraphQLContext>()
   if (!ctx?.runtime) {
     return Promise.reject(new Error("Runtime missing from GraphQL context"))
@@ -106,7 +106,7 @@ export const runEffect = <A, E>(eff: Effect.Effect<A, E, AppEnv>): Promise<A> =>
 }
 ```
 
-Now `runEffect` does not need to be replicated when you add services; only `AppEnv` evolves.
+Now `runEffect` does not need to be replicated when you add services; only `AppServices` evolves.
 
 ---
 
@@ -162,13 +162,13 @@ GraphQL Yoga explicitly supports request injection via `yoga.fetch(...)` (no act
 // src/graphql/yoga.ts
 import { Effect } from "effect"
 import { createYoga, type YogaServerInstance } from "graphql-yoga"
-import type { AppEnv } from "../services"
+import type { AppServices } from "../services"
 import type { GraphQLContext } from "./context"
 import { schema } from "./schema"
 
-export const makeYoga: Effect.Effect<YogaServerInstance<GraphQLContext>, never, AppEnv> =
+export const makeYoga: Effect.Effect<YogaServerInstance<GraphQLContext>, never, AppServices> =
   Effect.gen(function* () {
-    const runtime = yield* Effect.runtime<AppEnv>()
+    const runtime = yield* Effect.runtime<AppServices>()
     return createYoga<GraphQLContext>({
       schema,
       context: (initial) => ({ ...initial, runtime }),
@@ -231,11 +231,11 @@ import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
 import { appLayer } from "./layers/app"
-import { ConfigService, type AppEnv } from "./services"
+import { ConfigService, type AppServices } from "./services"
 import { makeYoga } from "./graphql/yoga"
 import { listen } from "./graphql/server"
 
-const program: Effect.Effect<never, unknown, AppEnv> = Effect.scoped(
+const program: Effect.Effect<never, unknown, AppServices> = Effect.scoped(
   Effect.gen(function* () {
     const { port } = yield* ConfigService
     const yoga = yield* makeYoga
@@ -314,7 +314,7 @@ Your current Layers are already close:
 * `loggerLayer` reads `ConfigService` then returns `Logger.minimumLogLevel(logLevel)`
 * `appLayer` merges them and wires the dependency via `Layer.provide(configLayer)`
 
-Once you switch everything else to depend on `AppEnv` rather than `ConfigService`, adding a `DbLayer` or `AuthLayer` is just extending this “wiring diagram”.
+Once you switch everything else to depend on `AppServices` rather than `ConfigService`, adding a `DbLayer` or `AuthLayer` is just extending this “wiring diagram”.
 
 ---
 
@@ -330,7 +330,7 @@ In other words: store the runtime once in the request context (Yoga), and treat 
 If you implement just the three moves below, your architecture becomes stable under extension:
 
 1. `weave(…, asyncContextProvider, …)`
-2. introduce `AppEnv` and make `GraphQLContext.runtime: Runtime<AppEnv>`
+2. introduce `AppServices` and make `GraphQLContext.runtime: Runtime<AppServices>`
 3. export `makeYoga` and test via `yoga.fetch`
 
 Everything else (new services, mocks, optionality, request-scoped concerns like dataloaders) then becomes a matter of adding morphisms (Layers) and composing them, rather than rewriting your resolver boundary each time.

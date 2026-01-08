@@ -142,7 +142,7 @@ const InfraLayer = LoggerLive.pipe(
   Layer.provideMerge(AppConfig.Live)
 )
 
-export type AppEnv = AppConfig | HelloService
+export type AppServices = AppConfig | HelloService
 
 export const appLayer = Layer.merge(InfraLayer, HelloService.Live)
 ```
@@ -205,10 +205,10 @@ export const helloHandler = (input: HelloInput) =>
 ```ts
 import type { Runtime } from "effect"
 import type { YogaInitialContext } from "graphql-yoga"
-import type { AppEnv } from "../app/appLayer"
+import type { AppServices } from "../app/appLayer"
 
 export type GraphQLContext = YogaInitialContext & {
-  readonly runtime: Runtime.Runtime<AppEnv>
+  readonly runtime: Runtime.Runtime<AppServices>
   readonly requestId: string
 }
 ```
@@ -219,11 +219,11 @@ export type GraphQLContext = YogaInitialContext & {
 import { createYoga } from "graphql-yoga"
 import { randomUUID } from "node:crypto"
 import type { Runtime } from "effect"
-import type { AppEnv } from "../app/appLayer"
+import type { AppServices } from "../app/appLayer"
 import type { GraphQLContext } from "../graphql/context"
 import { schema } from "../graphql/schema"
 
-export const createYogaApp = (runtime: Runtime.Runtime<AppEnv>) =>
+export const createYogaApp = (runtime: Runtime.Runtime<AppServices>) =>
   createYoga<GraphQLContext>({
     schema,
     context: (initial) => ({
@@ -246,10 +246,10 @@ Now every resolver can access `runtime` without passing it manually. This is exa
 import { Effect } from "effect"
 import { useContext } from "@gqloom/core/context"
 import type { GraphQLContext } from "./context"
-import type { AppEnv } from "../app/appLayer"
+import type { AppServices } from "../app/appLayer"
 
 export const runEffect = <A, E>(
-  eff: Effect.Effect<A, E, AppEnv>
+  eff: Effect.Effect<A, E, AppServices>
 ): Promise<A> => {
   const { runtime, requestId } = useContext<GraphQLContext>()
   return runtime.runPromise(
@@ -353,12 +353,12 @@ import { Effect } from "effect"
 import { AppConfig } from "../config/AppConfig"
 import { createYogaApp } from "../server/yoga"
 import { listen } from "../server/http"
-import type { AppEnv } from "./appLayer"
+import type { AppServices } from "./appLayer"
 
 export const Main = Effect.scoped(
   Effect.gen(function* () {
     const { port } = yield* AppConfig
-    const runtime = yield* Effect.runtime<AppEnv>()
+    const runtime = yield* Effect.runtime<AppServices>()
 
     const yoga = createYogaApp(runtime)
 

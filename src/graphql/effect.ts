@@ -1,16 +1,14 @@
 import { type Effect, Runtime } from 'effect';
 import { useContext } from '@gqloom/core/context';
-import type { AppEnv } from '../services';
+import type { AppServices } from '../services';
 import type { GraphQLContext } from './context';
 import { RuntimeMissingFromContextError } from './errors';
 
 /**
- * natural transformation: Effect<A,E,AppEnv> ~> Promise<A>
- *
- * Effect is usable with sub-requirements:
- * pass an Effect whose requirements are any sub-union of `AppEnv`
+ * Effect<A, E, AppServices> ~> Promise<A> natural transformation
+ * pass any Effect whose requirements are a sub-union of `AppServices`
  */
-export const runEffect = async <A, E>(eff: Effect.Effect<A, E, AppEnv>): Promise<A> => {
+export const runEffect = async <A, E>(eff: Effect.Effect<A, E, AppServices>): Promise<A> => {
   const ctx = useContext<GraphQLContext>();
   if (!ctx?.runtime) {
     throw new RuntimeMissingFromContextError({
