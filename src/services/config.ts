@@ -4,10 +4,10 @@ export type Port = number & Brand.Brand<'Port'>;
 
 export const makePort = Brand.nominal<Port>();
 
-interface ConfigServiceShape {
+type ConfigServiceShape = {
   readonly port: Port;
   readonly logLevel: LogLevel.LogLevel;
-}
+};
 
 // todo: use Effect.Service instead
 export class ConfigService extends Context.Tag('ConfigService')<
