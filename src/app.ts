@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { Effect } from 'effect';
 import { logSchema, schema } from './graphql/schema';
-import { listen } from './graphql/server';
+import * as server from './graphql/server';
 import { makeYoga } from './graphql/yoga';
 import { type AppEnv, ConfigService } from './services';
 
@@ -19,9 +19,9 @@ export const app: Effect.Effect<never, unknown, AppEnv>
     yield * Effect.logDebug('making yoga server instance...');
     const yoga = yield * makeYoga;
 
-    yield * Effect.logDebug('starting server listener...');
-    yield * listen(yoga, config.port);
-    yield * Effect.logInfo(`server is running on http://localhost:${config.port}/graphql`);
+    yield * Effect.logDebug('starting graphql server...');
+    yield * server.listen(yoga, config.port);
+    yield * Effect.logInfo(`graphql server is running on http://localhost:${config.port}/graphql`);
 
     return yield * Effect.never;
   }));
