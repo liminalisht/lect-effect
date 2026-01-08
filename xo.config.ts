@@ -25,12 +25,8 @@ const xoConfig: FlatXoConfig = [
       '@typescript-eslint/naming-convention': 'off',
       'unicorn/prevent-abbreviations': 'off',
       '@stylistic/object-curly-spacing': 'off',
-
-      // // todo: rules i want to turn off but can't yet
-      // '@typescript-eslint/no-unsafe-assignment': 'off',
-      // '@typescript-eslint/no-unsafe-call': 'off',
-      // // '@typescript-eslint/no-unsafe-return': 'off',
-      // complexity: 'off',
+      'unicorn/throw-new-error': 'off',
+      'import-x/no-unassigned-import': 'off',
     },
   },
   {
