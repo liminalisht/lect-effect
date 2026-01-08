@@ -2,13 +2,13 @@ import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
 import { AppLayer } from "./layers/app"
-import { AppConfigService } from "./services"
+import { ConfigService } from "./services"
 import { listen, logSchema } from "./server"
 
 const program = Effect.scoped(
   Effect.gen(function* () {
-    const config = yield* AppConfigService
-    const runtime  = yield* Effect.runtime<AppConfigService>()
+    const config = yield* ConfigService
+    const runtime  = yield* Effect.runtime<ConfigService>()
 
     yield* logSchema
 

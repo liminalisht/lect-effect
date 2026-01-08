@@ -1,7 +1,7 @@
 import type { Runtime } from "effect"
 import type { YogaInitialContext } from "graphql-yoga"
-import type { AppConfigService } from "./services"
+import type { ConfigService } from "./services"
 
 export type GraphQLContext = YogaInitialContext & {
-  readonly runtime: Runtime.Runtime<AppConfigService>
+  readonly runtime: Runtime.Runtime<ConfigService>
 }

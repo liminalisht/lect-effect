@@ -6,7 +6,7 @@ import { createServer, type Server } from "node:http"
 import { Effect } from "effect"
 import type { Runtime } from "effect"
 import { makeResolvers } from "./resolvers"
-import type { AppConfigService } from "./services"
+import type { ConfigService } from "./services"
 import type { GraphQLContext } from "./context"
 
 export const schema = weave(EffectWeaver, ...makeResolvers())
@@ -16,7 +16,7 @@ export const logSchema = Effect.sync(() => {
 	console.log("Generated GraphQL Schema:\n", printSchema(sorted))
 })
 
-export const listen = (runtime: Runtime.Runtime<AppConfigService>, port: number) =>
+export const listen = (runtime: Runtime.Runtime<ConfigService>, port: number) =>
 	Effect.acquireRelease(
 		Effect.async<Server, unknown>((resume, signal) => {
 			const yoga = createYoga<GraphQLContext>({
