@@ -7,25 +7,27 @@ import { schema } from "./graphql/schema"
 import { ConfigService } from "./services"
 
 // todo: grok Effect.scoped and Effect.gen interaction better
-const program = Effect.scoped(
-  Effect.gen(function* () {
-    const config = yield* ConfigService
-    const runtime  = yield* Effect.runtime<ConfigService>()
+const program : Effect.Effect<never, unknown, ConfigService>
+  = Effect.scoped(
+    Effect.gen(function* () {
+      const config = yield* ConfigService
+      const runtime  = yield* Effect.runtime<ConfigService>()
 
-    //todo: maybe have some service that provides the schema? and logging and serving mechanisms?
-    yield* logSchema(schema)
+      //todo: maybe have some service that provides the schema? and logging and serving mechanisms?
+      yield* logSchema(schema)
 
-    // todo: rename
-    yield* listen(schema, runtime, config.port)
+      // todo: rename
+      yield* listen(schema, runtime, config.port)
 
-    const url = `http://localhost:${config.port}/graphql`
-    yield* Effect.logInfo(`Server is running on ${url}`)
+      const url = `http://localhost:${config.port}/graphql`
+      yield* Effect.logInfo(`Server is running on ${url}`)
 
-    return yield* Effect.never
-  })
-)
+      return yield* Effect.never
+    })
+  );
 
-const programWithAppLayer = program.pipe(Effect.provide(AppLayer))
+const programWithAppLayer: Effect.Effect<never, unknown, never>
+  = program.pipe(Effect.provide(AppLayer));
 
 NodeRuntime.runMain(
   programWithAppLayer,
@@ -39,5 +41,5 @@ NodeRuntime.runMain(
       }
     },
   }
-)
+);
 

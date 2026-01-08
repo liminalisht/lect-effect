@@ -18,6 +18,7 @@ export const listen = (schema: GraphQLSchema, runtime: Runtime.Runtime<ConfigSer
   Effect.acquireRelease(
     // todo: why do we use async here? is this safe
 		Effect.async<Server, unknown>((resume, signal) => {
+      // why are we specializing the context here with runtime?
 			const yoga = createYoga<GraphQLContext>({
 				schema,
 				context: (initial) => ({ ...initial, runtime }),
