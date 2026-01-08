@@ -17,3 +17,4 @@
 - [ ] organize tests according to whether they test effects against the graphql boundary or not
 - [ ] create first test that uses arbitraries
 - [ ] create first test that hits graphql boundary, uses arbitraries for input, and makes property assertions about output
+- [ ] i'm wondering whether we should organize our repo in a way that separates domain types, services, and service implementations
