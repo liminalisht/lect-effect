@@ -5,6 +5,7 @@ import { AppLayer } from './layers/app';
 import { listen, logSchema } from './graphql/server';
 import { schema } from './graphql/schema';
 import { ConfigService } from './services';
+import { makeYoga } from './graphql/yoga';
 
 // todo: grok Effect.scoped and Effect.gen interaction better
 const program: Effect.Effect<never, unknown, ConfigService>
@@ -14,9 +15,11 @@ const program: Effect.Effect<never, unknown, ConfigService>
 
     // todo: maybe have some service that provides the schema? and logging and serving mechanisms?
     yield * logSchema(schema);
+    const yoga = yield* makeYoga;
+    yield* listen(yoga, config.port);
 
-    // todo: rename
-    yield * listen(schema, runtime, config.port);
+    // // todo: rename
+    // yield * listen(schema, runtime, config.port);
 
     const url = `http://localhost:${config.port}/graphql`;
     yield * Effect.logInfo(`Server is running on ${url}`);
