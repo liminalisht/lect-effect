@@ -1,7 +1,7 @@
+import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
 import { type GraphQLSchema, lexicographicSortSchema, printSchema } from 'graphql';
 import { type YogaServerInstance } from 'graphql-yoga';
-import { createServer, type Server } from 'node:http';
 import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
 

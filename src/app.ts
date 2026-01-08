@@ -1,11 +1,10 @@
 // todo: where to put this import? it is needed for its side effects
 import 'dotenv/config';
-
 import { Effect } from 'effect';
 import { logSchema, schema } from './graphql/schema';
 import { listen } from './graphql/server';
 import { makeYoga } from './graphql/yoga';
-import { AppEnv, ConfigService } from './services';
+import { type AppEnv, ConfigService } from './services';
 
 // todo: grok Effect.scoped and Effect.gen interaction better
 export const app: Effect.Effect<never, unknown, AppEnv>
