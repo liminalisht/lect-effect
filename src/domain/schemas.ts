@@ -1,19 +1,24 @@
 import { Arbitrary, Schema } from 'effect';
 
-export const NameSchema = Schema.String;
-export type Name = Schema.Schema.Type<typeof NameSchema>;
-export const NameArbitrary = Arbitrary.make(NameSchema);
+export type Name = Schema.Schema.Type<typeof nameSchema>;
 
-export const NameInputSchema = Schema.Struct({
-  name: Schema.NullishOr(NameSchema).annotations({
+export const nameSchema = Schema.String;
+
+export const nameArbitrary = Arbitrary.make(nameSchema);
+
+export type NameInput = Schema.Schema.Type<typeof nameInputSchema>;
+
+export const nameInputSchema = Schema.Struct({
+  name: Schema.NullishOr(nameSchema).annotations({
     description: 'Optional name to greet',
   }),
 });
-export type NameInput = Schema.Schema.Type<typeof NameInputSchema>;
-export const NameInputArbitrary = Arbitrary.make(NameInputSchema);
-export const NameInputStandard = Schema.standardSchemaV1(NameInputSchema);
 
-export const HelloResponseSchema = Schema.Struct({
+export const nameInputArbitrary = Arbitrary.make(nameInputSchema);
+
+export type HelloResponse = Schema.Schema.Type<typeof helloResponseSchema>;
+
+export const helloResponseSchema = Schema.Struct({
   greeting: Schema.String.annotations({
     description: 'Greeting message',
   }),
@@ -21,7 +26,6 @@ export const HelloResponseSchema = Schema.Struct({
   title: 'HelloResponse',
   description: 'Response payload for hello',
 });
-export type HelloResponse = Schema.Schema.Type<typeof HelloResponseSchema>;
-export const HelloResponseArbitrary = Arbitrary.make(HelloResponseSchema);
-export const HelloResponseStandard = Schema.standardSchemaV1(HelloResponseSchema);
+
+export const helloResponseArbitrary = Arbitrary.make(helloResponseSchema);
 

@@ -9,7 +9,7 @@ export const ConfigLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
     Effect.gen(function * () {
       const port = yield * Config.number('PORT')
         .pipe(Config.withDefault(4000))
-        .pipe(Effect.map(makePort));
+        .pipe(Effect.map(number => makePort(number)));
       const logLevel = yield * Config.logLevel('LOGLEVEL').pipe(Config.withDefault(LogLevel.Info));
       return { port, logLevel };
     }),

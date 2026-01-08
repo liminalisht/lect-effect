@@ -27,6 +27,7 @@ const xoConfig: FlatXoConfig = [
       '@stylistic/object-curly-spacing': 'off',
       'unicorn/throw-new-error': 'off',
       'import-x/no-unassigned-import': 'off',
+      'new-cap': 'off',
     },
   },
   {
