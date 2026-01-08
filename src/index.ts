@@ -5,11 +5,13 @@ import { AppLayer } from "./layers/app"
 import { ConfigService } from "./services"
 import { listen, logSchema } from "./graphql/server"
 
+// todo: grok Effect.scoped and Effect.gen interaction better
 const program = Effect.scoped(
   Effect.gen(function* () {
     const config = yield* ConfigService
     const runtime  = yield* Effect.runtime<ConfigService>()
 
+    yield* Effect.logDebug(`logging graphql schema:`)
     yield* logSchema
 
     yield* listen(runtime, config.port)
@@ -21,8 +23,10 @@ const program = Effect.scoped(
   })
 )
 
+const programWithAppLayer = program.pipe(Effect.provide(AppLayer))
+
 NodeRuntime.runMain(
-  program.pipe(Effect.provide(AppLayer)),
+  programWithAppLayer,
   {
     teardown: function customTeardown(exit, onExit) {
       if (exit._tag === "Failure") {

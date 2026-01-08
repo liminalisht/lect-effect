@@ -11,11 +11,13 @@ import type { GraphQLContext } from "./context"
 
 export const schema = weave(EffectWeaver, ...makeResolvers())
 
+// todo: change to use Effect.logDebug when available
 export const logSchema = Effect.sync(() => {
 	const sorted = lexicographicSortSchema(schema)
 	console.log("Generated GraphQL Schema:\n", printSchema(sorted))
 })
 
+// todo: grok Effect acquireRelease and Effect.async better to see if this can be simplified
 export const listen = (runtime: Runtime.Runtime<ConfigService>, port: number) =>
 	Effect.acquireRelease(
 		Effect.async<Server, unknown>((resume, signal) => {
