@@ -8,6 +8,13 @@ export const makeResolvers = () => {
     hello: query(schemas.HelloResponseStandard)
       .input(schemas.NameInputStandard)
       .resolve((args, payload) =>
+        // todo: this is fairly gross...
+        // importing here?
+        // all the ? marks
+        // all the unknonwns and undefineds
+        // all the type assertions...
+        // blegh!!!
+        // this can't be our pattern going forward...
         runEffect(
           handlers.helloHandler(args),
           (payload as { readonly context?: unknown } | undefined)?.context as
