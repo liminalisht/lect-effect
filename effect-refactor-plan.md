@@ -11,7 +11,7 @@ GQLoom already gives you a *cartesian-style* implicit environment for resolvers:
 
 So:
 
-* Build your full application runtime **once** (inside `Effect` main, after providing `AppLayer`).
+* Build your full application runtime **once** (inside `Effect` main, after providing `appLayer`).
 * Put `runtime` onto Yoga’s `context`.
 * In resolvers, call a single helper `run(effect)` which grabs `runtime` via `useContext()` and runs the effect.
 
@@ -44,7 +44,7 @@ Also: your current “double optional” pattern is not a best practice (`Schema
 ```
 src/
   app/
-    AppLayer.ts
+    appLayer.ts
     Main.ts
   config/
     AppConfig.ts
@@ -119,7 +119,7 @@ Notes:
 
 ## 4.3 Logger layer depends on config (explicitly)
 
-### `src/app/AppLayer.ts`
+### `src/app/appLayer.ts`
 
 Here’s the important part: use `Layer.provide` / `Layer.provideMerge` so the dependency arrow `AppConfig ⟶ Logger` is explicit.
 
@@ -144,7 +144,7 @@ const InfraLayer = LoggerLive.pipe(
 
 export type AppEnv = AppConfig | HelloService
 
-export const AppLayer = Layer.merge(InfraLayer, HelloService.Live)
+export const appLayer = Layer.merge(InfraLayer, HelloService.Live)
 ```
 
 This mirrors the “provide then provideMerge” pattern in the docs (provide dependencies, then merge upstream outputs when you want them available downstream).
@@ -205,7 +205,7 @@ export const helloHandler = (input: HelloInput) =>
 ```ts
 import type { Runtime } from "effect"
 import type { YogaInitialContext } from "graphql-yoga"
-import type { AppEnv } from "../app/AppLayer"
+import type { AppEnv } from "../app/appLayer"
 
 export type GraphQLContext = YogaInitialContext & {
   readonly runtime: Runtime.Runtime<AppEnv>
@@ -219,7 +219,7 @@ export type GraphQLContext = YogaInitialContext & {
 import { createYoga } from "graphql-yoga"
 import { randomUUID } from "node:crypto"
 import type { Runtime } from "effect"
-import type { AppEnv } from "../app/AppLayer"
+import type { AppEnv } from "../app/appLayer"
 import type { GraphQLContext } from "../graphql/context"
 import { schema } from "../graphql/schema"
 
@@ -246,7 +246,7 @@ Now every resolver can access `runtime` without passing it manually. This is exa
 import { Effect } from "effect"
 import { useContext } from "@gqloom/core/context"
 import type { GraphQLContext } from "./context"
-import type { AppEnv } from "../app/AppLayer"
+import type { AppEnv } from "../app/appLayer"
 
 export const runEffect = <A, E>(
   eff: Effect.Effect<A, E, AppEnv>
@@ -353,7 +353,7 @@ import { Effect } from "effect"
 import { AppConfig } from "../config/AppConfig"
 import { createYogaApp } from "../server/yoga"
 import { listen } from "../server/http"
-import type { AppEnv } from "./AppLayer"
+import type { AppEnv } from "./appLayer"
 
 export const Main = Effect.scoped(
   Effect.gen(function* () {
@@ -377,11 +377,11 @@ export const Main = Effect.scoped(
 import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
-import { AppLayer } from "./app/AppLayer"
+import { appLayer } from "./app/appLayer"
 import { Main } from "./app/Main"
 
 NodeRuntime.runMain(
-  Main.pipe(Effect.provide(AppLayer))
+  Main.pipe(Effect.provide(appLayer))
 )
 ```
 

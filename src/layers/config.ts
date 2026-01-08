@@ -3,7 +3,7 @@ import {
 } from 'effect';
 import { ConfigService, makePort } from '../services/config';
 
-export const ConfigLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
+export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
   = Layer.effect(
     ConfigService,
     Effect.gen(function * () {

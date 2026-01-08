@@ -230,7 +230,7 @@ Your earlier instinct about `acquireRelease` is correct: a listening socket is a
 import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
-import { AppLayer } from "./layers/app"
+import { appLayer } from "./layers/app"
 import { ConfigService, type AppEnv } from "./services"
 import { makeYoga } from "./graphql/yoga"
 import { listen } from "./graphql/server"
@@ -245,7 +245,7 @@ const program: Effect.Effect<never, unknown, AppEnv> = Effect.scoped(
   })
 )
 
-NodeRuntime.runMain(program.pipe(Effect.provide(AppLayer)))
+NodeRuntime.runMain(program.pipe(Effect.provide(appLayer)))
 ```
 
 ---
@@ -260,11 +260,11 @@ Sketch:
 import { Effect, Layer, LogLevel } from "effect"
 import { makeYoga } from "../src/graphql/yoga"
 import { ConfigService, Port } from "../src/services/config"
-import { AppLayer } from "../src/layers/app"
+import { appLayer } from "../src/layers/app"
 
-// Example: override config for tests (or build a dedicated TestAppLayer)
+// Example: override config for tests (or build a dedicated TestappLayer)
 const TestConfig = Layer.succeed(ConfigService, { port: Port(0), logLevel: LogLevel.None })
-const TestLayer = AppLayer.pipe(Layer.provide(TestConfig)) // or rebuild AppLayer for tests cleanly
+const TestLayer = appLayer.pipe(Layer.provide(TestConfig)) // or rebuild appLayer for tests cleanly
 
 const yoga = await Effect.runPromise(makeYoga.pipe(Effect.provide(TestLayer)))
 
@@ -306,13 +306,13 @@ This is exactly how you avoid “optional availability” turning into architect
 
 ## 8) Layer hygiene: keep dependencies out of service *interfaces*
 
-You’re already doing the right thing by having `LoggerLayer` *depend* on `ConfigService` but not leak that dependency into some “LoggerService API”. This is a core Effect best practice: dependencies belong in Layers (constructors), not in the service surface.
+You’re already doing the right thing by having `loggerLayer` *depend* on `ConfigService` but not leak that dependency into some “LoggerService API”. This is a core Effect best practice: dependencies belong in Layers (constructors), not in the service surface.
 
 Your current Layers are already close:
 
-* `ConfigLayer` constructs `ConfigService` from env vars
-* `LoggerLayer` reads `ConfigService` then returns `Logger.minimumLogLevel(logLevel)`
-* `AppLayer` merges them and wires the dependency via `Layer.provide(ConfigLayer)`
+* `configLayer` constructs `ConfigService` from env vars
+* `loggerLayer` reads `ConfigService` then returns `Logger.minimumLogLevel(logLevel)`
+* `appLayer` merges them and wires the dependency via `Layer.provide(configLayer)`
 
 Once you switch everything else to depend on `AppEnv` rather than `ConfigService`, adding a `DbLayer` or `AuthLayer` is just extending this “wiring diagram”.
 
