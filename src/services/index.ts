@@ -1,1 +1,1 @@
-export { AppConfigService, type Port, Port as PortBrand } from "./appConfig"
+export { AppConfigService, type Port, Port as PortBrand } from "./config"

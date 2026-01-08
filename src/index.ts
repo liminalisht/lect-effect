@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
-import { AppLayer } from "./layers/appLayer"
+import { AppLayer } from "./layers/app"
 import { AppConfigService } from "./services"
 import { listen, logSchema } from "./server"
 
