@@ -7,14 +7,14 @@ import { listen, logSchema } from "./server"
 
 const program = Effect.scoped(
   Effect.gen(function* () {
-    const { port } = yield* AppConfig
+    const config = yield* AppConfig
     const runtime  = yield* Effect.runtime<AppConfig>()
 
     yield* logSchema
 
-    yield* listen(runtime, port)
+    yield* listen(runtime, config.port)
 
-    const url = `http://localhost:${port}/graphql`
+    const url = `http://localhost:${config.port}/graphql`
     yield* Effect.logInfo(`Server is running on ${url}`)
 
     return yield* Effect.never

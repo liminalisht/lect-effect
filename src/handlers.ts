@@ -9,5 +9,7 @@ export const helloHandler = (
     // todo: this should not use the effect default logger.
     // todo: we should have a way to get the app logger
 		yield* Effect.logInfo(`helloHandler greeting ${who}`)
+		yield* Effect.logDebug(`helloHandler debug`)
+
 		return { greeting: `Hello, ${who}!` }
 	})

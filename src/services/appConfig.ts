@@ -8,4 +8,3 @@ export class AppConfig extends Context.Tag("AppConfig")<
   }
 >() {}
 
-// export type AppEnv = AppConfig
