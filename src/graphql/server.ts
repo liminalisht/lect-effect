@@ -14,7 +14,9 @@ export const logSchema = (schema: GraphQLSchema) => Effect.gen(function* () {
 
 // todo: grok Effect acquireRelease and Effect.async better to see if this can be simplified
 export const listen = (schema: GraphQLSchema, runtime: Runtime.Runtime<ConfigService>, port: number) =>
-	Effect.acquireRelease(
+	//todo: why do we use acquireRelease here?
+  Effect.acquireRelease(
+    // todo: why do we use async here? is this safe
 		Effect.async<Server, unknown>((resume, signal) => {
 			const yoga = createYoga<GraphQLContext>({
 				schema,
@@ -42,6 +44,7 @@ export const listen = (schema: GraphQLSchema, runtime: Runtime.Runtime<ConfigSer
 
 			signal.addEventListener("abort", onAbort)
 
+      // todo: how do we know this can't fail? doesn't sync assume that?
 			return Effect.sync(() => {
 				signal.removeEventListener("abort", onAbort)
 				server.off("error", onError)
