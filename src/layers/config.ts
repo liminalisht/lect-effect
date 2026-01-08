@@ -1,12 +1,14 @@
-import { Config, ConfigError, Effect, Layer, LogLevel } from "effect"
-import { ConfigService, Port } from "../services/config"
+import {
+  Config, type ConfigError, Effect, Layer, LogLevel,
+} from 'effect';
+import { ConfigService, Port } from '../services/config';
 
 export const ConfigLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
   = Layer.effect(
     ConfigService,
-    Effect.gen(function* () {
-      const port     = yield* Config.number("PORT").pipe(Config.withDefault(4000))
-      const logLevel = yield* Config.logLevel("LOGLEVEL").pipe(Config.withDefault(LogLevel.Info))
-      return { port: Port(port), logLevel }
-    })
-)
+    Effect.gen(function * () {
+      const port = yield * Config.number('PORT').pipe(Config.withDefault(4000));
+      const logLevel = yield * Config.logLevel('LOGLEVEL').pipe(Config.withDefault(LogLevel.Info));
+      return { port: Port(port), logLevel };
+    }),
+  );

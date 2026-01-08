@@ -1,5 +1,5 @@
-import { ConfigService } from "./config"
+import { type ConfigService } from './config';
 
-export { ConfigService } from "./config"
+export { ConfigService } from './config';
 
-export type AppEnv = ConfigService
+export type AppEnv = ConfigService;
