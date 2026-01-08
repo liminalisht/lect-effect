@@ -3,7 +3,7 @@ import { Brand, Context, type LogLevel } from 'effect';
 export type Port = number & Brand.Brand<'Port'>;
 
 // Constructor for nominally branded ports (no runtime validation yet)
-export const Port = Brand.nominal<Port>();
+export const makePort = Brand.nominal<Port>();
 
 // todo: use Effect.Service instead
 export class ConfigService extends Context.Tag('ConfigService')<
