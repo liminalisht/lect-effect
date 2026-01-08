@@ -2,8 +2,9 @@ import "dotenv/config"
 import { Effect } from "effect"
 import { NodeRuntime } from "@effect/platform-node"
 import { AppLayer } from "./layers/app"
-import { ConfigService } from "./services"
 import { listen, logSchema } from "./graphql/server"
+import { schema } from "./graphql/schema"
+import { ConfigService } from "./services"
 
 // todo: grok Effect.scoped and Effect.gen interaction better
 const program = Effect.scoped(
@@ -11,10 +12,11 @@ const program = Effect.scoped(
     const config = yield* ConfigService
     const runtime  = yield* Effect.runtime<ConfigService>()
 
-    yield* Effect.logDebug(`logging graphql schema:`)
-    yield* logSchema
+    //todo: maybe have some service that provides the schema? and logging and serving mechanisms?
+    yield* logSchema(schema)
 
-    yield* listen(runtime, config.port)
+    // todo: rename
+    yield* listen(schema, runtime, config.port)
 
     const url = `http://localhost:${config.port}/graphql`
     yield* Effect.logInfo(`Server is running on ${url}`)

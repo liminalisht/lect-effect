@@ -1,24 +1,19 @@
-import { weave } from "@gqloom/core"
-import { EffectWeaver } from "@gqloom/effect"
-import { lexicographicSortSchema, printSchema } from "graphql"
-import { createYoga } from "graphql-yoga"
-import { createServer, type Server } from "node:http"
 import { Effect } from "effect"
 import type { Runtime } from "effect"
-import { makeResolvers } from "./resolvers"
+import { GraphQLSchema, lexicographicSortSchema, printSchema } from "graphql"
+import { createYoga } from "graphql-yoga"
+import { createServer, type Server } from "node:http"
 import type { ConfigService } from "../services"
 import type { GraphQLContext } from "./context"
 
-export const schema = weave(EffectWeaver, ...makeResolvers())
-
-// todo: change to use Effect.logDebug when available
-export const logSchema = Effect.sync(() => {
-	const sorted = lexicographicSortSchema(schema)
-	console.log("Generated GraphQL Schema:\n", printSchema(sorted))
+export const logSchema = (schema: GraphQLSchema) => Effect.gen(function* () {
+    const schemaString = printSchema(lexicographicSortSchema(schema))
+    yield* Effect.logDebug("generating graphql schema...")
+    yield* Effect.logDebug(`\n${schemaString}`)
 })
 
 // todo: grok Effect acquireRelease and Effect.async better to see if this can be simplified
-export const listen = (runtime: Runtime.Runtime<ConfigService>, port: number) =>
+export const listen = (schema: GraphQLSchema, runtime: Runtime.Runtime<ConfigService>, port: number) =>
 	Effect.acquireRelease(
 		Effect.async<Server, unknown>((resume, signal) => {
 			const yoga = createYoga<GraphQLContext>({
