@@ -8,7 +8,7 @@ import { makeResolvers } from './resolvers';
 // asyncContextProvider is enabled, so you can just read the GraphQLContext via useContext.
 // todo: can't i make this a function that uses Effect?
 // todo: make this a function called makeSchema that takes a list of resolvers...
-export const schema: GraphQLSchema = weave(EffectWeaver, asyncContextProvider, ...makeResolvers());
+export const makeSchema = (): GraphQLSchema => weave(EffectWeaver, asyncContextProvider, ...makeResolvers());
 
 export const logSchema = (schema: GraphQLSchema): Effect.Effect<void> => Effect.gen(function * () {
   const schemaString = printSchema(lexicographicSortSchema(schema));
