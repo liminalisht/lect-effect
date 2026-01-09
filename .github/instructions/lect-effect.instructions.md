@@ -15,16 +15,17 @@ After you make any code change, before thinking you're done, you should build th
 ./build.sh
 ```
 
-## 2. Running
+## 2. Tests
+
+To run tests, use:
+```sh
+./tests.sh
+```
+
+## 3. Running
 
 If we need to run the project, we can do so with:
 ```sh
 ./run.sh
 ```
 
-## 3. Tests
-
-If we need to run the project, we can do so with:
-```sh
-./tests.sh
-```
