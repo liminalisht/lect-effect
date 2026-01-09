@@ -10,7 +10,6 @@ type ConfigServiceShape = {
   readonly logLevel: LogLevel.LogLevel;
 };
 
-// todo: use Effect.Service instead
 export class ConfigService extends Context.Tag('ConfigService')<
   ConfigService,
   ConfigServiceShape
