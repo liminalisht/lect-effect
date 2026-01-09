@@ -1,24 +1,10 @@
-import { Arbitrary, Effect, Layer, LogLevel } from "effect"
+import { Arbitrary, Effect } from "effect"
 import { describe, it, expect } from "@effect/vitest"
 import * as fc from "fast-check"
 import * as domain from "../../../src/domain"
-import { loggerLayer } from "../../../src/layers/logger"
-import { greetingLayer } from "../../../src/layers/greeting"
-import { portSchema } from "../../../src/domain/port"
 import { makeSchema } from "../../../src/graphql/schema"
 import { makeYoga } from "../../../src/graphql/yoga"
-import { ConfigService } from "../../../src/services/config"
-
-const testConfigLayer = Layer.succeed(ConfigService, {
-  port: portSchema.make(4000),          // unused by yoga.fetch tests
-  logLevel: LogLevel.None               // silence logs during tests
-})
-
-const testLayer = Layer.mergeAll(
-  testConfigLayer,
-  loggerLayer.pipe(Layer.provide(testConfigLayer)),
-  greetingLayer
-)
+import { TestAppLayer } from "../../layers/app"
 
 describe("GraphQL hello (property)", () => {
   it.effect("hello(name) matches handler semantics", () =>
@@ -56,6 +42,6 @@ describe("GraphQL hello (property)", () => {
           ),
         catch: (e) => e as Error
       })
-    }).pipe(Effect.provide(testLayer))
+    }).pipe(Effect.provide(TestAppLayer))
   )
 })
