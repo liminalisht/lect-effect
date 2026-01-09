@@ -1,10 +1,13 @@
 import { type ConfigError, Layer } from 'effect';
-import { type ConfigService } from '../services';
+import { type AppServices } from '../services';
 import { configLayer } from './config';
 import { loggerLayer } from './logger';
+import { greetingLayer } from './greeting';
 
-export const appLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
-  = Layer.merge(
+// todo: replace ConfigError with union of all service errors
+export const appLayer: Layer.Layer<AppServices, ConfigError.ConfigError>
+  = Layer.mergeAll(
     configLayer,
     loggerLayer.pipe(Layer.provide(configLayer)),
+    greetingLayer,
   );
