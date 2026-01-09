@@ -10,14 +10,11 @@ const arbitraryNameInput = Arbitrary.make(nameInputSchema);
 describe('NameInput schema', () => {
   it.effect('decodes structs with optional name', () =>
     Effect.sync(() => {
-      fc.assert(
-        fc.property(arbitraryNameInput, value => {
-          const decoded = Effect.runSync(decodeNameInput(value));
-          expect(decoded).toEqual(value);
-        }),
-      );
-    })
-  );
+      fc.assert(fc.property(arbitraryNameInput, value => {
+        const decoded = Effect.runSync(decodeNameInput(value));
+        expect(decoded).toEqual(value);
+      }));
+    }));
 
   it.effect('rejects invalid name shapes', () =>
     Effect.sync(() => {
@@ -30,11 +27,8 @@ describe('NameInput schema', () => {
         fc.boolean(),
       );
 
-      fc.assert(
-        fc.property(invalid, value => {
-          expect(() => Effect.runSync(decodeNameInput(value))).toThrow();
-        }),
-      );
-    })
-  );
+      fc.assert(fc.property(invalid, value => {
+        expect(() => Effect.runSync(decodeNameInput(value))).toThrow();
+      }));
+    }));
 });

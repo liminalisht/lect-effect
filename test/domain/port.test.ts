@@ -12,14 +12,11 @@ describe('Port schema', () => {
   it.effect('decode valid ports', () =>
     Effect.sync(() => {
       // we can decode all valid ports
-      fc.assert(
-        fc.property(arbitraryPort, port => {
-          const decoded = Effect.runSync(decodePort(port));
-          expect(decoded).toEqual(port);
-        }),
-      );
-    })
-  );
+      fc.assert(fc.property(arbitraryPort, port => {
+        const decoded = Effect.runSync(decodePort(port));
+        expect(decoded).toEqual(port);
+      }));
+    }));
 
   it.effect('reject ports that are out of range (1, 65535) or non-int values', () =>
     Effect.sync(() => {
@@ -30,12 +27,8 @@ describe('Port schema', () => {
         fc.float({ noNaN: true, noDefaultInfinity: true }).filter(n => !Number.isInteger(n)),
       );
       // invalid ports are rejected
-      fc.assert(
-        fc.property(invalid, n => {
-          expect(() => Effect.runSync(decodePort(n))).toThrow();
-        }),
-      );
-    })
-  );
-
+      fc.assert(fc.property(invalid, n => {
+        expect(() => Effect.runSync(decodePort(n))).toThrow();
+      }));
+    }));
 });

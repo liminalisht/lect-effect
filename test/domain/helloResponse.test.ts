@@ -10,14 +10,11 @@ const arbitraryHelloResponse = Arbitrary.make(helloResponseSchema);
 describe('HelloResponse schema', () => {
   it.effect('decodes responses with branded greeting', () =>
     Effect.sync(() => {
-      fc.assert(
-        fc.property(arbitraryHelloResponse, value => {
-          const decoded = Effect.runSync(decodeHelloResponse(value));
-          expect(decoded).toEqual(value);
-        }),
-      );
-    })
-  );
+      fc.assert(fc.property(arbitraryHelloResponse, value => {
+        const decoded = Effect.runSync(decodeHelloResponse(value));
+        expect(decoded).toEqual(value);
+      }));
+    }));
 
   it.effect('rejects missing or invalid greeting', () =>
     Effect.sync(() => {
@@ -27,11 +24,8 @@ describe('HelloResponse schema', () => {
         fc.integer(),
       );
 
-      fc.assert(
-        fc.property(invalid, value => {
-          expect(() => Effect.runSync(decodeHelloResponse(value))).toThrow();
-        }),
-      );
-    })
-  );
+      fc.assert(fc.property(invalid, value => {
+        expect(() => Effect.runSync(decodeHelloResponse(value))).toThrow();
+      }));
+    }));
 });

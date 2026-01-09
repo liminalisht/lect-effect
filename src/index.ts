@@ -10,13 +10,12 @@ const logFailure = (cause: Cause.Cause<unknown>) =>
     Effect.logError(Cause.pretty(cause)),
   ]);
 
-const main: Effect.Effect<never, unknown, never> = app.pipe(
+const main: Effect.Effect<never, unknown> = app.pipe(
   Effect.provide(appLayer),
   Effect.onExit(exit =>
     exit._tag === 'Failure'
       ? logFailure(exit.cause)
-      : Effect.void,
-  ),
+      : Effect.void),
 );
 
 NodeRuntime.runMain(main);
