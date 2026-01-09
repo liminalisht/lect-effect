@@ -21,3 +21,10 @@ If we need to run the project, we can do so with:
 ```sh
 ./run.sh
 ```
+
+## 3. Tests
+
+If we need to run the project, we can do so with:
+```sh
+./tests.sh
+```

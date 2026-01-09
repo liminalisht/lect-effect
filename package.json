@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "buildtest": "pnpm run build && pnpm run test",
+    "buildtest": "pnpm run build && pnpm run typecheck:test",
     "start": "pnpm run build && node dist/index.js",
-    "test": "vitest run"
+    "test": "pnpm run build && pnpm run typecheck:test && vitest run",
+    "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
   },
   "keywords": [],
   "author": "",
