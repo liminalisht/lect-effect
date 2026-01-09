@@ -1,18 +1,19 @@
-import { describe, expect } from 'vitest';
-import { it } from '@effect/vitest';
+
 import { Arbitrary, Effect, Schema } from 'effect';
+import { it } from '@effect/vitest';
 import fc from 'fast-check';
+import { describe, expect } from 'vitest';
 import { portSchema } from '../../src/domain/port';
 
 const decodePort = Schema.decodeUnknown(portSchema);
-const portArb = Arbitrary.make(portSchema);
+const arbitraryPort = Arbitrary.make(portSchema);
 
 describe('Port schema', () => {
   it.effect('decode valid ports', () =>
     Effect.sync(() => {
       // we can decode all valid ports
       fc.assert(
-        fc.property(portArb, port => {
+        fc.property(arbitraryPort, port => {
           const decoded = Effect.runSync(decodePort(port));
           expect(decoded).toEqual(port);
         }),
