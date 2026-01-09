@@ -5,7 +5,6 @@ import { logSchema, makeSchema } from './graphql/schema';
 import * as server from './graphql/server';
 import { makeYoga } from './graphql/yoga';
 import { type AppServices, ConfigService } from './services';
-import { cons } from 'effect/List';
 
 // todo: grok Effect.scoped and Effect.gen interaction better
 export const app: Effect.Effect<never, unknown, AppServices>
