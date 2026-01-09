@@ -31,6 +31,14 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
+    files: ['test/**'],
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+    },
+  },
+  {
     // non-typeScript files
     files: ['**/*.{js,mjs,cjs,jsx}'],
     ignores: ['**/node_modules/**', '**/dist/**', '**/build/**'],

@@ -15,7 +15,7 @@ After you make any code change, before thinking you're done, you should build th
 ./build.sh
 ```
 
-## 2. Tests
+## 2. Testing
 
 To run tests, use:
 ```sh
@@ -29,3 +29,13 @@ If we need to run the project, we can do so with:
 ./run.sh
 ```
 
+## 4. Linting
+
+If we need to run the project, we can do so with:
+```sh
+lint.sh
+```
+or
+```sh
+lint.sh --fix
+```
