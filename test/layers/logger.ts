@@ -1,5 +1,5 @@
 import { Layer } from 'effect';
 import { loggerLayer } from '../../src/layers/logger';
-import { TestConfigLayer } from './config';
+import { testConfigLayer } from './config';
 
-export const TestLoggerLayer = loggerLayer.pipe(Layer.provide(TestConfigLayer));
+export const testLoggerLayer = loggerLayer.pipe(Layer.provide(testConfigLayer));

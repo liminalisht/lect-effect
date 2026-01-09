@@ -4,7 +4,7 @@ import * as fc from "fast-check"
 import * as domain from "../../../src/domain"
 import { makeSchema } from "../../../src/graphql/schema"
 import { makeYoga } from "../../../src/graphql/yoga"
-import { TestAppLayer } from "../../layers/app"
+import { testAppLayer } from "../../layers/app"
 
 describe("GraphQL hello (property)", () => {
   it.effect("hello(name) matches handler semantics", () =>
@@ -42,6 +42,6 @@ describe("GraphQL hello (property)", () => {
           ),
         catch: (e) => e as Error
       })
-    }).pipe(Effect.provide(TestAppLayer))
+    }).pipe(Effect.provide(testAppLayer))
   )
 })

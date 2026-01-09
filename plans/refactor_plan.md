@@ -262,7 +262,7 @@ import { makeYoga } from "../src/graphql/yoga"
 import { ConfigService, Port } from "../src/services/config"
 import { appLayer } from "../src/layers/app"
 
-// Example: override config for tests (or build a dedicated TestappLayer)
+// Example: override config for tests (or build a dedicated testAppLayer)
 const TestConfig = Layer.succeed(ConfigService, { port: Port(0), logLevel: LogLevel.None })
 const TestLayer = appLayer.pipe(Layer.provide(TestConfig)) // or rebuild appLayer for tests cleanly
 

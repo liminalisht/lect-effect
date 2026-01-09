@@ -1,6 +1,6 @@
 import { Layer } from 'effect';
 import { greetingLayer } from '../../src/layers/greeting';
-import { TestConfigLayer } from './config';
-import { TestLoggerLayer } from './logger';
+import { testConfigLayer } from './config';
+import { testLoggerLayer } from './logger';
 
-export const TestAppLayer = Layer.mergeAll(TestConfigLayer, TestLoggerLayer, greetingLayer);
+export const testAppLayer = Layer.mergeAll(testConfigLayer, testLoggerLayer, greetingLayer);
