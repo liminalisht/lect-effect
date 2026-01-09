@@ -1,7 +1,7 @@
 import { Schema } from 'effect';
 import { query, resolver } from '@gqloom/core';
+import * as schemas from '../domain';
 import * as handlers from '../handlers';
-import * as schemas from '../domain/schemas';
 import { runEffect } from './effect';
 
 // todo: can't i make this use Effect?

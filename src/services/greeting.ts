@@ -1,6 +1,6 @@
 // src/services/greeting.ts
-import { Context, Effect, Option, Schema } from 'effect';
-import type { Name, Greeting } from '../domain/schemas';
+import { Context, type Effect, type Option } from 'effect';
+import type { Name, Greeting } from '../domain';
 
 export class GreetingService extends Context.Tag('GreetingService')<
   GreetingService,

@@ -1,5 +1,5 @@
 import { Effect, Layer, Option } from 'effect';
-import { greetingSchema } from '../domain/schemas';
+import { greetingSchema } from '../domain';
 import { GreetingService } from '../services/greeting';
 
 export const greetingLayer = Layer.succeed(
