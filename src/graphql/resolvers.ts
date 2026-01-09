@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 import { query, resolver } from '@gqloom/core';
-import * as handlers from '../domain/handlers';
+import * as handlers from '../handlers';
 import * as schemas from '../domain/schemas';
 import { runEffect } from './effect';
 

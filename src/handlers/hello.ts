@@ -1,6 +1,6 @@
 import { Effect, Option } from 'effect';
 import { GreetingService } from '../services/greeting';
-import type * as schemas from './schemas';
+import type * as schemas from '../domain/schemas';
 
 export const helloHandler = (input: schemas.NameInput): Effect.Effect<schemas.HelloResponse, never, GreetingService> =>
   Effect.gen(function * () {
