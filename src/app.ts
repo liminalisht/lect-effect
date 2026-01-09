@@ -9,6 +9,7 @@ export const app: Effect.Effect<never, unknown, AppServices>
   = Effect.scoped(Effect.gen(function * () {
     yield * Effect.logDebug('getting config...');
     const config = yield * ConfigService;
+    yield * Effect.logDebug('app config:', config);
     yield * Effect.logDebug('making graphql schema...');
     const schema = makeSchema();
     yield * Effect.logDebug('logging graphql schema...');
