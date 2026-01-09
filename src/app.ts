@@ -4,7 +4,6 @@ import * as server from './graphql/server';
 import { makeYoga } from './graphql/yoga';
 import { type AppServices, ConfigService } from './services';
 
-// todo: grok Effect.scoped and Effect.gen interaction better
 export const app: Effect.Effect<never, unknown, AppServices>
   = Effect.scoped(Effect.gen(function * () {
     yield * Effect.logDebug('getting config...');
