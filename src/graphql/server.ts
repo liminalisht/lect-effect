@@ -1,15 +1,8 @@
-import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
-import { type GraphQLSchema, lexicographicSortSchema, printSchema } from 'graphql';
 import { type YogaServerInstance } from 'graphql-yoga';
+import { createServer, type Server } from 'node:http';
 import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
-
-// export const logSchema = (schema: GraphQLSchema) => Effect.gen(function * () {
-//   const schemaString = printSchema(lexicographicSortSchema(schema));
-//   yield * Effect.logDebug('generating graphql schema...');
-//   yield * Effect.logDebug(`\n${schemaString}`);
-// });
 
 // todo: grok Effect acquireRelease and Effect.async better
 export const listen = (
@@ -30,7 +23,7 @@ export const listen = (
         resume(Effect.succeed(server));
       });
 
-      // Interrupt safety: if the fiber is interrupted, close the server.
+      // if the fiber is interrupted, close the server.
       const onAbort = () => server.close(() => undefined);
       if (signal.aborted) {
         onAbort();
