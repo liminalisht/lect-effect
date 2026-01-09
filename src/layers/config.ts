@@ -10,8 +10,9 @@ export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
     Effect.gen(function * () {
       const port = yield * Config.number('PORT')
         .pipe(Config.withDefault(4000))
-        .pipe(Effect.map(number => portSchema.make(number))); //todo: this default then map is stupid
-      const logLevel = yield * Config.logLevel('LOGLEVEL').pipe(Config.withDefault(LogLevel.Info));
+        .pipe(Effect.map(number => portSchema.make(number)));
+      const logLevel = yield * Config.logLevel('LOGLEVEL')
+        .pipe(Config.withDefault(LogLevel.Info));
       return { port, logLevel };
     }),
   );

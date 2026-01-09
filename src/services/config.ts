@@ -1,5 +1,5 @@
 import { Context, type LogLevel } from 'effect';
-import { Port } from '../domain/port';
+import { type Port } from '../domain/port';
 
 type ConfigServiceShape = {
   readonly port: Port;
