@@ -6,22 +6,25 @@ import { nameSchema } from '../../src/domain/name';
 
 const decodeName = Schema.decodeUnknown(nameSchema);
 const arbitraryName = Arbitrary.make(nameSchema);
+const invalidName = fc.anything().filter(value => typeof value !== 'string');
+
+const validNameProperty = fc.property(arbitraryName, name => {
+  const decoded = Effect.runSync(decodeName(name));
+  expect(decoded).toEqual(name);
+});
+
+const invalidNameProperty = fc.property(invalidName, value => {
+  expect(() => Effect.runSync(decodeName(value))).toThrow();
+});
 
 describe('Name schema', () => {
   it.effect('decodes strings', () =>
     Effect.sync(() => {
-      fc.assert(fc.property(arbitraryName, name => {
-        const decoded = Effect.runSync(decodeName(name));
-        expect(decoded).toEqual(name);
-      }));
+      fc.assert(validNameProperty);
     }));
 
   it.effect('rejects non-strings', () =>
     Effect.sync(() => {
-      const invalid = fc.anything().filter(value => typeof value !== 'string');
-
-      fc.assert(fc.property(invalid, value => {
-        expect(() => Effect.runSync(decodeName(value))).toThrow();
-      }));
+      fc.assert(invalidNameProperty);
     }));
 });

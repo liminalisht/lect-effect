@@ -6,29 +6,32 @@ import { nameInputSchema } from '../../src/domain/nameInput';
 
 const decodeNameInput = Schema.decodeUnknown(nameInputSchema);
 const arbitraryNameInput = Arbitrary.make(nameInputSchema);
+const invalidNameInput = fc.oneof(
+  // object with name present but not string/null/undefined
+  fc.record({ name: fc.integer() }, { requiredKeys: ['name'] }),
+  fc.record({ name: fc.boolean() }, { requiredKeys: ['name'] }),
+  // non-object shapes
+  fc.integer(),
+  fc.boolean(),
+);
+
+const validNameInputProperty = fc.property(arbitraryNameInput, value => {
+  const decoded = Effect.runSync(decodeNameInput(value));
+  expect(decoded).toEqual(value);
+});
+
+const invalidNameInputProperty = fc.property(invalidNameInput, value => {
+  expect(() => Effect.runSync(decodeNameInput(value))).toThrow();
+});
 
 describe('NameInput schema', () => {
   it.effect('decodes structs with optional name', () =>
     Effect.sync(() => {
-      fc.assert(fc.property(arbitraryNameInput, value => {
-        const decoded = Effect.runSync(decodeNameInput(value));
-        expect(decoded).toEqual(value);
-      }));
+      fc.assert(validNameInputProperty);
     }));
 
   it.effect('rejects invalid name shapes', () =>
     Effect.sync(() => {
-      const invalid = fc.oneof(
-        // object with name present but not string/null/undefined
-        fc.record({ name: fc.integer() }, { requiredKeys: ['name'] }),
-        fc.record({ name: fc.boolean() }, { requiredKeys: ['name'] }),
-        // non-object shapes
-        fc.integer(),
-        fc.boolean(),
-      );
-
-      fc.assert(fc.property(invalid, value => {
-        expect(() => Effect.runSync(decodeNameInput(value))).toThrow();
-      }));
+      fc.assert(invalidNameInputProperty);
     }));
 });

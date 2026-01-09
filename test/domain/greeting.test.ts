@@ -6,22 +6,25 @@ import { greetingSchema } from '../../src/domain/greeting';
 
 const decodeGreeting = Schema.decodeUnknown(greetingSchema);
 const arbitraryGreeting = Arbitrary.make(greetingSchema);
+const invalidGreeting = fc.anything().filter(value => typeof value !== 'string');
+
+const validGreetingProperty = fc.property(arbitraryGreeting, greeting => {
+  const decoded = Effect.runSync(decodeGreeting(greeting));
+  expect(decoded).toEqual(greeting);
+});
+
+const invalidGreetingProperty = fc.property(invalidGreeting, value => {
+  expect(() => Effect.runSync(decodeGreeting(value))).toThrow();
+});
 
 describe('Greeting schema', () => {
   it.effect('decodes branded strings', () =>
     Effect.sync(() => {
-      fc.assert(fc.property(arbitraryGreeting, greeting => {
-        const decoded = Effect.runSync(decodeGreeting(greeting));
-        expect(decoded).toEqual(greeting);
-      }));
+      fc.assert(validGreetingProperty);
     }));
 
   it.effect('rejects non-strings', () =>
     Effect.sync(() => {
-      const invalid = fc.anything().filter(value => typeof value !== 'string');
-
-      fc.assert(fc.property(invalid, value => {
-        expect(() => Effect.runSync(decodeGreeting(value))).toThrow();
-      }));
+      fc.assert(invalidGreetingProperty);
     }));
 });
