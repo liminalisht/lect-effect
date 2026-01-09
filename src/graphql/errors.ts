@@ -1,5 +1,7 @@
 import { Data } from 'effect';
 
+export type GraphQLServerError = ServerStartError | RuntimeMissingFromContextError;
+
 /**
  * Server won't start
  */

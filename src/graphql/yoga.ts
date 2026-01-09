@@ -9,7 +9,7 @@ export const makeYoga: Effect.Effect<YogaServerInstance<GraphQLContext, Record<s
   = Effect.gen(function * () {
     const runtime = yield * Effect.runtime<AppServices>();
     return createYoga<GraphQLContext>({
-      schema: makeSchema(), //todo: pass in resolvers here
+      schema: makeSchema(), // todo: pass in resolvers here
       context: initial => ({ ...initial, runtime }),
     });
   });
