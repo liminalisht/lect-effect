@@ -1,7 +1,6 @@
-import {
-  Context, Effect, Layer, Option, Schema,
-} from 'effect';
-import { GreetingService, greetingSchema } from '../services/greeting';
+import { Effect, Layer, Option } from 'effect';
+import { greetingSchema } from '../domain/schemas';
+import { GreetingService } from '../services/greeting';
 
 export const greetingLayer = Layer.succeed(
   GreetingService,

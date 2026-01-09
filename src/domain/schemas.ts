@@ -1,11 +1,11 @@
-import { Arbitrary, Schema } from 'effect';
+import { Schema } from 'effect';
 
 export type Name = Schema.Schema.Type<typeof nameSchema>;
 
 export const nameSchema = Schema.String;
 
-// todo: move or remove
-export const nameArbitrary = Arbitrary.make(nameSchema);
+// // todo: move or remove
+// export const nameArbitrary = Arbitrary.make(nameSchema);
 
 export type NameInput = Schema.Schema.Type<typeof nameInputSchema>;
 
@@ -15,8 +15,8 @@ export const nameInputSchema = Schema.Struct({
   }),
 });
 
-// todo: move or remove
-export const nameInputArbitrary = Arbitrary.make(nameInputSchema);
+// // todo: move or remove
+// export const nameInputArbitrary = Arbitrary.make(nameInputSchema);
 
 export type HelloResponse = Schema.Schema.Type<typeof helloResponseSchema>;
 
@@ -29,3 +29,7 @@ export const helloResponseSchema = Schema.Struct({
   description: 'response for hello',
 });
 
+
+export type Greeting = Schema.Schema.Type<typeof greetingSchema>;
+
+export const greetingSchema = Schema.String.pipe(Schema.brand('Greeting'));
