@@ -1,5 +1,3 @@
-// todo: where to put this import? it is needed for its side effects
-import 'dotenv/config';
 import { Effect } from 'effect';
 import { logSchema, makeSchema } from './graphql/schema';
 import * as server from './graphql/server';

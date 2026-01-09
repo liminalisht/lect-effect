@@ -1,4 +1,3 @@
-// todo: where to put this import? it is needed for its side effects
 import 'dotenv/config';
 import { Effect } from 'effect';
 import { NodeRuntime } from '@effect/platform-node';
