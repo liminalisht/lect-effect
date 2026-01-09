@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "buildtest": "pnpm run build && pnpm run test",
     "start": "pnpm run build && node dist/index.js",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
