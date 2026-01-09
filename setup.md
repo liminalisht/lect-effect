@@ -10,6 +10,7 @@ pnpm install xo --save-dev
 pnpm add -D @effect/language-service
 pnpm add dotenv
 pnpm add @effect/platform-node
+pnpm add -D vitest @effect/vitest fast-check @types/node
 ```
 
 `.editorconfig`:
