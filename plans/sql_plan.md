@@ -1257,3 +1257,766 @@ Once you have many resolvers, you’ll run into GraphQL N+1 patterns. Effect has
 ---
 
 If you tell me the *actual* Postgres-backed service family you expect first (e.g. `ItemRepo`, `ProductRepo`, `WorkflowRepo` like in the old `lect` tree), I can rewrite the above example using your real names and show the exact folder/module layout that matches your intended domain separation.
+
+----
+Below is a concrete “Effect-native” end-to-end shape that (a) matches the **Item/Product/item_prod** data model from the old repo, (b) supports **many services backed by the same DB pool**, (c) makes **Layer dependencies explicit**, and (d) gives you a clean surface for **testing + mocking**.
+
+I’ll do two parallel tracks:
+
+1. **Postgres**: use `@effect/sql` + `@effect/sql-pg` (the Effect team’s SQL stack).
+2. **Oracle**: there is no first‑party Oracle dialect in `@effect/sql`’s current dialect set, so wrap the official Oracle driver in an Effect `Layer.scoped` service.
+
+This is compatible with your current “GraphQL context contains a runtime + `runEffect` turns `Effect` into `Promise`” approach, which is already a big improvement over the earlier manual threading (your current `GraphQLContext` and `runEffect` are now the right *shape*: runtime in context + `useContext()` inside `runEffect`).
+
+---
+
+## 0) Ground truth: Item/Product shapes and relationship
+
+From the old repo, the masterdata DB record shapes are:
+
+* `product`: `{ id: int, description: string | null }`【and operations select `id, description`】
+* `item`: `{ id: int, description: string | null, pack_size: int }`
+* `item_prod`: `{ item_id: int, product_id: int }` (linking product→items)
+
+Your old domain schemas also keep the same field names (including `pack_size`) and add optional `__typename`.
+
+So we’ll preserve exactly that *shape*, but reify it with **Effect Schema** and **services**.
+
+---
+
+## 1) Library decisions
+
+### Postgres
+
+**Use:** `@effect/sql` + `@effect/sql-pg`.
+
+Why this is the “most Effect” option:
+
+* `@effect/sql-pg` gives you a `Layer` that builds a Postgres client from a typed config (`PgClient.layerConfig`).
+* `SqlClient` is a `Tag` and the client is a statement constructor; statements are effects (so DB queries live natively inside `Effect`).
+* You get the `SqlSchema` / `SqlResolver` ecosystem when you’re ready to batch/cache GraphQL nested field fetches (e.g. product→items) in a principled way.
+
+### Oracle
+
+**Use:** the official Node Oracle driver (`oracledb`) wrapped in an Effect `Layer.scoped`.
+
+Reason: as of the current `@effect/sql` API docs, its dialect set is `pg | mysql | mssql | clickhouse | sqlite` (no Oracle dialect).
+So: write a small `OracleDb` service with a pool managed by `Layer.scoped`, and validate rows with `Schema.decodeUnknown`.
+
+---
+
+## 2) The architectural “shape” (categorical view)
+
+Think of:
+
+* each **Service** as an *object* in a context category `𝒞`
+* each **Layer** as a *morphism* (a resource-creating arrow) from required services to provided services
+* **Layer composition** is your (associative) composition in `𝒞`
+* `runEffect : Effect<R, E, A> → Promise<A>` is a *natural transformation* once you fix a `Runtime<R>` (the runtime is a “global section” you store in GraphQL context)
+
+Your key requirements become:
+
+* **one** `MasterdataDb` layer (Postgres pool)
+* **many** repo/service layers depending on that single `MasterdataDb`
+* handlers depend on repos (not on pools)
+* resolvers depend on handlers, and run via `runEffect`
+
+---
+
+## 3) End-to-end code for Postgres (shared pool, multiple services)
+
+### 3.1 Install deps
+
+```sh
+pnpm add @effect/sql @effect/sql-pg
+# pg is pulled transitively in most setups, but if needed:
+pnpm add pg
+```
+
+### 3.2 Domain schemas (Effect Schema)
+
+`src/domain/product.ts`
+
+```ts
+import { Schema } from "effect"
+
+// If you want stronger invariants later, brand these.
+// For now: keep old-shape compatibility.
+export const ProductIdSchema = Schema.Number.pipe(Schema.int())
+export type ProductId = Schema.Schema.Type<typeof ProductIdSchema>
+
+export const ProductSchema = Schema.Struct({
+  __typename: Schema.optional(Schema.Literal("Product")),
+  id: ProductIdSchema,
+  description: Schema.NullOr(Schema.String)
+})
+export type Product = Schema.Schema.Type<typeof ProductSchema>
+```
+
+`src/domain/item.ts`
+
+```ts
+import { Schema } from "effect"
+
+export const ItemIdSchema = Schema.Number.pipe(Schema.int())
+export type ItemId = Schema.Schema.Type<typeof ItemIdSchema>
+
+export const ItemSchema = Schema.Struct({
+  __typename: Schema.optional(Schema.Literal("Item")),
+  id: ItemIdSchema,
+  description: Schema.NullOr(Schema.String),
+  pack_size: Schema.Number.pipe(Schema.int())
+})
+export type Item = Schema.Schema.Type<typeof ItemSchema>
+```
+
+These match the old domain shapes (incl. optional `__typename`) and the DB record columns.
+
+---
+
+### 3.3 Config service (Effect Config + redacted secrets)
+
+Update your config service so it *also* carries DB settings.
+
+`src/services/config.ts`
+
+```ts
+import { Config, Context, Effect, LogLevel, Redacted } from "effect"
+import { portFromNumber, type Port } from "../domain/port"
+
+export type MasterdataPgConfig = {
+  readonly url: Redacted.Redacted<string>
+  readonly pool: {
+    readonly min: number
+    readonly max: number
+    readonly idleTimeoutMillis: number
+  }
+}
+
+export type OracleConfig = {
+  readonly user: string
+  readonly password: Redacted.Redacted<string>
+  readonly connectString: string
+  readonly pool: {
+    readonly min: number
+    readonly max: number
+    readonly increment: number
+  }
+}
+
+export type AppConfig = {
+  readonly port: Port
+  readonly logLevel: LogLevel.LogLevel
+  readonly masterdataPg: MasterdataPgConfig
+  readonly oracle: OracleConfig
+}
+
+export class ConfigService extends Context.Tag("ConfigService")<
+  ConfigService,
+  AppConfig
+>() {}
+
+export const ConfigLayer = Effect.gen(function* () {
+  const port = yield* Config.number("APP_PORT").pipe(Effect.map(portFromNumber))
+  const logLevel = yield* Config.logLevel("APP_LOG_LEVEL")
+
+  const masterdataPg: MasterdataPgConfig = {
+    url: yield* Config.redacted("MASTERDATA_PG_URL"),
+    pool: {
+      min: yield* Config.integer("MASTERDATA_PG_POOL_MIN").pipe(Config.withDefault(0)),
+      max: yield* Config.integer("MASTERDATA_PG_POOL_MAX").pipe(Config.withDefault(10)),
+      idleTimeoutMillis: yield* Config.integer("MASTERDATA_PG_IDLE_TIMEOUT_MS").pipe(
+        Config.withDefault(30_000)
+      )
+    }
+  }
+
+  const oracle: OracleConfig = {
+    user: yield* Config.string("ORACLE_USER"),
+    password: yield* Config.redacted("ORACLE_PASSWORD"),
+    connectString: yield* Config.string("ORACLE_CONNECT_STRING"),
+    pool: {
+      min: yield* Config.integer("ORACLE_POOL_MIN").pipe(Config.withDefault(0)),
+      max: yield* Config.integer("ORACLE_POOL_MAX").pipe(Config.withDefault(10)),
+      increment: yield* Config.integer("ORACLE_POOL_INCREMENT").pipe(Config.withDefault(1))
+    }
+  }
+
+  return { port, logLevel, masterdataPg, oracle } as const
+}).pipe(
+  Effect.map((cfg) => ConfigService.of(cfg))
+)
+```
+
+Then (as you already do) lift into a layer:
+
+`src/layers/config.ts`
+
+```ts
+import { Layer } from "effect"
+import { ConfigLayer, ConfigService } from "../services/config"
+
+export const configLayer = Layer.effect(ConfigService, ConfigLayer)
+```
+
+Notes:
+
+* `Config.redacted` is the recommended modern way to keep secrets out of logs.
+* We’re keeping config as a *service* because you explicitly want other services/loggers to access it.
+
+---
+
+### 3.4 Masterdata Postgres DB service (one pool, shared)
+
+We **do not** want every repo to create its own client/pool. So we create:
+
+* one `MasterdataDb` service: “here is the SQL client”
+* one `Layer` that allocates it (scoped)
+
+`src/services/masterdataDb.ts`
+
+```ts
+import { Context } from "effect"
+import type * as SqlClient from "@effect/sql/SqlClient"
+
+export type MasterdataDbShape = {
+  readonly sql: SqlClient.SqlClient
+}
+
+export class MasterdataDb extends Context.Tag("MasterdataDb")<
+  MasterdataDb,
+  MasterdataDbShape
+>() {}
+```
+
+`src/layers/masterdataDb.ts`
+
+```ts
+import { Config, Effect, Layer, Redacted } from "effect"
+import * as PgClient from "@effect/sql-pg/PgClient"
+import * as SqlClient from "@effect/sql/SqlClient"
+
+import { ConfigService } from "../services/config"
+import { MasterdataDb } from "../services/masterdataDb"
+
+export const masterdataDbLayer = Layer.unwrapEffect(
+  Effect.gen(function* () {
+    const cfg = yield* ConfigService
+
+    // Build a Config spec *from the already-loaded ConfigService*.
+    // Config.succeed exists and is intended for this. :contentReference[oaicite:11]{index=11}
+    const pgConfig = Config.succeed({
+      url: Redacted.value(cfg.masterdataPg.url),
+      min: cfg.masterdataPg.pool.min,
+      max: cfg.masterdataPg.pool.max,
+      idleTimeoutMillis: cfg.masterdataPg.pool.idleTimeoutMillis,
+      transformQueryNames: false,
+      transformResultNames: false
+    } satisfies PgClient.Config)
+
+    const sqlClientLayer = PgClient.layerConfig(pgConfig) // provides SqlClient.SqlClient
+
+    const layer = Layer.effect(
+      MasterdataDb,
+      Effect.gen(function* () {
+        const sql = yield* SqlClient.SqlClient
+        yield* Effect.logInfo("Masterdata Postgres client initialized")
+        return { sql } as const
+      })
+    ).pipe(Layer.provide(sqlClientLayer))
+
+    return layer
+  })
+)
+```
+
+Key point: **all downstream services share the same pool**, because `MasterdataDb` is constructed once and injected.
+
+---
+
+### 3.5 Repo services: ProductRepo + ItemRepo
+
+These are the “many services backed by one DB”.
+
+#### Helpers for decoding rows safely
+
+`src/services/dbDecode.ts`
+
+```ts
+import { Effect, Schema } from "effect"
+
+export const decodeOne = <A>(schema: Schema.Schema<A>) => (u: unknown) =>
+  Schema.decodeUnknown(schema)(u)
+
+export const decodeMany = <A>(schema: Schema.Schema<A>) => (rows: ReadonlyArray<unknown>) =>
+  Effect.forEach(rows, (row) => Schema.decodeUnknown(schema)(row))
+```
+
+#### ProductRepo
+
+`src/services/productRepo.ts`
+
+```ts
+import { Context, Effect, Option, Schema } from "effect"
+import type * as SqlError from "@effect/sql/SqlError"
+
+import { ProductSchema, type Product, type ProductId } from "../domain/product"
+import { MasterdataDb } from "./masterdataDb"
+import { decodeMany, decodeOne } from "./dbDecode"
+
+export class ProductNotFound extends Error {
+  readonly _tag = "ProductNotFound"
+  constructor(readonly id: ProductId) {
+    super(`Product not found: ${id}`)
+  }
+}
+
+export type ProductRepoError = SqlError.SqlError | ProductNotFound | Schema.ParseError
+
+export type ProductRepoShape = {
+  readonly getById: (id: ProductId) => Effect.Effect<Option.Option<Product>, ProductRepoError>
+  readonly list: Effect.Effect<ReadonlyArray<Product>, ProductRepoError>
+}
+
+export class ProductRepo extends Context.Tag("ProductRepo")<
+  ProductRepo,
+  ProductRepoShape
+>() {}
+
+// row schema matches DB columns (no __typename)
+const ProductRowSchema = Schema.Struct({
+  id: Schema.Number.pipe(Schema.int()),
+  description: Schema.NullOr(Schema.String)
+})
+
+const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
+  __typename: "Product",
+  ...r
+})
+
+export const ProductRepoLive = Effect.gen(function* () {
+  const { sql } = yield* MasterdataDb
+
+  const list = sql`
+    SELECT id, description
+    FROM product
+    ORDER BY id
+  `.pipe(
+    Effect.flatMap(decodeMany(ProductRowSchema)),
+    Effect.map((rows) => rows.map(toDomain))
+  )
+
+  const getById = (id: ProductId) =>
+    sql`
+      SELECT id, description
+      FROM product
+      WHERE id = ${id}
+    `.pipe(
+      Effect.flatMap((rows) =>
+        rows.length === 0
+          ? Effect.succeed(Option.none())
+          : decodeOne(ProductRowSchema)(rows[0]).pipe(
+              Effect.map((row) => Option.some(toDomain(row)))
+            )
+      )
+    )
+
+  return { list, getById } as const
+}).pipe(Effect.map((svc) => ProductRepo.of(svc)))
+```
+
+`src/layers/productRepo.ts`
+
+```ts
+import { Layer } from "effect"
+import { ProductRepo, ProductRepoLive } from "../services/productRepo"
+
+export const productRepoLayer = Layer.effect(ProductRepo, ProductRepoLive)
+```
+
+#### ItemRepo with “product → items” query (single SQL join)
+
+`src/services/itemRepo.ts`
+
+```ts
+import { Context, Effect, Schema } from "effect"
+import type * as SqlError from "@effect/sql/SqlError"
+
+import { ItemSchema, type Item, type ItemId } from "../domain/item"
+import { type ProductId } from "../domain/product"
+import { MasterdataDb } from "./masterdataDb"
+import { decodeMany, decodeOne } from "./dbDecode"
+
+export type ItemRepoError = SqlError.SqlError | Schema.ParseError
+
+export type ItemRepoShape = {
+  readonly getById: (id: ItemId) => Effect.Effect<Item | null, ItemRepoError>
+  readonly listForProduct: (productId: ProductId) => Effect.Effect<ReadonlyArray<Item>, ItemRepoError>
+}
+
+export class ItemRepo extends Context.Tag("ItemRepo")<ItemRepo, ItemRepoShape>() {}
+
+const ItemRowSchema = Schema.Struct({
+  id: Schema.Number.pipe(Schema.int()),
+  description: Schema.NullOr(Schema.String),
+  pack_size: Schema.Number.pipe(Schema.int())
+})
+
+const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
+  __typename: "Item",
+  ...r
+})
+
+export const ItemRepoLive = Effect.gen(function* () {
+  const { sql } = yield* MasterdataDb
+
+  const getById = (id: ItemId) =>
+    sql`
+      SELECT id, description, pack_size
+      FROM item
+      WHERE id = ${id}
+    `.pipe(
+      Effect.flatMap((rows) => (rows.length === 0 ? Effect.succeed(null) : decodeOne(ItemRowSchema)(rows[0]))),
+      Effect.map((row) => (row === null ? null : toDomain(row)))
+    )
+
+  // product -> many items via item_prod
+  const listForProduct = (productId: ProductId) =>
+    sql`
+      SELECT i.id, i.description, i.pack_size
+      FROM item i
+      JOIN item_prod ip ON ip.item_id = i.id
+      WHERE ip.product_id = ${productId}
+      ORDER BY i.id
+    `.pipe(
+      Effect.flatMap(decodeMany(ItemRowSchema)),
+      Effect.map((rows) => rows.map(toDomain))
+    )
+
+  return { getById, listForProduct } as const
+}).pipe(Effect.map((svc) => ItemRepo.of(svc)))
+```
+
+`src/layers/itemRepo.ts`
+
+```ts
+import { Layer } from "effect"
+import { ItemRepo, ItemRepoLive } from "../services/itemRepo"
+
+export const itemRepoLayer = Layer.effect(ItemRepo, ItemRepoLive)
+```
+
+This explicitly fixes the old repo’s N+1 pattern (which fetched item IDs then looped `getItemById`).
+
+---
+
+### 3.6 Compose layers: one DB, many repos
+
+`src/layers/app.ts`
+
+```ts
+import { Layer } from "effect"
+import { configLayer } from "./config"
+import { loggerLayer } from "./logger"
+
+import { masterdataDbLayer } from "./masterdataDb"
+import { productRepoLayer } from "./productRepo"
+import { itemRepoLayer } from "./itemRepo"
+
+// your existing layers
+import { greetingLayer } from "./greeting"
+
+// Base: config then logger (logger depends on config)
+export const baseLayer = Layer.mergeAll(
+  configLayer,
+  loggerLayer
+)
+
+// DB depends on config (via ConfigService)
+export const dbLayer = masterdataDbLayer.pipe(Layer.provide(baseLayer))
+
+// Repos depend on db (and inherit logging/config via dbLayer’s construction context)
+export const reposLayer = Layer.mergeAll(
+  productRepoLayer,
+  itemRepoLayer
+).pipe(Layer.provide(dbLayer))
+
+export const appLayer = Layer.mergeAll(
+  baseLayer,
+  greetingLayer,
+  dbLayer,
+  reposLayer
+)
+```
+
+This makes the dependency DAG explicit and readable.
+
+---
+
+### 3.7 Update AppServices type (so runtime includes repos)
+
+`src/services/index.ts` (or wherever you define it)
+
+```ts
+import type { ConfigService } from "./config"
+import type { GreetingService } from "./greeting"
+import type { MasterdataDb } from "./masterdataDb"
+import type { ProductRepo } from "./productRepo"
+import type { ItemRepo } from "./itemRepo"
+
+export type AppServices =
+  | ConfigService
+  | GreetingService
+  | MasterdataDb
+  | ProductRepo
+  | ItemRepo
+```
+
+Then your existing `GraphQLContext` runtime being `Runtime.Runtime<AppServices>` scales naturally as you add services.
+
+---
+
+### 3.8 A single GraphQL query end-to-end (product → items)
+
+Handler (purely Effect, depends on repos only):
+
+`src/handlers/product.ts`
+
+```ts
+import { Effect } from "effect"
+import { ProductRepo } from "../services/productRepo"
+import { ItemRepo } from "../services/itemRepo"
+import { type ProductId } from "../domain/product"
+
+export const getProductWithItems = (id: ProductId) =>
+  Effect.gen(function* () {
+    const productRepo = yield* ProductRepo
+    const itemRepo = yield* ItemRepo
+
+    const productOpt = yield* productRepo.getById(id)
+    if (productOpt._tag === "None") {
+      return null
+    }
+
+    const product = productOpt.value
+    const items = yield* itemRepo.listForProduct(id)
+
+    return { product, items } as const
+  })
+```
+
+Resolver (your pattern):
+
+`src/graphql/resolvers/product.ts`
+
+```ts
+import { resolver, query } from "@gqloom/core"
+import { Schema } from "effect"
+import { runEffect } from "../effect"
+
+import { ProductSchema } from "../../domain/product"
+import { ItemSchema } from "../../domain/item"
+import { getProductWithItems } from "../../handlers/product"
+
+// gqloom schema for output type
+const ProductWithItemsSchema = Schema.Struct({
+  product: ProductSchema,
+  items: Schema.Array(ItemSchema)
+})
+
+const ProductIdInput = Schema.Struct({ id: Schema.Number.pipe(Schema.int()) })
+
+export const productResolvers = resolver({
+  productWithItems: query(Schema.standardSchemaV1(Schema.NullOr(ProductWithItemsSchema)))
+    .input(Schema.standardSchemaV1(ProductIdInput))
+    .resolve((args) => runEffect(getProductWithItems(args.id)))
+})
+```
+
+No resolver ever touches pools; all it does is apply the “natural transformation” `runEffect`.
+
+---
+
+## 4) Oracle: an Effect-native pool layer + one validated query
+
+### 4.1 Install
+
+```sh
+pnpm add oracledb
+```
+
+### 4.2 Oracle service + layer (scoped pool)
+
+`src/services/oracleDb.ts`
+
+```ts
+import { Context, Data, Effect, Redacted, Schema } from "effect"
+import oracledb from "oracledb"
+import { ConfigService } from "./config"
+
+export class OracleError extends Data.TaggedError("OracleError")<{
+  readonly cause: unknown
+}> {}
+
+export type OracleDbShape = {
+  readonly queryMany: <A>(
+    statement: string,
+    binds: Record<string, unknown>,
+    row: Schema.Schema<A>
+  ) => Effect.Effect<ReadonlyArray<A>, OracleError>
+}
+
+export class OracleDb extends Context.Tag("OracleDb")<OracleDb, OracleDbShape>() {}
+
+export const OracleDbLive = Effect.gen(function* () {
+  const cfg = yield* ConfigService
+
+  const pool = yield* Effect.acquireRelease(
+    Effect.tryPromise({
+      try: () =>
+        oracledb.createPool({
+          user: cfg.oracle.user,
+          password: Redacted.value(cfg.oracle.password),
+          connectString: cfg.oracle.connectString,
+          poolMin: cfg.oracle.pool.min,
+          poolMax: cfg.oracle.pool.max,
+          poolIncrement: cfg.oracle.pool.increment
+        }),
+      catch: (cause) => new OracleError({ cause })
+    }),
+    (p) =>
+      Effect.tryPromise({
+        try: () => p.close(0),
+        catch: () => undefined
+      }).pipe(Effect.orDie)
+  )
+
+  const queryMany = <A>(
+    statement: string,
+    binds: Record<string, unknown>,
+    row: Schema.Schema<A>
+  ) =>
+    Effect.tryPromise({
+      try: async () => {
+        const conn = await pool.getConnection()
+        try {
+          const result = await conn.execute(statement, binds, {
+            outFormat: oracledb.OUT_FORMAT_OBJECT
+          })
+          return (result.rows ?? []) as unknown[]
+        } finally {
+          await conn.close()
+        }
+      },
+      catch: (cause) => new OracleError({ cause })
+    }).pipe(
+      Effect.flatMap((rows) => Schema.decodeUnknown(Schema.Array(row))(rows)),
+      Effect.mapError((cause) => (cause instanceof OracleError ? cause : new OracleError({ cause })))
+    )
+
+  return { queryMany } as const
+}).pipe(Effect.map((svc) => OracleDb.of(svc)))
+```
+
+`src/layers/oracleDb.ts`
+
+```ts
+import { Layer } from "effect"
+import { OracleDb, OracleDbLive } from "../services/oracleDb"
+
+export const oracleDbLayer = Layer.scoped(OracleDb, OracleDbLive)
+```
+
+This is the same “one pool, many services can depend on it” pattern as Postgres—just implemented manually because there’s no `@effect/sql-oracle` dialect.
+
+### 4.3 One Oracle query using Schema validation
+
+Example: fetch product rows (assuming Oracle table/columns; **alias to lower-case keys** to match your schema).
+
+`src/services/oracleProductRepo.ts`
+
+```ts
+import { Context, Effect, Schema } from "effect"
+import { OracleDb } from "./oracleDb"
+import { ProductSchema, type ProductId, type Product } from "../domain/product"
+
+export type OracleProductRepoShape = {
+  readonly getById: (id: ProductId) => Effect.Effect<Product | null, unknown>
+}
+
+export class OracleProductRepo extends Context.Tag("OracleProductRepo")<
+  OracleProductRepo,
+  OracleProductRepoShape
+>() {}
+
+const ProductRow = Schema.Struct({
+  id: Schema.Number.pipe(Schema.int()),
+  description: Schema.NullOr(Schema.String)
+})
+
+const toDomain = (r: Schema.Schema.Type<typeof ProductRow>): Product => ({
+  __typename: "Product",
+  ...r
+})
+
+export const OracleProductRepoLive = Effect.gen(function* () {
+  const oracle = yield* OracleDb
+
+  const getById = (id: ProductId) =>
+    oracle
+      .queryMany(
+        `
+        SELECT
+          product_id AS "id",
+          description AS "description"
+        FROM product
+        WHERE product_id = :id
+        `,
+        { id },
+        ProductRow
+      )
+      .pipe(Effect.map((rows) => (rows.length === 0 ? null : toDomain(rows[0]))))
+
+  return { getById } as const
+}).pipe(Effect.map((svc) => OracleProductRepo.of(svc)))
+```
+
+---
+
+## 5) Why this resolves your “multiple services per DB” concern
+
+Because the dependency graph is now:
+
+* `ConfigService` (one value)
+* `MasterdataDb` (one scoped resource = one pool)
+* `ProductRepo`, `ItemRepo`, … (arbitrarily many, all depend on the same `MasterdataDb`)
+* handlers depend on repos
+* resolvers run handlers via `runEffect`
+
+So:
+
+* Adding a new service backed by Postgres is just: define its `Tag` + `Layer.effect(...)` requiring `MasterdataDb`.
+* Testing is just: provide a different layer for that service (mock) **without touching GraphQL**.
+* GraphQL boundary tests can provide a full test `Runtime<AppServices>` by swapping out some layers (DB → mock DB) and then constructing Yoga via your `makeYoga` effect.
+
+---
+
+## 6) Two optional upgrades you should consider next
+
+### A) Use `SqlResolver.grouped` to kill GraphQL N+1 *categorically*
+
+For `product → items`, you eventually want batching: one query for all product IDs in a request.
+
+`@effect/sql` gives you `SqlResolver.grouped(...)` specifically for this style of batching/caching.
+This composes extremely well with GraphQL field resolvers.
+
+### B) Introduce branded IDs (prevents mixing ItemId/ProductId)
+
+Once the “happy path” works, brand IDs so `ItemId ⊄ ProductId` at compile time. It’s a cheap but high-leverage refinement that makes illegal states unrepresentable.
+
+---
+
+If you want, I can take your **current lect-effect file layout** and rewrite the above into *exact* files + exports that match your existing import graph (so you can paste it in with minimal diff), and also show the corresponding **vitest + effect/vitest** harness for:
+
+1. repo-level tests (pure effects, mock DB), and
+2. GraphQL boundary tests (Yoga server instance + property tests over Schema-derived arbitraries).

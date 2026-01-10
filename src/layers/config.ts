@@ -6,7 +6,7 @@ import { environmentSchema } from '../domain/environment';
 import { portSchema } from '../domain/port';
 
 const loadPort = Effect.gen(function * () {
-  const port = yield * Config.number('PORT')
+  const port = yield * Config.number('APP_PORT')
     .pipe(Config.withDefault(4000))
     .pipe(Effect.map(number => portSchema.make(number)));
   return port;
@@ -20,7 +20,7 @@ const loadEnvironment = Effect.gen(function * () {
 });
 
 const loadLogLevel = Effect.gen(function * () {
-  const logLevel = yield * Config.logLevel('LOGLEVEL')
+  const logLevel = yield * Config.logLevel('APP_LOG_LEVEL')
     .pipe(Config.withDefault(LogLevel.Info));
   return logLevel;
 });
