@@ -1,8 +1,6 @@
-import { Context, Schema, type LogLevel } from 'effect';
+import { Context, type LogLevel } from 'effect';
 import { type Port } from '../domain/port';
-
-export const environmentSchema = Schema.Literal('dev', 'test', 'staging', 'prod');
-export type Environment = Schema.Schema.Type<typeof environmentSchema>;
+import { type Environment } from '../domain/environment';
 
 type ConfigServiceShape = {
   readonly port: Port;
