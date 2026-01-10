@@ -2,5 +2,5 @@
 
 set -e
 
-pnpm install
+pnpm install --frozen-lockfile --strict-peer-dependencies
 pnpm run buildtest

@@ -867,3 +867,393 @@ export const testDbLayer = Layer.mergeAll(
 * **Architecture**: pools live in layers, handlers see only algebras; `appLayer` is the explicit limit (merged cone) of your dependency diagram
 
 If you want, I can also show the *next scaling step*: a “repository per database” pattern where **multiple query services share one Postgres pool layer** (so you don’t rebuild the `PgClient` layer per service), while still preventing `SqlClient` from leaking into the public `AppServices` surface.
+
+----
+
+
+You’re exactly right to worry here: **you want one pooled DB resource per database, and many higher-level services (repos, query algebras, etc.) to factor through that single pool**. Categorically:
+
+* a DB pool layer is a morphism
+  [
+  \mathrm{ConfigService} \longrightarrow \mathrm{Db}
+  ]
+* each repository layer is a morphism
+  [
+  \mathrm{Db} \longrightarrow \mathrm{Repo}_i
+  ]
+* your “module layer” for a DB is the composite (and monoidal product over repos)
+  [
+  \mathrm{ConfigService} \longrightarrow (\mathrm{Repo}_1 \otimes \cdots \otimes \mathrm{Repo}_n)
+  ]
+
+The key engineering property you need is **Layer memoization / sharing**: if the same layer instance is used multiple times in the dependency graph, it is allocated once (memoized by reference equality), so your pool won’t be created multiple times. Effect’s docs are explicit about this and warn against “calling `f()` twice” to create two distinct layer instances.
+
+Also: your current GraphQL wiring (runtime stored in `GraphQLContext`, `runEffect` reading it via `useContext`, and handlers requiring only the sub-union of `AppServices`) is already the right *shape* for scaling to many services.
+
+Below is a concrete pattern that scales cleanly to **many services backed by the same Postgres pool**, while optionally hiding the raw SQL client from `AppServices`.
+
+---
+
+## Pattern A (recommended): “DB handle service” + many repo services
+
+### Goal
+
+* **One** Postgres pool layer (shared).
+* Many repository services depend on a *single* `MasterdataDb` service (not directly on `SqlClient`).
+* You can choose whether `MasterdataDb` is part of `AppServices` or is *hidden* (provided internally).
+
+This mirrors your old `masterdatadb` module organization, but with Effect Layers and `Schema` decoding.
+
+---
+
+# 1) Config shape
+
+Extend your existing `ConfigService` (you already have it and build it via `Config` in a layer)  with a nested Postgres config:
+
+```ts
+// src/services/config.ts
+import { Context, LogLevel, Redacted } from 'effect';
+import type { Port } from '../domain/port';
+
+export type AppConfig = {
+  readonly port: Port;
+  readonly logLevel: LogLevel.LogLevel;
+
+  // one DB; add more if you have multiple Postgres instances
+  readonly masterdataPg: {
+    readonly url: Redacted.Redacted;
+    readonly maxConnections: number;
+  };
+};
+
+export class ConfigService extends Context.Tag('ConfigService')<
+  ConfigService,
+  AppConfig
+>() {}
+```
+
+And in your config layer, add:
+
+```ts
+// src/layers/config.ts
+import { Config, Effect, Layer, LogLevel } from 'effect';
+import { ConfigService } from '../services/config';
+import { portSchema } from '../domain/port';
+
+export const configLayer = Layer.effect(
+  ConfigService,
+  Effect.gen(function* () {
+    const portNumber = yield* Config.number('PORT').pipe(Config.withDefault(4000));
+    const port = yield* portSchema.make(portNumber);
+
+    const logLevel = yield* Config.logLevel('LOGLEVEL').pipe(Config.withDefault(LogLevel.Info));
+
+    const url = yield* Config.redacted('PG_URL'); // e.g. postgres://...
+    const maxConnections = yield* Config.number('PG_MAX_CONNECTIONS').pipe(Config.withDefault(10));
+
+    return {
+      port,
+      logLevel,
+      masterdataPg: { url, maxConnections },
+    };
+  }),
+);
+```
+
+---
+
+# 2) A single shared Postgres pool layer
+
+## 2.1 DB-handle service
+
+```ts
+// src/services/masterdataDb.ts
+import { Context } from 'effect';
+import type { SqlClient } from '@effect/sql';
+
+// This is your “one pool per DB” handle.
+// Keep it narrow: expose `sql` (or even narrower, a `query` function).
+export class MasterdataDb extends Context.Tag('MasterdataDb')<
+  MasterdataDb,
+  { readonly sql: SqlClient.SqlClient }
+>() {}
+```
+
+## 2.2 Layer that allocates the pool once
+
+This uses `@effect/sql-pg` to build the pool as a Layer, then wraps it in your own `MasterdataDb` service.
+
+```ts
+// src/layers/masterdataDb.ts
+import { Effect, Layer } from 'effect';
+import { PgClient } from '@effect/sql-pg';
+import { SqlClient } from '@effect/sql';
+import { ConfigService } from '../services/config';
+import { MasterdataDb } from '../services/masterdataDb';
+
+// IMPORTANT: define as a *value*, not a function, to preserve reference-equality memoization.
+const masterdataSqlLayer = Layer.unwrapEffect(
+  Effect.gen(function* () {
+    const cfg = yield* ConfigService;
+    return PgClient.layer({
+      url: cfg.masterdataPg.url,
+      maxConnections: cfg.masterdataPg.maxConnections,
+    });
+  }),
+);
+
+// Wrap SqlClient into your own DB service so repos depend on MasterdataDb, not SqlClient.
+export const masterdataDbLayer: Layer.Layer<MasterdataDb, unknown, ConfigService> =
+  Layer.effect(
+    MasterdataDb,
+    Effect.gen(function* () {
+      const sql = yield* SqlClient.SqlClient;
+      return MasterdataDb.of({ sql });
+    }),
+  ).pipe(
+    // Provide the pooled SqlClient to construct MasterdataDb
+    Layer.provide(masterdataSqlLayer),
+  );
+```
+
+### Why this shares the pool
+
+* In the dependency graph, `masterdataSqlLayer` is a single layer value.
+* If multiple services depend on `MasterdataDb` (and thus on this pool), **Effect memoizes by reference equality** and allocates it once.
+* The main footgun is: don’t write `const masterdataSqlLayer = () => ...` and call it multiple times, because that produces multiple layer instances (no sharing).
+
+---
+
+# 3) Two repositories backed by that one pool
+
+Here are two example repo services (“UserRepo” and “ProductRepo”) that share the same `MasterdataDb` pool.
+
+## 3.1 Domain + row schemas (minimal)
+
+```ts
+// src/domain/user.ts
+import { Schema } from 'effect';
+
+export const userSchema = Schema.Struct({
+  id: Schema.Number,
+  name: Schema.String,
+}).annotations({ title: 'User' });
+
+export type User = Schema.Schema.Type<typeof userSchema>;
+```
+
+```ts
+// src/domain/product.ts
+import { Schema } from 'effect';
+
+export const productSchema = Schema.Struct({
+  id: Schema.Number,
+  sku: Schema.String,
+  title: Schema.String,
+}).annotations({ title: 'Product' });
+
+export type Product = Schema.Schema.Type<typeof productSchema>;
+```
+
+## 3.2 Service interfaces
+
+```ts
+// src/services/userRepo.ts
+import { Context, Effect, Option } from 'effect';
+import type { User } from '../domain/user';
+
+export class UserRepo extends Context.Tag('UserRepo')<
+  UserRepo,
+  {
+    readonly byId: (id: number) => Effect.Effect<Option.Option<User>, unknown>;
+  }
+>() {}
+```
+
+```ts
+// src/services/productRepo.ts
+import { Context, Effect, Option } from 'effect';
+import type { Product } from '../domain/product';
+
+export class ProductRepo extends Context.Tag('ProductRepo')<
+  ProductRepo,
+  {
+    readonly bySku: (sku: string) => Effect.Effect<Option.Option<Product>, unknown>;
+  }
+>() {}
+```
+
+## 3.3 Live layers (both depend on MasterdataDb)
+
+```ts
+// src/layers/userRepo.ts
+import { Effect, Layer, Option, Schema } from 'effect';
+import { UserRepo } from '../services/userRepo';
+import { MasterdataDb } from '../services/masterdataDb';
+import { userSchema } from '../domain/user';
+
+const decodeUser = Schema.decodeUnknown(userSchema);
+
+export const userRepoLayer: Layer.Layer<UserRepo, never, MasterdataDb> =
+  Layer.effect(
+    UserRepo,
+    Effect.gen(function* () {
+      const { sql } = yield* MasterdataDb;
+
+      return UserRepo.of({
+        byId: (id) =>
+          Effect.gen(function* () {
+            const rows = yield* sql<unknown>`
+              SELECT id, name
+              FROM app_user
+              WHERE id = ${id}
+            `;
+            const row = rows[0];
+            if (!row) return Option.none();
+            const user = yield* decodeUser(row);
+            return Option.some(user);
+          }),
+      });
+    }),
+  );
+```
+
+```ts
+// src/layers/productRepo.ts
+import { Effect, Layer, Option, Schema } from 'effect';
+import { ProductRepo } from '../services/productRepo';
+import { MasterdataDb } from '../services/masterdataDb';
+import { productSchema } from '../domain/product';
+
+const decodeProduct = Schema.decodeUnknown(productSchema);
+
+export const productRepoLayer: Layer.Layer<ProductRepo, never, MasterdataDb> =
+  Layer.effect(
+    ProductRepo,
+    Effect.gen(function* () {
+      const { sql } = yield* MasterdataDb;
+
+      return ProductRepo.of({
+        bySku: (sku) =>
+          Effect.gen(function* () {
+            const rows = yield* sql<unknown>`
+              SELECT id, sku, title
+              FROM product
+              WHERE sku = ${sku}
+            `;
+            const row = rows[0];
+            if (!row) return Option.none();
+            const product = yield* decodeProduct(row);
+            return Option.some(product);
+          }),
+      });
+    }),
+  );
+```
+
+---
+
+# 4) One “module layer” that wires DB → repos and hides the DB handle if you want
+
+Now you can build a single layer that:
+
+* allocates the pool once
+* provides both repositories
+* does **not** leak `MasterdataDb` into `AppServices` (because we use `Layer.provide`, not “merge outputs”).
+
+```ts
+// src/layers/masterdata.ts
+import { Layer } from 'effect';
+import { masterdataDbLayer } from './masterdataDb';
+import { userRepoLayer } from './userRepo';
+import { productRepoLayer } from './productRepo';
+
+// Repos require MasterdataDb; we discharge that requirement here.
+export const masterdataLayer =
+  Layer.mergeAll(userRepoLayer, productRepoLayer).pipe(
+    Layer.provide(masterdataDbLayer),
+  );
+```
+
+**This is the scaling move**: you can add `N` repo layers and they all share the same pool, because the pool is upstream and memoized.
+
+---
+
+# 5) AppServices + appLayer wiring
+
+Your current `GraphQLContext` carries `Runtime<AppServices>` and `runEffect` accepts `Effect<_,_,AppServices>`, which is exactly what makes this scale.
+
+Update `AppServices`:
+
+```ts
+// src/services/index.ts
+import type { ConfigService } from './config';
+import type { GreetingService } from './greeting';
+import type { UserRepo } from './userRepo';
+import type { ProductRepo } from './productRepo';
+
+export type AppServices =
+  | ConfigService
+  | GreetingService
+  | UserRepo
+  | ProductRepo;
+```
+
+Then extend your `appLayer` to include `masterdataLayer` (and keep your logger/config wiring as-is).
+
+```ts
+// src/layers/app.ts
+import { Layer } from 'effect';
+import type { AppError } from '../errors';
+import type { AppServices } from '../services';
+import { configLayer } from './config';
+import { loggerLayer } from './logger';
+import { greetingLayer } from './greeting';
+import { masterdataLayer } from './masterdata';
+
+export const appLayer: Layer.Layer<AppServices, AppError> =
+  Layer.mergeAll(
+    configLayer,
+    loggerLayer.pipe(Layer.provide(configLayer)),
+    greetingLayer,
+
+    // brings in UserRepo + ProductRepo, backed by one shared Pg pool
+    masterdataLayer.pipe(Layer.provide(configLayer)),
+  );
+```
+
+Now:
+
+* handlers can demand `UserRepo` without mentioning `MasterdataDb`
+* resolvers still just `runEffect(handler(...))`
+* adding more DB-backed services is “add a repo tag + layer, then merge into masterdataLayer, then add to AppServices union”.
+
+---
+
+## A crucial note about “where pooling happens”
+
+Because you’re creating a single Effect runtime at server start and putting it into Yoga context (your current approach), you are **providing layers globally**, not locally per resolver. That’s exactly what you want: global provide ⇒ sharing/memoization.
+
+If you ever provide a DB layer **locally** inside a resolver/effect, you can accidentally allocate multiple pools; the memoization story changes unless you use explicit memoization (`Layer.memoize`) or global provision.
+
+---
+
+## Testing payoff
+
+With this structure you get clean “mocking surfaces”:
+
+* unit test a handler: `Effect.provideService(UserRepo, fakeUserRepo)` (no DB needed)
+* integration test repos: provide `masterdataDbLayer` pointing at a test DB
+* GraphQL boundary tests: build a runtime from `appLayer` but override `UserRepo` / `ProductRepo` with test layers.
+
+You won’t need to change `runEffect` or the GraphQL context design as you add services; you just grow `AppServices`.
+
+---
+
+## Next step (optional but likely): avoid N+1 with batching
+
+Once you have many resolvers, you’ll run into GraphQL N+1 patterns. Effect has a principled `Request`/`RequestResolver` batching + caching mechanism you can embed *inside* repos (so resolvers remain pure). That’s the next “category-level” optimization after the layering is correct.
+
+---
+
+If you tell me the *actual* Postgres-backed service family you expect first (e.g. `ItemRepo`, `ProductRepo`, `WorkflowRepo` like in the old `lect` tree), I can rewrite the above example using your real names and show the exact folder/module layout that matches your intended domain separation.
