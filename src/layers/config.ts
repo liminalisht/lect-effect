@@ -25,6 +25,22 @@ const loadLogLevel = Effect.gen(function * () {
   return logLevel;
 });
 
+const loadMasterdataPgConfig = Effect.gen(function * () {
+  const url = yield* Config.redacted("MASTERDATA_PG_URL");
+  const poolMin = yield* Config.integer("MASTERDATA_PG_POOL_MIN").pipe(Config.withDefault(0));
+  const poolMax = yield* Config.integer("MASTERDATA_PG_POOL_MAX").pipe(Config.withDefault(10));
+  const poolIdleTimeoutMillis = yield* Config.integer("MASTERDATA_PG_IDLE_TIMEOUT_MS").pipe(Config.withDefault(30_000));
+
+  return {
+    url,
+    pool: {
+      min: poolMin,
+      max: poolMax,
+      idleTimeoutMillis: poolIdleTimeoutMillis,
+    }
+  }
+});
+
 export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
   = Layer.effect(
     ConfigService,
@@ -32,6 +48,12 @@ export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
       const port = yield * loadPort;
       const environment = yield * loadEnvironment;
       const logLevel = yield * loadLogLevel;
-      return { port, logLevel, environment };
+      const masterdataPg = yield * loadMasterdataPgConfig;
+      return {
+        port,
+        logLevel,
+        environment,
+        masterdataPg
+      };
     }),
   );

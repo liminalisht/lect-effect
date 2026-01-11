@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  masterdatadb:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: masterdatadb
+    ports:
+      - '5432:5432'
+    volumes:
+      - masterdata_db_data:/var/lib/postgresql/data
+
+volumes:
+  masterdata_db_data:
