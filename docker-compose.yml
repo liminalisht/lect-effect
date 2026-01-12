@@ -12,5 +12,18 @@ services:
     volumes:
       - masterdata_db_data:/var/lib/postgresql/data
 
+  test_masterdatadb:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
+      POSTGRES_DB: testmasterdatadb
+    ports:
+      - '5433:5432'
+    volumes:
+      - test_masterdata_db_data:/var/lib/postgresql/data
+
 volumes:
   masterdata_db_data:
+  test_masterdata_db_data:

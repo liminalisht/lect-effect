@@ -3,9 +3,22 @@ import { greetingLayer } from '../../src/layers/greeting';
 import { testConfigLayer } from './config';
 import { testLoggerLayer } from './logger';
 import { MasterdataDb } from '../../src/services/masterdataDb';
+import { masterdataDbLayer } from '../../src/layers/masterdataDb';
+import { AppError } from '../../src/errors';
+import { AppServices } from '../../src/services';
 
+export const testConfigAndLoggerLayer
+  = Layer.mergeAll(
+    testConfigLayer,
+    testLoggerLayer.pipe(Layer.provide(testConfigLayer)),
+  );
 
-// Test stub: not expected to be used; provides a dummy sql client
-export const testMasterdataDbLayer = Layer.succeed(MasterdataDb, { sql: {} as any });
+export const testDbLayer = masterdataDbLayer.pipe(Layer.provide(testConfigAndLoggerLayer));
 
-export const testAppLayer = Layer.mergeAll(testConfigLayer, testLoggerLayer, greetingLayer, testMasterdataDbLayer);
+export const testAppLayer: Layer.Layer<AppServices, AppError>
+  = Layer.mergeAll(
+    testConfigAndLoggerLayer,
+    greetingLayer,
+    testDbLayer,
+  );
+
