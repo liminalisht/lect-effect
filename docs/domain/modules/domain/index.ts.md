@@ -15,23 +15,27 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [exports](#exports)
-  - [From "./environment"](#from-environment)
-  - [From "./greeting"](#from-greeting)
-  - [From "./helloResponse"](#from-helloresponse)
-  - [From "./item"](#from-item)
-  - [From "./name"](#from-name)
-  - [From "./nameInput"](#from-nameinput)
-  - [From "./port"](#from-port)
-  - [From "./product"](#from-product)
-  - [From "./productWithItems"](#from-productwithitems)
+  - [From './environment'](#from-environment)
+  - [From './greeting'](#from-greeting)
+  - [From './helloResponse'](#from-helloresponse)
+  - [From './item'](#from-item)
+  - [From './name'](#from-name)
+  - [From './nameInput'](#from-nameinput)
+  - [From './port'](#from-port)
+  - [From './product'](#from-product)
+- [utils](#utils)
+  - [CreateProductWithItemsInput (type alias)](#createproductwithitemsinput-type-alias)
+  - [ProductWithItems (type alias)](#productwithitems-type-alias)
+  - [createProductWithItemsInputSchema](#createproductwithitemsinputschema)
+  - [productWithItemsSchema](#productwithitemsschema)
 
 ---
 
 # exports
 
-## From "./environment"
+## From './environment'
 
-Domain module barrel exports.
+Re-exports all named exports from the './environment' module.
 
 **Signature**
 
@@ -41,9 +45,9 @@ export * from "./environment"
 
 Added in v1.0.0
 
-## From "./greeting"
+## From './greeting'
 
-Re-exports all named exports from the "./greeting" module.
+Re-exports all named exports from the './greeting' module.
 
 **Signature**
 
@@ -53,9 +57,9 @@ export * from "./greeting"
 
 Added in v1.0.0
 
-## From "./helloResponse"
+## From './helloResponse'
 
-Re-exports all named exports from the "./helloResponse" module.
+Re-exports all named exports from the './helloResponse' module.
 
 **Signature**
 
@@ -65,9 +69,9 @@ export * from "./helloResponse"
 
 Added in v1.0.0
 
-## From "./item"
+## From './item'
 
-Re-exports all named exports from the "./item" module.
+Re-exports all named exports from the './item' module.
 
 **Signature**
 
@@ -77,9 +81,9 @@ export * from "./item"
 
 Added in v1.0.0
 
-## From "./name"
+## From './name'
 
-Re-exports all named exports from the "./name" module.
+Re-exports all named exports from the './name' module.
 
 **Signature**
 
@@ -89,9 +93,9 @@ export * from "./name"
 
 Added in v1.0.0
 
-## From "./nameInput"
+## From './nameInput'
 
-Re-exports all named exports from the "./nameInput" module.
+Re-exports all named exports from the './nameInput' module.
 
 **Signature**
 
@@ -101,9 +105,9 @@ export * from "./nameInput"
 
 Added in v1.0.0
 
-## From "./port"
+## From './port'
 
-Re-exports all named exports from the "./port" module.
+Re-exports all named exports from the './port' module.
 
 **Signature**
 
@@ -113,9 +117,9 @@ export * from "./port"
 
 Added in v1.0.0
 
-## From "./product"
+## From './product'
 
-Re-exports all named exports from the "./product" module.
+Re-exports all named exports from the './product' module.
 
 **Signature**
 
@@ -125,14 +129,61 @@ export * from "./product"
 
 Added in v1.0.0
 
-## From "./productWithItems"
+# utils
 
-Re-exports all named exports from the "./productWithItems" module.
+## CreateProductWithItemsInput (type alias)
 
 **Signature**
 
 ```ts
-export * from "./productWithItems"
+export type CreateProductWithItemsInput = CreateProductWithItemsInput_
+```
+
+Added in v1.0.0
+
+## ProductWithItems (type alias)
+
+**Signature**
+
+```ts
+export type ProductWithItems = ProductWithItems_
+```
+
+Added in v1.0.0
+
+## createProductWithItemsInputSchema
+
+**Signature**
+
+```ts
+export declare const createProductWithItemsInputSchema: Struct<{
+  product: Struct<{ description: optional<NullOr<typeof String>> }>
+  items: Array$<Struct<{ description: optional<NullOr<typeof String>>; pack_size: filter<typeof Number> }>>
+}>
+```
+
+Added in v1.0.0
+
+## productWithItemsSchema
+
+**Signature**
+
+```ts
+export declare const productWithItemsSchema: Struct<{
+  product: Struct<{
+    __typename: optional<Literal<["Product"]>>
+    id: filter<typeof Number>
+    description: NullOr<typeof String>
+  }>
+  items: Array$<
+    Struct<{
+      __typename: optional<Literal<["Item"]>>
+      id: filter<typeof Number>
+      description: NullOr<typeof String>
+      pack_size: filter<typeof Number>
+    }>
+  >
+}>
 ```
 
 Added in v1.0.0

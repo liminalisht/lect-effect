@@ -11,6 +11,7 @@ import {
   productWithItemsSchema as productWithItemsSchema_,
 } from './productWithItems';
 
+/** @since 1.0.0 */
 export * from './environment';
 
 /** @since 1.0.0 */
