@@ -9,8 +9,9 @@ export const getProductWithItems = (id: ProductId) =>
     const itemRepo = yield* ItemRepo
 
     const productOpt = yield* productRepo.getById(id)
+    // todo: is this really how we work with Options in effect-ts?
     if (productOpt._tag === "None") {
-      return null
+      return null //todo: or Effect.fail(new ProductNotFound(id)) ?
     }
 
     const product = productOpt.value
