@@ -12,7 +12,10 @@ import { MasterdataDb } from './masterdataDb';
 
 // todo: this is not how we do errors... why not use TaggedError like elsewhere?
 export class ProductNotFound extends Error {
-  readonly _tag = 'ProductNotFound';
+  get _tag(): 'ProductNotFound' {
+    return 'ProductNotFound';
+  }
+
   constructor(readonly id: ProductId) {
     super(`Product not found: ${id}`);
   }
@@ -54,7 +57,7 @@ export const ProductRepoLive = Effect.gen(function * () {
       ORDER BY id
     `),
     Effect.flatMap(decodeMany(ProductRowSchema)),
-    Effect.map(rows => rows.map(toDomain)),
+    Effect.map(rows => rows.map(row => toDomain(row))),
     Effect.tap(rows => Effect.logDebug('ProductRepo.list: result', { count: rows.length })),
     Effect.tapError(error => Effect.logDebug('ProductRepo.list: error', { error })),
   );
@@ -100,7 +103,7 @@ export const ProductRepoLive = Effect.gen(function * () {
         RETURNING id, description
       `),
       Effect.flatMap(rows => decodeOne(ProductRowSchema)(rows[0])),
-      Effect.map(toDomain),
+      Effect.map(row => toDomain(row)),
       Effect.tap(row => Effect.logDebug('ProductRepo.create: result', { row })),
       Effect.tapError(error => Effect.logDebug('ProductRepo.create: error', { input, error })),
     );

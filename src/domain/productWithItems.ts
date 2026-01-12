@@ -4,11 +4,7 @@
  */
 import { Schema } from 'effect';
 import { itemInputSchema, itemSchema } from './item';
-import {
-  productIdInputSchema as productIdInputSchema_,
-  productInputSchema,
-  productSchema,
-} from './product';
+import { productInputSchema, productSchema } from './product';
 
 /**
  * Mutation payload for creating a product with its items.
@@ -44,4 +40,4 @@ export const productWithItemsSchema = Schema.Struct({
  * Re-exported product id input schema to preserve import paths.
  * @since 1.0.0
  */
-export const productIdInputSchema = productIdInputSchema_;
+export { productIdInputSchema } from './product';

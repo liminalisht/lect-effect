@@ -54,7 +54,7 @@ export const ItemRepoLive = Effect.gen(function * () {
       ORDER BY id
     `),
     Effect.flatMap(decodeMany(ItemRowSchema)),
-    Effect.map(rows => rows.map(toDomain)),
+    Effect.map(rows => rows.map(row => toDomain(row))),
     Effect.tap(rows => Effect.logDebug('ItemRepo.list: result', { count: rows.length })),
     Effect.tapError(error => Effect.logDebug('ItemRepo.list: error', { error })),
   );
@@ -67,7 +67,7 @@ export const ItemRepoLive = Effect.gen(function * () {
         RETURNING id, description, pack_size
       `),
       Effect.flatMap(rows => decodeOne(ItemRowSchema)(rows[0])),
-      Effect.map(toDomain),
+      Effect.map(row => toDomain(row)),
       Effect.tap(row => Effect.logDebug('ItemRepo.create: result', { row })),
       Effect.tapError(error => Effect.logDebug('ItemRepo.create: error', { input, error })),
     );
@@ -83,7 +83,7 @@ export const ItemRepoLive = Effect.gen(function * () {
         ORDER BY i.id
       `),
       Effect.flatMap(decodeMany(ItemRowSchema)),
-      Effect.map(rows => rows.map(toDomain)),
+      Effect.map(rows => rows.map(row => toDomain(row))),
       Effect.tap(rows => Effect.logDebug('ItemRepo.listForProduct: result', { productId, count: rows.length })),
       Effect.tapError(error => Effect.logDebug('ItemRepo.listForProduct: error', { productId, error })),
     );

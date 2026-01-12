@@ -2,6 +2,7 @@ import { Effect, Option } from 'effect';
 import { ProductRepo } from '../services/productRepo';
 import { ItemRepo } from '../services/itemRepo';
 import type { ProductId, ProductInput } from '../domain/product';
+import type { Item } from '../domain/item';
 import type { CreateProductWithItemsInput, ProductWithItems } from '../domain/productWithItems';
 
 export const getProduct = (id: ProductId) =>
@@ -49,12 +50,12 @@ export const createProductWithItems = (input: CreateProductWithItemsInput) =>
 
     const product = yield * productRepo.create(input.product);
 
-    const items = yield * Effect.forEach(input.items, itemInput =>
-      Effect.gen(function * () {
-        const item = yield * itemRepo.create(itemInput);
-        yield * itemRepo.linkToProduct(item.id, product.id);
-        return item;
-      }));
+    const items: Item[] = [];
+    for (const itemInput of input.items) {
+      const item = yield * itemRepo.create(itemInput);
+      yield * itemRepo.linkToProduct(item.id, product.id);
+      items.push(item);
+    }
 
     return { product, items } satisfies ProductWithItems;
   });

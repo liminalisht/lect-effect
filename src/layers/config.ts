@@ -15,7 +15,10 @@ const loadPort = Effect.gen(function * () {
 const loadEnvironment = Effect.gen(function * () {
   const environment = yield * Config.string('APP_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
-    .pipe(Effect.mapError(cause => ConfigError.InvalidData(['APP_ENV'], String(cause))));
+    .pipe(Effect.mapError(cause => ConfigError.InvalidData(
+      ['APP_ENV'],
+      cause instanceof Error ? cause.message : JSON.stringify(cause),
+    )));
   return environment;
 });
 
