@@ -25,5 +25,11 @@ export * from "./product"
 /** @since 1.0.0 */
 export * from "./item"
 
+// todo: cleanup. maybe consolidate with product.ts
 /** @since 1.0.0 */
-export * from "./productWithItems"
+export {
+	CreateProductWithItemsInput,
+	createProductWithItemsInputSchema,
+	ProductWithItems,
+	productWithItemsSchema
+} from "./productWithItems"
