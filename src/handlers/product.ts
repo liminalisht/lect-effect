@@ -1,3 +1,7 @@
+/**
+ * Product handlers bridging GraphQL operations to repositories.
+ * @since 1.0.0
+ */
 import { Effect, Option } from 'effect';
 import { ProductRepo } from '../services/productRepo';
 import { ItemRepo } from '../services/itemRepo';
@@ -5,6 +9,10 @@ import type { ProductId, ProductInput } from '../domain/product';
 import type { Item } from '../domain/item';
 import type { CreateProductWithItemsInput, ProductWithItems } from '../domain/productWithItems';
 
+/**
+ * Fetches a single product by id or returns null.
+ * @since 1.0.0
+ */
 export const getProduct = (id: ProductId) =>
   Effect.gen(function * () {
     const repo = yield * ProductRepo;
@@ -12,23 +20,39 @@ export const getProduct = (id: ProductId) =>
     return Option.getOrNull(opt);
   });
 
+/**
+ * Lists all products.
+ * @since 1.0.0
+ */
 export const listProducts = Effect.gen(function * () {
   const repo = yield * ProductRepo;
   return yield * repo.list;
 });
 
+/**
+ * Creates a new product.
+ * @since 1.0.0
+ */
 export const createProduct = (input: ProductInput) =>
   Effect.gen(function * () {
     const repo = yield * ProductRepo;
     return yield * repo.create(input);
   });
 
+/**
+ * Lists items for a given product id.
+ * @since 1.0.0
+ */
 export const itemsForProduct = (productId: ProductId) =>
   Effect.gen(function * () {
     const items = yield * ItemRepo;
     return yield * items.listForProduct(productId);
   });
 
+/**
+ * Fetches a product with its items, or null when missing.
+ * @since 1.0.0
+ */
 export const getProductWithItems = (id: ProductId) =>
   Effect.gen(function * () {
     const productRepo = yield * ProductRepo;
@@ -43,6 +67,10 @@ export const getProductWithItems = (id: ProductId) =>
     return { product: productOpt.value, items } satisfies ProductWithItems;
   });
 
+/**
+ * Creates a product and associated items, linking them.
+ * @since 1.0.0
+ */
 export const createProductWithItems = (input: CreateProductWithItemsInput) =>
   Effect.gen(function * () {
     const productRepo = yield * ProductRepo;

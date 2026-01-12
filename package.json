@@ -8,6 +8,7 @@
     "build": "tsc",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
     "docs:domain": "docgen --project tsconfig.json --src ./src/domain --out ./docs/domain --exclude \"**/test/**\"",
+    "docs:handlers": "docgen --project tsconfig.json --src ./src/handlers --out ./docs/handlers --exclude \"**/test/**\"",
     "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "migrate:test-masterdata": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "start": "pnpm run build && node dist/index.js",
