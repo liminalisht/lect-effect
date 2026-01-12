@@ -91,24 +91,24 @@ export const ItemRepoLive = Effect.gen(function* () {
   const { sql } = yield* MasterdataDb
 
   const getById = (id: ItemId) =>
-    sql`
-      SELECT id, description, pack_size
-      FROM item
-      WHERE id = ${id}
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ItemRepo.getById: query", { id })),
+    Effect.logDebug("ItemRepo.getById: query", { id }).pipe(
+      Effect.andThen(sql`
+        SELECT id, description, pack_size
+        FROM item
+        WHERE id = ${id}
+      `),
       Effect.flatMap((rows) => (rows.length === 0 ? Effect.succeed(null) : decodeOne(ItemRowSchema)(rows[0]))),
       Effect.map((row) => (row === null ? null : toDomain(row))),
       Effect.tap((row) => Effect.logDebug("ItemRepo.getById: result", { id, row })),
       Effect.tapError((error) => Effect.logDebug("ItemRepo.getById: error", { id, error }))
     )
 
-  const list = sql`
-    SELECT id, description, pack_size
-    FROM item
-    ORDER BY id
-  `.pipe(
-    Effect.tap(() => Effect.logDebug("ItemRepo.list: query")),
+  const list = Effect.logDebug("ItemRepo.list: query").pipe(
+    Effect.andThen(sql`
+      SELECT id, description, pack_size
+      FROM item
+      ORDER BY id
+    `),
     Effect.flatMap(decodeMany(ItemRowSchema)),
     Effect.map((rows) => rows.map(toDomain)),
     Effect.tap((rows) => Effect.logDebug("ItemRepo.list: result", { count: rows.length })),
@@ -130,14 +130,14 @@ export const ItemRepoLive = Effect.gen(function* () {
 
   // product -> many items via item_prod
   const listForProduct = (productId: ProductId) =>
-    sql`
-      SELECT i.id, i.description, i.pack_size
-      FROM item i
-      JOIN item_prod ip ON ip.item_id = i.id
-      WHERE ip.product_id = ${productId}
-      ORDER BY i.id
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ItemRepo.listForProduct: query", { productId })),
+    Effect.logDebug("ItemRepo.listForProduct: query", { productId }).pipe(
+      Effect.andThen(sql`
+        SELECT i.id, i.description, i.pack_size
+        FROM item i
+        JOIN item_prod ip ON ip.item_id = i.id
+        WHERE ip.product_id = ${productId}
+        ORDER BY i.id
+      `),
       Effect.flatMap(decodeMany(ItemRowSchema)),
       Effect.map((rows) => rows.map(toDomain)),
       Effect.tap((rows) => Effect.logDebug("ItemRepo.listForProduct: result", { productId, count: rows.length })),
@@ -145,11 +145,11 @@ export const ItemRepoLive = Effect.gen(function* () {
     )
 
   const linkToProduct = (itemId: ItemId, productId: ProductId) =>
-    sql`
-      INSERT INTO item_prod (item_id, product_id)
-      VALUES (${itemId}, ${productId})
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ItemRepo.linkToProduct: linking", { itemId, productId })),
+    Effect.logDebug("ItemRepo.linkToProduct: linking", { itemId, productId }).pipe(
+      Effect.andThen(sql`
+        INSERT INTO item_prod (item_id, product_id)
+        VALUES (${itemId}, ${productId})
+      `),
       Effect.asVoid,
       Effect.tapError((error) => Effect.logDebug("ItemRepo.linkToProduct: error", { itemId, productId, error }))
     )

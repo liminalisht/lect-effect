@@ -115,12 +115,12 @@ const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
 export const ProductRepoLive = Effect.gen(function* () {
   const { sql } = yield* MasterdataDb
 
-  const list = sql`
-    SELECT id, description
-    FROM product
-    ORDER BY id
-  `.pipe(
-    Effect.tap(() => Effect.logDebug("ProductRepo.list: query")),
+  const list = Effect.logDebug("ProductRepo.list: query").pipe(
+    Effect.andThen(sql`
+      SELECT id, description
+      FROM product
+      ORDER BY id
+    `),
     Effect.flatMap(decodeMany(ProductRowSchema)),
     Effect.map((rows) => rows.map(toDomain)),
     Effect.tap((rows) => Effect.logDebug("ProductRepo.list: result", { count: rows.length })),
@@ -128,12 +128,12 @@ export const ProductRepoLive = Effect.gen(function* () {
   )
 
   const getById = (id: ProductId) =>
-    sql`
-      SELECT id, description
-      FROM product
-      WHERE id = ${id}
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ProductRepo.getById: query", { id })),
+    Effect.logDebug("ProductRepo.getById: query", { id }).pipe(
+      Effect.andThen(sql`
+        SELECT id, description
+        FROM product
+        WHERE id = ${id}
+      `),
       Effect.flatMap((rows) =>
         rows.length === 0
           ? Effect.succeed(Option.none())
@@ -146,15 +146,15 @@ export const ProductRepoLive = Effect.gen(function* () {
     )
 
   const getForItem = (itemId: ItemId) =>
-    sql`
-      SELECT p.id, p.description
-      FROM product p
-      JOIN item_prod ip ON ip.product_id = p.id
-      WHERE ip.item_id = ${itemId}
-      ORDER BY p.id
-      LIMIT 1
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ProductRepo.getForItem: query", { itemId })),
+    Effect.logDebug("ProductRepo.getForItem: query", { itemId }).pipe(
+      Effect.andThen(sql`
+        SELECT p.id, p.description
+        FROM product p
+        JOIN item_prod ip ON ip.product_id = p.id
+        WHERE ip.item_id = ${itemId}
+        ORDER BY p.id
+        LIMIT 1
+      `),
       Effect.flatMap((rows) =>
         rows.length === 0
           ? Effect.succeed(Option.none())
@@ -167,12 +167,12 @@ export const ProductRepoLive = Effect.gen(function* () {
     )
 
   const create = (input: ProductInput) =>
-    sql`
-      INSERT INTO product (description)
-      VALUES (${input.description ?? null})
-      RETURNING id, description
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ProductRepo.create: inserting", { input })),
+    Effect.logDebug("ProductRepo.create: inserting", { input }).pipe(
+      Effect.andThen(sql`
+        INSERT INTO product (description)
+        VALUES (${input.description ?? null})
+        RETURNING id, description
+      `),
       Effect.flatMap((rows) => decodeOne(ProductRowSchema)(rows[0])),
       Effect.map(toDomain),
       Effect.tap((row) => Effect.logDebug("ProductRepo.create: result", { row })),
