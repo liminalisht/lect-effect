@@ -96,8 +96,11 @@ export const ItemRepoLive = Effect.gen(function* () {
       FROM item
       WHERE id = ${id}
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ItemRepo.getById: query", { id })),
       Effect.flatMap((rows) => (rows.length === 0 ? Effect.succeed(null) : decodeOne(ItemRowSchema)(rows[0]))),
-      Effect.map((row) => (row === null ? null : toDomain(row)))
+      Effect.map((row) => (row === null ? null : toDomain(row))),
+      Effect.tap((row) => Effect.logDebug("ItemRepo.getById: result", { id, row })),
+      Effect.tapError((error) => Effect.logDebug("ItemRepo.getById: error", { id, error }))
     )
 
   const list = sql`
@@ -105,8 +108,11 @@ export const ItemRepoLive = Effect.gen(function* () {
     FROM item
     ORDER BY id
   `.pipe(
+    Effect.tap(() => Effect.logDebug("ItemRepo.list: query")),
     Effect.flatMap(decodeMany(ItemRowSchema)),
-    Effect.map((rows) => rows.map(toDomain))
+    Effect.map((rows) => rows.map(toDomain)),
+    Effect.tap((rows) => Effect.logDebug("ItemRepo.list: result", { count: rows.length })),
+    Effect.tapError((error) => Effect.logDebug("ItemRepo.list: error", { error }))
   )
 
   const create = (input: ItemInput) =>
@@ -115,8 +121,11 @@ export const ItemRepoLive = Effect.gen(function* () {
       VALUES (${input.description ?? null}, ${input.pack_size})
       RETURNING id, description, pack_size
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ItemRepo.create: inserting", { input })),
       Effect.flatMap((rows) => decodeOne(ItemRowSchema)(rows[0])),
-      Effect.map(toDomain)
+      Effect.map(toDomain),
+      Effect.tap((row) => Effect.logDebug("ItemRepo.create: result", { row })),
+      Effect.tapError((error) => Effect.logDebug("ItemRepo.create: error", { input, error }))
     )
 
   // product -> many items via item_prod
@@ -128,15 +137,22 @@ export const ItemRepoLive = Effect.gen(function* () {
       WHERE ip.product_id = ${productId}
       ORDER BY i.id
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ItemRepo.listForProduct: query", { productId })),
       Effect.flatMap(decodeMany(ItemRowSchema)),
-      Effect.map((rows) => rows.map(toDomain))
+      Effect.map((rows) => rows.map(toDomain)),
+      Effect.tap((rows) => Effect.logDebug("ItemRepo.listForProduct: result", { productId, count: rows.length })),
+      Effect.tapError((error) => Effect.logDebug("ItemRepo.listForProduct: error", { productId, error }))
     )
 
   const linkToProduct = (itemId: ItemId, productId: ProductId) =>
     sql`
       INSERT INTO item_prod (item_id, product_id)
       VALUES (${itemId}, ${productId})
-    `.pipe(Effect.asVoid)
+    `.pipe(
+      Effect.tap(() => Effect.logDebug("ItemRepo.linkToProduct: linking", { itemId, productId })),
+      Effect.asVoid,
+      Effect.tapError((error) => Effect.logDebug("ItemRepo.linkToProduct: error", { itemId, productId, error }))
+    )
 
   return { getById, list, create, listForProduct, linkToProduct } as const
 }).pipe(Effect.map((svc) => ItemRepo.of(svc)))

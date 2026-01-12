@@ -120,8 +120,11 @@ export const ProductRepoLive = Effect.gen(function* () {
     FROM product
     ORDER BY id
   `.pipe(
+    Effect.tap(() => Effect.logDebug("ProductRepo.list: query")),
     Effect.flatMap(decodeMany(ProductRowSchema)),
-    Effect.map((rows) => rows.map(toDomain))
+    Effect.map((rows) => rows.map(toDomain)),
+    Effect.tap((rows) => Effect.logDebug("ProductRepo.list: result", { count: rows.length })),
+    Effect.tapError((error) => Effect.logDebug("ProductRepo.list: error", { error }))
   )
 
   const getById = (id: ProductId) =>
@@ -130,13 +133,16 @@ export const ProductRepoLive = Effect.gen(function* () {
       FROM product
       WHERE id = ${id}
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ProductRepo.getById: query", { id })),
       Effect.flatMap((rows) =>
         rows.length === 0
           ? Effect.succeed(Option.none())
           : decodeOne(ProductRowSchema)(rows[0]).pipe(
               Effect.map((row) => Option.some(toDomain(row)))
             )
-      )
+      ),
+      Effect.tap((row) => Effect.logDebug("ProductRepo.getById: result", { id, row })),
+      Effect.tapError((error) => Effect.logDebug("ProductRepo.getById: error", { id, error }))
     )
 
   const getForItem = (itemId: ItemId) =>
@@ -148,13 +154,16 @@ export const ProductRepoLive = Effect.gen(function* () {
       ORDER BY p.id
       LIMIT 1
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ProductRepo.getForItem: query", { itemId })),
       Effect.flatMap((rows) =>
         rows.length === 0
           ? Effect.succeed(Option.none())
           : decodeOne(ProductRowSchema)(rows[0]).pipe(
               Effect.map((row) => Option.some(toDomain(row)))
             )
-      )
+      ),
+      Effect.tap((row) => Effect.logDebug("ProductRepo.getForItem: result", { itemId, row })),
+      Effect.tapError((error) => Effect.logDebug("ProductRepo.getForItem: error", { itemId, error }))
     )
 
   const create = (input: ProductInput) =>
@@ -163,8 +172,11 @@ export const ProductRepoLive = Effect.gen(function* () {
       VALUES (${input.description ?? null})
       RETURNING id, description
     `.pipe(
+      Effect.tap(() => Effect.logDebug("ProductRepo.create: inserting", { input })),
       Effect.flatMap((rows) => decodeOne(ProductRowSchema)(rows[0])),
-      Effect.map(toDomain)
+      Effect.map(toDomain),
+      Effect.tap((row) => Effect.logDebug("ProductRepo.create: result", { row })),
+      Effect.tapError((error) => Effect.logDebug("ProductRepo.create: error", { input, error }))
     )
 
   return { list, getById, getForItem, create } as const
