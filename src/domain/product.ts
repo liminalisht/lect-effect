@@ -11,3 +11,5 @@ export const productSchema = Schema.Struct({
   id: productIdSchema,
   description: Schema.NullOr(Schema.String)
 })
+
+// todo: add tests for domain schemas

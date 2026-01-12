@@ -12,4 +12,4 @@ export const productResolvers = resolver({
         runEffect(getProductWithItems(args.id))),
 })
 
-
+// todo: add tests for resolvers
