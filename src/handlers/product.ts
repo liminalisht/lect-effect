@@ -3,6 +3,7 @@ import { ProductRepo } from "../services/productRepo"
 import { ItemRepo } from "../services/itemRepo"
 import { type ProductId } from "../domain/product"
 
+// todo: give this a type
 export const getProductWithItems = (id: ProductId) =>
   Effect.gen(function* () {
     const productRepo = yield* ProductRepo
@@ -17,6 +18,6 @@ export const getProductWithItems = (id: ProductId) =>
     const product = productOpt.value
     const items = yield* itemRepo.listForProduct(id)
 
-    return { product, items } as const
+    return { product, items } as const // todo: is as const needed here?
 
   })
