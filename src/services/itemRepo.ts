@@ -116,12 +116,12 @@ export const ItemRepoLive = Effect.gen(function* () {
   )
 
   const create = (input: ItemInput) =>
-    sql`
-      INSERT INTO item (description, pack_size)
-      VALUES (${input.description ?? null}, ${input.pack_size})
-      RETURNING id, description, pack_size
-    `.pipe(
-      Effect.tap(() => Effect.logDebug("ItemRepo.create: inserting", { input })),
+    Effect.logDebug("ItemRepo.create: inserting", { input }).pipe(
+      Effect.andThen(sql`
+        INSERT INTO item (description, pack_size)
+        VALUES (${input.description ?? null}, ${input.pack_size})
+        RETURNING id, description, pack_size
+      `),
       Effect.flatMap((rows) => decodeOne(ItemRowSchema)(rows[0])),
       Effect.map(toDomain),
       Effect.tap((row) => Effect.logDebug("ItemRepo.create: result", { row })),
