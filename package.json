@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
+    "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
+    "migrate:test-masterdata": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "start": "pnpm run build && node dist/index.js",
     "test": "pnpm run buildtest && env-cmd -f .env.test --no-override vitest run",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
@@ -36,6 +38,7 @@
     "@types/node": "^25.0.3",
     "env-cmd": "^11.0.0",
     "fast-check": "^4.5.3",
+    "node-pg-migrate": "^8.0.4",
     "vitest": "^3.2.4",
     "xo": "^1.2.3"
   }

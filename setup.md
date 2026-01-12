@@ -13,6 +13,7 @@ pnpm add @effect/platform-node
 pnpm add -D vitest @effect/vitest fast-check @types/node
 pnpm add @effect/sql @effect/sql-pg
 pnpm add -D env-cmd
+pnpm add -D node-pg-migrate
 ```
 
 `.editorconfig`:
