@@ -1,16 +1,16 @@
-import { Context, Redacted, type LogLevel } from 'effect';
+import { Context, type Redacted, type LogLevel } from 'effect';
 import { type Port } from '../domain/port';
 import { type Environment } from '../domain/environment';
 
 // todo: move and rename
 export type MasterdataPgConfig = {
-  readonly url: Redacted.Redacted<string>
+  readonly url: Redacted.Redacted;
   readonly pool: {
-    readonly min: number
-    readonly max: number
-    readonly idleTimeoutMillis: number
-  }
-}
+    readonly min: number;
+    readonly max: number;
+    readonly idleTimeoutMillis: number;
+  };
+};
 
 type ConfigServiceShape = {
   readonly port: Port;

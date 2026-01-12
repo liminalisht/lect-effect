@@ -1,7 +1,7 @@
-import { helloResolver } from "./hello"
-import { productResolvers, productFieldResolvers } from "./product"
-import { itemResolvers, itemFieldResolvers } from "./item"
-import { masterdataMutations } from "./mutations"
+import { helloResolver } from './hello';
+import { productResolvers, productFieldResolvers } from './product';
+import { itemResolvers, itemFieldResolvers } from './item';
+import { masterdataMutations } from './mutations';
 
 export const makeResolvers = () => [
   helloResolver,
@@ -10,4 +10,4 @@ export const makeResolvers = () => [
   itemResolvers,
   itemFieldResolvers,
   masterdataMutations,
-]
+];

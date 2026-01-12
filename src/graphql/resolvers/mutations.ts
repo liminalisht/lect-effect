@@ -1,26 +1,25 @@
-import { mutation, resolver } from "@gqloom/core"
-import { Schema } from "effect"
-import { runEffect } from "../effect"
-import * as itemHandlers from "../../handlers/item"
-import * as productHandlers from "../../handlers/product"
-
-import { itemInputSchema, itemSchema } from "../../domain/item"
-import { productInputSchema, productSchema } from "../../domain/product"
+import { mutation, resolver } from '@gqloom/core';
+import { Schema } from 'effect';
+import { runEffect } from '../effect';
+import * as itemHandlers from '../../handlers/item';
+import * as productHandlers from '../../handlers/product';
+import { itemInputSchema, itemSchema } from '../../domain/item';
+import { productInputSchema, productSchema } from '../../domain/product';
 import {
   createProductWithItemsInputSchema,
   productWithItemsSchema,
-} from "../../domain/productWithItems"
+} from '../../domain/productWithItems';
 
 export const masterdataMutations = resolver({
   createProduct: mutation(Schema.standardSchemaV1(productSchema))
     .input(Schema.standardSchemaV1(productInputSchema))
-    .resolve(async (args) => runEffect(productHandlers.createProduct(args))),
+    .resolve(async args => runEffect(productHandlers.createProduct(args))),
 
   createItem: mutation(Schema.standardSchemaV1(itemSchema))
     .input(Schema.standardSchemaV1(itemInputSchema))
-    .resolve(async (args) => runEffect(itemHandlers.createItem(args))),
+    .resolve(async args => runEffect(itemHandlers.createItem(args))),
 
   createProductWithItems: mutation(Schema.standardSchemaV1(productWithItemsSchema))
     .input(Schema.standardSchemaV1(createProductWithItemsInputSchema))
-    .resolve(async (args) => runEffect(productHandlers.createProductWithItems(args))),
-})
+    .resolve(async args => runEffect(productHandlers.createProductWithItems(args))),
+});

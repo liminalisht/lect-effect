@@ -1,31 +1,34 @@
-import { Array, Context, Effect, Option, Schema } from "effect"
-import type * as SqlError from "@effect/sql/SqlError"
-import { ParseError } from "effect/ParseResult"
-
-import { MasterdataDb } from "./masterdataDb"
-import { decodeMany, decodeOne } from "../utilities/decode"
-import { productIdSchema, type Product, type ProductId, type ProductInput } from "../domain/product"
-import type { ItemId } from "../domain/item"
+import {
+  Array, Context, Effect, Option, Schema,
+} from 'effect';
+import type * as SqlError from '@effect/sql/SqlError';
+import { type ParseError } from 'effect/ParseResult';
+import { decodeMany, decodeOne } from '../utilities/decode';
+import {
+  productIdSchema, type Product, type ProductId, type ProductInput,
+} from '../domain/product';
+import type { ItemId } from '../domain/item';
+import { MasterdataDb } from './masterdataDb';
 
 // todo: this is not how we do errors... why not use TaggedError like elsewhere?
 export class ProductNotFound extends Error {
-  readonly _tag = "ProductNotFound"
+  readonly _tag = 'ProductNotFound';
   constructor(readonly id: ProductId) {
-    super(`Product not found: ${id}`)
+    super(`Product not found: ${id}`);
   }
 }
 
 // todo: move / import in AppError
-export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError
+export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError;
 
 export type ProductRepoShape = {
-  readonly getById: (id: ProductId) => Effect.Effect<Option.Option<Product>, ProductRepoError>
-  readonly getForItem: (itemId: ItemId) => Effect.Effect<Option.Option<Product>, ProductRepoError>
-  readonly list: Effect.Effect<ReadonlyArray<Product>, ProductRepoError>
-  readonly create: (input: ProductInput) => Effect.Effect<Product, ProductRepoError>
-}
+  readonly getById: (id: ProductId) => Effect.Effect<Option.Option<Product>, ProductRepoError>;
+  readonly getForItem: (itemId: ItemId) => Effect.Effect<Option.Option<Product>, ProductRepoError>;
+  readonly list: Effect.Effect<readonly Product[], ProductRepoError>;
+  readonly create: (input: ProductInput) => Effect.Effect<Product, ProductRepoError>;
+};
 
-export class ProductRepo extends Context.Tag("ProductRepo")<
+export class ProductRepo extends Context.Tag('ProductRepo')<
   ProductRepo,
   ProductRepoShape
 >() {}
@@ -33,49 +36,46 @@ export class ProductRepo extends Context.Tag("ProductRepo")<
 // row schema matches DB columns (no __typename)
 const ProductRowSchema = Schema.Struct({
   id: productIdSchema,
-  description: Schema.NullOr(Schema.String)
-})
+  description: Schema.NullOr(Schema.String),
+});
 
 const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
-  __typename: "Product",
-  ...r
-})
+  __typename: 'Product',
+  ...r,
+});
 
-export const ProductRepoLive = Effect.gen(function* () {
-  const { sql } = yield* MasterdataDb
+export const ProductRepoLive = Effect.gen(function * () {
+  const { sql } = yield * MasterdataDb;
 
-  const list = Effect.logDebug("ProductRepo.list: query").pipe(
+  const list = Effect.logDebug('ProductRepo.list: query').pipe(
     Effect.andThen(sql`
       SELECT id, description
       FROM product
       ORDER BY id
     `),
     Effect.flatMap(decodeMany(ProductRowSchema)),
-    Effect.map((rows) => rows.map(toDomain)),
-    Effect.tap((rows) => Effect.logDebug("ProductRepo.list: result", { count: rows.length })),
-    Effect.tapError((error) => Effect.logDebug("ProductRepo.list: error", { error }))
-  )
+    Effect.map(rows => rows.map(toDomain)),
+    Effect.tap(rows => Effect.logDebug('ProductRepo.list: result', { count: rows.length })),
+    Effect.tapError(error => Effect.logDebug('ProductRepo.list: error', { error })),
+  );
 
   const getById = (id: ProductId) =>
-    Effect.logDebug("ProductRepo.getById: query", { id }).pipe(
+    Effect.logDebug('ProductRepo.getById: query', { id }).pipe(
       Effect.andThen(sql`
         SELECT id, description
         FROM product
         WHERE id = ${id}
       `),
-      Effect.flatMap((rows) =>
+      Effect.flatMap(rows =>
         rows.length === 0
           ? Effect.succeed(Option.none())
-          : decodeOne(ProductRowSchema)(rows[0]).pipe(
-              Effect.map((row) => Option.some(toDomain(row)))
-            )
-      ),
-      Effect.tap((row) => Effect.logDebug("ProductRepo.getById: result", { id, row })),
-      Effect.tapError((error) => Effect.logDebug("ProductRepo.getById: error", { id, error }))
-    )
+          : decodeOne(ProductRowSchema)(rows[0]).pipe(Effect.map(row => Option.some(toDomain(row))))),
+      Effect.tap(row => Effect.logDebug('ProductRepo.getById: result', { id, row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.getById: error', { id, error })),
+    );
 
   const getForItem = (itemId: ItemId) =>
-    Effect.logDebug("ProductRepo.getForItem: query", { itemId }).pipe(
+    Effect.logDebug('ProductRepo.getForItem: query', { itemId }).pipe(
       Effect.andThen(sql`
         SELECT p.id, p.description
         FROM product p
@@ -84,29 +84,28 @@ export const ProductRepoLive = Effect.gen(function* () {
         ORDER BY p.id
         LIMIT 1
       `),
-      Effect.flatMap((rows) =>
+      Effect.flatMap(rows =>
         rows.length === 0
           ? Effect.succeed(Option.none())
-          : decodeOne(ProductRowSchema)(rows[0]).pipe(
-              Effect.map((row) => Option.some(toDomain(row)))
-            )
-      ),
-      Effect.tap((row) => Effect.logDebug("ProductRepo.getForItem: result", { itemId, row })),
-      Effect.tapError((error) => Effect.logDebug("ProductRepo.getForItem: error", { itemId, error }))
-    )
+          : decodeOne(ProductRowSchema)(rows[0]).pipe(Effect.map(row => Option.some(toDomain(row))))),
+      Effect.tap(row => Effect.logDebug('ProductRepo.getForItem: result', { itemId, row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.getForItem: error', { itemId, error })),
+    );
 
   const create = (input: ProductInput) =>
-    Effect.logDebug("ProductRepo.create: inserting", { input }).pipe(
+    Effect.logDebug('ProductRepo.create: inserting', { input }).pipe(
       Effect.andThen(sql`
         INSERT INTO product (description)
         VALUES (${input.description ?? null})
         RETURNING id, description
       `),
-      Effect.flatMap((rows) => decodeOne(ProductRowSchema)(rows[0])),
+      Effect.flatMap(rows => decodeOne(ProductRowSchema)(rows[0])),
       Effect.map(toDomain),
-      Effect.tap((row) => Effect.logDebug("ProductRepo.create: result", { row })),
-      Effect.tapError((error) => Effect.logDebug("ProductRepo.create: error", { input, error }))
-    )
+      Effect.tap(row => Effect.logDebug('ProductRepo.create: result', { row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.create: error', { input, error })),
+    );
 
-  return { list, getById, getForItem, create } as const
-}).pipe(Effect.map((svc) => ProductRepo.of(svc)))
+  return {
+    list, getById, getForItem, create,
+  } as const;
+}).pipe(Effect.map(svc => ProductRepo.of(svc)));

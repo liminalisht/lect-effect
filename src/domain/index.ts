@@ -2,34 +2,34 @@
  * Domain module barrel exports.
  * @since 1.0.0
  */
-export * from "./environment"
+export * from './environment';
 
 /** @since 1.0.0 */
-export * from "./greeting"
+export * from './greeting';
 
 /** @since 1.0.0 */
-export * from "./helloResponse"
+export * from './helloResponse';
 
 /** @since 1.0.0 */
-export * from "./name"
+export * from './name';
 
 /** @since 1.0.0 */
-export * from "./nameInput"
+export * from './nameInput';
 
 /** @since 1.0.0 */
-export * from "./port"
+export * from './port';
 
 /** @since 1.0.0 */
-export * from "./product"
+export * from './product';
 
 /** @since 1.0.0 */
-export * from "./item"
+export * from './item';
 
 // todo: cleanup. maybe consolidate with product.ts
 /** @since 1.0.0 */
 export {
-	CreateProductWithItemsInput,
-	createProductWithItemsInputSchema,
-	ProductWithItems,
-	productWithItemsSchema
-} from "./productWithItems"
+  type CreateProductWithItemsInput,
+  createProductWithItemsInputSchema,
+  type ProductWithItems,
+  productWithItemsSchema,
+} from './productWithItems';
