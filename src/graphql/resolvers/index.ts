@@ -1,11 +1,3 @@
-// import { helloResolver } from './hello';
-// import { productResolvers } from './product';
-
-// export const makeResolvers = () =>
-//   [ helloResolver,
-//     productResolvers,
-
-//   ];
 import { helloResolver } from "./hello"
 import { productResolvers, productFieldResolvers } from "./product"
 import { itemResolvers, itemFieldResolvers } from "./item"
