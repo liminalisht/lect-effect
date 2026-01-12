@@ -1,5 +1,17 @@
+/**
+ * Name value object schema.
+ * @since 1.0.0
+ */
 import { Schema } from 'effect';
 
+/**
+ * Person name value object.
+ * @since 1.0.0
+ */
 export type Name = Schema.Schema.Type<typeof nameSchema>;
 
+/**
+ * Schema for validated names.
+ * @since 1.0.0
+ */
 export const nameSchema = Schema.String;

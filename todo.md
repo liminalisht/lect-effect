@@ -7,7 +7,6 @@
 - [ ] change any uses of Effect's default logger to grab from our custom logger layer
 - [ ] show that we can mock layer implementations for tests
 - [x] pull out functionality into services and call those from resolvers / handlers
-- [ ] add NODE_ENV env var
 - [ ] use that to determine whether to write graphql schema to disk, and create appropriate effect
 - [x] determine where to create error types and how to organize across project
 - [x] actually start separating domain
@@ -21,4 +20,14 @@
 - [ ] time execution of handlers
 - [ ] metrics
 - [ ] use https://github.com/Effect-TS/docgen
-
+- [ ] tests for handlers
+- [ ] tests for resolvers
+- [ ] tests for domain
+- [ ] refactor layer / service naming and responsibilities for productRepo and itemRepo
+- [ ] add descriptions, annotations, titles
+- [ ] figure out if we're ever gonna use custom scalars or no
+- [ ] figure out if we're ever gonna use graphql interfaces
+- [ ] test fixture data strategy
+- [ ] versioning strategy
+- [ ] idea of lect determinining resolvers available, services / service dependency map, and domain types accessible and handlers used; in other words specifying lect determines what config to load and services to spawn, etc.
+- [ ] then we could create Schemas for lects and document appropriately

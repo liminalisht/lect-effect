@@ -2,10 +2,12 @@
   "name": "lect-effect",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://github.com/liminalisht/lect-effect",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
+    "docs:domain": "docgen --project tsconfig.json --src ./src/domain --out ./docs/domain --exclude \"**/test/**\"",
     "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "migrate:test-masterdata": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "start": "pnpm run build && node dist/index.js",
@@ -32,6 +34,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@effect/docgen": "^0.5.2",
     "@effect/language-service": "^0.64.1",
     "@effect/vitest": "^0.27.0",
     "@tsconfig/node24": "^24.0.3",
