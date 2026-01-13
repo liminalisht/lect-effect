@@ -1,7 +1,7 @@
 import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
-import * as domain from '../../../src/domain';
+import { nameInputSchema } from '../../../src/domain/nameInput';
 import { makeSchema } from '../../../src/graphql/schema';
 import { makeYoga } from '../../../src/graphql/yoga';
 import { testAppLayer } from '../../layers/app';
@@ -11,7 +11,7 @@ describe('GraphQL hello (property)', () => {
     Effect.gen(function * () {
       const schema = makeSchema();
       const yoga = yield * makeYoga(schema);
-      const arb = Arbitrary.make(domain.nameInputSchema);
+      const arb = Arbitrary.make(nameInputSchema);
 
       const query = /* GraphQL */ `
         query Hello($name: String) {

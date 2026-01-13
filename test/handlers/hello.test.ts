@@ -4,7 +4,8 @@ import { describe, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { helloHandler } from '../../src/handlers/hello';
 import { greetingLayer } from '../../src/layers/greeting';
-import { helloResponseSchema, nameInputSchema } from '../../src/domain';
+import { helloResponseSchema } from '../../src/domain/helloResponse';
+import { nameInputSchema } from '../../src/domain/nameInput';
 
 const decodeHelloResponse = Schema.decodeUnknown(helloResponseSchema);
 const arbitraryNameInput = Arbitrary.make(nameInputSchema);

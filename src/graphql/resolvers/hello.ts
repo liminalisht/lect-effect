@@ -1,14 +1,18 @@
 import { Schema } from 'effect';
 import { query, resolver } from '@gqloom/core';
-import * as domain from '../../domain';
-import * as handlers from '../../handlers';
+import { nameInputSchema } from '../../domain/nameInput';
+import { helloResponseSchema } from '../../domain/helloResponse';
+import { helloHandler } from '../../handlers/hello';
 import { runEffect } from '../effect';
 
 export const helloResolver = resolver({
   hello:
-    query(Schema.standardSchemaV1(domain.helloResponseSchema))
-      .input(Schema.standardSchemaV1(domain.nameInputSchema))
+    query(Schema.standardSchemaV1(helloResponseSchema))
+      .input(Schema.standardSchemaV1(nameInputSchema))
       .resolve(async args =>
-        runEffect(handlers.helloHandler(args))),
+        runEffect(
+          helloHandler(args)
+        )
+      ),
 });
 
