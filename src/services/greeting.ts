@@ -8,6 +8,6 @@ export class GreetingService extends Context.Tag('GreetingService')<
   GreetingServiceShape
 >() {}
 
-type GreetingServiceShape = {
+export type GreetingServiceShape = {
   readonly greet: (name: Option.Option<Name>) => Effect.Effect<Greeting>;
 };
