@@ -1,9 +1,10 @@
-import { type LogLevel } from 'effect';
-import { type Port } from '../domain/port';
-import { type Environment } from '../domain/environment';
+
+import { type Environment } from './app/environment';
+import { type LogLevel } from './app/loglevel';
+import { type Port } from './app/port';
 
 export type AppConfig = {
   readonly port: Port;
-  readonly logLevel: LogLevel.LogLevel;
+  readonly logLevel: LogLevel;
   readonly environment: Environment;
 }

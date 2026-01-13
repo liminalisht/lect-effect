@@ -2,8 +2,8 @@ import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../services/config';
-import { Environment, environmentSchema } from '../domain/environment';
-import { Port, portSchema } from '../domain/port';
+import { Environment, environmentSchema } from '../config/app/environment';
+import { Port, portSchema } from '../config/app/port';
 import { MasterdataDbConfig } from '../config/masterdataDb';
 import { ConfigurationError } from '../config/errors';
 

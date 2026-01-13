@@ -12,7 +12,7 @@ import {
 } from './productWithItems';
 
 /** @since 1.0.0 */
-export * from './environment';
+export * from '../config/app/environment';
 
 /** @since 1.0.0 */
 export * from './greeting';
@@ -27,7 +27,7 @@ export * from './name';
 export * from './nameInput';
 
 /** @since 1.0.0 */
-export * from './port';
+export * from '../config/app/port';
 
 /** @since 1.0.0 */
 export * from './product';

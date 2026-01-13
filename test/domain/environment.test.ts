@@ -2,7 +2,7 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { environmentSchema } from '../../src/domain/environment';
+import { environmentSchema } from '../../src/config/app/environment';
 
 const decodeEnvironment = Schema.decodeUnknown(environmentSchema);
 const arbitraryEnvironment = Arbitrary.make(environmentSchema);

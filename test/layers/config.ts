@@ -2,8 +2,8 @@ import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../../src/services/config';
-import { environmentSchema } from '../../src/domain/environment';
-import { portSchema } from '../../src/domain/port';
+import { environmentSchema } from '../../src/config/app/environment';
+import { portSchema } from '../../src/config/app/port';
 
 const loadPort = Effect.gen(function * () {
   const port = yield * Config.number('TEST_APP_PORT')
