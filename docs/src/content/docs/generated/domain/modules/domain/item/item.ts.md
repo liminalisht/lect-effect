@@ -1,6 +1,6 @@
 ---
 title: domain/item/item.ts
-nav_order: 2
+nav_order: 7
 parent: Modules
 ---
 

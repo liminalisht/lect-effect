@@ -1,5 +1,5 @@
 /**
- * Product domain composite that bundles a product with its items.
+ * Product composite (product plus items) module.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

@@ -1,12 +1,12 @@
 ---
-title: domain/nameInput.ts
-nav_order: 7
+title: domain/hello/nameInput.ts
+nav_order: 5
 parent: Modules
 ---
 
 ## nameInput overview
 
-Input shape for greeting by name.
+Hello domain input payloads.
 
 Added in v1.0.0
 
@@ -41,7 +41,9 @@ Schema for the optional greeting name input.
 **Signature**
 
 ```ts
-export declare const nameInputSchema: Schema.Struct<{ name: Schema.NullishOr<typeof Schema.String> }>
+export declare const nameInputSchema: Schema.Struct<{
+  name: Schema.NullishOr<Schema.SchemaClass<string, string, never>>
+}>
 ```
 
 Added in v1.0.0

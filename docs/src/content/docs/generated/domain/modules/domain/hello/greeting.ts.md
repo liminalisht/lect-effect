@@ -1,12 +1,12 @@
 ---
-title: domain/greeting.ts
+title: domain/hello/greeting.ts
 nav_order: 2
 parent: Modules
 ---
 
 ## greeting overview
 
-Greeting message schema.
+Hello domain greeting message definitions.
 
 Added in v1.0.0
 

@@ -1,3 +1,7 @@
+/**
+ * Product id input module.
+ * @since 1.0.0
+ */
 import { Schema } from 'effect';
 import { productIdSchema } from './productId';
 

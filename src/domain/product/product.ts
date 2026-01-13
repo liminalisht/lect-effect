@@ -1,5 +1,5 @@
 /**
- * Product entity schema
+ * Product domain schema module.
  * @since 1.0.0
  */
 

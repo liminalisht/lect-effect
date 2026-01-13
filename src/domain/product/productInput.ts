@@ -1,3 +1,7 @@
+/**
+ * Product input module for create/update operations.
+ * @since 1.0.0
+ */
 import { Schema } from 'effect';
 import { productDescriptionSchema } from './productDescription';
 

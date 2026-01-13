@@ -1,3 +1,7 @@
+/**
+ * Product identifier value object definitions.
+ * @since 1.0.0
+ */
 import { Schema } from 'effect';
 
 /**

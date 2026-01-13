@@ -1,3 +1,7 @@
+/**
+ * Product-with-items creation input module.
+ * @since 1.0.0
+ */
 import { Schema } from 'effect';
 import { createItemInputSchema } from '../item/createItemInput';
 import { productInputSchema } from './productInput';
