@@ -3,8 +3,9 @@ import { Schema } from 'effect';
 import { runEffect } from '../effect';
 import * as itemHandlers from '../../handlers/item';
 import * as productHandlers from '../../handlers/product';
-import { createItemInputSchema, itemSchema } from '../../domain/item';
-import { productInputSchema, productSchema } from '../../domain/product';
+import { createItemInputSchema } from '../../domain/item/createItemInput';
+import { itemSchema } from '../../domain/item/item';
+import { productInputSchema, productSchema } from '../../domain/product/product';
 import {
   createProductWithItemsInputSchema,
   productWithItemsSchema,

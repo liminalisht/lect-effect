@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Option } from 'effect';
-import { NameInput } from '../domain/nameInput';
-import { HelloResponse } from '../domain/helloResponse';
+import { NameInput } from '../domain/hello/nameInput';
+import { HelloResponse } from '../domain/hello/helloResponse';
 import { GreetingService } from '../services/greeting';
 
 /**

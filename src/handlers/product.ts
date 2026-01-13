@@ -5,8 +5,8 @@
 import { Effect, Option } from 'effect';
 import { ProductRepo } from '../services/productRepo';
 import { ItemRepo } from '../services/itemRepo';
-import type { ProductId, ProductInput } from '../domain/product';
-import type { Item } from '../domain/item';
+import type { ProductId, ProductInput } from '../domain/product/product';
+import type { Item } from '../domain/item/item';
 import type { CreateProductWithItemsInput, ProductWithItems } from '../domain/productWithItems';
 
 /**

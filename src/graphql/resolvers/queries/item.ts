@@ -1,9 +1,10 @@
-import { field, query, resolver } from '@gqloom/core';
+import { query, resolver } from '@gqloom/core';
 import { Schema } from 'effect';
 import { runEffect } from '../../effect';
 import * as handlers from '../../../handlers/item';
-import { itemIdInputSchema, itemSchema } from '../../../domain/item';
-import { productSchema } from '../../../domain/product';
+import { itemIdInputSchema } from '../../../domain/item/itemIdInput';
+import { itemSchema } from '../../../domain/item/item';
+
 
 export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)))
   .input(Schema.standardSchemaV1(itemIdInputSchema))
@@ -18,11 +19,3 @@ export const itemQueryMap = {
 };
 
 export const itemQueryResolvers = resolver(itemQueryMap);
-
-// export const itemFieldResolvers = resolver.of(
-//   Schema.standardSchemaV1(itemSchema),
-//   {
-//     productForItem: field(Schema.standardSchemaV1(Schema.NullOr(productSchema)))
-//       .resolve(async parent => runEffect(handlers.productForItem(parent.id))),
-//   },
-// );

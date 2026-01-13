@@ -3,8 +3,8 @@ import { field, query, resolver } from '@gqloom/core';
 import { Schema } from 'effect';
 import { runEffect } from '../../effect';
 import * as handlers from '../../../handlers/product';
-import { productIdInputSchema, productSchema } from '../../../domain/product';
-import { itemSchema } from '../../../domain/item';
+import { productIdInputSchema, productSchema } from '../../../domain/product/product';
+import { itemSchema } from '../../../domain/item/item';
 import { productWithItemsSchema } from '../../../domain/productWithItems';
 
 export const productQuery = query(Schema.standardSchemaV1(Schema.NullOr(productSchema)))

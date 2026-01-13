@@ -1,0 +1,22 @@
+import { Schema } from 'effect';
+import { itemDescriptionSchema } from './itemDescription';
+import { packSizeSchema } from './packSize';
+
+// GraphQL arg-shape: { description?, pack_size }
+/**
+ * GraphQL input for creating or updating an item.
+ * @since 1.0.0
+ */
+export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>;
+/**
+ * Input schema for creating or updating an item.
+ * @since 1.0.0
+ */
+export const createItemInputSchema = Schema.Struct({
+  description: Schema.optional(itemDescriptionSchema).annotations({ description: 'item description (nullable & optional)' }),
+  pack_size: packSizeSchema,
+}).annotations({
+  title: 'CreateItemInput',
+  description: 'input for creating an item',
+});
+

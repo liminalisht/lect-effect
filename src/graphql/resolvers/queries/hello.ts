@@ -1,7 +1,7 @@
 import { Schema } from 'effect';
 import { query, resolver } from '@gqloom/core';
-import { nameInputSchema } from '../../../domain/nameInput';
-import { helloResponseSchema } from '../../../domain/helloResponse';
+import { nameInputSchema } from '../../../domain/hello/nameInput';
+import { helloResponseSchema } from '../../../domain/hello/helloResponse';
 import { helloHandler } from '../../../handlers/hello';
 import { runEffect } from '../../effect';
 

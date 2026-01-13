@@ -6,8 +6,8 @@ import { type ParseError } from 'effect/ParseResult';
 import { decodeMany, decodeOne } from '../utilities/decode';
 import {
   productIdSchema, type Product, type ProductId, type ProductInput,
-} from '../domain/product';
-import type { ItemId } from '../domain/item';
+} from '../domain/product/product';
+import type { ItemId } from '../domain/item/itemId';
 import { MasterdataDb } from './masterdataDb';
 
 // todo: this is not how we do errors... why not use TaggedError like elsewhere?

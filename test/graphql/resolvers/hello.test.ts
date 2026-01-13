@@ -1,7 +1,7 @@
 import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
-import { nameInputSchema } from '../../../src/domain/nameInput';
+import { nameInputSchema } from '../../../src/domain/hello/nameInput';
 import { makeSchema } from '../../../src/graphql/schema';
 import { makeYoga } from '../../../src/graphql/yoga';
 import { testAppLayer } from '../../layers/app';
