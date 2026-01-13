@@ -1,5 +1,5 @@
 /**
- * Greeting message schema.
+ * Hello domain greeting message definitions.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

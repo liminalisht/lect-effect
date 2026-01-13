@@ -1,5 +1,5 @@
 /**
- * Response envelope for the hello operation.
+ * Hello domain response envelope definitions.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

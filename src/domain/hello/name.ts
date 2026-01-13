@@ -1,5 +1,5 @@
 /**
- * Name value object schema.
+ * Hello domain name value object definitions.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

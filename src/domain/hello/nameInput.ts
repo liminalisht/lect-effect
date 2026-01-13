@@ -1,5 +1,5 @@
 /**
- * Input shape for greeting by name.
+ * Hello domain input payloads.
  * @since 1.0.0
  */
 import { Schema } from 'effect';
