@@ -5,15 +5,23 @@ description: A TypeScript GraphQL service whose domain is written once (Effect S
 hero:
   image:
     file: ../../assets/lect-effect.png
+  actions:
+    - text: Getting Started
+      link: /guides/introduction
+      icon: open-book
+    - text: Code Organization
+      link: /guides/code-organization
+      icon: seti:git
+    - text: Architecture
+      link: /guides/architecture
+      icon: document
+    - text: Contributing
+      link: /guides/contributing
+      icon: seti:plan
 ---
 import { Aside, LinkButton, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 **lect-effect** is a **TypeScript** backend that exposes a **[GraphQL](https://graphql.org/)** API whose types and validation are derived from **[Effect Schema](https://effect.website/docs/schema/introduction/)**, and whose resolvers run as **[Effect](https://effect.website/docs/getting-started/introduction/)** computations.
-
-<LinkButton href="/guides/introduction">Getting started</LinkButton>
-<LinkButton href="/guides/code-organization">Code organization</LinkButton>
-<LinkButton href="/guides/architecture">Architecture</LinkButton>
-<LinkButton href="/guides/contributing">Contributing</LinkButton>
 
 :::tip[tl;dr]
 Write your *domain* as `Schema`s and `Effect`s, weave them into GraphQL with **[GQLoom](https://gqloom.dev/)**, and run them on a fully typed service environment provided via **[Effect Layers](https://effect.website/docs/requirements-management/layers/)**.
