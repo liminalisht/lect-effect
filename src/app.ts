@@ -1,3 +1,7 @@
+/**
+ * Application bootstrap wiring for GraphQL server startup.
+ * @since 1.0.0
+ */
 import { Effect } from 'effect';
 import { type GraphQLSchema } from 'graphql';
 import { type Scope } from 'effect/Scope';
@@ -8,6 +12,10 @@ import { ConfigService, type ConfigServiceShape } from './services/config';
 import { type AppServices } from './services/app';
 import { type ServerStartError } from './graphql/errors';
 
+/**
+ * Top-level application Effect that wires configuration, schema, and server startup.
+ * @since 1.0.0
+ */
 export const app: Effect.Effect<never, unknown, AppServices>
   = Effect.scoped(Effect.gen(function * () {
     const config = yield * getConfig();
@@ -17,6 +25,10 @@ export const app: Effect.Effect<never, unknown, AppServices>
     return yield * Effect.never;
   }));
 
+/**
+ * Loads configuration from the ConfigService.
+ * @since 1.0.0
+ */
 export const getConfig = (): Effect.Effect<ConfigServiceShape, never, ConfigService> => Effect.gen(function * () {
   yield * Effect.logDebug('getting config...');
   const config = yield * ConfigService;
@@ -24,6 +36,10 @@ export const getConfig = (): Effect.Effect<ConfigServiceShape, never, ConfigServ
   return config;
 });
 
+/**
+ * Builds and logs the GraphQL schema.
+ * @since 1.0.0
+ */
 export const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(function * () {
   yield * Effect.logDebug('making graphql schema...');
   const schema = makeSchema();
@@ -32,6 +48,10 @@ export const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(
   return schema;
 });
 
+/**
+ * Constructs the Yoga server instance with the provided schema.
+ * @since 1.0.0
+ */
 export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga, never, AppServices> => Effect.gen(function * () {
   yield * Effect.logDebug('making yoga server instance...');
   const yoga = yield * makeYoga(schema);

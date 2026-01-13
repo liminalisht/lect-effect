@@ -2,8 +2,7 @@
 
 set -e
 
-pnpm docs:domain
-pnpm docs:handlers
+pnpm docs:generate
 cd docs
 pnpm install --frozen-lockfile || pnpm install
 pnpm dev "$@"

@@ -1,3 +1,7 @@
+/**
+ * Application error union definitions.
+ * @since 1.0.0
+ */
 import { type SqlError } from '@effect/sql/SqlError';
 import { type DomainError } from './domain/errors';
 import { type GraphqlError } from './graphql/errors';
