@@ -20,23 +20,23 @@ hero:
       icon: right-arrow
 ---
 
-**lect-effect** is a **TypeScript** backend that exposes a **GraphQL** API whose types and validation are derived from **Effect Schema**, and whose resolvers run as **Effect** computations.
+**lect-effect** is a **TypeScript** backend that exposes a **[GraphQL](https://graphql.org/)** API whose types and validation are derived from **[Effect Schema](https://effect.website/docs/schema/introduction/)**, and whose resolvers run as **[Effect](https://effect.website/docs/getting-started/introduction/)** computations.
 
 In one sentence:
 
-> Write your *domain* as `Schema`s and `Effect`s, weave them into GraphQL with **GQLoom**, and run them on a fully typed service environment provided via **Effect Layers**.
+> Write your *domain* as `Schema`s and `Effect`s, weave them into GraphQL with **[GQLoom](https://gqloom.dev/)**, and run them on a fully typed service environment provided via **[Effect Layers](https://effect.website/docs/requirements-management/layers/)**.
 
 ## What lect-effect uses (and why)
 
-- **GraphQL** as the external interface (GraphQL Yoga server).
-- **GQLoom** (`@gqloom/core` + `@gqloom/effect`) to *weave* a schema from runtime types.
-- **Effect** for:
+- **[GraphQL](https://graphql.org/)** as the external interface ([GraphQL Yoga](https://the-guild.dev/graphql/yoga-server/docs) server).
+- **[GQLoom](https://gqloom.dev/)** (`@gqloom/core` + `@gqloom/effect`) to *weave* a schema from runtime types.
+- **[Effect](https://effect.website/docs/getting-started/introduction/)** for:
   - `Effect<A, E, R>` programs (effects),
   - `Schema` as the single source of truth for runtime validation + types,
   - `Context.Tag` + `Layer` to model and provide services.
-- **PostgreSQL** via `@effect/sql` and `@effect/sql-pg`.
-- **Property-based tests** (fast-check) + **Vitest** integration (`@effect/vitest`).
-- **Docs generation** via `@effect/docgen`, rendered in a Starlight/Astro docs site.
+- **[PostgreSQL](https://www.postgresql.org/)** via [`@effect/sql`](https://github.com/Effect-TS/sql) and [`@effect/sql-pg`](https://github.com/Effect-TS/sql/tree/main/packages/pg).
+- **Property-based tests** ([`fast-check`](https://fast-check.dev/)) + **Vitest** integration ([`@effect/vitest`](https://github.com/Effect-TS/vitest)).
+- **Docs generation** via [`@effect/docgen`](https://github.com/Effect-TS/docgen), rendered in a [Starlight](https://starlight.astro.build/)/[Astro](https://astro.build/) docs site.
 
 ## Start here
 
@@ -47,11 +47,11 @@ In one sentence:
 
 ## External references
 
-- Effect: https://effect.website/docs/getting-started/introduction/
-- Effect Schema: https://effect.website/docs/schema/introduction/
-- Effect Layers: https://effect.website/docs/requirements-management/layers/
-- GQLoom: https://gqloom.dev/
-- GQLoom weave(): https://gqloom.dev/docs/weave.html
-- GQLoom Effect integration: https://gqloom.dev/docs/schema/effect.html
-- GraphQL Yoga: https://the-guild.dev/graphql/yoga-server/docs
-- TypeScript Handbook: https://www.typescriptlang.org/docs/handbook/intro.html
+- [Effect](https://effect.website/docs/getting-started/introduction/)
+- [Effect Schema](https://effect.website/docs/schema/introduction/)
+- [Effect Layers](https://effect.website/docs/requirements-management/layers/)
+- [GQLoom](https://gqloom.dev/)
+- [GQLoom weave()](https://gqloom.dev/docs/weave.html)
+- [GQLoom Effect integration](https://gqloom.dev/docs/schema/effect.html)
+- [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server/docs)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
