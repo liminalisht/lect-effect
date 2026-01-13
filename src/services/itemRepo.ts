@@ -1,3 +1,7 @@
+/**
+ * Item repository service contract and live implementation.
+ * @since 1.0.0
+ */
 import { Context, Effect, Schema } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
@@ -9,8 +13,16 @@ import { decodeMany, decodeOne } from '../utilities/decode';
 import { MasterdataDb } from './masterdataDb';
 
 // todo: extract error
+/**
+ * Error type union for item repository operations.
+ * @since 1.0.0
+ */
 export type ItemRepoError = SqlError.SqlError | ParseError;
 
+/**
+ * Interface for item repository capabilities.
+ * @since 1.0.0
+ */
 export type ItemRepoShape = {
   readonly getById: (id: ItemId) => Effect.Effect<Item | null, ItemRepoError>;
   readonly list: Effect.Effect<readonly Item[], ItemRepoError>;
@@ -19,6 +31,10 @@ export type ItemRepoShape = {
   readonly linkToProduct: (itemId: ItemId, productId: ProductId) => Effect.Effect<void, ItemRepoError>;
 };
 
+/**
+ * Service tag for the item repository.
+ * @since 1.0.0
+ */
 export class ItemRepo extends Context.Tag('ItemRepo')<ItemRepo, ItemRepoShape>() {}
 
 const ItemRowSchema = Schema.Struct({
@@ -32,6 +48,10 @@ const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
   ...r,
 });
 
+/**
+ * Live implementation of the ItemRepo.
+ * @since 1.0.0
+ */
 export const ItemRepoLive = Effect.gen(function * () {
   const { sql } = yield * MasterdataDb;
 
