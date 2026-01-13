@@ -3,7 +3,7 @@ import { Schema } from 'effect';
 import { runEffect } from '../effect';
 import * as itemHandlers from '../../handlers/item';
 import * as productHandlers from '../../handlers/product';
-import { itemInputSchema, itemSchema } from '../../domain/item';
+import { createItemInputSchema, itemSchema } from '../../domain/item';
 import { productInputSchema, productSchema } from '../../domain/product';
 import {
   createProductWithItemsInputSchema,
@@ -16,7 +16,7 @@ export const masterdataMutations = resolver({
     .resolve(async args => runEffect(productHandlers.createProduct(args))),
 
   createItem: mutation(Schema.standardSchemaV1(itemSchema))
-    .input(Schema.standardSchemaV1(itemInputSchema))
+    .input(Schema.standardSchemaV1(createItemInputSchema))
     .resolve(async args => runEffect(itemHandlers.createItem(args))),
 
   createProductWithItems: mutation(Schema.standardSchemaV1(productWithItemsSchema))

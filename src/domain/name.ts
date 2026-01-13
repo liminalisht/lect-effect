@@ -14,4 +14,6 @@ export type Name = Schema.Schema.Type<typeof nameSchema>;
  * Schema for validated names.
  * @since 1.0.0
  */
-export const nameSchema = Schema.String;
+export const nameSchema = Schema.String.annotations({
+  description: 'a name',
+});

@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { itemInputSchema, itemSchema } from './item';
+import { createItemInputSchema, itemSchema } from './item';
 import {
   productIdInputSchema as productIdInputSchema_,
   productInputSchema,
@@ -23,7 +23,7 @@ export type CreateProductWithItemsInput =
  */
 export const createProductWithItemsInputSchema = Schema.Struct({
   product: productInputSchema,
-  items: Schema.Array(itemInputSchema),
+  items: Schema.Array(createItemInputSchema),
 });
 
 /**

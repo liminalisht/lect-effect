@@ -16,7 +16,7 @@ export type ProductId = Schema.Schema.Type<typeof productIdSchema>;
  * Schema for product identifiers.
  * @since 1.0.0
  */
-export const productIdSchema = Schema.Number.pipe(Schema.int());
+export const productIdSchema = Schema.Number.pipe(Schema.int()).annotations({ description: 'product identifier' });
 
 // GraphQL arg-shape: { id }
 /**
@@ -32,6 +32,9 @@ export const productIdInputSchema = Schema.Struct({
   id: productIdSchema,
 });
 
+export type ProductDescription = Schema.Schema.Type<typeof productDescriptionSchema>;
+export const productDescriptionSchema = Schema.String.annotations({ description: 'product description' });
+
 // GraphQL arg-shape: { description? }
 /**
  * GraphQL input for creating or updating a product.
@@ -44,7 +47,7 @@ export type ProductInput = Schema.Schema.Type<typeof productInputSchema>;
  */
 export const productInputSchema = Schema.Struct({
   // nullable + optional, matching old `z.string().nullable().optional()`
-  description: Schema.optional(Schema.NullOr(Schema.String)),
+  description: Schema.optional(Schema.NullOr(productDescriptionSchema)).annotations({ description: 'product description (nullable & optional)' }),
 });
 
 /**
@@ -60,7 +63,10 @@ export type Product = Schema.Schema.Type<typeof productSchema>;
 export const productSchema = Schema.Struct({
   __typename: Schema.optional(Schema.Literal('Product')),
   id: productIdSchema,
-  description: Schema.NullOr(Schema.String),
+  description: Schema.NullOr(productDescriptionSchema).annotations({ description: 'product description (nullable)' }),
+}).annotations({
+  title: 'Product',
+  description: 'product',
 });
 
 // todo: add tests for domain schemas

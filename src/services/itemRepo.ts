@@ -2,7 +2,7 @@ import { Context, Effect, Schema } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
 import {
-  itemIdSchema, type Item, type ItemId, type ItemInput,
+  itemIdSchema, type Item, type ItemId, type CreateItemInput,
 } from '../domain/item';
 import { type ProductId } from '../domain/product';
 import { decodeMany, decodeOne } from '../utilities/decode';
@@ -13,7 +13,7 @@ export type ItemRepoError = SqlError.SqlError | ParseError;
 export type ItemRepoShape = {
   readonly getById: (id: ItemId) => Effect.Effect<Item | null, ItemRepoError>;
   readonly list: Effect.Effect<readonly Item[], ItemRepoError>;
-  readonly create: (input: ItemInput) => Effect.Effect<Item, ItemRepoError>;
+  readonly create: (input: CreateItemInput) => Effect.Effect<Item, ItemRepoError>;
   readonly listForProduct: (productId: ProductId) => Effect.Effect<readonly Item[], ItemRepoError>;
   readonly linkToProduct: (itemId: ItemId, productId: ProductId) => Effect.Effect<void, ItemRepoError>;
 };
@@ -27,7 +27,7 @@ const ItemRowSchema = Schema.Struct({
 });
 
 const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
-  __typename: 'Item',
+  // __typename: 'Item',
   ...r,
 });
 
@@ -59,7 +59,7 @@ export const ItemRepoLive = Effect.gen(function * () {
     Effect.tapError(error => Effect.logDebug('ItemRepo.list: error', { error })),
   );
 
-  const create = (input: ItemInput) =>
+  const create = (input: CreateItemInput) =>
     Effect.logDebug('ItemRepo.create: inserting', { input }).pipe(
       Effect.andThen(sql`
         INSERT INTO item (description, pack_size)

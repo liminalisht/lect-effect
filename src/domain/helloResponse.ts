@@ -19,5 +19,5 @@ export const helloResponseSchema = Schema.Struct({
   greeting: greetingSchema,
 }).annotations({
   title: 'HelloResponse',
-  description: 'response for hello',
+  description: 'response to hello query',
 });

@@ -5,7 +5,7 @@
 import { Effect, Option } from 'effect';
 import { ItemRepo } from '../services/itemRepo';
 import { ProductRepo } from '../services/productRepo';
-import type { ItemId, ItemInput } from '../domain/item';
+import type { ItemId, CreateItemInput } from '../domain/item';
 
 /**
  * Fetches an item by id.
@@ -30,7 +30,7 @@ export const listItems = Effect.gen(function * () {
  * Creates a new item.
  * @since 1.0.0
  */
-export const createItem = (input: ItemInput) =>
+export const createItem = (input: CreateItemInput) =>
   Effect.gen(function * () {
     const repo = yield * ItemRepo;
     return yield * repo.create(input);

@@ -14,6 +14,4 @@ export type Greeting = Schema.Schema.Type<typeof greetingSchema>;
  * Schema for greeting messages.
  * @since 1.0.0
  */
-export const greetingSchema = Schema.String.pipe(Schema.brand('Greeting')).annotations({
-  description: 'greeting message',
-});
+export const greetingSchema = Schema.String.pipe(Schema.brand('Greeting')).annotations({ description: 'greeting message' });
