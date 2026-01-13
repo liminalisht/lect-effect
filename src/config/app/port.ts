@@ -1,5 +1,5 @@
 /**
- * TCP port value object schema.
+ * TCP port configuration bindings.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

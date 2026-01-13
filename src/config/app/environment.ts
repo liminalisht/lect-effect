@@ -1,5 +1,5 @@
 /**
- * Deployment environment discriminator literal.
+ * Deployment environment configuration bindings.
  * @since 1.0.0
  */
 import { Schema } from 'effect';
