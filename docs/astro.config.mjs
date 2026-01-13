@@ -17,8 +17,8 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'modules',
-					autogenerate: {directory: 'src'},
+					label: 'lect-effect code',
+					autogenerate: {directory: 'src/modules'},
 				},
 			],
 		}),
