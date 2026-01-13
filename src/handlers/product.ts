@@ -5,9 +5,11 @@
 import { Effect, Option } from 'effect';
 import { ProductRepo } from '../services/productRepo';
 import { ItemRepo } from '../services/itemRepo';
-import type { ProductId, ProductInput } from '../domain/product/product';
+import type { ProductId } from '../domain/product/productId';
+import type { ProductInput } from '../domain/product/productInput';
 import type { Item } from '../domain/item/item';
-import type { CreateProductWithItemsInput, ProductWithItems } from '../domain/productWithItems';
+import type { CreateProductWithItemsInput } from '../domain/product/createProductWithItemsInput';
+import type { ProductWithItems } from '../domain/product/productWithItems';
 
 /**
  * Fetches a single product by id or returns null.

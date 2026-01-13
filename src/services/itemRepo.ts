@@ -4,7 +4,7 @@ import { type ParseError } from 'effect/ParseResult';
 import { type CreateItemInput } from '../domain/item/createItemInput';
 import { itemIdSchema, type ItemId } from '../domain/item/itemId';
 import { type Item } from '../domain/item/item';
-import { type ProductId } from '../domain/product/product';
+import { type ProductId } from '../domain/product/productId';
 import { decodeMany, decodeOne } from '../utilities/decode';
 import { MasterdataDb } from './masterdataDb';
 
