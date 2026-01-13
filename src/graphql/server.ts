@@ -1,3 +1,7 @@
+/**
+ * HTTP server lifecycle helpers for GraphQL Yoga.
+ * @since 1.0.0
+ */
 import {
   createServer, type Server, type IncomingMessage, ServerResponse,
 } from 'node:http';
@@ -8,6 +12,10 @@ import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
 
 // todo: grok Effect acquireRelease and Effect.async better
+/**
+ * Starts an HTTP server for the provided Yoga instance.
+ * @since 1.0.0
+ */
 export const listen = (
   yoga: YogaServerInstance<GraphQLContext, Record<string, any>>,
   port: number,
