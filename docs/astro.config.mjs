@@ -2,12 +2,12 @@
 import {defineConfig} from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// https://astro.build/config
+// See https://astro.build/config
 export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'lect-effect',
-			social: [{icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight'}],
+			social: [{icon: 'github', label: 'GitHub', href: 'https://github.com/liminalisht/lect-effect'}],
 			sidebar: [
 				{
 					label: 'guides',
