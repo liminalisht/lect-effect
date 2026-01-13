@@ -7,6 +7,7 @@ import { productIdInputSchema, productSchema } from '../../domain/product';
 import { itemSchema } from '../../domain/item';
 import { productWithItemsSchema } from '../../domain/productWithItems';
 
+//todo: separate into query, field, mutations
 export const productResolvers = resolver({
   product: query(Schema.standardSchemaV1(Schema.NullOr(productSchema)))
     .input(Schema.standardSchemaV1(productIdInputSchema))

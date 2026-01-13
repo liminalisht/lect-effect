@@ -2,17 +2,19 @@ import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../services/config';
-import { environmentSchema } from '../domain/environment';
-import { portSchema } from '../domain/port';
+import { Environment, environmentSchema } from '../domain/environment';
+import { Port, portSchema } from '../domain/port';
+import { MasterdataDbConfig } from '../config/masterdataDb';
+import { ConfigurationError } from '../config/errors';
 
-const loadPort = Effect.gen(function * () {
+const loadPort: Effect.Effect<Port, ConfigurationError, never> = Effect.gen(function * () {
   const port = yield * Config.number('APP_PORT')
     .pipe(Config.withDefault(4000))
     .pipe(Effect.map(number => portSchema.make(number)));
   return port;
 });
 
-const loadEnvironment = Effect.gen(function * () {
+const loadEnvironment: Effect.Effect<Environment, ConfigurationError, never> = Effect.gen(function * () {
   const environment = yield * Config.string('APP_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
     .pipe(Effect.mapError(cause => ConfigError.InvalidData(
@@ -22,13 +24,13 @@ const loadEnvironment = Effect.gen(function * () {
   return environment;
 });
 
-const loadLogLevel = Effect.gen(function * () {
+const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError, never> = Effect.gen(function * () {
   const logLevel = yield * Config.logLevel('APP_LOG_LEVEL')
     .pipe(Config.withDefault(LogLevel.Info));
   return logLevel;
 });
 
-const loadMasterdataPgConfig = Effect.gen(function * () {
+const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError, never> = Effect.gen(function * () {
   const url = yield * Config.redacted('MASTERDATA_PG_URL');
   const poolMin = yield * Config.integer('MASTERDATA_PG_POOL_MIN').pipe(Config.withDefault(0));
   const poolMax = yield * Config.integer('MASTERDATA_PG_POOL_MAX').pipe(Config.withDefault(10));
@@ -44,7 +46,7 @@ const loadMasterdataPgConfig = Effect.gen(function * () {
   };
 });
 
-export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
+export const configLayer: Layer.Layer<ConfigService, ConfigurationError>
   = Layer.effect(
     ConfigService,
     Effect.gen(function * () {
@@ -56,7 +58,7 @@ export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
         logLevel,
         environment,
       }
-      const masterdataPg = yield * loadMasterdataPgConfig;
+      const masterdataPg = yield * loadMasterdataDbConfig;
       return {
         app,
         masterdataPg,

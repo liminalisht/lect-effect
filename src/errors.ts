@@ -1,5 +1,6 @@
-import { type ConfigError } from 'effect';
 import { type SqlError } from '@effect/sql/SqlError';
-import { type GraphQLServerError } from './graphql/errors';
+import { type GraphqlError } from './graphql/errors';
+import { ConfigurationError } from './config/errors';
 
-export type AppError = ConfigError.ConfigError | GraphQLServerError | SqlError;
+// todo: this can't be right. it can't be exhaustive
+export type AppError = ConfigurationError | GraphqlError | SqlError;
