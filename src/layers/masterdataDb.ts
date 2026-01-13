@@ -1,3 +1,7 @@
+/**
+ * Masterdata database layer wiring.
+ * @since 1.0.0
+ */
 import {
   Config, Effect, Layer, Redacted,
 } from 'effect';
@@ -9,6 +13,10 @@ import { type SqlError } from '@effect/sql/SqlError';
 import { ConfigService } from '../services/config';
 import { MasterdataDb } from '../services/masterdataDb';
 
+/**
+ * Provides the live masterdata database client.
+ * @since 1.0.0
+ */
 export const masterdataDbLayer: Layer.Layer<MasterdataDb, SqlError | ConfigError, ConfigService> = Layer.unwrapEffect(Effect.gen(function * () {
   const cfg = yield * ConfigService;
 
