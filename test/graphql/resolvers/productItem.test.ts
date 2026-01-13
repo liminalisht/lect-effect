@@ -8,9 +8,9 @@ import {
   Option,
   Redacted,
 } from 'effect';
-import * as SqlClient from '@effect/sql/SqlClient';
+import type * as SqlClient from '@effect/sql/SqlClient';
 import { makeSchema } from '../../../src/graphql/schema';
-import { makeYoga } from '../../../src/graphql/yoga';
+import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { ConfigService } from '../../../src/services/config';
 import { GreetingService } from '../../../src/services/greeting';
 import { MasterdataDb } from '../../../src/services/masterdataDb';
@@ -21,7 +21,6 @@ import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type Port } from '../../../src/config/app/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
-import type { Yoga } from '../../../src/graphql/yoga';
 
 const schema = makeSchema();
 
@@ -42,13 +41,9 @@ const makeAppLayer = () => {
 
   const productRepo: ProductRepoShape = {
     getById: id => Effect.succeed(Option.fromNullable(products.find(p => p.id === id))),
-    getForItem: itemId => Effect.succeed(
-      Option.fromNullable(links.get(itemId)).pipe(
-        Option.flatMap(productId => Option.fromNullable(products.find(p => p.id === productId))),
-      ),
-    ),
+    getForItem: itemId => Effect.succeed(Option.fromNullable(links.get(itemId)).pipe(Option.flatMap(productId => Option.fromNullable(products.find(p => p.id === productId))))),
     list: Effect.succeed(products),
-    create: input => {
+    create(input) {
       const product: Product = {
         __typename: 'Product',
         id: nextProductId as Product['id'],
@@ -63,7 +58,7 @@ const makeAppLayer = () => {
   const itemRepo: ItemRepoShape = {
     getById: id => Effect.succeed(items.find(i => i.id === id) ?? null),
     list: Effect.succeed(items),
-    create: input => {
+    create(input) {
       const item: Item = {
         id: nextItemId as Item['id'],
         description: input.description ?? null,
@@ -74,7 +69,7 @@ const makeAppLayer = () => {
       return Effect.succeed(item);
     },
     listForProduct: productId => Effect.succeed(items.filter(item => links.get(item.id) === productId)),
-    linkToProduct: (itemId, productId) => {
+    linkToProduct(itemId, productId) {
       links.set(itemId, productId);
       return Effect.succeed(undefined);
     },
@@ -92,6 +87,7 @@ const makeAppLayer = () => {
     greet: name => Effect.succeed(Option.match(name, { onNone: () => 'World', onSome: n => n }) as Greeting),
   });
 
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const masterdataLayer = Layer.succeed(MasterdataDb, { sql: {} as SqlClient.SqlClient });
 
   const reposLayer = Layer.mergeAll(
@@ -111,7 +107,7 @@ const fetchJson = async (yoga: Yoga, query: string, variables?: Record<string, u
     body: JSON.stringify({ query, variables }),
   });
   const json = await res.json();
-  return json as { data?: any; errors?: unknown };
+  return json as {data?: any; errors?: unknown};
 };
 
 describe('GraphQL product & item boundary (property)', () => {
@@ -178,14 +174,12 @@ describe('GraphQL product & item boundary (property)', () => {
           });
 
           expect(products).toEqual([{ id: productId, description: input.product.description ?? null }]);
-          expect(items).toEqual(
-            input.items.map((item, idx) => ({
-              id: created.items[idx].id,
-              description: item.description ?? null,
-              pack_size: item.pack_size,
-              productForItem: { id: productId, description: input.product.description ?? null },
-            })),
-          );
+          expect(items).toEqual(input.items.map((item, idx) => ({
+            id: created.items[idx].id,
+            description: item.description ?? null,
+            pack_size: item.pack_size,
+            productForItem: { id: productId, description: input.product.description ?? null },
+          })));
         })),
       catch: e => e as Error,
     }));
