@@ -21,7 +21,7 @@ const arbitraryItem = Arbitrary.make(itemSchema);
 const arbitraryItemList = fc.array(arbitraryItem, { maxLength: 5 });
 const arbitraryCreateItemInput = Arbitrary.make(createItemInputSchema);
 const arbitraryProduct = Arbitrary.make(productSchema);
-const arbitraryProductId = Arbitrary.make(productIdSchema);
+const arbitraryProductId: fc.Arbitrary<number> = Arbitrary.make(productIdSchema);
 
 const unusedItemRepo: Omit<ItemRepoShape, 'getById'> = {
   list: Effect.dieMessage('list unused') as unknown as ItemRepoShape['list'],
@@ -91,7 +91,7 @@ describe('item handlers', () => {
           ...unusedProductRepo,
           getForItem(inputId) {
             expect(inputId).toEqual(itemId);
-            return Effect.succeed(product === null ? Option.none() : Option.some(product));
+            return Effect.succeed(Option.fromNullable(product));
           },
         };
 

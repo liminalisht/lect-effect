@@ -19,7 +19,7 @@ import { itemSchema, type Item } from '../../src/domain/item/item';
 import { itemIdSchema } from '../../src/domain/item/itemId';
 import { createProductWithItemsInputSchema } from '../../src/domain/product/createProductWithItemsInput';
 
-const arbitraryProductId = Arbitrary.make(productIdSchema);
+const arbitraryProductId: fc.Arbitrary<number> = Arbitrary.make(productIdSchema);
 const arbitraryProduct = Arbitrary.make(productSchema);
 const arbitraryProductList = fc.array(arbitraryProduct, { maxLength: 5 });
 const arbitraryProductInput = Arbitrary.make(productInputSchema);
@@ -36,7 +36,7 @@ describe('product handlers', () => {
         const repo: ProductRepoShape = {
           getById(inputId) {
             expect(inputId).toEqual(id);
-            return Effect.succeed(product === null ? Option.none() : Option.some(product));
+            return Effect.succeed(Option.fromNullable(product));
           },
           getForItem: () => Effect.dieMessage('getForItem unused'),
           list: Effect.dieMessage('list unused') as unknown as ProductRepoShape['list'],
@@ -108,7 +108,7 @@ describe('product handlers', () => {
         const productRepo: ProductRepoShape = {
           getById(inputId) {
             expect(inputId).toEqual(productId);
-            return hasProduct ? Effect.succeed(Option.some(product)) : Effect.succeed(Option.none());
+            return Effect.succeed(Option.fromNullable(hasProduct ? product : null));
           },
           getForItem: () => Effect.dieMessage('getForItem unused'),
           list: Effect.dieMessage('list unused') as unknown as ProductRepoShape['list'],
@@ -139,7 +139,7 @@ describe('product handlers', () => {
   it.effect('createProductWithItems wires creation and linking', () =>
     Effect.sync(() => {
       fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInput, arbitraryProductId, arbitraryItemId, async (input, productId, startingItemId) => {
-        let nextItemId = startingItemId;
+        let nextItemId: number = startingItemId;
         const createdItems: Item[] = [];
         const links: Array<{itemId: Item['id']; productId: typeof productId}> = [];
 
