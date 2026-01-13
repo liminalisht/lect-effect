@@ -1,9 +1,9 @@
 import { field, query, resolver } from '@gqloom/core';
 import { Schema } from 'effect';
-import { runEffect } from '../effect';
-import * as handlers from '../../handlers/item';
-import { itemIdInputSchema, itemSchema } from '../../domain/item';
-import { productSchema } from '../../domain/product';
+import { runEffect } from '../../effect';
+import * as handlers from '../../../handlers/item';
+import { itemIdInputSchema, itemSchema } from '../../../domain/item';
+import { productSchema } from '../../../domain/product';
 
 export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)))
   .input(Schema.standardSchemaV1(itemIdInputSchema))

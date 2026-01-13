@@ -3,12 +3,14 @@ import { Effect} from 'effect';
 import { type YogaServerInstance } from 'graphql-yoga';
 import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
+import { Scope } from 'effect/Scope';
+import { IncomingMessage, ServerResponse } from 'node:http';
 
 // todo: grok Effect acquireRelease and Effect.async better
 export const listen = (
   yoga: YogaServerInstance<GraphQLContext, Record<string, any>>,
   port: number,
-) =>
+): Effect.Effect<Server<typeof IncomingMessage, typeof ServerResponse>, ServerStartError, Scope> =>
   Effect.acquireRelease(
     Effect.async<Server, ServerStartError>((resume, signal) => {
       const server = createServer(yoga);
