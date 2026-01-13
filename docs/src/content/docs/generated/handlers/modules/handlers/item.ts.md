@@ -1,6 +1,6 @@
 ---
 title: handlers/item.ts
-nav_order: 3
+nav_order: 2
 parent: Modules
 ---
 
@@ -32,14 +32,9 @@ Creates a new item.
 
 ```ts
 export declare const createItem: (
-  input: ItemInput
+  input: CreateItemInput
 ) => Effect.Effect<
-  {
-    readonly __typename?: "Item" | undefined
-    readonly id: number
-    readonly description: string | null
-    readonly pack_size: number
-  },
+  { readonly id: number; readonly description: string | null; readonly pack_size: number },
   ItemRepoError,
   ItemRepo
 >
@@ -57,12 +52,7 @@ Fetches an item by id.
 export declare const getItem: (
   id: ItemId
 ) => Effect.Effect<
-  {
-    readonly __typename?: "Item" | undefined
-    readonly id: number
-    readonly description: string | null
-    readonly pack_size: number
-  } | null,
+  { readonly id: number; readonly description: string | null; readonly pack_size: number } | null,
   ItemRepoError,
   ItemRepo
 >
@@ -78,12 +68,7 @@ Lists all items.
 
 ```ts
 export declare const listItems: Effect.Effect<
-  readonly {
-    readonly __typename?: "Item" | undefined
-    readonly id: number
-    readonly description: string | null
-    readonly pack_size: number
-  }[],
+  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
   ItemRepoError,
   ItemRepo
 >

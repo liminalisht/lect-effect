@@ -28,9 +28,7 @@ Produces a greeting response using the greeting service.
 **Signature**
 
 ```ts
-export declare const helloHandler: (
-  input: schemas.NameInput
-) => Effect.Effect<schemas.HelloResponse, never, GreetingService>
+export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetingService>
 ```
 
 Added in v1.0.0
