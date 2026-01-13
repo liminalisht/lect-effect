@@ -1,0 +1,124 @@
+---
+title: Code Organization
+description: Where things live, what belongs where, and how to extend the system without tangling layers.
+---
+
+At a glance, **lect-effect** splits concerns so that **domain** stays invariant while **interfaces** vary.
+
+A practical heuristic:
+
+> If a change modifies the meaning of the business objects, it belongs in `src/domain/`.
+> If a change modifies *how* we expose or persist those objects, it belongs elsewhere.
+
+---
+
+## Top-level structure
+
+### `src/domain/`
+**Canonical data model** as Effect Schema.
+
+- Each domain module typically exports:
+  - a `Schema` (runtime + documentation),
+  - and a derived TypeScript type (`Schema.Schema.Type<typeof schema>`).
+
+Example patterns you’ll see:
+- branded identifiers (`Schema.Number.pipe(Schema.int(), Schema.brand('ProductId'))`)
+- structured records (`Schema.Struct({ ... })`)
+- derived input types distinct from stored types.
+
+### `src/services/`
+**Abstract capabilities** as tags:
+
+- `ConfigService`
+- `GreetingService`
+- `MasterdataDb`
+- `ProductRepo`
+- `ItemRepo`
+
+These are `Context.Tag`s: they are *named points* in the environment `R`.
+
+### `src/layers/`
+**Concrete implementations** and wiring.
+
+- `configLayer`: reads env vars via `Config`
+- `loggerLayer`: depends on config, sets minimum log level
+- `masterdataDbLayer`: configures `@effect/sql-pg`
+- repo layers: build repos that depend on the DB layer
+- `appLayer`: merges everything into the `AppServices` environment
+
+### `src/handlers/`
+**Use-cases / application logic** as Effect programs.
+
+Handlers are where you want the “meaningful composition” to live:
+- they depend on services (repos, etc.)
+- they return domain values
+- they are transport-agnostic
+
+### `src/graphql/`
+**GraphQL boundary**:
+
+- `schema.ts`: calls `weave(EffectWeaver, asyncContextProvider, ...resolvers)`
+- `yoga.ts`: injects an `Effect` runtime into GraphQL context
+- `effect.ts`: `runEffect` natural transformation `Effect -> Promise`
+- `resolvers/**`: GraphQL operations, usually very thin adapters that call handlers
+
+### `migrations/`
+Database schema evolution via node-pg-migrate.
+
+### `test/`
+Tests grouped by concern:
+
+- Domain schema tests (often property-based)
+- Handler tests
+- GraphQL resolver tests that hit Yoga via `yoga.fetch`
+
+---
+
+## Domain vs GraphQL vs Services vs Layers (the separation of concerns)
+
+### Domain
+- Pure descriptions of data, with validation and typing.
+- Should not import GraphQL or SQL.
+
+### GraphQL
+- A *presentation* of domain schemas, woven by GQLoom.
+- Converts `Schema` to GraphQL types via `@gqloom/effect`.
+- Runs Effects via a runtime stored in GraphQL context.
+
+### Services
+- Stable interfaces: “what you can do.”
+- Think of them as objects in a small category of capabilities.
+
+### Layers
+- Concrete realizations of services.
+- Compose into a dependency DAG; build once, provide everywhere.
+
+---
+
+## Adding a new feature: a checklist
+
+Suppose you add a new entity `Warehouse`.
+
+1. **Domain**
+   - Add `src/domain/warehouse/...` schemas + types.
+   - Add property-based tests in `test/domain/warehouse/...`.
+
+2. **Persistence**
+   - Add a migration (tables/relations).
+   - Add a repository service/tag + methods.
+   - Implement it in a layer (depends on `MasterdataDb`).
+
+3. **Use-cases**
+   - Add handlers in `src/handlers/warehouse.ts`.
+   - Handler Effects should require only the services they actually need.
+
+4. **GraphQL**
+   - Add query/mutation resolvers under `src/graphql/resolvers/...`.
+   - Prefer: input/output types derived from your Effect Schemas.
+
+5. **Tests**
+   - Handler semantics tests.
+   - GraphQL tests using `makeSchema()` + `makeYoga()` + `testAppLayer`.
+
+The guiding invariant: **GraphQL should not become the place where semantics live.**
+Keep it as a thin functor into the Kleisli world of `Effect`.
