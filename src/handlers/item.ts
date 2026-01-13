@@ -8,7 +8,6 @@ import { ProductRepo } from '../services/productRepo';
 import type { ItemId } from '../domain/item/itemId';
 import type { CreateItemInput } from '../domain/item/createItemInput';
 
-
 /**
  * Fetches an item by id.
  * @since 1.0.0

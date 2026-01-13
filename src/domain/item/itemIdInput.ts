@@ -22,4 +22,3 @@ export const itemIdInputSchema = Schema.Struct({
   description: 'input containing an item identifier',
 });
 
-

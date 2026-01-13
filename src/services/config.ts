@@ -1,6 +1,6 @@
 import { Context } from 'effect';
-import { AppConfig } from '../config/app';
-import { MasterdataDbConfig } from '../config/masterdataDb';
+import { type AppConfig } from '../config/app';
+import { type MasterdataDbConfig } from '../config/masterdataDb';
 
 export class ConfigService extends Context.Tag('ConfigService')<ConfigService, ConfigServiceShape>() {}
 

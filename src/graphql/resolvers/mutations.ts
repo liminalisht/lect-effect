@@ -10,18 +10,17 @@ import { createProduct, createProductWithItems } from '../../handlers/product';
 import { createProductWithItemsInputSchema } from '../../domain/product/createProductWithItemsInput';
 import { productWithItemsSchema } from '../../domain/product/productWithItems';
 
-
 export const createItemMutation = mutation(Schema.standardSchemaV1(itemSchema))
   .input(Schema.standardSchemaV1(createItemInputSchema))
-  .resolve(async (args) => runEffect(createItem(args)));
+  .resolve(async args => runEffect(createItem(args)));
 
 export const createProductMutation = mutation(Schema.standardSchemaV1(productSchema))
   .input(Schema.standardSchemaV1(productInputSchema))
-  .resolve(async (args) => runEffect(createProduct(args)));
+  .resolve(async args => runEffect(createProduct(args)));
 
 export const createProductWithItemsMutation = mutation(Schema.standardSchemaV1(productWithItemsSchema))
   .input(Schema.standardSchemaV1(createProductWithItemsInputSchema))
-  .resolve(async (args) => runEffect(createProductWithItems(args)));
+  .resolve(async args => runEffect(createProductWithItems(args)));
 
 export const mutationsMap = {
   createItem: createItemMutation,

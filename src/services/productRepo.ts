@@ -1,10 +1,11 @@
-import { Context, Effect, Option, Schema } from 'effect';
+import {
+  Context, Effect, Option, Schema,
+} from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
 import { decodeMany, decodeOne } from '../utilities/decode';
 import { type Product } from '../domain/product/product';
-import { type ProductId } from '../domain/product/productId';
-import { productIdSchema } from '../domain/product/productId';
+import { type ProductId, productIdSchema } from '../domain/product/productId';
 import { type ProductInput } from '../domain/product/productInput';
 import type { ItemId } from '../domain/item/itemId';
 import { MasterdataDb } from './masterdataDb';

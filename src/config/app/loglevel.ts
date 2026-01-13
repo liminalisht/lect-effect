@@ -1,3 +1,3 @@
 import { type LogLevel } from 'effect';
 
-export type LogLevel = LogLevel.LogLevel;
+export type ConfiguredLogLevel = LogLevel.LogLevel;

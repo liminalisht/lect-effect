@@ -1,3 +1,3 @@
-import { ConfigError } from 'effect';
+import { type ConfigError } from 'effect';
 
-export type ConfigurationError = ConfigError.ConfigError
+export type ConfigurationError = ConfigError.ConfigError;

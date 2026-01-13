@@ -19,7 +19,7 @@ export const getProduct = (id: ProductId) =>
   Effect.gen(function * () {
     const repo = yield * ProductRepo;
     const opt = yield * repo.getById(id);
-    return Option.getOrNull(opt); //todo: wait this just swallows the ParseErrors?
+    return Option.getOrNull(opt); // todo: wait this just swallows the ParseErrors?
   });
 
 /**

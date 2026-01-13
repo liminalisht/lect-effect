@@ -8,7 +8,7 @@ import { type ProductId } from '../domain/product/productId';
 import { decodeMany, decodeOne } from '../utilities/decode';
 import { MasterdataDb } from './masterdataDb';
 
-//todo: extract error
+// todo: extract error
 export type ItemRepoError = SqlError.SqlError | ParseError;
 
 export type ItemRepoShape = {

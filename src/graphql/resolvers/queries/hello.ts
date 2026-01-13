@@ -8,10 +8,7 @@ import { runEffect } from '../../effect';
 export const helloQueryMap = {
   hello: query(Schema.standardSchemaV1(helloResponseSchema))
     .input(Schema.standardSchemaV1(nameInputSchema))
-    .resolve(async (args) => runEffect(
-      helloHandler(args)
-    )
-    ),
+    .resolve(async args => runEffect(helloHandler(args))),
 };
 export const helloQueryResolver = resolver(helloQueryMap);
 

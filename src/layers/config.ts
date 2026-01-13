@@ -2,19 +2,19 @@ import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../services/config';
-import { Environment, environmentSchema } from '../config/app/environment';
-import { Port, portSchema } from '../config/app/port';
-import { MasterdataDbConfig } from '../config/masterdataDb';
-import { ConfigurationError } from '../config/errors';
+import { type Environment, environmentSchema } from '../config/app/environment';
+import { type Port, portSchema } from '../config/app/port';
+import { type MasterdataDbConfig } from '../config/masterdataDb';
+import { type ConfigurationError } from '../config/errors';
 
-const loadPort: Effect.Effect<Port, ConfigurationError, never> = Effect.gen(function * () {
+const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
   const port = yield * Config.number('APP_PORT')
     .pipe(Config.withDefault(4000))
     .pipe(Effect.map(number => portSchema.make(number)));
   return port;
 });
 
-const loadEnvironment: Effect.Effect<Environment, ConfigurationError, never> = Effect.gen(function * () {
+const loadEnvironment: Effect.Effect<Environment, ConfigurationError> = Effect.gen(function * () {
   const environment = yield * Config.string('APP_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
     .pipe(Effect.mapError(cause => ConfigError.InvalidData(
@@ -24,13 +24,13 @@ const loadEnvironment: Effect.Effect<Environment, ConfigurationError, never> = E
   return environment;
 });
 
-const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError, never> = Effect.gen(function * () {
+const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effect.gen(function * () {
   const logLevel = yield * Config.logLevel('APP_LOG_LEVEL')
     .pipe(Config.withDefault(LogLevel.Info));
   return logLevel;
 });
 
-const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError, never> = Effect.gen(function * () {
+const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError> = Effect.gen(function * () {
   const url = yield * Config.redacted('MASTERDATA_PG_URL');
   const poolMin = yield * Config.integer('MASTERDATA_PG_POOL_MIN').pipe(Config.withDefault(0));
   const poolMax = yield * Config.integer('MASTERDATA_PG_POOL_MAX').pipe(Config.withDefault(10));
@@ -57,7 +57,7 @@ export const configLayer: Layer.Layer<ConfigService, ConfigurationError>
         port,
         logLevel,
         environment,
-      }
+      };
       const masterdataPg = yield * loadMasterdataDbConfig;
       return {
         app,
