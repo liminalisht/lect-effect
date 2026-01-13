@@ -5,14 +5,19 @@ import * as handlers from '../../handlers/item';
 import { itemIdInputSchema, itemSchema } from '../../domain/item';
 import { productSchema } from '../../domain/product';
 
-export const itemResolvers = resolver({
-  item: query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)))
-    .input(Schema.standardSchemaV1(itemIdInputSchema))
-    .resolve(async args => runEffect(handlers.getItem(args.id))),
+export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)))
+  .input(Schema.standardSchemaV1(itemIdInputSchema))
+  .resolve(async (args) => runEffect(handlers.getItem(args.id)));
 
-  items: query(Schema.standardSchemaV1(Schema.Array(itemSchema)))
-    .resolve(async () => runEffect(handlers.listItems)),
-});
+export const itemsQuery = query(Schema.standardSchemaV1(Schema.Array(itemSchema)))
+  .resolve(async () => runEffect(handlers.listItems));
+
+export const itemQueryMap = {
+  item: itemQuery,
+  items: itemsQuery,
+};
+
+export const itemResolvers = resolver(itemQueryMap);
 
 export const itemFieldResolvers = resolver.of(
   Schema.standardSchemaV1(itemSchema),
