@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
-    "docs:config": "docgen --project tsconfig.json --src ./src/domain/item --out ./docs/src/content/docs/generated/domain/item --exclude \"**/test/**\"",
+    "docs:config": "docgen --project tsconfig.json --src ./src/graphql/resolvers --out ./docs/src/content/docs/generated/graphql/resolvers --exclude \"**/test/**\"",
     "docs:domain": "docgen --project tsconfig.json --src ./src/domain --out ./docs/src/content/docs/generated/domain --exclude \"**/test/**\"",
     "docs:handlers": "docgen --project tsconfig.json --src ./src/handlers --out ./docs/src/content/docs/generated/handlers --exclude \"**/test/**\"",
     "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
