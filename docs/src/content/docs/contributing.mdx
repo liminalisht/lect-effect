@@ -1,0 +1,131 @@
+---
+title: Contributing
+description: Quality gates, conventions, and what every change must satisfy before merge.
+---
+
+This project treats *correctness properties* as first-class artifacts. A change is acceptable iff it preserves the relevant invariants and passes the standard gates below.
+
+## Required gates (every change must satisfy)
+
+### 1) Build + typecheck
+
+```bash
+pnpm run buildtest
+# or
+./build.sh
+```
+
+What this guarantees:
+
+* TypeScript compiles (`tsc`)
+* test typecheck passes (`tsconfig.test.json`)
+
+### 2) Lint
+
+```bash
+./lint.sh
+# pnpx xo --ignore 'docs-site/**'
+```
+
+### 3) Tests (including property tests)
+
+```bash
+./tests.sh
+# installs deps
+# migrates the test DB
+# runs vitest
+```
+
+This includes:
+
+* property-based tests (`fast-check`) for schemas
+* Effect/Vitest integration tests (`@effect/vitest`)
+* GraphQL tests that execute Yoga via `yoga.fetch`
+
+### 4) Documentation generation (docgen)
+
+```bash
+pnpm docs:generate
+```
+
+Docgen is not “nice-to-have”: it is part of the interface contract.
+If you add or change public modules, you must ensure docgen still succeeds.
+
+---
+
+## JSDoc conventions (docgen contract)
+
+Docgen extracts documentation from TypeScript source. Follow the existing style:
+
+* Every module/function/type intended for public understanding should have a doc comment.
+* Include `@since` tags (the repo consistently uses them).
+* Prefer short, denotational descriptions:
+
+  * “Decodes a single unknown value with the provided schema.”
+  * “Natural transformation `Effect -> Promise`.”
+
+When in doubt: imitate nearby files.
+
+Docgen reference:
+
+* [https://effect-ts.github.io/docgen/](https://effect-ts.github.io/docgen/)
+
+---
+
+## What to test when you add something new
+
+### Domain additions
+
+* Add schema tests under `test/domain/...`.
+* Prefer **properties** over examples:
+
+  * “valid values round-trip decode”
+  * “invalid values are rejected”
+
+Docs:
+
+* fast-check: [https://fast-check.dev/](https://fast-check.dev/)
+* Vitest: [https://vitest.dev/guide/](https://vitest.dev/guide/)
+
+### Handler additions
+
+* Test semantics directly (no GraphQL necessary).
+* If a handler depends on services, provide a suitable Layer.
+
+### GraphQL additions
+
+* Add resolver tests under `test/graphql/...`.
+* Prefer queries executed via Yoga (`yoga.fetch`) and check:
+
+  * no GraphQL errors
+  * shape matches the domain contract
+
+---
+
+## DB changes (migrations)
+
+If you modify persistence:
+
+1. Add a node-pg-migrate migration under `migrations/masterdatadb/`.
+2. Ensure both DBs can migrate cleanly:
+
+   * `pnpm migrate:masterdata`
+   * `pnpm migrate:test-masterdata`
+3. Update repository decoding schemas as needed.
+
+Docs:
+
+* node-pg-migrate: [https://salsita.github.io/node-pg-migrate/getting-started](https://salsita.github.io/node-pg-migrate/getting-started)
+
+---
+
+## Style of change (keep the layers untangled)
+
+* Do not let GraphQL own business semantics.
+* Do not let repositories leak transport types.
+* Keep domain schemas transport-agnostic.
+* Keep service tags stable; evolve implementations in layers.
+
+In other words: preserve the factorization
+`Domain → (Handlers via Services) → GraphQL`,
+rather than collapsing everything into the boundary.
