@@ -12,10 +12,14 @@ export type MasterdataPgConfig = {
   };
 };
 
-type ConfigServiceShape = {
+type AppConfig = {
   readonly port: Port;
   readonly logLevel: LogLevel.LogLevel;
   readonly environment: Environment;
+}
+
+type ConfigServiceShape = {
+  readonly app: AppConfig;
   readonly masterdataPg: MasterdataPgConfig;
 };
 

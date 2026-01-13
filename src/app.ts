@@ -16,7 +16,7 @@ export const app: Effect.Effect<never, unknown, AppServices>
     yield * Effect.logDebug('making yoga server instance...');
     const yoga = yield * makeYoga(schema);
     yield * Effect.logDebug('starting graphql server...');
-    yield * server.listen(yoga, config.port);
-    yield * Effect.logInfo(`graphql server is running on http://localhost:${config.port}/graphql`);
+    yield * server.listen(yoga, config.app.port);
+    yield * Effect.logInfo(`graphql server is running on http://localhost:${config.app.port}/graphql`);
     return yield * Effect.never;
   }));

@@ -51,11 +51,14 @@ export const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError>
       const port = yield * loadPort;
       const environment = yield * loadEnvironment;
       const logLevel = yield * loadLogLevel;
-      const masterdataPg = yield * loadMasterdataPgConfig;
-      return {
+      const app = {
         port,
         logLevel,
         environment,
+      }
+      const masterdataPg = yield * loadMasterdataPgConfig;
+      return {
+        app,
         masterdataPg,
       };
     }),
