@@ -1,5 +1,5 @@
 /**
- * Item domain schema
+ * Item domain schema module.
  * @since 1.0.0
  */
 import { Schema } from 'effect';

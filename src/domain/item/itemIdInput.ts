@@ -1,5 +1,5 @@
 /**
- * Item domain schema and related input shapes.
+ * Item identifier input module.
  * @since 1.0.0
  */
 import { Schema } from 'effect';
