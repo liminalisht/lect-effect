@@ -10,16 +10,23 @@ import {
   productWithItemsSchema,
 } from '../../domain/productWithItems';
 
-export const masterdataMutations = resolver({
-  createProduct: mutation(Schema.standardSchemaV1(productSchema))
-    .input(Schema.standardSchemaV1(productInputSchema))
-    .resolve(async args => runEffect(productHandlers.createProduct(args))),
+const createProductMutation = mutation(Schema.standardSchemaV1(productSchema))
+  .input(Schema.standardSchemaV1(productInputSchema))
+  .resolve(async (args) => runEffect(productHandlers.createProduct(args)));
 
-  createItem: mutation(Schema.standardSchemaV1(itemSchema))
-    .input(Schema.standardSchemaV1(createItemInputSchema))
-    .resolve(async args => runEffect(itemHandlers.createItem(args))),
+const createItemMutation = mutation(Schema.standardSchemaV1(itemSchema))
+  .input(Schema.standardSchemaV1(createItemInputSchema))
+  .resolve(async (args) => runEffect(itemHandlers.createItem(args)));
 
-  createProductWithItems: mutation(Schema.standardSchemaV1(productWithItemsSchema))
-    .input(Schema.standardSchemaV1(createProductWithItemsInputSchema))
-    .resolve(async args => runEffect(productHandlers.createProductWithItems(args))),
-});
+const createProductWithItemsMutation = mutation(Schema.standardSchemaV1(productWithItemsSchema))
+  .input(Schema.standardSchemaV1(createProductWithItemsInputSchema))
+  .resolve(async (args) => runEffect(productHandlers.createProductWithItems(args)));
+
+export const mutationsMap = {
+  createProduct: createProductMutation,
+
+  createItem: createItemMutation,
+
+  createProductWithItems: createProductWithItemsMutation,
+};
+export const mutationsResolver = resolver(mutationsMap);

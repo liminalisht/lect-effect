@@ -13,5 +13,5 @@ export const helloQueryMap = {
     )
     ),
 };
-export const helloResolver = resolver(helloQueryMap);
+export const helloQueryResolver = resolver(helloQueryMap);
 

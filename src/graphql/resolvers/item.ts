@@ -17,12 +17,12 @@ export const itemQueryMap = {
   items: itemsQuery,
 };
 
-export const itemResolvers = resolver(itemQueryMap);
+export const itemQueryResolvers = resolver(itemQueryMap);
 
-export const itemFieldResolvers = resolver.of(
-  Schema.standardSchemaV1(itemSchema),
-  {
-    productForItem: field(Schema.standardSchemaV1(Schema.NullOr(productSchema)))
-      .resolve(async parent => runEffect(handlers.productForItem(parent.id))),
-  },
-);
+// export const itemFieldResolvers = resolver.of(
+//   Schema.standardSchemaV1(itemSchema),
+//   {
+//     productForItem: field(Schema.standardSchemaV1(Schema.NullOr(productSchema)))
+//       .resolve(async parent => runEffect(handlers.productForItem(parent.id))),
+//   },
+// );

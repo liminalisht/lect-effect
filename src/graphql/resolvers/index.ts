@@ -1,14 +1,14 @@
-import { helloResolver } from './hello';
-import { productResolvers, productFieldResolvers } from './product';
-import { itemResolvers, itemFieldResolvers } from './item';
-import { masterdataMutations } from './mutations';
+import { mutationsResolver } from './mutations';
+import { queryResolver } from './queries';
+import { productFieldResolvers } from './fields/product';
+import { itemFieldResolvers } from './fields/item';
 
 // todo: reorg resolvers, or extract to functions based on lects?
 export const makeResolvers = () => [
-  helloResolver,
-  productResolvers,
-  productFieldResolvers,
-  itemResolvers,
+  queryResolver,
+
+  mutationsResolver,
+
   itemFieldResolvers,
-  masterdataMutations,
+  productFieldResolvers,
 ];
