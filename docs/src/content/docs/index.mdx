@@ -1,9 +1,9 @@
 ---
 title: lect-effect
-description: Get started building your docs site with Starlight.
+description: A TypeScript GraphQL service whose domain is written once (Effect Schema) and woven into a GraphQL API (GQLoom), executed as Effect programs.
 # template: splash # Remove or comment out this line to display the site sidebar on this page.
 hero:
-  tagline: what should this be?
+  tagline: Define your Schemas (domain types) and Effects (domain behaviors) once; then weave them into GraphQL APIs backed by implementations of dependent services.
   image:
     file: ../../assets/houston.webp
   actions:
@@ -38,3 +38,41 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 		Learn more in [the Starlight Docs](https://starlight.astro.build/).
 	</Card>
 </CardGrid>
+
+# Lect Effect
+
+**Lect Effect** is a **TypeScript** backend that exposes a **GraphQL** API whose types and validation are derived from **Effect Schema**, and whose resolvers run as **Effect** computations.
+
+In one sentence:
+
+> Write your *domain* as `Schema`s and `Effect`s, weave them into GraphQL with **GQLoom**, and run them on a fully typed service environment provided via **Effect Layers**.
+
+## What it uses (and why)
+
+- **GraphQL** as the external interface (GraphQL Yoga server).
+- **GQLoom** (`@gqloom/core` + `@gqloom/effect`) to *weave* a schema from runtime types.
+- **Effect** for:
+  - `Effect<A, E, R>` programs (effects),
+  - `Schema` as the single source of truth for runtime validation + types,
+  - `Context.Tag` + `Layer` to model and provide services.
+- **PostgreSQL** via `@effect/sql` and `@effect/sql-pg`.
+- **Property-based tests** (fast-check) + **Vitest** integration (`@effect/vitest`).
+- **Docs generation** via `@effect/docgen`, rendered in a Starlight/Astro docs site.
+
+## Start here
+
+- [Getting started](./introduction/)
+- [Code organization](./code-organization/)
+- [Architecture](./architecture/)
+- [Contributing](./contributing/)
+
+## External references
+
+- Effect: https://effect.website/docs/getting-started/introduction/
+- Effect Schema: https://effect.website/docs/schema/introduction/
+- Effect Layers: https://effect.website/docs/requirements-management/layers/
+- GQLoom: https://gqloom.dev/
+- GQLoom weave(): https://gqloom.dev/docs/weave.html
+- GQLoom Effect integration: https://gqloom.dev/docs/schema/effect.html
+- GraphQL Yoga: https://the-guild.dev/graphql/yoga-server/docs
+- TypeScript Handbook: https://www.typescriptlang.org/docs/handbook/intro.html
