@@ -6,13 +6,18 @@ hero:
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Getting Started
+      link: /guides/introduction
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+    - text: Code Organization
+      link: /guides/code-organization
+      icon: right-arrow
+    - text: Architecture
+      link: /guides/architecture
+      icon: right-arrow
+    - text: Contributing
+      link: /guides/contributing
+      icon: right-arrow
 ---
 
 **lect-effect** is a **TypeScript** backend that exposes a **GraphQL** API whose types and validation are derived from **Effect Schema**, and whose resolvers run as **Effect** computations.
@@ -21,7 +26,7 @@ In one sentence:
 
 > Write your *domain* as `Schema`s and `Effect`s, weave them into GraphQL with **GQLoom**, and run them on a fully typed service environment provided via **Effect Layers**.
 
-## What it uses (and why)
+## What lect-effect uses (and why)
 
 - **GraphQL** as the external interface (GraphQL Yoga server).
 - **GQLoom** (`@gqloom/core` + `@gqloom/effect`) to *weave* a schema from runtime types.
@@ -35,10 +40,10 @@ In one sentence:
 
 ## Start here
 
-- [Getting started](./introduction/)
-- [Code organization](./code-organization/)
-- [Architecture](./architecture/)
-- [Contributing](./contributing/)
+- [Getting started](./guides/introduction/)
+- [Code organization](./guides/code-organization/)
+- [Architecture](./guides/architecture/)
+- [Contributing](./guides/contributing/)
 
 ## External references
 

@@ -11,13 +11,10 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{label: 'Example Guide', slug: 'guides/example'},
-					],
+					autogenerate: {directory: 'guides'},
 				},
 				{
-					label: 'lect-effect code',
+					label: 'reference',
 					autogenerate: {directory: 'src/modules'},
 				},
 			],
