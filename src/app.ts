@@ -17,14 +17,14 @@ export const app: Effect.Effect<never, unknown, AppServices>
     return yield * Effect.never;
   }));
 
-const getConfig = (): Effect.Effect<ConfigServiceShape, never, ConfigService> => Effect.gen(function * () {
+export const getConfig = (): Effect.Effect<ConfigServiceShape, never, ConfigService> => Effect.gen(function * () {
   yield * Effect.logDebug('getting config...');
   const config = yield * ConfigService;
   yield * Effect.logDebug('config:', config);
   return config;
 });
 
-const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(function * () {
+export const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(function * () {
   yield * Effect.logDebug('making graphql schema...');
   const schema = makeSchema();
   yield * Effect.logDebug('logging graphql schema...');
@@ -32,7 +32,7 @@ const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(functio
   return schema;
 });
 
-const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga, never, AppServices> => Effect.gen(function * () {
+export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga, never, AppServices> => Effect.gen(function * () {
   yield * Effect.logDebug('making yoga server instance...');
   const yoga = yield * makeYoga(schema);
   return yoga;
