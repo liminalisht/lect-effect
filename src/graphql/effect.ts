@@ -1,6 +1,6 @@
 import { type Effect, Runtime } from 'effect';
 import { useContext } from '@gqloom/core/context';
-import type { AppServices } from '../services';
+import type { AppServices } from '../services/app';
 import type { GraphQLContext } from './context';
 import { RuntimeMissingFromContextError } from './errors';
 
