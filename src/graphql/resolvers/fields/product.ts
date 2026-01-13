@@ -2,7 +2,6 @@
  * Field resolvers for the Product type.
  * @since 1.0.0
  */
-// // todo: add tests for resolvers
 import { field, resolver } from '@gqloom/core';
 import { Schema } from 'effect';
 import { runEffect } from '../../effect';

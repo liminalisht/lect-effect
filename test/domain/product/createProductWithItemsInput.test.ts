@@ -12,11 +12,20 @@ const invalidCreateProductWithItemsInput = fc.oneof(
   // product missing
   fc.record({ items: fc.array(fc.record({ pack_size: fc.integer() }, { requiredKeys: ['pack_size'] })) }, { requiredKeys: ['items'] }),
   // items not an array
-  fc.record({ product: fc.record({ description: fc.string() }, { requiredKeys: ['description'] }), items: fc.string() }, { requiredKeys: ['product', 'items'] }),
+  fc.record(
+    { product: fc.record({ description: fc.string() }, { requiredKeys: ['description'] }), items: fc.string() },
+    { requiredKeys: ['product', 'items'] },
+  ),
   // items array with invalid element shape
-  fc.record({ product: fc.record({ description: fc.string() }, { requiredKeys: ['description'] }), items: fc.array(fc.record({ pack_size: fc.string() }, { requiredKeys: ['pack_size'] }), { minLength: 1 }) }, { requiredKeys: ['product', 'items'] }),
+  fc.record(
+    { product: fc.record({ description: fc.string() }, { requiredKeys: ['description'] }), items: fc.array(fc.record({ pack_size: fc.string() }, { requiredKeys: ['pack_size'] }), { minLength: 1 }) },
+    { requiredKeys: ['product', 'items'] },
+  ),
   // product invalid type
-  fc.record({ product: fc.record({ description: fc.boolean() }, { requiredKeys: ['description'] }), items: fc.array(fc.record({ pack_size: fc.integer() }, { requiredKeys: ['pack_size'] })) }, { requiredKeys: ['product', 'items'] }),
+  fc.record(
+    { product: fc.record({ description: fc.boolean() }, { requiredKeys: ['description'] }), items: fc.array(fc.record({ pack_size: fc.integer() }, { requiredKeys: ['pack_size'] })) },
+    { requiredKeys: ['product', 'items'] },
+  ),
   // non-object shapes
   fc.string(),
 );

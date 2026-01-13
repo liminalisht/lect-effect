@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 // // todo: add tests for resolvers
-import { field, query, resolver } from '@gqloom/core';
+import { query, resolver } from '@gqloom/core';
 import { Schema } from 'effect';
 import { runEffect } from '../../effect';
 import * as handlers from '../../../handlers/product';

@@ -42,7 +42,7 @@ describe('item handlers', () => {
       fc.assert(fc.asyncProperty(arbitraryItemId, fc.oneof(fc.constant(null), arbitraryItem), async (id, found) => {
         const repo: ItemRepoShape = {
           ...unusedItemRepo,
-          getById: inputId => {
+          getById(inputId) {
             expect(inputId).toEqual(id);
             return Effect.succeed(found);
           },
@@ -73,7 +73,7 @@ describe('item handlers', () => {
         const repo: ItemRepoShape = {
           getById: () => Effect.dieMessage('getById unused'),
           ...unusedItemRepo,
-          create: repoInput => {
+          create(repoInput) {
             expect(repoInput).toEqual(input);
             return Effect.succeed(created);
           },
@@ -89,7 +89,7 @@ describe('item handlers', () => {
       fc.assert(fc.asyncProperty(arbitraryProductId, fc.oneof(fc.constant(null), arbitraryProduct), async (itemId, product) => {
         const repo: ProductRepoShape = {
           ...unusedProductRepo,
-          getForItem: inputId => {
+          getForItem(inputId) {
             expect(inputId).toEqual(itemId);
             return Effect.succeed(product === null ? Option.none() : Option.some(product));
           },

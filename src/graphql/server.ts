@@ -2,9 +2,7 @@
  * HTTP server lifecycle helpers for GraphQL Yoga.
  * @since 1.0.0
  */
-import {
-  createServer, type Server, type IncomingMessage, ServerResponse,
-} from 'node:http';
+import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
 import { type YogaServerInstance } from 'graphql-yoga';
 import { type Scope } from 'effect/Scope';

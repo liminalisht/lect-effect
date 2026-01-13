@@ -12,7 +12,14 @@ const invalidItem = fc.oneof(
   // missing required fields
   fc.record({ id: fc.integer(), pack_size: fc.integer() }, { requiredKeys: ['id', 'pack_size'] }),
   // pack_size not integer
-  fc.record({ id: fc.integer(), description: fc.string(), pack_size: fc.double({ noNaN: true, noDefaultInfinity: true }).filter(n => !Number.isInteger(n)) }, { requiredKeys: ['id', 'description', 'pack_size'] }),
+  fc.record(
+    {
+      id: fc.integer(),
+      description: fc.string(),
+      pack_size: fc.double({ noNaN: true, noDefaultInfinity: true }).filter(n => !Number.isInteger(n)),
+    },
+    { requiredKeys: ['id', 'description', 'pack_size'] },
+  ),
   // non-object shapes
   fc.string(),
 );

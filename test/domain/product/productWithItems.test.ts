@@ -19,7 +19,10 @@ const invalidProductWithItems = fc.oneof(
     items: fc.array(fc.record({ id: fc.string(), description: fc.string(), pack_size: fc.integer() }, { requiredKeys: ['id', 'description', 'pack_size'] }), { minLength: 1 }),
   }, { requiredKeys: ['product', 'items'] }),
   // invalid product shape
-  fc.record({ product: fc.record({ id: fc.string() }, { requiredKeys: ['id'] }), items: fc.array(fc.record({ id: fc.integer(), description: fc.string(), pack_size: fc.integer() }, { requiredKeys: ['id', 'description', 'pack_size'] })) }, { requiredKeys: ['product', 'items'] }),
+  fc.record({
+    product: fc.record({ id: fc.string() }, { requiredKeys: ['id'] }),
+    items: fc.array(fc.record({ id: fc.integer(), description: fc.string(), pack_size: fc.integer() }, { requiredKeys: ['id', 'description', 'pack_size'] })),
+  }, { requiredKeys: ['product', 'items'] }),
   // non-object shapes
   fc.string(),
 );

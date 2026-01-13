@@ -12,13 +12,12 @@ import {
 } from '../../src/handlers/product';
 import { ProductRepo, type ProductRepoShape } from '../../src/services/productRepo';
 import { ItemRepo, type ItemRepoShape } from '../../src/services/itemRepo';
-import { productSchema } from '../../src/domain/product/product';
+import { productSchema, type Product } from '../../src/domain/product/product';
 import { productIdSchema } from '../../src/domain/product/productId';
 import { productInputSchema } from '../../src/domain/product/productInput';
 import { itemSchema, type Item } from '../../src/domain/item/item';
 import { itemIdSchema } from '../../src/domain/item/itemId';
 import { createProductWithItemsInputSchema } from '../../src/domain/product/createProductWithItemsInput';
-import type { Product } from '../../src/domain/product/product';
 
 const arbitraryProductId = Arbitrary.make(productIdSchema);
 const arbitraryProduct = Arbitrary.make(productSchema);
@@ -35,7 +34,7 @@ describe('product handlers', () => {
       fc.assert(fc.asyncProperty(arbitraryProductId, fc.oneof(fc.constant(null), arbitraryProduct), async (id, productData) => {
         const product = productData === null ? null : { ...productData, id };
         const repo: ProductRepoShape = {
-          getById: inputId => {
+          getById(inputId) {
             expect(inputId).toEqual(id);
             return Effect.succeed(product === null ? Option.none() : Option.some(product));
           },
@@ -72,7 +71,7 @@ describe('product handlers', () => {
           getById: () => Effect.dieMessage('getById unused'),
           getForItem: () => Effect.dieMessage('getForItem unused'),
           list: Effect.dieMessage('list unused') as unknown as ProductRepoShape['list'],
-          create: repoInput => {
+          create(repoInput) {
             expect(repoInput).toEqual(input);
             return Effect.succeed(created);
           },
@@ -90,7 +89,7 @@ describe('product handlers', () => {
           getById: () => Effect.dieMessage('getById unused'),
           list: Effect.dieMessage('list unused') as unknown as ItemRepoShape['list'],
           create: (() => Effect.dieMessage('create unused')) as ItemRepoShape['create'],
-          listForProduct: inputId => {
+          listForProduct(inputId) {
             expect(inputId).toEqual(productId);
             return Effect.succeed(items);
           },
@@ -107,7 +106,7 @@ describe('product handlers', () => {
       fc.assert(fc.asyncProperty(arbitraryProductId, arbitraryProduct, arbitraryItemList, fc.boolean(), async (productId, productData, items, hasProduct) => {
         const product = { ...productData, id: productId };
         const productRepo: ProductRepoShape = {
-          getById: inputId => {
+          getById(inputId) {
             expect(inputId).toEqual(productId);
             return hasProduct ? Effect.succeed(Option.some(product)) : Effect.succeed(Option.none());
           },
@@ -129,10 +128,10 @@ describe('product handlers', () => {
           Effect.provideService(ItemRepo, itemRepo),
         ));
 
-        if (!hasProduct) {
-          expect(result).toBeNull();
-        } else {
+        if (hasProduct) {
           expect(result).toEqual({ product, items });
+        } else {
+          expect(result).toBeNull();
         }
       }));
     }));
@@ -142,7 +141,7 @@ describe('product handlers', () => {
       fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInput, arbitraryProductId, arbitraryItemId, async (input, productId, startingItemId) => {
         let nextItemId = startingItemId;
         const createdItems: Item[] = [];
-        const links: Array<{ itemId: Item['id']; productId: typeof productId }> = [];
+        const links: Array<{itemId: Item['id']; productId: typeof productId}> = [];
 
         const createdProduct: Product = { id: productId, __typename: 'Product', description: input.product.description ?? null };
 
@@ -150,7 +149,7 @@ describe('product handlers', () => {
           getById: () => Effect.dieMessage('getById unused'),
           getForItem: () => Effect.dieMessage('getForItem unused'),
           list: Effect.dieMessage('list unused') as unknown as ProductRepoShape['list'],
-          create: repoInput => {
+          create(repoInput) {
             expect(repoInput).toEqual(input.product);
             return Effect.succeed(createdProduct);
           },
@@ -159,14 +158,14 @@ describe('product handlers', () => {
         const itemRepo: ItemRepoShape = {
           getById: () => Effect.dieMessage('getById unused'),
           list: Effect.dieMessage('list unused') as unknown as ItemRepoShape['list'],
-          create: repoInput => {
+          create(repoInput) {
             const item = { id: nextItemId, description: repoInput.description ?? null, pack_size: repoInput.pack_size };
             nextItemId += 1;
             createdItems.push(item);
             return Effect.succeed(item);
           },
           listForProduct: () => Effect.dieMessage('listForProduct unused'),
-          linkToProduct: (itemId, linkedProductId) => {
+          linkToProduct(itemId, linkedProductId) {
             links.push({ itemId, productId: linkedProductId });
             return Effect.succeed(undefined);
           },
