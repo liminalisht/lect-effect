@@ -15,7 +15,6 @@ describe('helloHandler', () => {
     Effect.sync(() => {
       fc.assert(fc.asyncProperty(arbitraryNameInput, async input => {
         const response = await Effect.runPromise(helloHandler(input).pipe(Effect.provide(greetingLayer)));
-
         const decoded = Effect.runSync(decodeHelloResponse(response));
         const expectedName = input.name ?? 'World';
         expect(decoded.greeting).toContain(expectedName);
