@@ -19,6 +19,7 @@ import { productWithItemsSchema } from '../../domain/product/productWithItems';
  * @since 1.0.0
  */
 export const createItemMutation = mutation(Schema.standardSchemaV1(itemSchema))
+  .description('Create a new item.')
   .input(Schema.standardSchemaV1(createItemInputSchema))
   .resolve(async args => runEffect(createItem(args)));
 
@@ -27,6 +28,7 @@ export const createItemMutation = mutation(Schema.standardSchemaV1(itemSchema))
  * @since 1.0.0
  */
 export const createProductMutation = mutation(Schema.standardSchemaV1(productSchema))
+  .description('Create a new product.')
   .input(Schema.standardSchemaV1(productInputSchema))
   .resolve(async args => runEffect(createProduct(args)));
 
@@ -35,6 +37,7 @@ export const createProductMutation = mutation(Schema.standardSchemaV1(productSch
  * @since 1.0.0
  */
 export const createProductWithItemsMutation = mutation(Schema.standardSchemaV1(productWithItemsSchema))
+  .description('Create a new product along with its associated items.')
   .input(Schema.standardSchemaV1(createProductWithItemsInputSchema))
   .resolve(async args => runEffect(createProductWithItems(args)));
 
@@ -44,9 +47,7 @@ export const createProductWithItemsMutation = mutation(Schema.standardSchemaV1(p
  */
 export const mutationsMap = {
   createItem: createItemMutation,
-
   createProduct: createProductMutation,
-
   createProductWithItems: createProductWithItemsMutation,
 };
 

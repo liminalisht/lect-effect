@@ -15,6 +15,7 @@ import { runEffect } from '../../effect';
  */
 export const helloQueryMap = {
   hello: query(Schema.standardSchemaV1(helloResponseSchema))
+    .description('Returns a greeting message.')
     .input(Schema.standardSchemaV1(nameInputSchema))
     .resolve(async args => runEffect(helloHandler(args))),
 };

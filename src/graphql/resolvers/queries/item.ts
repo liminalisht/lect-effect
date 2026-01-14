@@ -13,7 +13,8 @@ import { itemSchema } from '../../../domain/item/item';
  * Query for fetching a single item.
  * @since 1.0.0
  */
-export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)))
+export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema))) // todo: extract proper schema w/ NullOr
+  .description('Fetch a single item by its ID.')
   .input(Schema.standardSchemaV1(itemIdInputSchema))
   .resolve(async args => runEffect(handlers.getItem(args.id)));
 
@@ -21,7 +22,8 @@ export const itemQuery = query(Schema.standardSchemaV1(Schema.NullOr(itemSchema)
  * Query for listing items.
  * @since 1.0.0
  */
-export const itemsQuery = query(Schema.standardSchemaV1(Schema.Array(itemSchema)))
+export const itemsQuery = query(Schema.standardSchemaV1(Schema.Array(itemSchema))) // todo: extract proper schema w/ Array
+  .description('List all available items.')
   .resolve(async () => runEffect(handlers.listItems));
 
 /**

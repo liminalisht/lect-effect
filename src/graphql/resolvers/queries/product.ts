@@ -16,7 +16,8 @@ import { productWithItemsSchema } from '../../../domain/product/productWithItems
  * @since 1.0.0
  */
 export const productQuery
-  = query(Schema.standardSchemaV1(Schema.NullOr(productSchema)))
+  = query(Schema.standardSchemaV1(Schema.NullOr(productSchema))) // todo: extract proper schema w/ NullOr
+    .description('Fetch a product by its ID.')
     .input(Schema.standardSchemaV1(productIdInputSchema))
     .resolve(async args => runEffect(handlers.getProduct(args.id)));
 
@@ -25,7 +26,8 @@ export const productQuery
  * @since 1.0.0
  */
 export const productsQuery
-  = query(Schema.standardSchemaV1(Schema.Array(productSchema)))
+  = query(Schema.standardSchemaV1(Schema.Array(productSchema))) // todo: extract proper schema w/ Array
+    .description('List all available products.')
     .resolve(async () => runEffect(handlers.listProducts));
 
 /**
@@ -33,7 +35,8 @@ export const productsQuery
  * @since 1.0.0
  */
 export const productWithItemsQuery
-  = query(Schema.standardSchemaV1(Schema.NullOr(productWithItemsSchema)))
+  = query(Schema.standardSchemaV1(Schema.NullOr(productWithItemsSchema))) // todo: extract proper schema w/ NullOr
+    .description('Fetch a product along with its associated items.')
     .input(Schema.standardSchemaV1(productIdInputSchema))
     .resolve(async args => runEffect(handlers.getProductWithItems(args.id)));
 

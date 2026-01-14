@@ -40,15 +40,7 @@ export declare const productFieldResolvers: B<
     >,
   {
     itemsForProduct: xn<
-      StandardSchemaV1<
-        { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-        { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined }
-      > &
-        Schema.SchemaClass<
-          { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-          { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-          never
-        >,
+      nn<any, any>,
       StandardSchemaV1<
         readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
         readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]

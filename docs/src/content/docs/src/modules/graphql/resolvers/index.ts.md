@@ -312,15 +312,7 @@ export declare const makeResolvers: () => (
         >,
       {
         productForItem: xn<
-          StandardSchemaV1<
-            { readonly id: number; readonly description: string | null; readonly pack_size: number },
-            { readonly id: number; readonly description: string | null; readonly pack_size: number }
-          > &
-            SchemaClass<
-              { readonly id: number; readonly description: string | null; readonly pack_size: number },
-              { readonly id: number; readonly description: string | null; readonly pack_size: number },
-              never
-            >,
+          nn<any, any>,
           StandardSchemaV1<
             {
               readonly id: number
@@ -363,15 +355,7 @@ export declare const makeResolvers: () => (
         >,
       {
         itemsForProduct: xn<
-          StandardSchemaV1<
-            { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-            { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined }
-          > &
-            SchemaClass<
-              { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-              { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
-              never
-            >,
+          nn<any, any>,
           StandardSchemaV1<
             readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
             readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
