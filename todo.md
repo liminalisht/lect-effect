@@ -1,21 +1,21 @@
 # todo
 
 - [ ] address all todos inlined in project code
-- [ ] write tests using arbitrary for schemas using effect
+- [x] write tests using arbitrary for schemas using effect
 - [x] setup linting config as desired
 - [x] assess whether runtime should be passed through or not to resolvers / handlers
-- [ ] change any uses of Effect's default logger to grab from our custom logger layer
-- [ ] show that we can mock layer implementations for tests
+- [x] change any uses of Effect's default logger to grab from our custom logger layer
+- [x] show that we can mock layer implementations for tests
 - [x] pull out functionality into services and call those from resolvers / handlers
 - [ ] use that to determine whether to write graphql schema to disk, and create appropriate effect
 - [x] determine where to create error types and how to organize across project
 - [x] actually start separating domain
 - [x] create a service that helloHandler calls, basically reifying this interface of providing an (optional) name and getting a Greeting
 - [x] establish how it fits into layers / AppServices
-- [ ] create first test with vitest (https://github.com/Effect-TS/effect/blob/main/packages/vitest/README.md)
-- [ ] organize tests according to whether they test effects against the graphql boundary or not
+- [x] create first test with vitest (https://github.com/Effect-TS/effect/blob/main/packages/vitest/README.md)
+- [x] organize tests according to whether they test effects against the graphql boundary or not
 - [x] create first test that uses arbitraries
-- [ ] create first test that hits graphql boundary, uses arbitraries for input, and makes property assertions about output
+- [x] create first test that hits graphql boundary, uses arbitraries for input, and makes property assertions about output
 - [x] i'm wondering whether we should organize our repo in a way that separates domain types, services, and service implementations
 - [ ] time execution of handlers
 - [ ] metrics
@@ -31,3 +31,8 @@
 - [ ] versioning strategy
 - [ ] idea of lect determinining resolvers available, services / service dependency map, and domain types accessible and handlers used; in other words specifying lect determines what config to load and services to spawn, etc.
 - [ ] then we could create Schemas for lects and document appropriately
+
+- [ ] need tests for queries themselves; tests at the level of db service interaction, and handlers atop those. mocking db is not an option
+- [ ] implement testing strategy that clears db after each test. shouldn't effect's ability to pause and interleave be perfect for this?
+- [ ] oracle
+- [ ] durable workflows
