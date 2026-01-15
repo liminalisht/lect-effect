@@ -4,9 +4,9 @@ import { itemSchema } from '../domain/item/item';
 import { getProduct, itemsForProduct } from '../handlers/product';
 import { handlersToResolvers } from './generic';
 import { ProductIdInput, productIdInputSchema } from '../domain/product/productIdInput';
-import { helloHandlerInfo } from '../handlers/hello';
+import { greetQuery } from '../handlers/hello';
+import { createItemMutation, getItem, getItemQuery, listItemsQuery, productForItemField } from '../handlers/item';
 
-// Combine them into one resolver
 export const exampleResolvers = handlersToResolvers([
   {
     kind: 'field',
@@ -25,5 +25,9 @@ export const exampleResolvers = handlersToResolvers([
     outputSchema: Schema.NullOr(productSchema),
     handler: (input : ProductIdInput) => getProduct(input.id)
   },
-  helloHandlerInfo
+  greetQuery,
+  getItemQuery,
+  listItemsQuery,
+  createItemMutation,
+  productForItemField
 ]);

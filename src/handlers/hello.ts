@@ -6,7 +6,7 @@ import { Effect, Option } from 'effect';
 import { nameInputSchema, type NameInput } from '../domain/hello/nameInput';
 import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse';
 import { GreetingService } from '../services/greeting';
-import { QueryHandler } from '../graphql/generic';
+import { QueryHandler } from './generic';
 /**
  * Produces a greeting response using the greeting service.
  * @since 1.0.0
@@ -22,7 +22,7 @@ export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, nev
     return response;
   });
 
-export const helloHandlerInfo: QueryHandler<
+export const greetQuery: QueryHandler<
   typeof nameInputSchema,
   typeof helloResponseSchema,
   never,
