@@ -1,6 +1,6 @@
 ---
 title: services/config.ts
-nav_order: 47
+nav_order: 40
 parent: Modules
 ---
 

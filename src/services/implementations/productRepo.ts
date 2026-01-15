@@ -1,0 +1,97 @@
+/**
+ * Product repository service implementation.
+ * @since 1.0.0
+ */
+import {
+  Context, Effect, Option, Schema,
+} from 'effect';
+import type * as SqlError from '@effect/sql/SqlError';
+import { type ParseError } from 'effect/ParseResult';
+import { decodeMany, decodeOne } from '../../utilities/decode';
+import { type Product } from '../../domain/product/product';
+import { type ProductId, productIdSchema } from '../../domain/product/productId';
+import { type ProductInput } from '../../domain/product/productInput';
+import type { ItemId } from '../../domain/item/itemId';
+import { MasterdataDb } from '../masterdataDb';
+import { ProductRepo } from '../productRepo';
+
+// row schema matches DB columns (no __typename)
+const ProductRowSchema = Schema.Struct({
+  id: productIdSchema,
+  description: Schema.NullOr(Schema.String),
+});
+
+const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
+  __typename: 'Product',
+  ...r,
+});
+
+/**
+ * Live implementation of the ProductRepo.
+ * @since 1.0.0
+ */
+export const productRepoImplementation = Effect.gen(function * () {
+  const { sql } = yield * MasterdataDb;
+
+  const list = Effect.logDebug('ProductRepo.list: query').pipe(
+    Effect.andThen(sql`
+      SELECT id, description
+      FROM product
+      ORDER BY id
+    `),
+    Effect.flatMap(decodeMany(ProductRowSchema)),
+    Effect.map(rows => rows.map(row => toDomain(row))),
+    Effect.tap(rows => Effect.logDebug('ProductRepo.list: result', { count: rows.length })),
+    Effect.tapError(error => Effect.logDebug('ProductRepo.list: error', { error })),
+  );
+
+  const getById = (id: ProductId) =>
+    Effect.logDebug('ProductRepo.getById: query', { id }).pipe(
+      Effect.andThen(sql`
+        SELECT id, description
+        FROM product
+        WHERE id = ${id}
+      `),
+      Effect.flatMap(rows =>
+        rows.length === 0
+          ? Effect.succeed(Option.none())
+          : decodeOne(ProductRowSchema)(rows[0]).pipe(Effect.map(row => Option.some(toDomain(row))))),
+      Effect.tap(row => Effect.logDebug('ProductRepo.getById: result', { id, row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.getById: error', { id, error })),
+    );
+
+  const getForItem = (itemId: ItemId) =>
+    Effect.logDebug('ProductRepo.getForItem: query', { itemId }).pipe(
+      Effect.andThen(sql`
+        SELECT p.id, p.description
+        FROM product p
+        JOIN item_prod ip ON ip.product_id = p.id
+        WHERE ip.item_id = ${itemId}
+        ORDER BY p.id
+        LIMIT 1
+      `),
+      Effect.flatMap(rows =>
+        rows.length === 0
+          ? Effect.succeed(Option.none())
+          : decodeOne(ProductRowSchema)(rows[0]).pipe(Effect.map(row => Option.some(toDomain(row))))),
+      Effect.tap(row => Effect.logDebug('ProductRepo.getForItem: result', { itemId, row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.getForItem: error', { itemId, error })),
+    );
+
+  const create = (input: ProductInput) =>
+    Effect.logDebug('ProductRepo.create: inserting', { input }).pipe(
+      Effect.andThen(sql`
+        INSERT INTO product (description)
+        VALUES (${input.description ?? null})
+        RETURNING id, description
+      `),
+      Effect.flatMap(rows => decodeOne(ProductRowSchema)(rows[0])),
+      Effect.map(row => toDomain(row)),
+      Effect.tap(row => Effect.logDebug('ProductRepo.create: result', { row })),
+      Effect.tapError(error => Effect.logDebug('ProductRepo.create: error', { input, error })),
+    );
+
+  return {
+    list, getById, getForItem, create,
+  } as const;
+}).pipe(Effect.map(svc => ProductRepo.of(svc)));

@@ -3,10 +3,11 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ItemRepo, ItemRepoLive } from '../../services/itemRepo';
+import { ItemRepo } from '../../services/itemRepo';
+import { itemRepoImplementation } from '../implementations/itemRepo';
 
 /**
  * Provides the live ItemRepo implementation.
  * @since 1.0.0
  */
-export const itemRepoLayer = Layer.effect(ItemRepo, ItemRepoLive);
+export const itemRepoLayer = Layer.effect(ItemRepo, itemRepoImplementation);

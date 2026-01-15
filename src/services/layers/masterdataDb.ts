@@ -2,16 +2,15 @@
  * Masterdata database layer wiring.
  * @since 1.0.0
  */
-import {
-  Config, Effect, Layer, Redacted,
-} from 'effect';
+import { Config, Effect, Layer } from 'effect';
 import * as PgClient from '@effect/sql-pg/PgClient';
-import * as SqlClient from '@effect/sql/SqlClient';
+import type * as SqlClient from '@effect/sql/SqlClient';
 import type { PgClientConfig } from '@effect/sql-pg/PgClient';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
 import { ConfigService } from '../../services/config';
 import { MasterdataDb } from '../../services/masterdataDb';
+import { masterdataDbImplementation } from '../implementations/masterdataDb';
 
 /**
  * Provides the live masterdata database client.
@@ -33,11 +32,7 @@ export const masterdataDbLayer: Layer.Layer<MasterdataDb, SqlError | ConfigError
 
   const layer = Layer.effect(
     MasterdataDb,
-    Effect.gen(function * () {
-      const sql = yield * SqlClient.SqlClient;
-      yield * Effect.logInfo('masterdata Postgres client initialized');
-      return { sql } as const; // todo: what's the point of this?
-    }),
+    masterdataDbImplementation,
   ).pipe(Layer.provide(sqlClientLayer));
 
   return layer;

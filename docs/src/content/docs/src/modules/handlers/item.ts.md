@@ -228,7 +228,7 @@ Looks up the product for a given item id, returning null when absent.
 export declare const productForItem: (
   itemId: ItemId
 ) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined } | null,
+  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
   ProductRepoError,
   ProductRepo
 >

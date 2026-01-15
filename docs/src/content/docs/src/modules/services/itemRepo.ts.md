@@ -1,6 +1,6 @@
 ---
 title: services/itemRepo.ts
-nav_order: 49
+nav_order: 45
 parent: Modules
 ---
 
@@ -17,7 +17,6 @@ Added in v1.0.0
 - [utils](#utils)
   - [ItemRepo (class)](#itemrepo-class)
   - [ItemRepoError (type alias)](#itemrepoerror-type-alias)
-  - [ItemRepoLive](#itemrepolive)
   - [ItemRepoShape (type alias)](#itemreposhape-type-alias)
 
 ---
@@ -44,18 +43,6 @@ Error type union for item repository operations.
 
 ```ts
 export type ItemRepoError = SqlError.SqlError | ParseError
-```
-
-Added in v1.0.0
-
-## ItemRepoLive
-
-Live implementation of the ItemRepo.
-
-**Signature**
-
-```ts
-export declare const ItemRepoLive: Effect.Effect<ItemRepoShape, never, MasterdataDb>
 ```
 
 Added in v1.0.0

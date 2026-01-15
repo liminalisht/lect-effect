@@ -1,6 +1,6 @@
 ---
 title: services/productRepo.ts
-nav_order: 51
+nav_order: 54
 parent: Modules
 ---
 
@@ -18,7 +18,6 @@ Added in v1.0.0
   - [ProductNotFound (class)](#productnotfound-class)
   - [ProductRepo (class)](#productrepo-class)
   - [ProductRepoError (type alias)](#productrepoerror-type-alias)
-  - [ProductRepoLive](#productrepolive)
   - [ProductRepoShape (type alias)](#productreposhape-type-alias)
 
 ---
@@ -57,18 +56,6 @@ Error type union for product repository operations.
 
 ```ts
 export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError
-```
-
-Added in v1.0.0
-
-## ProductRepoLive
-
-Live implementation of the ProductRepo.
-
-**Signature**
-
-```ts
-export declare const ProductRepoLive: Effect.Effect<ProductRepoShape, never, MasterdataDb>
 ```
 
 Added in v1.0.0

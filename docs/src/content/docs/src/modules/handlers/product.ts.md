@@ -43,7 +43,7 @@ Creates a new product.
 export declare const createProduct: (
   input: ProductInput
 ) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
+  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null },
   ProductRepoError,
   ProductRepo
 >
@@ -83,7 +83,7 @@ export declare const createProductWithItems: (
   input: CreateProductWithItemsInput
 ) => Effect.Effect<
   {
-    product: { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined }
+    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
     items: { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   },
   ParseError | SqlError | ProductNotFound,
@@ -141,7 +141,7 @@ Fetches a single product by id or returns null.
 export declare const getProduct: (
   id: ProductId
 ) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined } | null,
+  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
   ProductRepoError,
   ProductRepo
 >
@@ -183,7 +183,7 @@ export declare const getProductWithItems: (
   id: ProductId
 ) => Effect.Effect<
   {
-    product: { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined }
+    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
     items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   } | null,
   ParseError | SqlError | ProductNotFound,
@@ -279,7 +279,7 @@ Lists all products.
 
 ```ts
 export declare const listProducts: Effect.Effect<
-  readonly { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined }[],
+  readonly { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }[],
   ProductRepoError,
   ProductRepo
 >
