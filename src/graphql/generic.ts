@@ -9,6 +9,47 @@ import { productSchema, type Product } from '../domain/product/product';
 import { itemSchema } from '../domain/item/item';
 import { itemsForProduct } from '../handlers/product';
 
+type FieldHandler <
+  P extends Schema.Schema.AnyNoContext,
+  I extends Schema.Schema.AnyNoContext,
+  O extends Schema.Schema.AnyNoContext,
+  E,
+  R
+> = {
+    parentSchema: P,
+    key: string,
+    descriptionString: string,
+    inputSchema: I,
+    outputSchema: O,
+    handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
+};
+
+type QueryHandler <
+  I extends Schema.Schema.AnyNoContext,
+  O extends Schema.Schema.AnyNoContext,
+  E,
+  R
+> = {
+    key: string,
+    descriptionString: string,
+    inputSchema: I,
+    outputSchema: O,
+    handler: (input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
+};
+
+type MutationHandler <
+  I extends Schema.Schema.AnyNoContext,
+  O extends Schema.Schema.AnyNoContext,
+  E,
+  R
+> = {
+    key: string,
+    descriptionString: string,
+    inputSchema: I,
+    outputSchema: O,
+    handler: (input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
+};
+
 
 export const genericFieldResolver = <
   P extends Schema.Schema.AnyNoContext,
