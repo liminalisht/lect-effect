@@ -1,5 +1,5 @@
 ---
-title: services/itemRepo.ts
+title: services/interfaces/itemRepo.ts
 nav_order: 45
 parent: Modules
 ---

@@ -4,7 +4,7 @@
  */
 import { Layer } from 'effect';
 import { type AppError } from '../../errors';
-import { type AppServices } from '../../services/app';
+import { type AppServices } from '../interfaces/app';
 import { configLayer } from './config';
 import { loggerLayer } from './logger';
 import { greetingLayer } from './greeting';

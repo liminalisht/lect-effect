@@ -1,6 +1,6 @@
 ---
-title: services/greeting.ts
-nav_order: 41
+title: services/interfaces/greeting.ts
+nav_order: 44
 parent: Modules
 ---
 

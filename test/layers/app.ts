@@ -2,7 +2,7 @@ import { Layer } from 'effect';
 import { greetingLayer } from '../../src/services/layers/greeting';
 import { masterdataDbLayer } from '../../src/services/layers/masterdataDb';
 import { type AppError } from '../../src/errors';
-import { type AppServices } from '../../src/services/app';
+import { type AppServices } from '../../src/services/interfaces/app';
 import { productRepoLayer } from '../../src/services/layers/productRepo';
 import { itemRepoLayer } from '../../src/services/layers/itemRepo';
 import { testLoggerLayer } from './logger';

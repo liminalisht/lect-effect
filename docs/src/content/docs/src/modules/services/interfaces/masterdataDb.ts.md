@@ -1,6 +1,6 @@
 ---
-title: services/masterdataDb.ts
-nav_order: 53
+title: services/interfaces/masterdataDb.ts
+nav_order: 46
 parent: Modules
 ---
 

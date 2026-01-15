@@ -1,6 +1,6 @@
 ---
-title: services/productRepo.ts
-nav_order: 54
+title: services/interfaces/productRepo.ts
+nav_order: 47
 parent: Modules
 ---
 

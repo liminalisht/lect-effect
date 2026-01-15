@@ -12,8 +12,8 @@ import { itemIdSchema, type ItemId } from '../../domain/item/itemId';
 import { type Item } from '../../domain/item/item';
 import { type ProductId } from '../../domain/product/productId';
 import { decodeMany, decodeOne } from '../../utilities/decode';
-import { MasterdataDb } from '../masterdataDb';
-import { ItemRepoError, ItemRepo } from '../itemRepo';
+import { MasterdataDb } from '../interfaces/masterdataDb';
+import { ItemRepoError, ItemRepo } from '../interfaces/itemRepo';
 
 /**
  * Live implementation of the MasterdataDb service

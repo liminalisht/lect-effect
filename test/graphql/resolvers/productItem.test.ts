@@ -15,17 +15,17 @@ import { helloHandlers } from '../../../src/handlers/hello';
 import { itemHandlers } from '../../../src/handlers/item';
 import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
-import { ConfigService } from '../../../src/services/config';
-import { GreetingService } from '../../../src/services/greeting';
-import { MasterdataDb } from '../../../src/services/masterdataDb';
-import { ProductRepo, type ProductRepoShape } from '../../../src/services/productRepo';
-import { ItemRepo, type ItemRepoShape } from '../../../src/services/itemRepo';
+import { ConfigService } from '../../../src/services/interfaces/config';
+import { GreetingService } from '../../../src/services/interfaces/greeting';
+import { MasterdataDb } from '../../../src/services/interfaces/masterdataDb';
+import { ProductRepo, type ProductRepoShape } from '../../../src/services/interfaces/productRepo';
+import { ItemRepo, type ItemRepoShape } from '../../../src/services/interfaces/itemRepo';
 import { type Product } from '../../../src/domain/product/product';
 import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type Port } from '../../../src/config/app/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
-import { type AppServices } from '../../../src/services/app';
+import { type AppServices } from '../../../src/services/interfaces/app';
 
 const schema = makeSchema(handlersToResolvers([
   ...helloHandlers,

@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ItemRepo } from '../../services/itemRepo';
+import { ItemRepo } from '../interfaces/itemRepo';
 import { itemRepoImplementation } from '../implementations/itemRepo';
 
 /**

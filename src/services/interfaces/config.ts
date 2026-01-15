@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Context } from 'effect';
-import { type AppConfig } from '../config/app';
-import { type MasterdataDbConfig } from '../config/masterdataDb';
+import { type AppConfig } from '../../config/app';
+import { type MasterdataDbConfig } from '../../config/masterdataDb';
 
 /**
  * Service tag for application configuration.

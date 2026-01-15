@@ -10,8 +10,8 @@ import {
   itemsForProduct,
   listProducts,
 } from '../../src/handlers/product';
-import { ProductRepo, type ProductRepoShape } from '../../src/services/productRepo';
-import { ItemRepo, type ItemRepoShape } from '../../src/services/itemRepo';
+import { ProductRepo, type ProductRepoShape } from '../../src/services/interfaces/productRepo';
+import { ItemRepo, type ItemRepoShape } from '../../src/services/interfaces/itemRepo';
 import { productSchema, type Product } from '../../src/domain/product/product';
 import { productIdSchema } from '../../src/domain/product/productId';
 import { productInputSchema } from '../../src/domain/product/productInput';

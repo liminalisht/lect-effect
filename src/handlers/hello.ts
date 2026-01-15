@@ -5,7 +5,7 @@
 import { Effect, Option } from 'effect';
 import { nameInputSchema, type NameInput } from '../domain/hello/nameInput';
 import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse';
-import { GreetingService } from '../services/greeting';
+import { GreetingService } from '../services/interfaces/greeting';
 import { type QueryHandler } from './generic';
 /**
  * Produces a greeting response using the greeting service.

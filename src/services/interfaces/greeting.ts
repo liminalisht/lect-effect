@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Context, type Effect, type Option } from 'effect';
-import { type Name } from '../domain/hello/name';
-import { type Greeting } from '../domain/hello/greeting';
+import { type Name } from '../../domain/hello/name';
+import { type Greeting } from '../../domain/hello/greeting';
 
 /**
  * Service tag for greeting operations.

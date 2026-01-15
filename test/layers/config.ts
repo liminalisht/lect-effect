@@ -1,7 +1,7 @@
 import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
-import { ConfigService } from '../../src/services/config';
+import { ConfigService } from '../../src/services/interfaces/config';
 import { environmentSchema } from '../../src/config/app/environment';
 import { portSchema } from '../../src/config/app/port';
 

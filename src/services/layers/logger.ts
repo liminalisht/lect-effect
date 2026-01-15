@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Effect, Layer, Logger } from 'effect';
-import { ConfigService } from '../../services/config';
+import { ConfigService } from '../interfaces/config';
 
 /**
  * Provides a minimum log level based on configuration.

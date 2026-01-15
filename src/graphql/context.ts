@@ -4,7 +4,7 @@
  */
 import type { Runtime } from 'effect';
 import type { YogaInitialContext } from 'graphql-yoga';
-import type { AppServices } from '../services/app';
+import type { AppServices } from '../services/interfaces/app';
 
 /**
  * the GraphQLContext contains a runtime for AppServices that can run any computation
