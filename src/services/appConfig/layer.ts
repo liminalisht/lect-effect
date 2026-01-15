@@ -5,8 +5,8 @@
 import { Layer
 } from 'effect';
 
-import { type ConfigurationError } from '../interfaces/config/errors';
-import { AppConfigService } from './interface/appConfig';
+import { type ConfigurationError } from '../errors';
+import { AppConfigService } from './interface';
 import { appConfigImplementation } from './implementation';
 
 /**

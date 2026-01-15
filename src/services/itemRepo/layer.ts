@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ItemRepo } from '../interfaces/itemRepo';
-import { itemRepoImplementation } from '../implementations/itemRepo';
+import { ItemRepo } from './interface';
+import { itemRepoImplementation } from './implementation';
 
 /**
  * Provides the live ItemRepo implementation.

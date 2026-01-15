@@ -9,7 +9,7 @@ import { itemHandlers } from '../../../src/handlers/item';
 import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga } from '../../../src/graphql/yoga';
 import { testAppLayer } from '../../layers/app';
-import { type AppServices } from '../../../src/services/interfaces/app';
+import { type AppServices } from '../../../src/services/app/interface';
 
 describe('GraphQL hello (property)', () => {
   it.effect('hello(name) matches handler semantics', () =>

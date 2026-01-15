@@ -2,7 +2,7 @@
  * Master data database configuration contracts.
  * @since 1.0.0
  */
-import { type Redacted } from 'effect';
+import { Context, type Redacted } from 'effect';
 
 type Url = Redacted.Redacted;
 type PoolMin = number;
@@ -21,3 +21,6 @@ export type MasterdataDbConfig = {
     readonly idleTimeoutMillis: IdleTimeoutMillis;
   };
 };
+
+export class MasterdataDbConfigService extends Context.Tag('MasterdataDbConfigService')<MasterdataDbConfigService, MasterdataDbConfig>() {}
+

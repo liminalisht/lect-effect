@@ -1,10 +1,10 @@
 import { Layer } from 'effect';
-import { greetingLayer } from '../../src/services/layers/greeting';
-import { masterdataDbLayer } from '../../src/services/layers/masterdataDb';
+import { greetingLayer } from '../../src/services/greeting/layer';
+import { masterdataDbLayer } from '../../src/services/masterdataDb/layer';
 import { type AppError } from '../../src/errors';
-import { type AppServices } from '../../src/services/interfaces/app';
-import { productRepoLayer } from '../../src/services/layers/productRepo';
-import { itemRepoLayer } from '../../src/services/layers/itemRepo';
+import { type AppServices } from '../../src/services/app/interface';
+import { productRepoLayer } from '../../src/services/productRepo/layer';
+import { itemRepoLayer } from '../../src/services/itemRepo/layer';
 import { testLoggerLayer } from './logger';
 import { testConfigLayer } from './config';
 

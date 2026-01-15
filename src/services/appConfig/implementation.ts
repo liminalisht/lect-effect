@@ -7,7 +7,7 @@ import {
 } from 'effect';
 import { type Environment, environmentSchema } from './interface/environment';
 import { type Port, portSchema } from './interface/port';
-import { type ConfigurationError } from '../interfaces/config/errors';
+import { type ConfigurationError } from '../errors';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
   const port = yield * Config.number('APP_PORT')

@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ItemRepo, type ItemRepoError } from '../services/interfaces/itemRepo';
-import { ProductRepo, type ProductRepoError } from '../services/interfaces/productRepo';
+import { ItemRepo, type ItemRepoError } from '../services/itemRepo/interface';
+import { ProductRepo, type ProductRepoError } from '../services/productRepo/interface';
 import type { ItemId } from '../domain/item/itemId';
 import { itemSchema } from '../domain/item/item';
 import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput';

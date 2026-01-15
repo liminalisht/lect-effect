@@ -4,13 +4,13 @@
  */
 import { Layer } from 'effect';
 import { type AppError } from '../../errors';
-import { type AppServices } from '../interfaces/app';
-import { configLayer } from './config';
-import { loggerLayer } from './logger';
-import { greetingLayer } from './greeting';
-import { masterdataDbLayer } from './masterdataDb';
-import { productRepoLayer } from './productRepo';
-import { itemRepoLayer } from './itemRepo';
+import { type AppServices } from './interface';
+import { configLayer } from '../config/layer';
+import { loggerLayer } from '../logger/layer';
+import { greetingLayer } from '../greeting/layer';
+import { masterdataDbLayer } from '../masterdataDb/layer';
+import { productRepoLayer } from '../productRepo/layer';
+import { itemRepoLayer } from '../itemRepo/layer';
 
 /**
  * Combines config and logger layers, wiring logger with config.

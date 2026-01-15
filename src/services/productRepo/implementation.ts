@@ -12,8 +12,8 @@ import { type Product } from '../../domain/product/product';
 import { type ProductId, productIdSchema } from '../../domain/product/productId';
 import { type ProductInput } from '../../domain/product/productInput';
 import type { ItemId } from '../../domain/item/itemId';
-import { MasterdataDb } from '../interfaces/masterdataDb';
-import { ProductRepo } from '../interfaces/productRepo';
+import { MasterdataDb } from '../masterdataDb/interface';
+import { ProductRepo } from './interface';
 
 // row schema matches DB columns (no __typename)
 const ProductRowSchema = Schema.Struct({

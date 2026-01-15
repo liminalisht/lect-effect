@@ -6,7 +6,7 @@ import 'dotenv/config';
 import { Cause, Effect } from 'effect';
 import { NodeRuntime } from '@effect/platform-node';
 import { app } from './app';
-import { appLayer } from './services/layers/app';
+import { appLayer } from './services/app/layer';
 
 /**
  * Logs an exhaustive failure cause in a human-readable format.
