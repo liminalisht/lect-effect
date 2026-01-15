@@ -3,10 +3,10 @@
  * @since 1.0.0
  */
 import { Effect, Option } from 'effect';
-import { type NameInput } from '../domain/hello/nameInput';
-import { type HelloResponse } from '../domain/hello/helloResponse';
+import { nameInputSchema, type NameInput } from '../domain/hello/nameInput';
+import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse';
 import { GreetingService } from '../services/greeting';
-
+import { QueryHandler } from '../graphql/generic';
 /**
  * Produces a greeting response using the greeting service.
  * @since 1.0.0
@@ -21,3 +21,17 @@ export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, nev
     yield * Effect.logDebug('helloHandler output:', response);
     return response;
   });
+
+export const helloHandlerInfo: QueryHandler<
+  typeof nameInputSchema,
+  typeof helloResponseSchema,
+  never,
+  GreetingService
+> = {
+    kind: 'query',
+    key: 'greet',
+    descriptionString: 'greet a user by name',
+    inputSchema: nameInputSchema,
+    outputSchema: helloResponseSchema,
+    handler: helloHandler,
+};

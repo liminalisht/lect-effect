@@ -6,7 +6,7 @@ import { field, mutation, query, resolver } from '@gqloom/core';
 import { Effect, Schema } from 'effect';
 import { runEffect } from './effect';
 
-type FieldHandler <
+export type FieldHandler <
   P extends Schema.Schema.AnyNoContext,
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
@@ -22,7 +22,7 @@ type FieldHandler <
     handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
 };
 
-type QueryHandler <
+export type QueryHandler <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
   E,
@@ -36,7 +36,7 @@ type QueryHandler <
     handler: (input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
 };
 
-type MutationHandler <
+export type MutationHandler <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
   E,
@@ -116,12 +116,12 @@ export const genericQueryResolver = <
   });
 
 
-type AnyHandler =
+export type AnyHandler =
   | FieldHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
   | QueryHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
   | MutationHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>;
 
-type ResolverFromHandler<H> =
+export type ResolverFromHandler<H> =
   H extends FieldHandler<infer P, infer I, infer O, infer E, infer R>
     ? ReturnType<typeof genericFieldResolver<P, I, O, E, R>>
     : H extends QueryHandler<infer I, infer O, infer E, infer R>

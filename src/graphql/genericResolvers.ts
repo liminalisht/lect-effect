@@ -4,6 +4,7 @@ import { itemSchema } from '../domain/item/item';
 import { getProduct, itemsForProduct } from '../handlers/product';
 import { handlersToResolvers } from './generic';
 import { ProductIdInput, productIdInputSchema } from '../domain/product/productIdInput';
+import { helloHandlerInfo } from '../handlers/hello';
 
 // Combine them into one resolver
 export const exampleResolvers = handlersToResolvers([
@@ -24,4 +25,5 @@ export const exampleResolvers = handlersToResolvers([
     outputSchema: Schema.NullOr(productSchema),
     handler: (input : ProductIdInput) => getProduct(input.id)
   },
+  helloHandlerInfo
 ]);
