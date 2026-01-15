@@ -15,10 +15,10 @@ export const genericFieldResolver = <
   E,
   R
 >
-  ( parentSchema: P,
-    key: string,
-    outputSchema: O,
+  ( key: string,
     descriptionString: string,
+    parentSchema: P,
+    outputSchema: O,
     handler: (parent: Schema.Schema.Type<P>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
   ) => resolver.of(
   Schema.standardSchemaV1(parentSchema),
@@ -38,9 +38,9 @@ export const genericMutationResolver = <
   R
 >
 ( key: string,
+  descriptionStr: string,
   inputSchema: I,
   outputSchema: O,
-  descriptionStr: string,
   handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
 ) =>
   resolver({
@@ -58,9 +58,9 @@ export const genericQueryResolver = <
   R
 >
 ( key: string,
+  descriptionStr: string,
   inputSchema: I,
   outputSchema: O,
-  descriptionStr: string,
   handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
 ) =>
   resolver({
