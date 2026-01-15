@@ -9,7 +9,7 @@ import {
   Redacted,
 } from 'effect';
 import type * as SqlClient from '@effect/sql/SqlClient';
-import { makeSchema } from '../../../src/graphql/schema';
+import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema';
 import { handlersToResolvers } from '../../../src/graphql/resolvers';
 import { helloHandlers } from '../../../src/handlers/hello';
 import { itemHandlers } from '../../../src/handlers/item';
@@ -31,10 +31,11 @@ const schema = makeSchema(handlersToResolvers([
   ...helloHandlers,
   ...itemHandlers,
   ...productHandlers,
-]));
+]) as readonly GraphQLResolver[]);
 
 const arbitraryCreateProductWithItemsInput = Arbitrary.make(createProductWithItemsInputSchema);
-const arbitraryCreateProductWithItemsInputNonEmpty: fc.Arbitrary<CreateProductWithItemsInput> = arbitraryCreateProductWithItemsInput.filter(input => input.items.length > 0);
+const arbitraryCreateProductWithItemsInputNonEmpty: fc.Arbitrary<CreateProductWithItemsInput>
+  = arbitraryCreateProductWithItemsInput.filter((input: CreateProductWithItemsInput) => input.items.length > 0);
 
 const normalizeInput = (input: CreateProductWithItemsInput): CreateProductWithItemsInput => ({
   product: { description: input.product.description ?? null },
@@ -123,7 +124,7 @@ describe('GraphQL product & item boundary (property)', () => {
   it.effect('createProductWithItems mutation is reflected across queries and fields', () =>
     Effect.tryPromise({
       try: () =>
-        fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async rawInput => {
+        fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
           const input = normalizeInput(rawInput);
           const { appLayer } = makeAppLayer();
           const yoga = await Effect.runPromise(makeYoga<AppServices>(schema).pipe(Effect.provide(appLayer)));
@@ -190,6 +191,6 @@ describe('GraphQL product & item boundary (property)', () => {
             product: { id: productId, description: input.product.description ?? null },
           })));
         })),
-      catch: e => e as Error,
+      catch: (e: unknown) => e as Error,
     }));
 });

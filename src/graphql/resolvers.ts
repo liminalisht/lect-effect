@@ -25,36 +25,45 @@ export const handlersToResolvers = <HS extends readonly AnyHandler[]>(handlers: 
 export const handlerToResolver = <H extends AnyHandler>(handler: H): ResolverFromHandler<H> => {
   switch (handler.kind) {
   case 'field': {
-    return genericFieldResolver(
-      handler.key,
-      handler.descriptionString,
-      handler.parentSchema,
-      handler.inputSchema,
-      handler.outputSchema,
-      handler.handler,
-    ) as ResolverFromHandler<H>;
+    return genericFieldResolver({
+      key: handler.key,
+      descriptionString: handler.descriptionString,
+      parentSchema: handler.parentSchema,
+      inputSchema: handler.inputSchema,
+      outputSchema: handler.outputSchema,
+      handler: handler.handler,
+    }) as ResolverFromHandler<H>;
   }
 
   case 'query': {
-    return genericQueryResolver(
-      handler.key,
-      handler.descriptionString,
-      handler.inputSchema,
-      handler.outputSchema,
-      handler.handler,
-    ) as ResolverFromHandler<H>;
+    return genericQueryResolver({
+      key: handler.key,
+      descriptionStr: handler.descriptionString,
+      inputSchema: handler.inputSchema,
+      outputSchema: handler.outputSchema,
+      handler: handler.handler,
+    }) as ResolverFromHandler<H>;
   }
 
   case 'mutation': {
-    return genericMutationResolver(
-      handler.key,
-      handler.descriptionString,
-      handler.inputSchema,
-      handler.outputSchema,
-      handler.handler,
-    ) as ResolverFromHandler<H>;
+    return genericMutationResolver({
+      key: handler.key,
+      descriptionStr: handler.descriptionString,
+      inputSchema: handler.inputSchema,
+      outputSchema: handler.outputSchema,
+      handler: handler.handler,
+    }) as ResolverFromHandler<H>;
   }
   }
+};
+
+type FieldResolverConfig<P, I, O, E, R> = {
+  key: string;
+  descriptionString: string;
+  parentSchema: P;
+  inputSchema: I;
+  outputSchema: O;
+  handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
 export const genericFieldResolver = <
@@ -63,60 +72,57 @@ export const genericFieldResolver = <
   O extends Schema.Schema.AnyNoContext,
   E,
   R,
->
-  (key: string,
-    descriptionString: string,
-    parentSchema: P,
-    inputSchema: I,
-    outputSchema: O,
-    handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>,
-  ) => resolver.of(
-    Schema.standardSchemaV1(parentSchema),
+>(config: FieldResolverConfig<P, I, O, E, R>) => resolver.of(
+    Schema.standardSchemaV1(config.parentSchema),
     {
-      [key]:
-      field(Schema.standardSchemaV1(outputSchema))
-        .description(descriptionString)
-        .input(Schema.standardSchemaV1(inputSchema))
-        .resolve(async (parent, input) => runEffect(handler(parent, input))),
+      [config.key]:
+    field(Schema.standardSchemaV1(config.outputSchema))
+      .description(config.descriptionString)
+      .input(Schema.standardSchemaV1(config.inputSchema))
+      .resolve(async (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => runEffect(config.handler(parent, input))),
     },
   );
+
+type MutationResolverConfig<I, O, E, R> = {
+  key: string;
+  descriptionStr: string;
+  inputSchema: I;
+  outputSchema: O;
+  handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
+};
 
 export const genericMutationResolver = <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
   E,
   R,
->
-  (key: string,
-    descriptionStr: string,
-    inputSchema: I,
-    outputSchema: O,
-    handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>,
-  ) =>
+>(config: MutationResolverConfig<I, O, E, R>) =>
     resolver({
-      [key]:
-      mutation(Schema.standardSchemaV1(outputSchema))
-        .description(descriptionStr)
-        .input(Schema.standardSchemaV1(inputSchema))
-        .resolve(async (input: Schema.Schema.Type<I>) => runEffect(handler(input))),
+      [config.key]:
+    mutation(Schema.standardSchemaV1(config.outputSchema))
+      .description(config.descriptionStr)
+      .input(Schema.standardSchemaV1(config.inputSchema))
+      .resolve(async (input: Schema.Schema.Type<I>) => runEffect(config.handler(input))),
     });
+
+type QueryResolverConfig<I, O, E, R> = {
+  key: string;
+  descriptionStr: string;
+  inputSchema: I;
+  outputSchema: O;
+  handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
+};
 
 export const genericQueryResolver = <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
   E,
   R,
->
-  (key: string,
-    descriptionStr: string,
-    inputSchema: I,
-    outputSchema: O,
-    handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>,
-  ) =>
+>(config: QueryResolverConfig<I, O, E, R>) =>
     resolver({
-      [key]:
-      query(Schema.standardSchemaV1(outputSchema))
-        .description(descriptionStr)
-        .input(Schema.standardSchemaV1(inputSchema))
-        .resolve(async (input: Schema.Schema.Type<I>) => runEffect(handler(input))),
+      [config.key]:
+    query(Schema.standardSchemaV1(config.outputSchema))
+      .description(config.descriptionStr)
+      .input(Schema.standardSchemaV1(config.inputSchema))
+      .resolve(async (input: Schema.Schema.Type<I>) => runEffect(config.handler(input))),
     });

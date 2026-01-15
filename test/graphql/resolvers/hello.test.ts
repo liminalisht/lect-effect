@@ -1,8 +1,8 @@
 import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
-import { nameInputSchema } from '../../../src/domain/hello/nameInput';
-import { makeSchema } from '../../../src/graphql/schema';
+import { nameInputSchema, type NameInput } from '../../../src/domain/hello/nameInput';
+import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema';
 import { handlersToResolvers } from '../../../src/graphql/resolvers';
 import { helloHandlers } from '../../../src/handlers/hello';
 import { itemHandlers } from '../../../src/handlers/item';
@@ -18,7 +18,7 @@ describe('GraphQL hello (property)', () => {
         ...helloHandlers,
         ...itemHandlers,
         ...productHandlers,
-      ]));
+      ]) as readonly GraphQLResolver[]);
       const yoga = yield * makeYoga<AppServices>(schema);
       const arb = Arbitrary.make(nameInputSchema);
 
@@ -30,7 +30,7 @@ describe('GraphQL hello (property)', () => {
 
       yield * Effect.tryPromise({
         try: () =>
-          fc.assert(fc.asyncProperty(arb, async input => {
+          fc.assert(fc.asyncProperty(arb, async (input: NameInput) => {
             // JSON cannot encode `undefined` → normalize to null
             const nameVar = input.name ?? null;
 
@@ -47,7 +47,7 @@ describe('GraphQL hello (property)', () => {
             const who = input.name ?? 'World';
             expect(greeting).toContain(who);
           })),
-        catch: e => e as Error,
+        catch: (e: unknown) => e as Error,
       });
     }).pipe(Effect.provide(testAppLayer)));
 });
