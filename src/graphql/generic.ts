@@ -16,6 +16,7 @@ type FieldHandler <
   E,
   R
 > = {
+    kind: 'field',
     parentSchema: P,
     key: string,
     descriptionString: string,
@@ -30,6 +31,7 @@ type QueryHandler <
   E,
   R
 > = {
+    kind: 'query',
     key: string,
     descriptionString: string,
     inputSchema: I,
@@ -43,6 +45,7 @@ type MutationHandler <
   E,
   R
 > = {
+    kind: 'mutation',
     key: string,
     descriptionString: string,
     inputSchema: I,
@@ -115,3 +118,41 @@ export const genericQueryResolver = <
         .resolve(async (input: Schema.Schema.Type<I>) => runEffect(handler(input))),
   });
 
+
+type AnyHandler =
+  | FieldHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
+  | QueryHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
+  | MutationHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>;
+
+export const handlerToResolver = (handler: AnyHandler) => {
+  switch (handler.kind) {
+    case 'field':
+      return genericFieldResolver(
+        handler.key,
+        handler.descriptionString,
+        handler.parentSchema,
+        handler.inputSchema,
+        handler.outputSchema,
+        handler.handler,
+      );
+    case 'query':
+      return genericQueryResolver(
+        handler.key,
+        handler.descriptionString,
+        handler.inputSchema,
+        handler.outputSchema,
+        handler.handler,
+      );
+    case 'mutation':
+      return genericMutationResolver(
+        handler.key,
+        handler.descriptionString,
+        handler.inputSchema,
+        handler.outputSchema,
+        handler.handler,
+      );
+  }
+};
+
+export const handlersToResolvers = (handlers: ReadonlyArray<AnyHandler>) =>
+  handlers.map(handlerToResolver);
