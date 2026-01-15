@@ -3,7 +3,7 @@ import { it } from '@effect/vitest';
 import { describe, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { helloHandler } from '../../src/handlers/hello';
-import { greetingLayer } from '../../src/services/layers/greeting';
+import { greetingLayer } from '../../src/services/greeting/layer';
 import { helloResponseSchema } from '../../src/domain/hello/helloResponse';
 import { nameInputSchema } from '../../src/domain/hello/nameInput';
 

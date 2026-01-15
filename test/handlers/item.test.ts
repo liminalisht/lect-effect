@@ -8,8 +8,8 @@ import {
   listItems,
   productForItem,
 } from '../../src/handlers/item';
-import { ItemRepo, type ItemRepoShape } from '../../src/services/interfaces/itemRepo';
-import { ProductRepo, type ProductRepoShape } from '../../src/services/interfaces/productRepo';
+import { ItemRepo, ItemRepoShape } from '../../src/services/itemRepo/interface';
+import { ProductRepo, ProductRepoShape } from '../../src/services/productRepo/interface';
 import { itemIdSchema } from '../../src/domain/item/itemId';
 import { itemSchema } from '../../src/domain/item/item';
 import { createItemInputSchema } from '../../src/domain/item/createItemInput';
