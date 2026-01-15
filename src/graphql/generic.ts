@@ -5,9 +5,6 @@
 import { field, mutation, query, resolver } from '@gqloom/core';
 import { Effect, Schema } from 'effect';
 import { runEffect } from './effect';
-import { productSchema, type Product } from '../domain/product/product';
-import { itemSchema } from '../domain/item/item';
-import { itemsForProduct } from '../handlers/product';
 
 type FieldHandler <
   P extends Schema.Schema.AnyNoContext,

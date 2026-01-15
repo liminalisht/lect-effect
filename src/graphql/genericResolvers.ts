@@ -1,11 +1,9 @@
-import { resolver } from '@gqloom/core';
-import { Effect, Schema } from 'effect';
-import { genericFieldResolver, genericMutationResolver, genericQueryResolver, handlersToResolvers } from './generic';
+import { Schema } from 'effect';
 import { productSchema, type Product } from '../domain/product/product';
-import { itemSchema, type Item } from '../domain/item/item';
+import { itemSchema } from '../domain/item/item';
 import { getProduct, itemsForProduct } from '../handlers/product';
-import { productIdSchema } from '../domain/product/productId';
-import { productIdInputSchema } from '../domain/product/productIdInput';
+import { handlersToResolvers } from './generic';
+import { ProductIdInput, productIdInputSchema } from '../domain/product/productIdInput';
 
 // Combine them into one resolver
 export const exampleResolvers = handlersToResolvers([
@@ -24,6 +22,6 @@ export const exampleResolvers = handlersToResolvers([
     descriptionString: 'find product by id',
     inputSchema: productIdInputSchema,
     outputSchema: Schema.NullOr(productSchema),
-    handler: (input) => getProduct(input.id)
+    handler: (input : ProductIdInput) => getProduct(input.id)
   },
 ]);
