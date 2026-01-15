@@ -6,8 +6,8 @@ import { Layer
 } from 'effect';
 
 import { type ConfigurationError } from '../interfaces/config/errors';
-import { AppConfigService } from '../interfaces/config/appConfig/appConfig';
-import { appConfigImplementation } from '../implementations/appConfig';
+import { AppConfigService } from './interface/appConfig';
+import { appConfigImplementation } from './implementation';
 
 /**
  * Provides configuration values to the environment.

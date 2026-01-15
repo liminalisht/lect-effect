@@ -5,8 +5,8 @@
 import {
   Config, ConfigError, Effect, LogLevel, Schema,
 } from 'effect';
-import { type Environment, environmentSchema } from '../interfaces/config/appConfig/environment';
-import { type Port, portSchema } from '../interfaces/config/appConfig/port';
+import { type Environment, environmentSchema } from './interface/environment';
+import { type Port, portSchema } from './interface/port';
 import { type ConfigurationError } from '../interfaces/config/errors';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {

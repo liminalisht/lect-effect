@@ -6,8 +6,8 @@ import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../interfaces/config';
-import { type Environment, environmentSchema } from '../interfaces/config/appConfig/environment';
-import { type Port, portSchema } from '../interfaces/config/appConfig/port';
+import { type Environment, environmentSchema } from '../appConfig/interface/environment';
+import { type Port, portSchema } from '../appConfig/interface/port';
 import { type MasterdataDbConfig } from '../interfaces/config/masterdataDbConfig';
 import { type ConfigurationError } from '../interfaces/config/errors';
 
