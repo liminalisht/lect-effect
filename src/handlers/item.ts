@@ -116,3 +116,10 @@ export const productForItemField: FieldHandler<
   outputSchema: nullableProductSchema,
   handler: (parent) => productForItem(parent.id),
 };
+
+export const itemHandlers = [
+  getItemQuery,
+  listItemsQuery,
+  createItemMutation,
+  productForItemField,
+]

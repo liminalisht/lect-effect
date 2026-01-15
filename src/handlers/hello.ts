@@ -35,3 +35,7 @@ export const greetQuery: QueryHandler<
     outputSchema: helloResponseSchema,
     handler: helloHandler,
 };
+
+export const helloHandlers = [
+  greetQuery,
+];
