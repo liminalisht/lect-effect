@@ -12,6 +12,7 @@ const productItemsResolver = genericFieldResolver(
   'items',                              // field key
   'Items belonging to the product',     // description
   productSchema,                        // parent schema (Product)
+  Schema.Struct({}),                    // input schema
   Schema.Array(itemSchema),             // output schema (Item[])
   (parent: Product) => itemsForProduct(parent.id) // Effect<Item[]>
 );

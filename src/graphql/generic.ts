@@ -12,6 +12,7 @@ import { itemsForProduct } from '../handlers/product';
 
 export const genericFieldResolver = <
   P extends Schema.Schema.AnyNoContext,
+  I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
   E,
   R
@@ -19,18 +20,19 @@ export const genericFieldResolver = <
   ( key: string,
     descriptionString: string,
     parentSchema: P,
+    inputSchema: I,
     outputSchema: O,
-    handler: (parent: Schema.Schema.Type<P>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
+    handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>
   ) => resolver.of(
   Schema.standardSchemaV1(parentSchema),
   {
     [key]:
       field(Schema.standardSchemaV1(outputSchema))
       .description(descriptionString)
-      .resolve(async (parent) => runEffect(handler(parent))),
+      .input(Schema.standardSchemaV1(inputSchema))
+      .resolve(async (parent, input) => runEffect(handler(parent, input))),
   },
 );
-
 
 export const genericMutationResolver = <
   I extends Schema.Schema.AnyNoContext,
