@@ -36,3 +36,6 @@
 - [ ] implement testing strategy that clears db after each test. shouldn't effect's ability to pause and interleave be perfect for this?
 - [ ] oracle
 - [ ] durable workflows
+
+- [ ] tests structure doesnt mirror anymore
+- [ ] tests need to run against db
