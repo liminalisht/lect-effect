@@ -9,6 +9,7 @@ import { productSchema, type Product } from '../domain/product/product';
 import { itemSchema } from '../domain/item/item';
 import { itemsForProduct } from '../handlers/product';
 
+
 export const genericFieldResolver = <
   P extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
