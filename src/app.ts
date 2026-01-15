@@ -52,15 +52,15 @@ export const makeGraphQLSchema = (): Effect.Effect<GraphQLSchema> => Effect.gen(
  * Constructs the Yoga server instance with the provided schema.
  * @since 1.0.0
  */
-export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga, never, AppServices> => Effect.gen(function * () {
+export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga<AppServices>, never, AppServices> => Effect.gen(function * () {
   yield * Effect.logDebug('making yoga server instance...');
-  const yoga = yield * makeYoga(schema);
+  const yoga = yield * makeYoga<AppServices>(schema);
   return yoga;
 });
 
-const runYogaServer = (yoga: Yoga, config: ConfigServiceShape): Effect.Effect<void, ServerStartError, Scope> => Effect.gen(function * () {
+const runYogaServer = <R>(yoga: Yoga<R>, config: ConfigServiceShape): Effect.Effect<void, ServerStartError, Scope> => Effect.gen(function * () {
   yield * Effect.logDebug('starting graphql server...');
-  yield * server.listen(yoga, config.app.port);
+  yield * server.listen<R>(yoga, config.app.port);
   yield * Effect.logInfo(`graphql server is running on http://localhost:${config.app.port}/graphql`);
   return yield * Effect.never;
 });

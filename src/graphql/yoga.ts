@@ -13,16 +13,16 @@ import type { GraphQLContext } from './context';
  * Alias for the configured Yoga server instance.
  * @since 1.0.0
  */
-export type Yoga = YogaServerInstance<GraphQLContext, Record<string, any>>;
+export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>;
 
 /**
  * Constructs a Yoga server with the Effect runtime injected into context.
  * @since 1.0.0
  */
 export const makeYoga
-  = (schema: GraphQLSchema): Effect.Effect<Yoga, never, AppServices> => Effect.gen(function * () {
-    const runtime = yield * Effect.runtime<AppServices>();
-    return createYoga<GraphQLContext>({
+  = <R>(schema: GraphQLSchema): Effect.Effect<Yoga<R>, never, R> => Effect.gen(function * () {
+    const runtime = yield * Effect.runtime<R>();
+    return createYoga<GraphQLContext<R>>({
       schema,
       context: initial => ({ ...initial, runtime }),
     });

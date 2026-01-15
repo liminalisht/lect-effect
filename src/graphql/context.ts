@@ -18,8 +18,8 @@ import type { AppServices } from '../services/app';
  * GraphQL context enriched with an Effect runtime for `AppServices`.
  * @since 1.0.0
  */
-export type GraphQLContext = YogaInitialContext & RuntimeForAppServicesShape;
+export type GraphQLContext<R> = YogaInitialContext & RuntimeForAppServicesShape<R>;
 
-type RuntimeForAppServicesShape = {
-  readonly runtime: Runtime.Runtime<AppServices>;
+type RuntimeForAppServicesShape<R> = {
+  readonly runtime: Runtime.Runtime<R>;
 };

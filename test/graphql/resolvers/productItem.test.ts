@@ -21,6 +21,7 @@ import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type Port } from '../../../src/config/app/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
+import { AppServices } from '../../../src/services/app';
 
 const schema = makeSchema();
 
@@ -100,7 +101,7 @@ const makeAppLayer = () => {
   return { appLayer, state: { products, items, links } } as const;
 };
 
-const fetchJson = async (yoga: Yoga, query: string, variables?: Record<string, unknown>) => {
+const fetchJson = async (yoga: Yoga<AppServices>, query: string, variables?: Record<string, unknown>) => {
   const res = await yoga.fetch('http://unused/graphql', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -117,7 +118,7 @@ describe('GraphQL product & item boundary (property)', () => {
         fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async rawInput => {
           const input = normalizeInput(rawInput);
           const { appLayer } = makeAppLayer();
-          const yoga = await Effect.runPromise(makeYoga(schema).pipe(Effect.provide(appLayer)));
+          const yoga = await Effect.runPromise(makeYoga<AppServices>(schema).pipe(Effect.provide(appLayer)));
 
           const mutation = /* GraphQL */ `
             mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {

@@ -5,12 +5,13 @@ import { nameInputSchema } from '../../../src/domain/hello/nameInput';
 import { makeSchema } from '../../../src/graphql/schema';
 import { makeYoga } from '../../../src/graphql/yoga';
 import { testAppLayer } from '../../layers/app';
+import { AppServices } from '../../../src/services/app';
 
 describe('GraphQL hello (property)', () => {
   it.effect('hello(name) matches handler semantics', () =>
     Effect.gen(function * () {
       const schema = makeSchema();
-      const yoga = yield * makeYoga(schema);
+      const yoga = yield * makeYoga<AppServices>(schema);
       const arb = Arbitrary.make(nameInputSchema);
 
       const query = /* GraphQL */ `
