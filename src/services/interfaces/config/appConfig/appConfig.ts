@@ -5,6 +5,7 @@
 import { type Environment } from './environment';
 import { type ConfiguredLogLevel } from './loglevel';
 import { type Port } from './port';
+import { Context, Effect, Layer } from "effect"
 
 /**
  * Application runtime configuration values.
@@ -15,3 +16,6 @@ export type AppConfig = {
   readonly logLevel: ConfiguredLogLevel;
   readonly environment: Environment;
 };
+
+export class AppConfigService extends Context.Tag('AppConfigService')<AppConfigService, AppConfig>() {}
+

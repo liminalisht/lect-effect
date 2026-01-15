@@ -2,9 +2,9 @@
  * Application configuration module surface.
  * @since 1.0.0
  */
-import { type Environment } from '../services/interfaces/config/app/environment';
-import { type ConfiguredLogLevel } from '../services/interfaces/config/app/loglevel';
-import { type Port } from '../services/interfaces/config/app/port';
+import { type Environment } from '../services/interfaces/config/appConfig/environment';
+import { type ConfiguredLogLevel } from '../services/interfaces/config/appConfig/loglevel';
+import { type Port } from '../services/interfaces/config/appConfig/port';
 
 /**
  * Application runtime configuration values.

@@ -23,7 +23,7 @@ import { ItemRepo, type ItemRepoShape } from '../../../src/services/interfaces/i
 import { type Product } from '../../../src/domain/product/product';
 import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
-import { type Port } from '../../../src/services/interfaces/config/app/port';
+import { type Port } from '../../../src/services/interfaces/config/appConfig/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
 import { type AppServices } from '../../../src/services/interfaces/app';
 

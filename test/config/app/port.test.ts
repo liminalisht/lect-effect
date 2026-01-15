@@ -3,7 +3,7 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { portSchema } from '../../../src/services/interfaces/config/app/port';
+import { portSchema } from '../../../src/services/interfaces/config/appConfig/port';
 
 const decodePort = Schema.decodeUnknown(portSchema);
 const arbitraryPort = Arbitrary.make(portSchema);
