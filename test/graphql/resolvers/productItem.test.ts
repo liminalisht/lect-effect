@@ -10,6 +10,10 @@ import {
 } from 'effect';
 import type * as SqlClient from '@effect/sql/SqlClient';
 import { makeSchema } from '../../../src/graphql/schema';
+import { handlersToResolvers } from '../../../src/graphql/generic';
+import { helloHandlers } from '../../../src/handlers/hello';
+import { itemHandlers } from '../../../src/handlers/item';
+import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { ConfigService } from '../../../src/services/config';
 import { GreetingService } from '../../../src/services/greeting';
@@ -23,7 +27,11 @@ import { type Port } from '../../../src/config/app/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
 import { AppServices } from '../../../src/services/app';
 
-const schema = makeSchema();
+const schema = makeSchema(handlersToResolvers([
+  ...helloHandlers,
+  ...itemHandlers,
+  ...productHandlers,
+]));
 
 const arbitraryCreateProductWithItemsInput = Arbitrary.make(createProductWithItemsInputSchema);
 const arbitraryCreateProductWithItemsInputNonEmpty: fc.Arbitrary<CreateProductWithItemsInput> = arbitraryCreateProductWithItemsInput.filter(input => input.items.length > 0);
@@ -137,26 +145,26 @@ describe('GraphQL product & item boundary (property)', () => {
 
           const query = /* GraphQL */ `
             query ProductSuite($productId: Int!, $itemId: Int!) {
-              product(id: $productId) {
+              getProduct(id: $productId) {
                 id
                 description
-                itemsForProduct { id description pack_size }
+                items { id description pack_size }
               }
-              productWithItems(id: $productId) {
+              getProductWithItems(id: $productId) {
                 product { id description }
                 items { id description pack_size }
               }
-              products { id description }
-              items {
+              listProducts { id description }
+              listItems {
                 id
                 description
                 pack_size
-                productForItem { id description }
+                product { id description }
               }
-              item(id: $itemId) {
+              getItem(id: $itemId) {
                 id
                 description
-                productForItem { id description }
+                product { id description }
               }
             }
           `;
@@ -164,22 +172,22 @@ describe('GraphQL product & item boundary (property)', () => {
           const queryJson = await fetchJson(yoga, query, { productId, itemId: firstItemId });
           expect(queryJson.errors).toBeUndefined();
 
-          const { product, productWithItems, products, items } = queryJson.data;
+          const { getProduct, getProductWithItems, listProducts, listItems } = queryJson.data;
 
           expect(created.product).toEqual({ id: productId, description: input.product.description ?? null, __typename: 'Product' });
-          expect(created.items).toEqual(product.itemsForProduct);
+          expect(created.items).toEqual(getProduct.items);
 
-          expect(productWithItems).toEqual({
+          expect(getProductWithItems).toEqual({
             product: { id: productId, description: input.product.description ?? null },
-            items: product.itemsForProduct,
+            items: getProduct.items,
           });
 
-          expect(products).toEqual([{ id: productId, description: input.product.description ?? null }]);
-          expect(items).toEqual(input.items.map((item, idx) => ({
+          expect(listProducts).toEqual([{ id: productId, description: input.product.description ?? null }]);
+          expect(listItems).toEqual(input.items.map((item, idx) => ({
             id: created.items[idx].id,
             description: item.description ?? null,
             pack_size: item.pack_size,
-            productForItem: { id: productId, description: input.product.description ?? null },
+            product: { id: productId, description: input.product.description ?? null },
           })));
         })),
       catch: e => e as Error,

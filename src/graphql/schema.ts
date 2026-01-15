@@ -7,17 +7,15 @@ import { asyncContextProvider } from '@gqloom/core/context';
 import { EffectWeaver } from '@gqloom/effect';
 import { type GraphQLSchema, lexicographicSortSchema, printSchema } from 'graphql';
 import { Effect } from 'effect';
-import { makeResolvers } from './resolvers';
-import { exampleResolvers } from './genericResolvers';
 
-// asyncContextProvider is enabled, so you can just read the GraphQLContext via useContext.
-// todo: can't i make this a function that uses Effect?
-// todo: make this a function called makeSchema that takes a list of resolvers...
+export type GraphQLResolver = Parameters<typeof weave>[2];
+
 /**
  * Builds the GraphQL schema from registered resolvers.
  * @since 1.0.0
  */
-export const makeSchema = (): GraphQLSchema => weave(EffectWeaver, asyncContextProvider, ...exampleResolvers);// ...makeResolvers());
+export const makeSchema = (resolvers: ReadonlyArray<GraphQLResolver>): GraphQLSchema =>
+  weave(EffectWeaver, asyncContextProvider, ...resolvers);
 
 /**
  * Logs a printable version of the schema for debugging.
