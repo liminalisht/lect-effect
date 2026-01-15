@@ -14,7 +14,7 @@ export type GraphQLResolver = Parameters<typeof weave>[2];
  * Builds the GraphQL schema from registered resolvers.
  * @since 1.0.0
  */
-export const makeSchema = (resolvers: ReadonlyArray<GraphQLResolver>): GraphQLSchema =>
+export const makeSchema = (resolvers: readonly GraphQLResolver[]): GraphQLSchema =>
   weave(EffectWeaver, asyncContextProvider, ...resolvers);
 
 /**

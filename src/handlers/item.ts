@@ -3,14 +3,14 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ItemRepo, ItemRepoError } from '../services/itemRepo';
+import { ItemRepo, type ItemRepoError } from '../services/itemRepo';
 import { ProductRepo, type ProductRepoError } from '../services/productRepo';
 import type { ItemId } from '../domain/item/itemId';
 import { itemSchema } from '../domain/item/item';
 import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput';
-import { QueryHandler, FieldHandler, MutationHandler } from './generic';
-import { ItemIdInput, itemIdInputSchema } from '../domain/item/itemIdInput';
+import { type ItemIdInput, itemIdInputSchema } from '../domain/item/itemIdInput';
 import { productSchema } from '../domain/product/product';
+import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic';
 
 /**
  * Fetches an item by id.
@@ -22,7 +22,7 @@ export const getItem = (id: ItemId) =>
     return yield * repo.getById(id);
   });
 
-//todo: move
+// todo: move
 const nullableItemSchema = Schema.NullOr(itemSchema);
 const emptyStructSchema = Schema.Struct({});
 const itemArraySchema = Schema.Array(itemSchema);
@@ -34,14 +34,13 @@ export const getItemQuery: QueryHandler<
   ItemRepoError,
   ItemRepo
 > = {
-    kind: 'query',
-    key: 'getItem',
-    descriptionString: 'get item by id',
-    inputSchema: itemIdInputSchema,
-    outputSchema: nullableItemSchema,
-    handler: (input: ItemIdInput) => getItem(input.id),
+  kind: 'query',
+  key: 'getItem',
+  descriptionString: 'get item by id',
+  inputSchema: itemIdInputSchema,
+  outputSchema: nullableItemSchema,
+  handler: (input: ItemIdInput) => getItem(input.id),
 };
-
 
 /**
  * Lists all items.
@@ -87,7 +86,7 @@ export const createItemMutation: MutationHandler<
   descriptionString: 'create a new item',
   inputSchema: createItemInputSchema,
   outputSchema: itemSchema,
-  handler: (input) => createItem(input),
+  handler: input => createItem(input),
 };
 
 /**
@@ -114,7 +113,7 @@ export const productForItemField: FieldHandler<
   descriptionString: 'product for this item',
   inputSchema: emptyStructSchema,
   outputSchema: nullableProductSchema,
-  handler: (parent) => productForItem(parent.id),
+  handler: parent => productForItem(parent.id),
 };
 
 export const itemHandlers = [
@@ -122,4 +121,4 @@ export const itemHandlers = [
   listItemsQuery,
   createItemMutation,
   productForItemField,
-]
+];

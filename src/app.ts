@@ -11,7 +11,7 @@ import { type Yoga, makeYoga } from './graphql/yoga';
 import { ConfigService, type ConfigServiceShape } from './services/config';
 import { type AppServices } from './services/app';
 import { type ServerStartError } from './graphql/errors';
-import { handlersToResolvers, type AnyHandler } from './graphql/generic';
+import { handlersToResolvers, type AnyHandler } from './graphql/resolvers';
 import { helloHandlers } from './handlers/hello';
 import { itemHandlers } from './handlers/item';
 import { productHandlers } from './handlers/product';
@@ -46,7 +46,7 @@ export const getConfig = (): Effect.Effect<ConfigServiceShape, never, ConfigServ
  * Builds and logs the GraphQL schema.
  * @since 1.0.0
  */
-export const makeGraphQLSchema = (resolvers: ReadonlyArray<GraphQLResolver>): Effect.Effect<GraphQLSchema> => Effect.gen(function * () {
+export const makeGraphQLSchema = (resolvers: readonly GraphQLResolver[]): Effect.Effect<GraphQLSchema> => Effect.gen(function * () {
   yield * Effect.logDebug('making graphql schema...');
   const schema = makeSchema(resolvers);
   yield * Effect.logDebug('logging graphql schema...');
@@ -71,11 +71,11 @@ const runYogaServer = <R>(yoga: Yoga<R>, config: ConfigServiceShape): Effect.Eff
   return yield * Effect.never;
 });
 
-const selectHandlers = (_config: ConfigServiceShape): ReadonlyArray<AnyHandler> => ([
+const selectHandlers = (_config: ConfigServiceShape): readonly AnyHandler[] => ([
   ...helloHandlers,
   ...itemHandlers,
   ...productHandlers,
 ]);
 
-const makeResolvers = (handlers: ReadonlyArray<AnyHandler>): ReadonlyArray<GraphQLResolver> =>
-  handlersToResolvers(handlers) as ReadonlyArray<GraphQLResolver>;
+const makeResolvers = (handlers: readonly AnyHandler[]): readonly GraphQLResolver[] =>
+  handlersToResolvers(handlers) as readonly GraphQLResolver[];

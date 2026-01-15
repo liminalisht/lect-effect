@@ -6,7 +6,7 @@ import { Effect, Option } from 'effect';
 import { nameInputSchema, type NameInput } from '../domain/hello/nameInput';
 import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse';
 import { GreetingService } from '../services/greeting';
-import { QueryHandler } from './generic';
+import { type QueryHandler } from './generic';
 /**
  * Produces a greeting response using the greeting service.
  * @since 1.0.0
@@ -28,12 +28,12 @@ export const greetQuery: QueryHandler<
   never,
   GreetingService
 > = {
-    kind: 'query',
-    key: 'greet',
-    descriptionString: 'greet a user by name',
-    inputSchema: nameInputSchema,
-    outputSchema: helloResponseSchema,
-    handler: helloHandler,
+  kind: 'query',
+  key: 'greet',
+  descriptionString: 'greet a user by name',
+  inputSchema: nameInputSchema,
+  outputSchema: helloResponseSchema,
+  handler: helloHandler,
 };
 
 export const helloHandlers = [

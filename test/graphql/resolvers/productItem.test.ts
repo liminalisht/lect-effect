@@ -10,7 +10,7 @@ import {
 } from 'effect';
 import type * as SqlClient from '@effect/sql/SqlClient';
 import { makeSchema } from '../../../src/graphql/schema';
-import { handlersToResolvers } from '../../../src/graphql/generic';
+import { handlersToResolvers } from '../../../src/graphql/resolvers';
 import { helloHandlers } from '../../../src/handlers/hello';
 import { itemHandlers } from '../../../src/handlers/item';
 import { productHandlers } from '../../../src/handlers/product';
@@ -25,7 +25,7 @@ import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type Port } from '../../../src/config/app/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
-import { AppServices } from '../../../src/services/app';
+import { type AppServices } from '../../../src/services/app';
 
 const schema = makeSchema(handlersToResolvers([
   ...helloHandlers,

@@ -8,13 +8,11 @@ import { ItemRepo, type ItemRepoError } from '../services/itemRepo';
 import type { ProductId } from '../domain/product/productId';
 import { productIdInputSchema, type ProductIdInput } from '../domain/product/productIdInput';
 import { productSchema } from '../domain/product/product';
-import { productWithItemsSchema } from '../domain/product/productWithItems';
+import { productWithItemsSchema, type ProductWithItems } from '../domain/product/productWithItems';
 import { productInputSchema, type ProductInput } from '../domain/product/productInput';
-import type { Item } from '../domain/item/item';
+import { type Item, itemSchema } from '../domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../domain/product/createProductWithItemsInput';
-import type { ProductWithItems } from '../domain/product/productWithItems';
-import { QueryHandler, MutationHandler, FieldHandler } from './generic';
-import { itemSchema } from '../domain/item/item';
+import { type QueryHandler, type MutationHandler, type FieldHandler } from './generic';
 
 /**
  * Fetches a single product by id or returns null.
@@ -92,7 +90,7 @@ export const createProductMutation: MutationHandler<
   descriptionString: 'create product',
   inputSchema: productInputSchema,
   outputSchema: productSchema,
-  handler: (input) => createProduct(input),
+  handler: input => createProduct(input),
 };
 
 /**
@@ -118,7 +116,7 @@ export const itemsForProductField: FieldHandler<
   descriptionString: 'items for this product',
   inputSchema: emptyStructSchema,
   outputSchema: itemsArraySchema,
-  handler: (parent) => itemsForProduct(parent.id),
+  handler: parent => itemsForProduct(parent.id),
 };
 
 /**
@@ -185,7 +183,7 @@ export const createProductWithItemsMutation: MutationHandler<
   descriptionString: 'create product and its items',
   inputSchema: createProductWithItemsInputSchema,
   outputSchema: productWithItemsSchema,
-  handler: (input) => createProductWithItems(input),
+  handler: input => createProductWithItems(input),
 };
 
 export const productHandlers = [
@@ -195,4 +193,4 @@ export const productHandlers = [
   itemsForProductField,
   getProductWithItemsQuery,
   createProductWithItemsMutation,
-]
+];
