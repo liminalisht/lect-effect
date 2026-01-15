@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '../interfaces/config';
 import { type Environment, environmentSchema } from '../interfaces/config/appConfig/environment';
 import { type Port, portSchema } from '../interfaces/config/appConfig/port';
-import { type MasterdataDbConfig } from '../../config/masterdataDb';
+import { type MasterdataDbConfig } from '../interfaces/config/masterdataDbConfig';
 import { type ConfigurationError } from '../../config/errors';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {

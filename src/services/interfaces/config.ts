@@ -4,7 +4,7 @@
  */
 import { Context } from 'effect';
 import { type AppConfig } from './config/appConfig/appConfig';
-import { type MasterdataDbConfig } from '../../config/masterdataDb';
+import { type MasterdataDbConfig } from './config/masterdataDbConfig';
 
 /**
  * Service tag for application configuration.
