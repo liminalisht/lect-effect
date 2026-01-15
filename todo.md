@@ -39,3 +39,5 @@
 
 - [ ] tests structure doesnt mirror anymore
 - [ ] tests need to run against db
+- [ ] remove config; change layer topologies
+- [ ] print layer topology and get in docs
