@@ -28,7 +28,7 @@ GraphQL context enriched with an Effect runtime for `AppServices`.
 **Signature**
 
 ```ts
-export type GraphQLContext = YogaInitialContext & RuntimeForAppServicesShape
+export type GraphQLContext<R> = YogaInitialContext & RuntimeForAppServicesShape<R>
 ```
 
 Added in v1.0.0

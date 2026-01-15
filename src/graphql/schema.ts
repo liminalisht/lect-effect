@@ -8,6 +8,10 @@ import { EffectWeaver } from '@gqloom/effect';
 import { type GraphQLSchema, lexicographicSortSchema, printSchema } from 'graphql';
 import { Effect } from 'effect';
 
+/**
+ * Resolver type accepted by schema weaving.
+ * @since 1.0.0
+ */
 export type GraphQLResolver = Parameters<typeof weave>[2];
 
 /**

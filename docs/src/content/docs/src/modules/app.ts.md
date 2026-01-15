@@ -55,7 +55,7 @@ Builds and logs the GraphQL schema.
 **Signature**
 
 ```ts
-export declare const makeGraphQLSchema: () => Effect.Effect<GraphQLSchema>
+export declare const makeGraphQLSchema: (resolvers: readonly GraphQLResolver[]) => Effect.Effect<GraphQLSchema>
 ```
 
 Added in v1.0.0
@@ -67,7 +67,7 @@ Constructs the Yoga server instance with the provided schema.
 **Signature**
 
 ```ts
-export declare const makeYogaServer: (schema: GraphQLSchema) => Effect.Effect<Yoga, never, AppServices>
+export declare const makeYogaServer: (schema: GraphQLSchema) => Effect.Effect<Yoga<AppServices>, never, AppServices>
 ```
 
 Added in v1.0.0

@@ -1,5 +1,13 @@
+/**
+ * Shared handler shapes used to describe GraphQL operations in a schema-first way.
+ * @since 1.0.0
+ */
 import { type Effect, type Schema } from 'effect';
 
+/**
+ * Describes a field resolver operating on a parent type.
+ * @since 1.0.0
+ */
 export type FieldHandler<
   P extends Schema.Schema.AnyNoContext,
   I extends Schema.Schema.AnyNoContext,
@@ -16,6 +24,10 @@ export type FieldHandler<
     handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
+/**
+ * Describes a query resolver for a root-level operation.
+ * @since 1.0.0
+ */
 export type QueryHandler<
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
@@ -30,6 +42,10 @@ export type QueryHandler<
     handler: (input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
+/**
+ * Describes a mutation resolver for a root-level operation.
+ * @since 1.0.0
+ */
 export type MutationHandler<
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,

@@ -1,6 +1,6 @@
 ---
 title: utilities/decode.ts
-nav_order: 58
+nav_order: 52
 parent: Modules
 ---
 

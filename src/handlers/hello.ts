@@ -22,6 +22,10 @@ export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, nev
     return response;
   });
 
+/**
+ * Query handler for greeting users.
+ * @since 1.0.0
+ */
 export const greetQuery: QueryHandler<
   typeof nameInputSchema,
   typeof helloResponseSchema,
@@ -36,6 +40,10 @@ export const greetQuery: QueryHandler<
   handler: helloHandler,
 };
 
+/**
+ * Registered hello handlers for GraphQL resolver conversion.
+ * @since 1.0.0
+ */
 export const helloHandlers = [
   greetQuery,
 ];

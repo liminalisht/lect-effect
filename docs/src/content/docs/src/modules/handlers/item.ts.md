@@ -1,6 +1,6 @@
 ---
 title: handlers/item.ts
-nav_order: 42
+nav_order: 36
 parent: Modules
 ---
 
@@ -16,9 +16,14 @@ Added in v1.0.0
 
 - [utils](#utils)
   - [createItem](#createitem)
+  - [createItemMutation](#createitemmutation)
   - [getItem](#getitem)
+  - [getItemQuery](#getitemquery)
+  - [itemHandlers](#itemhandlers)
   - [listItems](#listitems)
+  - [listItemsQuery](#listitemsquery)
   - [productForItem](#productforitem)
+  - [productForItemField](#productforitemfield)
 
 ---
 
@@ -35,6 +40,30 @@ export declare const createItem: (
   input: CreateItemInput
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly pack_size: number },
+  ItemRepoError,
+  ItemRepo
+>
+```
+
+Added in v1.0.0
+
+## createItemMutation
+
+Mutation handler for creating a new item.
+
+**Signature**
+
+```ts
+export declare const createItemMutation: MutationHandler<
+  Schema.Struct<{
+    description: Schema.optional<Schema.NullOr<typeof Schema.String>>
+    pack_size: Schema.refine<number, typeof Schema.Number>
+  }>,
+  Schema.Struct<{
+    id: Schema.refine<number, typeof Schema.Number>
+    description: Schema.NullOr<typeof Schema.String>
+    pack_size: Schema.refine<number, typeof Schema.Number>
+  }>,
   ItemRepoError,
   ItemRepo
 >
@@ -60,6 +89,96 @@ export declare const getItem: (
 
 Added in v1.0.0
 
+## getItemQuery
+
+Query handler for fetching a single item.
+
+**Signature**
+
+```ts
+export declare const getItemQuery: QueryHandler<
+  Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+  Schema.NullOr<
+    Schema.Struct<{
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<typeof Schema.String>
+      pack_size: Schema.refine<number, typeof Schema.Number>
+    }>
+  >,
+  ItemRepoError,
+  ItemRepo
+>
+```
+
+Added in v1.0.0
+
+## itemHandlers
+
+Registered item handlers for GraphQL resolver conversion.
+
+**Signature**
+
+```ts
+export declare const itemHandlers: (
+  | QueryHandler<
+      Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+      Schema.NullOr<
+        Schema.Struct<{
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<typeof Schema.String>
+          pack_size: Schema.refine<number, typeof Schema.Number>
+        }>
+      >,
+      ItemRepoError,
+      ItemRepo
+    >
+  | QueryHandler<
+      Schema.Struct<{}>,
+      Schema.Array$<
+        Schema.Struct<{
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<typeof Schema.String>
+          pack_size: Schema.refine<number, typeof Schema.Number>
+        }>
+      >,
+      ItemRepoError,
+      ItemRepo
+    >
+  | MutationHandler<
+      Schema.Struct<{
+        description: Schema.optional<Schema.NullOr<typeof Schema.String>>
+        pack_size: Schema.refine<number, typeof Schema.Number>
+      }>,
+      Schema.Struct<{
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<typeof Schema.String>
+        pack_size: Schema.refine<number, typeof Schema.Number>
+      }>,
+      ItemRepoError,
+      ItemRepo
+    >
+  | FieldHandler<
+      Schema.Struct<{
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<typeof Schema.String>
+        pack_size: Schema.refine<number, typeof Schema.Number>
+      }>,
+      Schema.Struct<{}>,
+      Schema.NullOr<
+        Schema.Struct<{
+          __typename: Schema.optional<Schema.Literal<["Product"]>>
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+        }>
+      >,
+      ProductRepoError,
+      ProductRepo
+    >
+)[]
+```
+
+Added in v1.0.0
+
 ## listItems
 
 Lists all items.
@@ -69,6 +188,29 @@ Lists all items.
 ```ts
 export declare const listItems: Effect.Effect<
   readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  ItemRepoError,
+  ItemRepo
+>
+```
+
+Added in v1.0.0
+
+## listItemsQuery
+
+Query handler for listing all items.
+
+**Signature**
+
+```ts
+export declare const listItemsQuery: QueryHandler<
+  Schema.Struct<{}>,
+  Schema.Array$<
+    Schema.Struct<{
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<typeof Schema.String>
+      pack_size: Schema.refine<number, typeof Schema.Number>
+    }>
+  >,
   ItemRepoError,
   ItemRepo
 >
@@ -87,6 +229,34 @@ export declare const productForItem: (
   itemId: ItemId
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined } | null,
+  ProductRepoError,
+  ProductRepo
+>
+```
+
+Added in v1.0.0
+
+## productForItemField
+
+Field resolver for loading the product related to an item.
+
+**Signature**
+
+```ts
+export declare const productForItemField: FieldHandler<
+  Schema.Struct<{
+    id: Schema.refine<number, typeof Schema.Number>
+    description: Schema.NullOr<typeof Schema.String>
+    pack_size: Schema.refine<number, typeof Schema.Number>
+  }>,
+  Schema.Struct<{}>,
+  Schema.NullOr<
+    Schema.Struct<{
+      __typename: Schema.optional<Schema.Literal<["Product"]>>
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+    }>
+  >,
   ProductRepoError,
   ProductRepo
 >

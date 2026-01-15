@@ -1,6 +1,6 @@
 ---
 title: handlers/product.ts
-nav_order: 43
+nav_order: 37
 parent: Modules
 ---
 
@@ -16,11 +16,18 @@ Added in v1.0.0
 
 - [utils](#utils)
   - [createProduct](#createproduct)
+  - [createProductMutation](#createproductmutation)
   - [createProductWithItems](#createproductwithitems)
+  - [createProductWithItemsMutation](#createproductwithitemsmutation)
   - [getProduct](#getproduct)
+  - [getProductQuery](#getproductquery)
   - [getProductWithItems](#getproductwithitems)
+  - [getProductWithItemsQuery](#getproductwithitemsquery)
   - [itemsForProduct](#itemsforproduct)
+  - [itemsForProductField](#itemsforproductfield)
   - [listProducts](#listproducts)
+  - [listProductsQuery](#listproductsquery)
+  - [productHandlers](#producthandlers)
 
 ---
 
@@ -37,6 +44,27 @@ export declare const createProduct: (
   input: ProductInput
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined },
+  ProductRepoError,
+  ProductRepo
+>
+```
+
+Added in v1.0.0
+
+## createProductMutation
+
+Mutation handler for creating a product.
+
+**Signature**
+
+```ts
+export declare const createProductMutation: MutationHandler<
+  Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>,
+  Schema.Struct<{
+    __typename: Schema.optional<Schema.Literal<["Product"]>>
+    id: Schema.refine<number, typeof Schema.Number>
+    description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+  }>,
   ProductRepoError,
   ProductRepo
 >
@@ -65,6 +93,44 @@ export declare const createProductWithItems: (
 
 Added in v1.0.0
 
+## createProductWithItemsMutation
+
+Mutation handler for creating a product and linking its items.
+
+**Signature**
+
+```ts
+export declare const createProductWithItemsMutation: MutationHandler<
+  Schema.Struct<{
+    product: Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>
+    items: Schema.Array$<
+      Schema.Struct<{
+        description: Schema.optional<Schema.NullOr<typeof Schema.String>>
+        pack_size: Schema.refine<number, typeof Schema.Number>
+      }>
+    >
+  }>,
+  Schema.Struct<{
+    product: Schema.Struct<{
+      __typename: Schema.optional<Schema.Literal<["Product"]>>
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+    }>
+    items: Schema.Array$<
+      Schema.Struct<{
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<typeof Schema.String>
+        pack_size: Schema.refine<number, typeof Schema.Number>
+      }>
+    >
+  }>,
+  ParseError | SqlError | ProductNotFound,
+  ProductRepo | ItemRepo
+>
+```
+
+Added in v1.0.0
+
 ## getProduct
 
 Fetches a single product by id or returns null.
@@ -76,6 +142,29 @@ export declare const getProduct: (
   id: ProductId
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly __typename?: "Product" | undefined } | null,
+  ProductRepoError,
+  ProductRepo
+>
+```
+
+Added in v1.0.0
+
+## getProductQuery
+
+Query handler for fetching a single product.
+
+**Signature**
+
+```ts
+export declare const getProductQuery: QueryHandler<
+  Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+  Schema.NullOr<
+    Schema.Struct<{
+      __typename: Schema.optional<Schema.Literal<["Product"]>>
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+    }>
+  >,
   ProductRepoError,
   ProductRepo
 >
@@ -104,6 +193,38 @@ export declare const getProductWithItems: (
 
 Added in v1.0.0
 
+## getProductWithItemsQuery
+
+Query handler for fetching a product along with its items.
+
+**Signature**
+
+```ts
+export declare const getProductWithItemsQuery: QueryHandler<
+  Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+  Schema.NullOr<
+    Schema.Struct<{
+      product: Schema.Struct<{
+        __typename: Schema.optional<Schema.Literal<["Product"]>>
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+      }>
+      items: Schema.Array$<
+        Schema.Struct<{
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<typeof Schema.String>
+          pack_size: Schema.refine<number, typeof Schema.Number>
+        }>
+      >
+    }>
+  >,
+  ParseError | SqlError | ProductNotFound,
+  ProductRepo | ItemRepo
+>
+```
+
+Added in v1.0.0
+
 ## itemsForProduct
 
 Lists items for a given product id.
@@ -115,6 +236,34 @@ export declare const itemsForProduct: (
   productId: ProductId
 ) => Effect.Effect<
   readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  ItemRepoError,
+  ItemRepo
+>
+```
+
+Added in v1.0.0
+
+## itemsForProductField
+
+Field resolver for loading items for the parent product.
+
+**Signature**
+
+```ts
+export declare const itemsForProductField: FieldHandler<
+  Schema.Struct<{
+    __typename: Schema.optional<Schema.Literal<["Product"]>>
+    id: Schema.refine<number, typeof Schema.Number>
+    description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+  }>,
+  Schema.Struct<{}>,
+  Schema.Array$<
+    Schema.Struct<{
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<typeof Schema.String>
+      pack_size: Schema.refine<number, typeof Schema.Number>
+    }>
+  >,
   ItemRepoError,
   ItemRepo
 >
@@ -134,6 +283,143 @@ export declare const listProducts: Effect.Effect<
   ProductRepoError,
   ProductRepo
 >
+```
+
+Added in v1.0.0
+
+## listProductsQuery
+
+Query handler for listing products.
+
+**Signature**
+
+```ts
+export declare const listProductsQuery: QueryHandler<
+  Schema.Struct<{}>,
+  Schema.Array$<
+    Schema.Struct<{
+      __typename: Schema.optional<Schema.Literal<["Product"]>>
+      id: Schema.refine<number, typeof Schema.Number>
+      description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+    }>
+  >,
+  ProductRepoError,
+  ProductRepo
+>
+```
+
+Added in v1.0.0
+
+## productHandlers
+
+Registered product handlers for GraphQL resolver conversion.
+
+**Signature**
+
+```ts
+export declare const productHandlers: (
+  | QueryHandler<
+      Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+      Schema.NullOr<
+        Schema.Struct<{
+          __typename: Schema.optional<Schema.Literal<["Product"]>>
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+        }>
+      >,
+      ProductRepoError,
+      ProductRepo
+    >
+  | QueryHandler<
+      Schema.Struct<{}>,
+      Schema.Array$<
+        Schema.Struct<{
+          __typename: Schema.optional<Schema.Literal<["Product"]>>
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+        }>
+      >,
+      ProductRepoError,
+      ProductRepo
+    >
+  | MutationHandler<
+      Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>,
+      Schema.Struct<{
+        __typename: Schema.optional<Schema.Literal<["Product"]>>
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+      }>,
+      ProductRepoError,
+      ProductRepo
+    >
+  | FieldHandler<
+      Schema.Struct<{
+        __typename: Schema.optional<Schema.Literal<["Product"]>>
+        id: Schema.refine<number, typeof Schema.Number>
+        description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+      }>,
+      Schema.Struct<{}>,
+      Schema.Array$<
+        Schema.Struct<{
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<typeof Schema.String>
+          pack_size: Schema.refine<number, typeof Schema.Number>
+        }>
+      >,
+      ItemRepoError,
+      ItemRepo
+    >
+  | QueryHandler<
+      Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
+      Schema.NullOr<
+        Schema.Struct<{
+          product: Schema.Struct<{
+            __typename: Schema.optional<Schema.Literal<["Product"]>>
+            id: Schema.refine<number, typeof Schema.Number>
+            description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+          }>
+          items: Schema.Array$<
+            Schema.Struct<{
+              id: Schema.refine<number, typeof Schema.Number>
+              description: Schema.NullOr<typeof Schema.String>
+              pack_size: Schema.refine<number, typeof Schema.Number>
+            }>
+          >
+        }>
+      >,
+      ParseError | SqlError | ProductNotFound,
+      ProductRepo | ItemRepo
+    >
+  | MutationHandler<
+      Schema.Struct<{
+        product: Schema.Struct<{
+          description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>>
+        }>
+        items: Schema.Array$<
+          Schema.Struct<{
+            description: Schema.optional<Schema.NullOr<typeof Schema.String>>
+            pack_size: Schema.refine<number, typeof Schema.Number>
+          }>
+        >
+      }>,
+      Schema.Struct<{
+        product: Schema.Struct<{
+          __typename: Schema.optional<Schema.Literal<["Product"]>>
+          id: Schema.refine<number, typeof Schema.Number>
+          description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+        }>
+        items: Schema.Array$<
+          Schema.Struct<{
+            id: Schema.refine<number, typeof Schema.Number>
+            description: Schema.NullOr<typeof Schema.String>
+            pack_size: Schema.refine<number, typeof Schema.Number>
+          }>
+        >
+      }>,
+      ParseError | SqlError | ProductNotFound,
+      ProductRepo | ItemRepo
+    >
+)[]
 ```
 
 Added in v1.0.0

@@ -1,6 +1,6 @@
 ---
 title: graphql/server.ts
-nav_order: 39
+nav_order: 32
 parent: Modules
 ---
 
@@ -28,10 +28,7 @@ Starts an HTTP server for the provided Yoga instance.
 **Signature**
 
 ```ts
-export declare const listen: (
-  yoga: YogaServerInstance<GraphQLContext, Record<string, any>>,
-  port: number
-) => Effect.Effect<Server, ServerStartError, Scope>
+export declare const listen: <R>(yoga: Yoga<R>, port: number) => Effect.Effect<Server, ServerStartError, Scope>
 ```
 
 Added in v1.0.0

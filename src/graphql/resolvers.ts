@@ -1,3 +1,7 @@
+/**
+ * Helpers for turning typed handlers into gqloom resolvers.
+ * @since 1.0.0
+ */
 import {
   field, mutation, query, resolver,
 } from '@gqloom/core';
@@ -5,11 +9,19 @@ import { type Effect, Schema } from 'effect';
 import { type FieldHandler, type MutationHandler, type QueryHandler } from '../handlers/generic';
 import { runEffect } from './effect';
 
+/**
+ * Union of supported handler shapes.
+ * @since 1.0.0
+ */
 export type AnyHandler =
 	| FieldHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
 	| QueryHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
 	| MutationHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>;
 
+/**
+ * Resolves the gqloom resolver type produced from a handler.
+ * @since 1.0.0
+ */
 export type ResolverFromHandler<H> =
   H extends FieldHandler<infer P, infer I, infer O, infer E, infer R>
     ? ReturnType<typeof genericFieldResolver<P, I, O, E, R>>
@@ -19,9 +31,17 @@ export type ResolverFromHandler<H> =
         ? ReturnType<typeof genericMutationResolver<I, O, E, R>>
         : never;
 
+/**
+ * Converts handler definitions into gqloom resolvers while preserving types.
+ * @since 1.0.0
+ */
 export const handlersToResolvers = <HS extends readonly AnyHandler[]>(handlers: HS) =>
   handlers.map(handler => handlerToResolver(handler)) as { [K in keyof HS]: ResolverFromHandler<HS[K]> };
 
+/**
+ * Dispatches a handler to the appropriate resolver factory.
+ * @since 1.0.0
+ */
 export const handlerToResolver = <H extends AnyHandler>(handler: H): ResolverFromHandler<H> => {
   switch (handler.kind) {
   case 'field': {
@@ -66,6 +86,10 @@ type FieldResolverConfig<P, I, O, E, R> = {
   handler: (parent: Schema.Schema.Type<P>, input: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
+/**
+ * Builds a typed field resolver for gqloom.
+ * @since 1.0.0
+ */
 export const genericFieldResolver = <
   P extends Schema.Schema.AnyNoContext,
   I extends Schema.Schema.AnyNoContext,
@@ -91,6 +115,10 @@ type MutationResolverConfig<I, O, E, R> = {
   handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
+/**
+ * Builds a typed mutation resolver for gqloom.
+ * @since 1.0.0
+ */
 export const genericMutationResolver = <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,
@@ -113,6 +141,10 @@ type QueryResolverConfig<I, O, E, R> = {
   handler: (args: Schema.Schema.Type<I>) => Effect.Effect<Schema.Schema.Type<O>, E, R>;
 };
 
+/**
+ * Builds a typed query resolver for gqloom.
+ * @since 1.0.0
+ */
 export const genericQueryResolver = <
   I extends Schema.Schema.AnyNoContext,
   O extends Schema.Schema.AnyNoContext,

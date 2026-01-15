@@ -28,6 +28,10 @@ const emptyStructSchema = Schema.Struct({});
 const itemArraySchema = Schema.Array(itemSchema);
 const nullableProductSchema = Schema.NullOr(productSchema);
 
+/**
+ * Query handler for fetching a single item.
+ * @since 1.0.0
+ */
 export const getItemQuery: QueryHandler<
   typeof itemIdInputSchema,
   typeof nullableItemSchema,
@@ -51,6 +55,10 @@ export const listItems = Effect.gen(function * () {
   return yield * repo.list;
 });
 
+/**
+ * Query handler for listing all items.
+ * @since 1.0.0
+ */
 export const listItemsQuery: QueryHandler<
   typeof emptyStructSchema,
   typeof itemArraySchema,
@@ -75,6 +83,10 @@ export const createItem = (input: CreateItemInput) =>
     return yield * repo.create(input);
   });
 
+/**
+ * Mutation handler for creating a new item.
+ * @since 1.0.0
+ */
 export const createItemMutation: MutationHandler<
   typeof createItemInputSchema,
   typeof itemSchema,
@@ -100,6 +112,10 @@ export const productForItem = (itemId: ItemId) =>
     return Option.getOrNull(opt);
   });
 
+/**
+ * Field resolver for loading the product related to an item.
+ * @since 1.0.0
+ */
 export const productForItemField: FieldHandler<
   typeof itemSchema,
   typeof emptyStructSchema,
@@ -116,6 +132,10 @@ export const productForItemField: FieldHandler<
   handler: parent => productForItem(parent.id),
 };
 
+/**
+ * Registered item handlers for GraphQL resolver conversion.
+ * @since 1.0.0
+ */
 export const itemHandlers = [
   getItemQuery,
   listItemsQuery,

@@ -28,7 +28,7 @@ Natural transformation `Effect<A, E, AppServices> -> Promise<A>`.
 **Signature**
 
 ```ts
-export declare const runEffect: <A, E>(eff: Effect.Effect<A, E, AppServices>) => Promise<A>
+export declare const runEffect: <A, E, R>(eff: Effect.Effect<A, E, R>) => Promise<A>
 ```
 
 Added in v1.0.0

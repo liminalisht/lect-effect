@@ -1,6 +1,6 @@
 ---
 title: graphql/schema.ts
-nav_order: 38
+nav_order: 31
 parent: Modules
 ---
 
@@ -15,12 +15,25 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [utils](#utils)
+  - [GraphQLResolver (type alias)](#graphqlresolver-type-alias)
   - [logSchema](#logschema)
   - [makeSchema](#makeschema)
 
 ---
 
 # utils
+
+## GraphQLResolver (type alias)
+
+Resolver type accepted by schema weaving.
+
+**Signature**
+
+```ts
+export type GraphQLResolver = Parameters<typeof weave>[2]
+```
+
+Added in v1.0.0
 
 ## logSchema
 
@@ -41,7 +54,7 @@ Builds the GraphQL schema from registered resolvers.
 **Signature**
 
 ```ts
-export declare const makeSchema: () => GraphQLSchema
+export declare const makeSchema: (resolvers: readonly GraphQLResolver[]) => GraphQLSchema
 ```
 
 Added in v1.0.0

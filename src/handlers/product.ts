@@ -32,6 +32,10 @@ const productsArraySchema = Schema.Array(productSchema);
 const itemsArraySchema = Schema.Array(itemSchema);
 const nullableProductWithItemsSchema = Schema.NullOr(productWithItemsSchema);
 
+/**
+ * Query handler for fetching a single product.
+ * @since 1.0.0
+ */
 export const getProductQuery: QueryHandler<
   typeof productIdInputSchema,
   typeof nullableProductSchema,
@@ -55,6 +59,10 @@ export const listProducts = Effect.gen(function * () {
   return yield * repo.list;
 });
 
+/**
+ * Query handler for listing products.
+ * @since 1.0.0
+ */
 export const listProductsQuery: QueryHandler<
   typeof emptyStructSchema,
   typeof productsArraySchema,
@@ -79,6 +87,10 @@ export const createProduct = (input: ProductInput) =>
     return yield * repo.create(input);
   });
 
+/**
+ * Mutation handler for creating a product.
+ * @since 1.0.0
+ */
 export const createProductMutation: MutationHandler<
   typeof productInputSchema,
   typeof productSchema,
@@ -103,6 +115,10 @@ export const itemsForProduct = (productId: ProductId) =>
     return yield * items.listForProduct(productId);
   });
 
+/**
+ * Field resolver for loading items for the parent product.
+ * @since 1.0.0
+ */
 export const itemsForProductField: FieldHandler<
   typeof productSchema,
   typeof emptyStructSchema,
@@ -137,6 +153,10 @@ export const getProductWithItems = (id: ProductId) =>
     return { product: productOpt.value, items } satisfies ProductWithItems;
   });
 
+/**
+ * Query handler for fetching a product along with its items.
+ * @since 1.0.0
+ */
 export const getProductWithItemsQuery: QueryHandler<
   typeof productIdInputSchema,
   typeof nullableProductWithItemsSchema,
@@ -172,6 +192,10 @@ export const createProductWithItems = (input: CreateProductWithItemsInput) =>
     return { product, items } satisfies ProductWithItems;
   });
 
+/**
+ * Mutation handler for creating a product and linking its items.
+ * @since 1.0.0
+ */
 export const createProductWithItemsMutation: MutationHandler<
   typeof createProductWithItemsInputSchema,
   typeof productWithItemsSchema,
@@ -186,6 +210,10 @@ export const createProductWithItemsMutation: MutationHandler<
   handler: input => createProductWithItems(input),
 };
 
+/**
+ * Registered product handlers for GraphQL resolver conversion.
+ * @since 1.0.0
+ */
 export const productHandlers = [
   getProductQuery,
   listProductsQuery,

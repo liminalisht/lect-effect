@@ -1,6 +1,6 @@
 ---
 title: graphql/yoga.ts
-nav_order: 40
+nav_order: 33
 parent: Modules
 ---
 
@@ -29,7 +29,7 @@ Alias for the configured Yoga server instance.
 **Signature**
 
 ```ts
-export type Yoga = YogaServerInstance<GraphQLContext, Record<string, any>>
+export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>
 ```
 
 Added in v1.0.0
@@ -41,7 +41,7 @@ Constructs a Yoga server with the Effect runtime injected into context.
 **Signature**
 
 ```ts
-export declare const makeYoga: (schema: GraphQLSchema) => Effect.Effect<Yoga, never, AppServices>
+export declare const makeYoga: <R>(schema: GraphQLSchema) => Effect.Effect<Yoga<R>, never, R>
 ```
 
 Added in v1.0.0
