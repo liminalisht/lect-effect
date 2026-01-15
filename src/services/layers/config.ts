@@ -5,7 +5,7 @@
 import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
-import { ConfigService } from '../../services/config';
+import { ConfigService } from '../config';
 import { type Environment, environmentSchema } from '../../config/app/environment';
 import { type Port, portSchema } from '../../config/app/port';
 import { type MasterdataDbConfig } from '../../config/masterdataDb';
