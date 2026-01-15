@@ -121,7 +121,16 @@ type AnyHandler =
   | QueryHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
   | MutationHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>;
 
-export const handlerToResolver = (handler: AnyHandler) => {
+type ResolverFromHandler<H> =
+  H extends FieldHandler<infer P, infer I, infer O, infer E, infer R>
+    ? ReturnType<typeof genericFieldResolver<P, I, O, E, R>>
+    : H extends QueryHandler<infer I, infer O, infer E, infer R>
+      ? ReturnType<typeof genericQueryResolver<I, O, E, R>>
+      : H extends MutationHandler<infer I, infer O, infer E, infer R>
+        ? ReturnType<typeof genericMutationResolver<I, O, E, R>>
+        : never;
+
+export const handlerToResolver = <H extends AnyHandler>(handler: H): ResolverFromHandler<H> => {
   switch (handler.kind) {
     case 'field':
       return genericFieldResolver(
@@ -131,7 +140,7 @@ export const handlerToResolver = (handler: AnyHandler) => {
         handler.inputSchema,
         handler.outputSchema,
         handler.handler,
-      );
+      ) as ResolverFromHandler<H>;
     case 'query':
       return genericQueryResolver(
         handler.key,
@@ -139,7 +148,7 @@ export const handlerToResolver = (handler: AnyHandler) => {
         handler.inputSchema,
         handler.outputSchema,
         handler.handler,
-      );
+      ) as ResolverFromHandler<H>;
     case 'mutation':
       return genericMutationResolver(
         handler.key,
@@ -147,9 +156,9 @@ export const handlerToResolver = (handler: AnyHandler) => {
         handler.inputSchema,
         handler.outputSchema,
         handler.handler,
-      );
+      ) as ResolverFromHandler<H>;
   }
 };
 
-export const handlersToResolvers = (handlers: ReadonlyArray<AnyHandler>) =>
-  handlers.map(handlerToResolver);
+export const handlersToResolvers = <HS extends ReadonlyArray<AnyHandler>>(handlers: HS) =>
+  handlers.map((handler) => handlerToResolver(handler)) as { [K in keyof HS]: ResolverFromHandler<HS[K]> };
