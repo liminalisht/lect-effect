@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Layer, Option } from 'effect';
-import { greetingSchema } from '../domain/hello/greeting';
-import { GreetingService } from '../services/greeting';
+import { greetingSchema } from '../../domain/hello/greeting';
+import { GreetingService } from '../../services/greeting';
 
 /**
  * Provides the GreetingService implementation.

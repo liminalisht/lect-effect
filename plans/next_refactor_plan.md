@@ -123,7 +123,7 @@ You already merge config + logger correctly, with logger depending on config.
 Update:
 
 ```ts
-// src/layers/app.ts
+// src/services/layers/app.ts
 import { type ConfigError, Layer } from "effect"
 import type { AppServices } from "../services"
 import { GreetingServiceLive } from "../services/greeting"
@@ -326,7 +326,7 @@ import * as schemas from "../../src/domain/schemas"
 
 import { ConfigService, makePort } from "../../src/services/config"
 import { GreetingServiceLive } from "../../src/services/greeting"
-import { loggerLayer } from "../../src/layers/logger"
+import { loggerLayer } from "../../src/services/layers/logger"
 
 const TestConfig = Layer.succeed(ConfigService, {
   port: makePort(0),          // unused by yoga.fetch tests
@@ -404,7 +404,7 @@ Given your TODO (“separate domain types, services, implementations”), the sm
 
 * `src/domain/*` — Schemas, branded types, domain errors (no Layer wiring here)
 * `src/services/*` — service *interfaces* (Context tags) + maybe “test layers” colocated
-* `src/layers/*` — live implementations and app wiring (`appLayer`)
+* `src/services/layers/*` — live implementations and app wiring (`appLayer`)
 * `src/application/*` (optional, but I recommend it) — handlers/use-cases that compose services
 * `src/graphql/*` — schema + resolvers + server/yoga boundary
 

@@ -260,7 +260,7 @@ Sketch:
 import { Effect, Layer, LogLevel } from "effect"
 import { makeYoga } from "../src/graphql/yoga"
 import { ConfigService, Port } from "../src/services/config"
-import { appLayer } from "../src/layers/app"
+import { appLayer } from "../src/services/layers/app"
 
 // Example: override config for tests (or build a dedicated testAppLayer)
 const TestConfig = Layer.succeed(ConfigService, { port: Port(0), logLevel: LogLevel.None })

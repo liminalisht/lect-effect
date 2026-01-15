@@ -5,11 +5,11 @@
 import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
-import { ConfigService } from '../services/config';
-import { type Environment, environmentSchema } from '../config/app/environment';
-import { type Port, portSchema } from '../config/app/port';
-import { type MasterdataDbConfig } from '../config/masterdataDb';
-import { type ConfigurationError } from '../config/errors';
+import { ConfigService } from '../../services/config';
+import { type Environment, environmentSchema } from '../../config/app/environment';
+import { type Port, portSchema } from '../../config/app/port';
+import { type MasterdataDbConfig } from '../../config/masterdataDb';
+import { type ConfigurationError } from '../../config/errors';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
   const port = yield * Config.number('APP_PORT')

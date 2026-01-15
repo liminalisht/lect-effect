@@ -452,7 +452,7 @@ export class ConfigService extends Context.Tag("ConfigService")<
 
 ---
 
-## 2) `src/layers/config.ts`
+## 2) `src/services/layers/config.ts`
 
 Pattern-match your existing config layer (port+loglevel) and add DB fields:
 
@@ -524,7 +524,7 @@ export class PostgresPingService extends Context.Tag("PostgresPingService")<
 
 (We’ll tighten the error type in a moment; keeping `unknown` while you iterate is fine.)
 
-### 3b) `src/layers/postgres.ts`
+### 3b) `src/services/layers/postgres.ts`
 
 This uses `@effect/sql-pg` to create a pooled SQL client as a Layer , then builds a small service that *closes over* that client.
 
@@ -611,7 +611,7 @@ export class OraclePingService extends Context.Tag("OraclePingService")<
 >() {}
 ```
 
-### 4c) `src/layers/oracle.ts`
+### 4c) `src/services/layers/oracle.ts`
 
 Wrap `oracledb.createPool` / `pool.close` in `Layer.scoped` :
 
@@ -717,7 +717,7 @@ Now `Runtime<AppServices>` in GraphQL context continues to work unchanged.
 
 ---
 
-## 6) `src/layers/app.ts` (compose the diagram)
+## 6) `src/services/layers/app.ts` (compose the diagram)
 
 Your current `appLayer` is `mergeAll(config, logger∘config, greeting)`. Extend it:
 
@@ -935,7 +935,7 @@ export class ConfigService extends Context.Tag('ConfigService')<
 And in your config layer, add:
 
 ```ts
-// src/layers/config.ts
+// src/services/layers/config.ts
 import { Config, Effect, Layer, LogLevel } from 'effect';
 import { ConfigService } from '../services/config';
 import { portSchema } from '../domain/port';
@@ -984,7 +984,7 @@ export class MasterdataDb extends Context.Tag('MasterdataDb')<
 This uses `@effect/sql-pg` to build the pool as a Layer, then wraps it in your own `MasterdataDb` service.
 
 ```ts
-// src/layers/masterdataDb.ts
+// src/services/layers/masterdataDb.ts
 import { Effect, Layer } from 'effect';
 import { PgClient } from '@effect/sql-pg';
 import { SqlClient } from '@effect/sql';
@@ -1086,7 +1086,7 @@ export class ProductRepo extends Context.Tag('ProductRepo')<
 ## 3.3 Live layers (both depend on MasterdataDb)
 
 ```ts
-// src/layers/userRepo.ts
+// src/services/layers/userRepo.ts
 import { Effect, Layer, Option, Schema } from 'effect';
 import { UserRepo } from '../services/userRepo';
 import { MasterdataDb } from '../services/masterdataDb';
@@ -1119,7 +1119,7 @@ export const userRepoLayer: Layer.Layer<UserRepo, never, MasterdataDb> =
 ```
 
 ```ts
-// src/layers/productRepo.ts
+// src/services/layers/productRepo.ts
 import { Effect, Layer, Option, Schema } from 'effect';
 import { ProductRepo } from '../services/productRepo';
 import { MasterdataDb } from '../services/masterdataDb';
@@ -1162,7 +1162,7 @@ Now you can build a single layer that:
 * does **not** leak `MasterdataDb` into `AppServices` (because we use `Layer.provide`, not “merge outputs”).
 
 ```ts
-// src/layers/masterdata.ts
+// src/services/layers/masterdata.ts
 import { Layer } from 'effect';
 import { masterdataDbLayer } from './masterdataDb';
 import { userRepoLayer } from './userRepo';
@@ -1202,7 +1202,7 @@ export type AppServices =
 Then extend your `appLayer` to include `masterdataLayer` (and keep your logger/config wiring as-is).
 
 ```ts
-// src/layers/app.ts
+// src/services/layers/app.ts
 import { Layer } from 'effect';
 import type { AppError } from '../errors';
 import type { AppServices } from '../services';
@@ -1450,7 +1450,7 @@ export const ConfigLayer = Effect.gen(function* () {
 
 Then (as you already do) lift into a layer:
 
-`src/layers/config.ts`
+`src/services/layers/config.ts`
 
 ```ts
 import { Layer } from "effect"
@@ -1489,7 +1489,7 @@ export class MasterdataDb extends Context.Tag("MasterdataDb")<
 >() {}
 ```
 
-`src/layers/masterdataDb.ts`
+`src/services/layers/masterdataDb.ts`
 
 ```ts
 import { Config, Effect, Layer, Redacted } from "effect"
@@ -1625,7 +1625,7 @@ export const ProductRepoLive = Effect.gen(function* () {
 }).pipe(Effect.map((svc) => ProductRepo.of(svc)))
 ```
 
-`src/layers/productRepo.ts`
+`src/services/layers/productRepo.ts`
 
 ```ts
 import { Layer } from "effect"
@@ -1697,7 +1697,7 @@ export const ItemRepoLive = Effect.gen(function* () {
 }).pipe(Effect.map((svc) => ItemRepo.of(svc)))
 ```
 
-`src/layers/itemRepo.ts`
+`src/services/layers/itemRepo.ts`
 
 ```ts
 import { Layer } from "effect"
@@ -1712,7 +1712,7 @@ This explicitly fixes the old repo’s N+1 pattern (which fetched item IDs then 
 
 ### 3.6 Compose layers: one DB, many repos
 
-`src/layers/app.ts`
+`src/services/layers/app.ts`
 
 ```ts
 import { Layer } from "effect"
@@ -1918,7 +1918,7 @@ export const OracleDbLive = Effect.gen(function* () {
 }).pipe(Effect.map((svc) => OracleDb.of(svc)))
 ```
 
-`src/layers/oracleDb.ts`
+`src/services/layers/oracleDb.ts`
 
 ```ts
 import { Layer } from "effect"

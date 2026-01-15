@@ -10,8 +10,8 @@ import * as SqlClient from '@effect/sql/SqlClient';
 import type { PgClientConfig } from '@effect/sql-pg/PgClient';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
-import { ConfigService } from '../services/config';
-import { MasterdataDb } from '../services/masterdataDb';
+import { ConfigService } from '../../services/config';
+import { MasterdataDb } from '../../services/masterdataDb';
 
 /**
  * Provides the live masterdata database client.

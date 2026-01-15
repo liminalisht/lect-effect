@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ItemRepo, ItemRepoLive } from '../services/itemRepo';
+import { ItemRepo, ItemRepoLive } from '../../services/itemRepo';
 
 /**
  * Provides the live ItemRepo implementation.

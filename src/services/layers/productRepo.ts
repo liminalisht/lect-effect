@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ProductRepo, ProductRepoLive } from '../services/productRepo';
+import { ProductRepo, ProductRepoLive } from '../../services/productRepo';
 
 /**
  * Provides the live ProductRepo implementation.
