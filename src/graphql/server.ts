@@ -4,10 +4,7 @@
  */
 import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
-import { type YogaServerInstance } from 'graphql-yoga';
 import { type Scope } from 'effect/Scope';
-import { AppServices } from '../services/interfaces/app';
-import type { GraphQLContext } from './context';
 import { ServerStartError } from './errors';
 import { type Yoga } from './yoga';
 

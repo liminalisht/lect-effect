@@ -4,11 +4,10 @@
  */
 import type { Runtime } from 'effect';
 import type { YogaInitialContext } from 'graphql-yoga';
-import type { AppServices } from '../services/interfaces/app';
 
 /**
- * the GraphQLContext contains a runtime for AppServices that can run any computation
- * whose requirements are a sub-union of AppServices.
+ * the GraphQLContext contains a runtime for services that can run any computation
+ * whose requirements are a sub-union of services.
  *
  * each handler can still demand only the services it needs, e.g.: Effect<A, E, DbService | ConfigService>
  *
@@ -18,8 +17,8 @@ import type { AppServices } from '../services/interfaces/app';
  * GraphQL context enriched with an Effect runtime for `AppServices`.
  * @since 1.0.0
  */
-export type GraphQLContext<R> = YogaInitialContext & RuntimeForAppServicesShape<R>;
+export type GraphQLContext<R> = YogaInitialContext & RuntimeForServiceRequirements<R>;
 
-type RuntimeForAppServicesShape<R> = {
+type RuntimeForServiceRequirements<R> = {
   readonly runtime: Runtime.Runtime<R>;
 };
