@@ -10,7 +10,7 @@ import { type Greeting } from '../../domain/hello/greeting';
  * Service tag for greeting operations.
  * @since 1.0.0
  */
-export class GreetService extends Context.Tag('GreetService')<
+export class GreetService extends Context.Tag('services/greeting')<
   GreetService,
   Greet
 >() {}

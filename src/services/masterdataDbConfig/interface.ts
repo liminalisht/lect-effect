@@ -22,5 +22,5 @@ export type MasterdataDbConfig = {
   };
 };
 
-export class MasterdataDbConfigService extends Context.Tag('MasterdataDbConfigService')<MasterdataDbConfigService, MasterdataDbConfig>() {}
+export class MasterdataDbConfigService extends Context.Tag('services/masterdataDbConfig')<MasterdataDbConfigService, MasterdataDbConfig>() {}
 

@@ -17,5 +17,5 @@ export type AppConfig = {
   readonly environment: Environment;
 };
 
-export class AppConfigService extends Context.Tag('AppConfigService')<AppConfigService, AppConfig>() {}
+export class AppConfigService extends Context.Tag('services/appConfig')<AppConfigService, AppConfig>() {}
 

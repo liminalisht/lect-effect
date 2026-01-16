@@ -10,7 +10,7 @@ import { type MasterdataDbConfig } from '../masterdataDbConfig/interface';
  * Service tag for application configuration.
  * @since 1.0.0
  */
-export class ConfigService extends Context.Tag('ConfigService')<ConfigService, Config>() {}
+export class ConfigService extends Context.Tag('services/config')<ConfigService, Config>() {}
 
 /**
  * Shape of configuration values provided by ConfigService.

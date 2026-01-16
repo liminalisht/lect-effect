@@ -10,7 +10,7 @@ import type * as SqlClient from '@effect/sql/SqlClient';
  * Shape for the masterdata database service.
  * @since 1.0.0
  */
-export type MasterdataDbShape = {
+export type MasterdataDb = {
   readonly sql: SqlClient.SqlClient;
 };
 
@@ -19,7 +19,7 @@ export type MasterdataDbShape = {
  * Service tag for accessing the masterdata database client.
  * @since 1.0.0
  */
-export class MasterdataDbService extends Context.Tag('MasterdataDb')<
+export class MasterdataDbService extends Context.Tag('services/masterdataDb')<
   MasterdataDbService,
-  MasterdataDbShape
+  MasterdataDb
 >() {}
