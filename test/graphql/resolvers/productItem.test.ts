@@ -13,7 +13,7 @@ import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { MasterdataDbService } from '../../../src/services/masterdataDb/interface';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type AppServices } from '../../../src/services/app/interface';
-import { testAppLayer } from '../../services/app';
+import { withTestAppLayer } from '../../testRuntime';
 
 // todo: extract - maybe even explicitly in app.ts for reuse?
 const schema = makeSchema(handlersToResolvers([
@@ -44,12 +44,12 @@ const fetchJson = async (yoga: Yoga<AppServices>, query: string, variables?: Rec
 
 describe('GraphQL product & item boundary (property)', () => {
   it.effect('createProductWithItems mutation is reflected across queries and fields', () =>
-    Effect.scoped(Effect.tryPromise({
+    Effect.tryPromise({
       try: () =>
         fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
           const input = normalizeInput(rawInput);
 
-          return Effect.runPromise(Effect.scoped(Effect.gen(function * () {
+          return Effect.runPromise(withTestAppLayer(Effect.gen(function * () {
             const { sql } = yield * MasterdataDbService;
             // ensure deterministic DB state for each property case
             yield * sql`TRUNCATE item_prod, item, product RESTART IDENTITY;`;
@@ -117,8 +117,8 @@ describe('GraphQL product & item boundary (property)', () => {
               pack_size: item.pack_size,
               product: { id: productId, description: input.product.description ?? null },
             })));
-          }).pipe(Effect.provide(testAppLayer))));
+          })));
         })),
       catch: (e: unknown) => e as Error,
-    })));
+    }));
 });

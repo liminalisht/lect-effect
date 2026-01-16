@@ -8,12 +8,12 @@ import { helloHandlers } from '../../../src/handlers/hello';
 import { itemHandlers } from '../../../src/handlers/item';
 import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga } from '../../../src/graphql/yoga';
-import { testAppLayer } from '../../services/app';
+import { withTestAppLayer } from '../../testRuntime';
 import { type AppServices } from '../../../src/services/app/interface';
 
 describe('GraphQL hello (property)', () => {
   it.effect('hello(name) matches handler semantics', () =>
-    Effect.gen(function * () {
+    withTestAppLayer(Effect.gen(function * () {
       const schema = makeSchema(handlersToResolvers([
         ...helloHandlers,
         ...itemHandlers,
@@ -49,5 +49,5 @@ describe('GraphQL hello (property)', () => {
           })),
         catch: (e: unknown) => e as Error,
       });
-    }).pipe(Effect.provide(testAppLayer)));
+    })));
 });

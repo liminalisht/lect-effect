@@ -58,7 +58,7 @@ Added in v1.0.0
 
 ## appLayer
 
-Exported application layer alias.
+Exported application layer alias (memoized once per runtime).
 
 **Signature**
 

@@ -3,9 +3,8 @@
  * @since 1.0.0
  */
 import 'dotenv/config';
-import { Cause, Effect } from 'effect';
+import { Cause, Effect, Layer } from 'effect';
 import { NodeRuntime } from '@effect/platform-node';
-import { Layer } from 'effect';
 import { app } from './app';
 import { appLayer } from './services/app/layer';
 
