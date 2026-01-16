@@ -28,7 +28,7 @@ const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
  * Live implementation of the ItemRepo.
  * @since 1.0.0
  */
-export const itemRepoImplementation = Effect.gen(function * () {
+export const itemRepoServiceImplementation = Effect.gen(function * () {
   const { sql } = yield * MasterdataDbService;
 
   const getById = (id: ItemId) =>

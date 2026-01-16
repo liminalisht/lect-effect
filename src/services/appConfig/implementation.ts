@@ -32,7 +32,7 @@ const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effec
   return logLevel;
 });
 
-export const appConfigImplementation
+export const appConfigServiceImplementation
   = Effect.gen(function * () {
       const port = yield * loadPort;
       const environment = yield * loadEnvironment;

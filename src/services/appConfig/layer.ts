@@ -7,7 +7,7 @@ import { Layer
 
 import { type ConfigurationError } from '../errors';
 import { AppConfigService } from './interface';
-import { appConfigImplementation } from './implementation';
+import { appConfigServiceImplementation } from './implementation';
 
 /**
  * Provides configuration values to the environment.
@@ -16,5 +16,5 @@ import { appConfigImplementation } from './implementation';
 export const appConfigLayer: Layer.Layer<AppConfigService, ConfigurationError>
   = Layer.effect(
     AppConfigService,
-    appConfigImplementation
+    appConfigServiceImplementation
   );

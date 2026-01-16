@@ -4,10 +4,12 @@
  */
 import { Layer } from 'effect';
 import { ItemRepoService } from './interface';
-import { itemRepoImplementation } from './implementation';
+import { itemRepoServiceImplementation } from './implementation';
+import { MasterdataDbService } from '../masterdataDb/interface';
 
 /**
  * Provides the live ItemRepo implementation.
  * @since 1.0.0
  */
-export const itemRepoLayer = Layer.effect(ItemRepoService, itemRepoImplementation);
+export const itemRepoLayer: Layer.Layer<ItemRepoService, never, MasterdataDbService>
+  = Layer.effect(ItemRepoService, itemRepoServiceImplementation);
