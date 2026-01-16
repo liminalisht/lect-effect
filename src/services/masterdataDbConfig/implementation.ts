@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import {
-  Config, ConfigError, Effect,
+  Config, type ConfigError, Effect,
 } from 'effect';
 import { type ConfigurationError } from '../errors';
 import { type MasterdataDbConfig } from './interface';

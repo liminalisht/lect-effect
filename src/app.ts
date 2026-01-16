@@ -15,7 +15,7 @@ import { handlersToResolvers, type AnyHandler } from './graphql/resolvers';
 import { helloHandlers } from './handlers/hello';
 import { itemHandlers } from './handlers/item';
 import { productHandlers } from './handlers/product';
-import { AppConfig, AppConfigService } from './services/appConfig/interface';
+import { type AppConfig, AppConfigService } from './services/appConfig/interface';
 
 /**
  * Top-level application Effect that wires configuration, schema, and server startup.

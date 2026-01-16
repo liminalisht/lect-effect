@@ -1,4 +1,6 @@
 import { Layer } from 'effect';
+import { type ConfigError } from 'effect/ConfigError';
+import { type SqlError } from '@effect/sql/SqlError';
 import { greetingLayer } from '../../src/services/greeting/layer';
 import { masterdataDbLayer } from '../../src/services/masterdataDb/layer';
 import { type AppError } from '../../src/errors';
@@ -6,18 +8,14 @@ import { type AppServices } from '../../src/services/app/interface';
 import { productRepoLayer } from '../../src/services/productRepo/layer';
 import { itemRepoLayer } from '../../src/services/itemRepo/layer';
 import { testAppConfigLayer } from '../services/appConfig/layer';
-import { ConfigError } from 'effect/ConfigError';
-import { AppConfigService } from '../../src/services/appConfig/interface';
+import { type AppConfigService } from '../../src/services/appConfig/interface';
 import { loggerLayer } from '../../src/services/logger/layer';
-import { MasterdataDbConfigService } from '../../src/services/masterdataDbConfig/interface';
-import { MasterdataDbService } from '../../src/services/masterdataDb/interface';
-import { SqlError } from '@effect/sql/SqlError';
-import { ProductRepoService } from '../../src/services/productRepo/interface';
-import { ItemRepoService } from '../../src/services/itemRepo/interface';
+import { type MasterdataDbConfigService } from '../../src/services/masterdataDbConfig/interface';
+import { type MasterdataDbService } from '../../src/services/masterdataDb/interface';
+import { type ProductRepoService } from '../../src/services/productRepo/interface';
+import { type ItemRepoService } from '../../src/services/itemRepo/interface';
 import { testMasterdataDbConfigLayer } from '../services/masterdataDbConfig/layer';
-import { GreetService } from '../../src/services/greeting/interface';
-
-
+import { type GreetService } from '../../src/services/greeting/interface';
 
 export const testAppConfig: Layer.Layer<AppConfigService, ConfigError, never> = testAppConfigLayer; // different test implementation
 export const testLogger: Layer.Layer<never, never, AppConfigService> = loggerLayer; // same live implementation
@@ -39,21 +37,14 @@ export const testGreeting: Layer.Layer<GreetService, never, never> = greetingLay
 
 export const testApp: Layer.Layer<AppServices, AppError, never>
   = Layer.mergeAll(
-      testAppConfig,
-      configuredTestLogger,
-      configuredTestMasterdataDb,
-      testGreeting,
-      testMasterdataRepos
-    );
+    testAppConfig,
+    configuredTestLogger,
+    configuredTestMasterdataDb,
+    testGreeting,
+    testMasterdataRepos,
+  );
 
 export const testAppLayer: Layer.Layer<AppServices, AppError> = testApp;
-
-
-
-
-
-
-
 
 // export const testConfigAndLoggerLayer
 //   = Layer.mergeAll(

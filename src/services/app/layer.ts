@@ -14,43 +14,41 @@ import { itemRepoLayer } from '../itemRepo/layer';
 import { type MasterdataDbService } from '../masterdataDb/interface';
 import { type ItemRepoService } from '../itemRepo/interface';
 import { type ProductRepoService } from '../productRepo/interface';
-import { type AppServices } from './interface';
-import { AppConfigService } from '../appConfig/interface';
+import { type AppConfigService } from '../appConfig/interface';
 import { appConfigLayer } from '../appConfig/layer';
 import { masterdataDbConfigLayer } from '../masterdataDbConfig/layer';
-import { MasterdataDbConfigService } from '../masterdataDbConfig/interface';
-import { GreetService } from '../greeting/interface';
+import { type MasterdataDbConfigService } from '../masterdataDbConfig/interface';
+import { type GreetService } from '../greeting/interface';
+import { type AppServices } from './interface';
 
-export const appConfig: Layer.Layer<AppConfigService, ConfigError, never> = appConfigLayer;
+export const appConfig: Layer.Layer<AppConfigService, ConfigError> = appConfigLayer;
 export const logger: Layer.Layer<never, never, AppConfigService> = loggerLayer;
-export const configuredLogger: Layer.Layer<never, ConfigError, never> = logger.pipe(Layer.provide(appConfig));
+export const configuredLogger: Layer.Layer<never, ConfigError> = logger.pipe(Layer.provide(appConfig));
 
-export const masterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError, never> = masterdataDbConfigLayer;
+export const masterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError> = masterdataDbConfigLayer;
 export const masterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService> = masterdataDbLayer;
-export const configuredMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, never> = masterdataDb.pipe(Layer.provide(masterdataDbConfig));
+export const configuredMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError> = masterdataDb.pipe(Layer.provide(masterdataDbConfig));
 
 export const productRepo: Layer.Layer<ProductRepoService, SqlError | ConfigError, MasterdataDbService> = productRepoLayer;
 export const itemRepo: Layer.Layer<ItemRepoService, SqlError | ConfigError, MasterdataDbService> = itemRepoLayer;
-export const masterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError, never>
+export const masterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError>
   = Layer.mergeAll(
     productRepo,
     itemRepo,
   ).pipe(Layer.provide(configuredMasterdataDb));
 
-export const greeting: Layer.Layer<GreetService, never, never> = greetingLayer;
+export const greeting: Layer.Layer<GreetService> = greetingLayer;
 
-export const app: Layer.Layer<AppServices, AppError, never>
+export const app: Layer.Layer<AppServices, AppError>
   = Layer.mergeAll(
-      appConfig,
-      configuredLogger,
-      configuredMasterdataDb,
-      greeting,
-      masterdataRepos
-    );
+    appConfig,
+    configuredLogger,
+    configuredMasterdataDb,
+    greeting,
+    masterdataRepos,
+  );
 
 export const appLayer: Layer.Layer<AppServices, AppError> = app;
-
-
 
 // /**
 //  * Combines config and logger layers, wiring logger with config.
@@ -109,7 +107,6 @@ export const appLayer: Layer.Layer<AppServices, AppError> = app;
 // //   )).pipe(Layer.provideMerge(
 // //     configLayer
 // //   ));
-
 
 // // export const appLayer: Layer.Layer<AppServices, AppError>
 // //   =

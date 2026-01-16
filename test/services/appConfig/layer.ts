@@ -1,5 +1,5 @@
 import {
-  Config, ConfigError, Effect, Layer, LogLevel, Schema,
+  Config, type ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
 import { ConfigService } from '../../../src/services/config/interface';
 import { environmentSchema } from '../../../src/services/appConfig/interface/environment';

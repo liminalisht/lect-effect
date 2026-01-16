@@ -13,13 +13,13 @@ import { type Item } from '../../domain/item/item';
 import { type ProductId } from '../../domain/product/productId';
 import { decodeMany, decodeOne } from '../../utilities/decode';
 import { ItemRepoError, ItemRepoService } from '../itemRepo/interface';
-import { MasterdataDbService, MasterdataDb } from './interface';
+import { MasterdataDbService, type MasterdataDb } from './interface';
 
 /**
  * Live implementation of the MasterdataDb service
  * @since 1.0.0
  */
-export const masterdataDbImplementation : Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>
+export const masterdataDbImplementation: Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>
   = Effect.gen(function * () {
     const sql = yield * SqlClient.SqlClient;
     yield * Effect.logInfo('masterdata Postgres client initialized');

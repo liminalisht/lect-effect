@@ -3,10 +3,10 @@
  * @since 1.0.0
  */
 import {
-  Config, ConfigError, Effect,
+  Config, type ConfigError, Effect,
 } from 'effect';
-import { ConfigurationError } from '../../../src/services/errors';
-import { MasterdataDbConfig } from '../../../src/services/masterdataDbConfig/interface';
+import { type ConfigurationError } from '../../../src/services/errors';
+import { type MasterdataDbConfig } from '../../../src/services/masterdataDbConfig/interface';
 
 const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError> = Effect.gen(function * () {
   const url = yield * Config.redacted('TEST_MASTERDATA_PG_URL');

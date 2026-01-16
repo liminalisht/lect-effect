@@ -8,7 +8,7 @@ import {
 import { type ConfigurationError } from '../errors';
 import { type Environment, environmentSchema } from './interface/environment';
 import { type Port, portSchema } from './interface/port';
-import { AppConfig } from './interface';
+import { type AppConfig } from './interface';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
   const port = yield * Config.number('APP_PORT')
@@ -33,7 +33,7 @@ const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effec
   return logLevel;
 });
 
-export const appConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError, never>
+export const appConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError>
   = Effect.gen(function * () {
     const port = yield * loadPort;
     const environment = yield * loadEnvironment;

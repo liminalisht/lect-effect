@@ -4,7 +4,7 @@ import {
 // import { ConfigService } from '../../../src/services/config/interface';
 import { environmentSchema } from '../../../src/services/appConfig/interface/environment';
 import { portSchema } from '../../../src/services/appConfig/interface/port';
-import { AppConfig, AppConfigService } from '../../../src/services/appConfig/interface';
+import { type AppConfig, AppConfigService } from '../../../src/services/appConfig/interface';
 
 const loadPort = Effect.gen(function * () {
   const port = yield * Config.number('TEST_APP_PORT')
@@ -43,15 +43,14 @@ const loadLogLevel = Effect.gen(function * () {
 // });
 
 export const testAppConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError, never>
-  =
-    Effect.gen(function * () {
-      const port = yield * loadPort;
-      const environment = yield * loadEnvironment;
-      const logLevel = yield * loadLogLevel;
-      const app = {
-        port,
-        logLevel,
-        environment,
-      };
-      return app;
-    });
+  = Effect.gen(function * () {
+    const port = yield * loadPort;
+    const environment = yield * loadEnvironment;
+    const logLevel = yield * loadLogLevel;
+    const app = {
+      port,
+      logLevel,
+      environment,
+    };
+    return app;
+  });
