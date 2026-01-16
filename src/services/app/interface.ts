@@ -2,6 +2,7 @@
  * Application service union definition.
  * @since 1.0.0
  */
+import { AppConfig, AppConfigService } from '../appConfig/interface';
 import { type ConfigService } from '../config/interface';
 import { type GreetService } from '../greeting/interface';
 import { type ItemRepoService } from '../itemRepo/interface';
@@ -13,7 +14,7 @@ import { type ProductRepoService } from '../productRepo/interface';
  * @since 1.0.0
  */
 export type AppServices =
-	ConfigService
+	  AppConfigService
 	| GreetService
 	| MasterdataDbService
 	| ItemRepoService

@@ -8,13 +8,14 @@ import { type Scope } from 'effect/Scope';
 import { logSchema, makeSchema, type GraphQLResolver } from './graphql/schema';
 import * as server from './graphql/server';
 import { type Yoga, makeYoga } from './graphql/yoga';
-import { ConfigService, type Config } from './services/config/interface';
+// import { ConfigService, type Config } from './services/config/interface';
 import { type AppServices } from './services/app/interface';
 import { type ServerStartError } from './graphql/errors';
 import { handlersToResolvers, type AnyHandler } from './graphql/resolvers';
 import { helloHandlers } from './handlers/hello';
 import { itemHandlers } from './handlers/item';
 import { productHandlers } from './handlers/product';
+import { AppConfig, AppConfigService } from './services/appConfig/interface';
 
 /**
  * Top-level application Effect that wires configuration, schema, and server startup.
@@ -22,12 +23,12 @@ import { productHandlers } from './handlers/product';
  */
 export const app: Effect.Effect<never, unknown, AppServices>
   = Effect.scoped(Effect.gen(function * () {
-    const config = yield * getConfig();
-    const handlers = selectHandlers(config);
+    const appConfig = yield * getAppConfig();
+    const handlers = selectHandlers(appConfig);
     const resolvers = makeResolvers(handlers);
     const schema = yield * makeGraphQLSchema(resolvers);
     const yoga = yield * makeYogaServer(schema);
-    yield * runYogaServer(yoga, config);
+    yield * runYogaServer(yoga, appConfig);
     return yield * Effect.never;
   }));
 
@@ -35,11 +36,11 @@ export const app: Effect.Effect<never, unknown, AppServices>
  * Loads configuration from the ConfigService.
  * @since 1.0.0
  */
-export const getConfig = (): Effect.Effect<Config, never, ConfigService> => Effect.gen(function * () {
+export const getAppConfig = (): Effect.Effect<AppConfig, never, AppConfigService> => Effect.gen(function * () {
   yield * Effect.logDebug('getting config...');
-  const config = yield * ConfigService;
-  yield * Effect.logDebug('config:', config);
-  return config;
+  const appConfig = yield * AppConfigService;
+  yield * Effect.logDebug('appConfig:', appConfig);
+  return appConfig;
 });
 
 /**
@@ -64,14 +65,14 @@ export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga<AppSer
   return yoga;
 });
 
-const runYogaServer = <R>(yoga: Yoga<R>, config: Config): Effect.Effect<void, ServerStartError, Scope> => Effect.gen(function * () {
+const runYogaServer = <R>(yoga: Yoga<R>, appConfig: AppConfig): Effect.Effect<void, ServerStartError, Scope> => Effect.gen(function * () {
   yield * Effect.logDebug('starting graphql server...');
-  yield * server.listen<R>(yoga, config.app.port);
-  yield * Effect.logInfo(`graphql server is running on http://localhost:${config.app.port}/graphql`);
+  yield * server.listen<R>(yoga, appConfig.port);
+  yield * Effect.logInfo(`graphql server is running on http://localhost:${appConfig.port}/graphql`);
   return yield * Effect.never;
 });
 
-const selectHandlers = (_config: Config): readonly AnyHandler[] => ([
+const selectHandlers = (_appConfig: AppConfig): readonly AnyHandler[] => ([
   ...helloHandlers,
   ...itemHandlers,
   ...productHandlers,
