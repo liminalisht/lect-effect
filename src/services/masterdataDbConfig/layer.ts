@@ -2,9 +2,7 @@
  * Layer for loading and providing masterdata database configuration.
  * @since 1.0.0
  */
-import { Layer
-} from 'effect';
-
+import { Layer} from 'effect';
 import { type ConfigurationError } from '../errors';
 import { MasterdataDbConfigService } from './interface';
 import { masterdataDbConfigServiceImplementation } from './implementation';
@@ -16,5 +14,5 @@ import { masterdataDbConfigServiceImplementation } from './implementation';
 export const masterdataDbLayer: Layer.Layer<MasterdataDbConfigService, ConfigurationError>
   = Layer.effect(
     MasterdataDbConfigService,
-    masterdataDbConfigServiceImplementation
+    masterdataDbConfigServiceImplementation,
   );

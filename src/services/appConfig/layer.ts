@@ -2,9 +2,7 @@
  * Layer for loading and providing application configuration.
  * @since 1.0.0
  */
-import { Layer
-} from 'effect';
-
+import { Layer} from 'effect';
 import { type ConfigurationError } from '../errors';
 import { AppConfigService } from './interface';
 import { appConfigServiceImplementation } from './implementation';
@@ -16,5 +14,5 @@ import { appConfigServiceImplementation } from './implementation';
 export const appConfigLayer: Layer.Layer<AppConfigService, ConfigurationError>
   = Layer.effect(
     AppConfigService,
-    appConfigServiceImplementation
+    appConfigServiceImplementation,
   );

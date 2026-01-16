@@ -13,8 +13,8 @@ import { type ProductRepoService } from '../productRepo/interface';
  * @since 1.0.0
  */
 export type AppServices =
-	  ConfigService
+	ConfigService
 	| GreetService
 	| MasterdataDbService
 	| ItemRepoService
-	| ProductRepoService
+	| ProductRepoService;

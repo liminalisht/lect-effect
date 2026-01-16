@@ -2,10 +2,10 @@
  * Application configuration module surface.
  * @since 1.0.0
  */
+import { Context, Effect, Layer } from 'effect';
 import { type Environment } from './environment';
 import { type ConfiguredLogLevel } from './loglevel';
 import { type Port } from './port';
-import { Context, Effect, Layer } from "effect"
 
 /**
  * Application runtime configuration values.

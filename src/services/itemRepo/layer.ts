@@ -3,9 +3,9 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
+import { type MasterdataDbService } from '../masterdataDb/interface';
 import { ItemRepoService } from './interface';
 import { itemRepoServiceImplementation } from './implementation';
-import { MasterdataDbService } from '../masterdataDb/interface';
 
 /**
  * Provides the live ItemRepo implementation.
