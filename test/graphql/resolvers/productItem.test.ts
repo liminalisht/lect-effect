@@ -13,7 +13,7 @@ import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { MasterdataDbService } from '../../../src/services/masterdataDb/interface';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
 import { type AppServices } from '../../../src/services/app/interface';
-import { testAppLayer } from '../../layers/app';
+import { testAppLayer } from '../../services/app';
 
 // todo: extract - maybe even explicitly in app.ts for reuse?
 const schema = makeSchema(handlersToResolvers([

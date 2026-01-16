@@ -7,14 +7,14 @@ import { type AppError } from '../../src/errors';
 import { type AppServices } from '../../src/services/app/interface';
 import { productRepoLayer } from '../../src/services/productRepo/layer';
 import { itemRepoLayer } from '../../src/services/itemRepo/layer';
-import { testAppConfigLayer } from '../services/appConfig/layer';
+import { testAppConfigLayer } from './appConfig/layer';
 import { type AppConfigService } from '../../src/services/appConfig/interface';
 import { loggerLayer } from '../../src/services/logger/layer';
 import { type MasterdataDbConfigService } from '../../src/services/masterdataDbConfig/interface';
 import { type MasterdataDbService } from '../../src/services/masterdataDb/interface';
 import { type ProductRepoService } from '../../src/services/productRepo/interface';
 import { type ItemRepoService } from '../../src/services/itemRepo/interface';
-import { testMasterdataDbConfigLayer } from '../services/masterdataDbConfig/layer';
+import { testMasterdataDbConfigLayer } from './masterdataDbConfig/layer';
 import { type GreetService } from '../../src/services/greeting/interface';
 
 export const testAppConfig: Layer.Layer<AppConfigService, ConfigError, never> = testAppConfigLayer; // different test implementation
