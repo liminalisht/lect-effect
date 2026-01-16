@@ -7,6 +7,7 @@ import {
 } from 'effect';
 import { type ConfigurationError } from '../errors';
 import { type MasterdataDbConfig } from './interface';
+import { ConfigError } from 'effect/ConfigError';
 
 const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError> = Effect.gen(function * () {
   const url = yield * Config.redacted('MASTERDATA_PG_URL');
@@ -28,4 +29,4 @@ const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationErr
  * Provides configuration values to the environment.
  * @since 1.0.0
  */
-export const masterdataDbConfigServiceImplementation = loadMasterdataDbConfig;
+export const masterdataDbConfigServiceImplementation: Effect.Effect<MasterdataDbConfig, ConfigError, never> = loadMasterdataDbConfig;
