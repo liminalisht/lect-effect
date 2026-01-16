@@ -4,9 +4,9 @@
  */
 import { type ConfigService } from '../config/interface';
 import { type GreetingService } from '../greeting/interface';
-import { type ItemRepo } from '../itemRepo/interface';
-import { type MasterdataDb } from '../masterdataDb/interface';
-import { type ProductRepo } from '../productRepo/interface';
+import { type ItemRepoService } from '../itemRepo/interface';
+import { type MasterdataDbService } from '../masterdataDb/interface';
+import { type ProductRepoService } from '../productRepo/interface';
 
 /**
  * Union of all services the app provides.
@@ -15,6 +15,6 @@ import { type ProductRepo } from '../productRepo/interface';
 export type AppServices =
 	ConfigService
 	| GreetingService
-	| MasterdataDb
-	| ProductRepo
-	| ItemRepo;
+	| MasterdataDbService
+	| ProductRepoService
+	| ItemRepoService;

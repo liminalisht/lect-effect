@@ -9,14 +9,14 @@ import type { PgClientConfig } from '@effect/sql-pg/PgClient';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
 import { ConfigService } from '../config/interface';
-import { MasterdataDb } from './interface';
+import { MasterdataDbService } from './interface';
 import { masterdataDbImplementation } from './implementation';
 
 /**
  * Provides the live masterdata database client.
  * @since 1.0.0
  */
-export const masterdataDbLayer: Layer.Layer<MasterdataDb, SqlError | ConfigError, ConfigService> = Layer.unwrapEffect(Effect.gen(function * () {
+export const masterdataDbLayer: Layer.Layer<MasterdataDbService, SqlError | ConfigError, ConfigService> = Layer.unwrapEffect(Effect.gen(function * () {
   const cfg = yield * ConfigService;
 
   // todo: hmm it almost seems like this should be constructed in our config layer?
@@ -31,7 +31,7 @@ export const masterdataDbLayer: Layer.Layer<MasterdataDb, SqlError | ConfigError
       = PgClient.layerConfig(pgConfig);
 
   const layer = Layer.effect(
-    MasterdataDb,
+    MasterdataDbService,
     masterdataDbImplementation,
   ).pipe(Layer.provide(sqlClientLayer));
 

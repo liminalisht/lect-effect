@@ -10,8 +10,8 @@ import {
   itemsForProduct,
   listProducts,
 } from '../../src/handlers/product';
-import { ProductRepo, ProductRepoShape } from '../../src/services/productRepo/interface';
-import { ItemRepo, ItemRepoShape } from '../../src/services/itemRepo/interface';
+import { ProductRepoService, ProductRepoShape } from '../../src/services/productRepo/interface';
+import { ItemRepoService, ItemRepoShape } from '../../src/services/itemRepo/interface';
 import { productSchema, type Product } from '../../src/domain/product/product';
 import { productIdSchema } from '../../src/domain/product/productId';
 import { productInputSchema } from '../../src/domain/product/productInput';
@@ -43,7 +43,7 @@ describe('product handlers', () => {
           create: (() => Effect.dieMessage('create unused')) as ProductRepoShape['create'],
         };
 
-        const result = await Effect.runPromise(getProduct(id).pipe(Effect.provideService(ProductRepo, repo)));
+        const result = await Effect.runPromise(getProduct(id).pipe(Effect.provideService(ProductRepoService, repo)));
         expect(result).toEqual(product);
       }));
     }));
@@ -58,7 +58,7 @@ describe('product handlers', () => {
           create: (() => Effect.dieMessage('create unused')) as ProductRepoShape['create'],
         };
 
-        const result = await Effect.runPromise(listProducts.pipe(Effect.provideService(ProductRepo, repo)));
+        const result = await Effect.runPromise(listProducts.pipe(Effect.provideService(ProductRepoService, repo)));
         expect(result).toEqual(products);
       }));
     }));
@@ -77,7 +77,7 @@ describe('product handlers', () => {
           },
         };
 
-        const result = await Effect.runPromise(createProduct(input).pipe(Effect.provideService(ProductRepo, repo)));
+        const result = await Effect.runPromise(createProduct(input).pipe(Effect.provideService(ProductRepoService, repo)));
         expect(result).toEqual(created);
       }));
     }));
@@ -96,7 +96,7 @@ describe('product handlers', () => {
           linkToProduct: (() => Effect.dieMessage('linkToProduct unused')) as ItemRepoShape['linkToProduct'],
         };
 
-        const result = await Effect.runPromise(itemsForProduct(productId).pipe(Effect.provideService(ItemRepo, itemRepo)));
+        const result = await Effect.runPromise(itemsForProduct(productId).pipe(Effect.provideService(ItemRepoService, itemRepo)));
         expect(result).toEqual(items);
       }));
     }));
@@ -124,8 +124,8 @@ describe('product handlers', () => {
         };
 
         const result = await Effect.runPromise(getProductWithItems(productId).pipe(
-          Effect.provideService(ProductRepo, productRepo),
-          Effect.provideService(ItemRepo, itemRepo),
+          Effect.provideService(ProductRepoService, productRepo),
+          Effect.provideService(ItemRepoService, itemRepo),
         ));
 
         if (hasProduct) {
@@ -172,8 +172,8 @@ describe('product handlers', () => {
         };
 
         const result = await Effect.runPromise(createProductWithItems(input).pipe(
-          Effect.provideService(ProductRepo, productRepo),
-          Effect.provideService(ItemRepo, itemRepo),
+          Effect.provideService(ProductRepoService, productRepo),
+          Effect.provideService(ItemRepoService, itemRepo),
         ));
 
         expect(result).toEqual({ product: createdProduct, items: createdItems });

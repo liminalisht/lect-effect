@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ProductRepo, type ProductRepoError } from '../services/productRepo/interface';
-import { ItemRepo, type ItemRepoError } from '../services/itemRepo/interface';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface';
 import type { ProductId } from '../domain/product/productId';
 import { productIdInputSchema, type ProductIdInput } from '../domain/product/productIdInput';
 import { productSchema } from '../domain/product/product';
@@ -20,7 +20,7 @@ import { type QueryHandler, type MutationHandler, type FieldHandler } from './ge
  */
 export const getProduct = (id: ProductId) =>
   Effect.gen(function * () {
-    const repo = yield * ProductRepo;
+    const repo = yield * ProductRepoService;
     const opt = yield * repo.getById(id);
     return Option.getOrNull(opt); // todo: wait this just swallows the ParseErrors?
   });
@@ -40,7 +40,7 @@ export const getProductQuery: QueryHandler<
   typeof productIdInputSchema,
   typeof nullableProductSchema,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 > = {
   kind: 'query',
   key: 'getProduct',
@@ -55,7 +55,7 @@ export const getProductQuery: QueryHandler<
  * @since 1.0.0
  */
 export const listProducts = Effect.gen(function * () {
-  const repo = yield * ProductRepo;
+  const repo = yield * ProductRepoService;
   return yield * repo.list;
 });
 
@@ -67,7 +67,7 @@ export const listProductsQuery: QueryHandler<
   typeof emptyStructSchema,
   typeof productsArraySchema,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 > = {
   kind: 'query',
   key: 'listProducts',
@@ -83,7 +83,7 @@ export const listProductsQuery: QueryHandler<
  */
 export const createProduct = (input: ProductInput) =>
   Effect.gen(function * () {
-    const repo = yield * ProductRepo;
+    const repo = yield * ProductRepoService;
     return yield * repo.create(input);
   });
 
@@ -95,7 +95,7 @@ export const createProductMutation: MutationHandler<
   typeof productInputSchema,
   typeof productSchema,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 > = {
   kind: 'mutation',
   key: 'createProduct',
@@ -111,7 +111,7 @@ export const createProductMutation: MutationHandler<
  */
 export const itemsForProduct = (productId: ProductId) =>
   Effect.gen(function * () {
-    const items = yield * ItemRepo;
+    const items = yield * ItemRepoService;
     return yield * items.listForProduct(productId);
   });
 
@@ -124,7 +124,7 @@ export const itemsForProductField: FieldHandler<
   typeof emptyStructSchema,
   typeof itemsArraySchema,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 > = {
   kind: 'field',
   parentSchema: productSchema,
@@ -141,8 +141,8 @@ export const itemsForProductField: FieldHandler<
  */
 export const getProductWithItems = (id: ProductId) =>
   Effect.gen(function * () {
-    const productRepo = yield * ProductRepo;
-    const itemRepo = yield * ItemRepo;
+    const productRepo = yield * ProductRepoService;
+    const itemRepo = yield * ItemRepoService;
 
     const productOpt = yield * productRepo.getById(id);
     if (Option.isNone(productOpt)) {
@@ -161,7 +161,7 @@ export const getProductWithItemsQuery: QueryHandler<
   typeof productIdInputSchema,
   typeof nullableProductWithItemsSchema,
   ProductRepoError | ItemRepoError,
-  ProductRepo | ItemRepo
+  ProductRepoService | ItemRepoService
 > = {
   kind: 'query',
   key: 'getProductWithItems',
@@ -177,8 +177,8 @@ export const getProductWithItemsQuery: QueryHandler<
  */
 export const createProductWithItems = (input: CreateProductWithItemsInput) =>
   Effect.gen(function * () {
-    const productRepo = yield * ProductRepo;
-    const itemRepo = yield * ItemRepo;
+    const productRepo = yield * ProductRepoService;
+    const itemRepo = yield * ItemRepoService;
 
     const product = yield * productRepo.create(input.product);
 
@@ -200,7 +200,7 @@ export const createProductWithItemsMutation: MutationHandler<
   typeof createProductWithItemsInputSchema,
   typeof productWithItemsSchema,
   ProductRepoError | ItemRepoError,
-  ProductRepo | ItemRepo
+  ProductRepoService | ItemRepoService
 > = {
   kind: 'mutation',
   key: 'createProductWithItems',

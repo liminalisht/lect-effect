@@ -4,7 +4,7 @@ Here’s how I’d push your codebase toward the “everything-but-(domain ⊔ s
 
 Right now `ConfigService` is a *single* service whose value is essentially a product
 [
-\textsf{ConfigServiceShape} ;\cong; \textsf{AppConfig} \times \textsf{MasterdataDbConfig}.
+\textsf{ConfigService} ;\cong; \textsf{AppConfig} \times \textsf{MasterdataDbConfig}.
 ]
 You can see that in the interface: it literally exposes `{ app, masterdataPg }`.
 

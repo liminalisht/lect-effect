@@ -10,8 +10,8 @@ import { itemIdSchema, type ItemId } from '../../domain/item/itemId';
 import { type Item } from '../../domain/item/item';
 import { type ProductId } from '../../domain/product/productId';
 import { decodeMany, decodeOne } from '../../utilities/decode';
-import { MasterdataDb } from '../masterdataDb/interface';
-import { ItemRepoError, ItemRepo } from './interface';
+import { MasterdataDbService } from '../masterdataDb/interface';
+import { ItemRepoError, ItemRepoService } from './interface';
 
 const ItemRowSchema = Schema.Struct({
   id: itemIdSchema,
@@ -29,7 +29,7 @@ const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
  * @since 1.0.0
  */
 export const itemRepoImplementation = Effect.gen(function * () {
-  const { sql } = yield * MasterdataDb;
+  const { sql } = yield * MasterdataDbService;
 
   const getById = (id: ItemId) =>
     Effect.logDebug('ItemRepo.getById: query', { id }).pipe(
@@ -98,4 +98,4 @@ export const itemRepoImplementation = Effect.gen(function * () {
   return {
     getById, list, create, listForProduct, linkToProduct,
   } as const;
-}).pipe(Effect.map(svc => ItemRepo.of(svc)));
+}).pipe(Effect.map(svc => ItemRepoService.of(svc)));

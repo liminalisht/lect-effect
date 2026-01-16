@@ -19,7 +19,7 @@ export type MasterdataDbShape = {
  * Service tag for accessing the masterdata database client.
  * @since 1.0.0
  */
-export class MasterdataDb extends Context.Tag('MasterdataDb')<
-  MasterdataDb,
+export class MasterdataDbService extends Context.Tag('MasterdataDb')<
+  MasterdataDbService,
   MasterdataDbShape
 >() {}

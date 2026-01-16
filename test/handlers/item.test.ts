@@ -8,8 +8,8 @@ import {
   listItems,
   productForItem,
 } from '../../src/handlers/item';
-import { ItemRepo, ItemRepoShape } from '../../src/services/itemRepo/interface';
-import { ProductRepo, ProductRepoShape } from '../../src/services/productRepo/interface';
+import { ItemRepoService, ItemRepoShape } from '../../src/services/itemRepo/interface';
+import { ProductRepoService, ProductRepoShape } from '../../src/services/productRepo/interface';
 import { itemIdSchema } from '../../src/domain/item/itemId';
 import { itemSchema } from '../../src/domain/item/item';
 import { createItemInputSchema } from '../../src/domain/item/createItemInput';
@@ -48,7 +48,7 @@ describe('item handlers', () => {
           },
         };
 
-        const result = await Effect.runPromise(getItem(id).pipe(Effect.provideService(ItemRepo, repo)));
+        const result = await Effect.runPromise(getItem(id).pipe(Effect.provideService(ItemRepoService, repo)));
         expect(result).toEqual(found);
       }));
     }));
@@ -62,7 +62,7 @@ describe('item handlers', () => {
           list: Effect.succeed(items),
         };
 
-        const result = await Effect.runPromise(listItems.pipe(Effect.provideService(ItemRepo, repo)));
+        const result = await Effect.runPromise(listItems.pipe(Effect.provideService(ItemRepoService, repo)));
         expect(result).toEqual(items);
       }));
     }));
@@ -79,7 +79,7 @@ describe('item handlers', () => {
           },
         };
 
-        const result = await Effect.runPromise(createItem(input).pipe(Effect.provideService(ItemRepo, repo)));
+        const result = await Effect.runPromise(createItem(input).pipe(Effect.provideService(ItemRepoService, repo)));
         expect(result).toEqual(created);
       }));
     }));
@@ -95,7 +95,7 @@ describe('item handlers', () => {
           },
         };
 
-        const result = await Effect.runPromise(productForItem(itemId).pipe(Effect.provideService(ProductRepo, repo)));
+        const result = await Effect.runPromise(productForItem(itemId).pipe(Effect.provideService(ProductRepoService, repo)));
         expect(result).toEqual(product);
       }));
     }));

@@ -49,7 +49,7 @@ export type ProductRepoShape = {
  * Service tag for the product repository.
  * @since 1.0.0
  */
-export class ProductRepo extends Context.Tag('ProductRepo')<
-  ProductRepo,
+export class ProductRepoService extends Context.Tag('ProductRepo')<
+  ProductRepoService,
   ProductRepoShape
 >() {}

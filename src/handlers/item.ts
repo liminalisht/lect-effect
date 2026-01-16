@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ItemRepo, type ItemRepoError } from '../services/itemRepo/interface';
-import { ProductRepo, type ProductRepoError } from '../services/productRepo/interface';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface';
 import type { ItemId } from '../domain/item/itemId';
 import { itemSchema } from '../domain/item/item';
 import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput';
@@ -18,7 +18,7 @@ import { type QueryHandler, type FieldHandler, type MutationHandler } from './ge
  */
 export const getItem = (id: ItemId) =>
   Effect.gen(function * () {
-    const repo = yield * ItemRepo;
+    const repo = yield * ItemRepoService;
     return yield * repo.getById(id);
   });
 
@@ -36,7 +36,7 @@ export const getItemQuery: QueryHandler<
   typeof itemIdInputSchema,
   typeof nullableItemSchema,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 > = {
   kind: 'query',
   key: 'getItem',
@@ -51,7 +51,7 @@ export const getItemQuery: QueryHandler<
  * @since 1.0.0
  */
 export const listItems = Effect.gen(function * () {
-  const repo = yield * ItemRepo;
+  const repo = yield * ItemRepoService;
   return yield * repo.list;
 });
 
@@ -63,7 +63,7 @@ export const listItemsQuery: QueryHandler<
   typeof emptyStructSchema,
   typeof itemArraySchema,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 > = {
   kind: 'query',
   key: 'listItems',
@@ -79,7 +79,7 @@ export const listItemsQuery: QueryHandler<
  */
 export const createItem = (input: CreateItemInput) =>
   Effect.gen(function * () {
-    const repo = yield * ItemRepo;
+    const repo = yield * ItemRepoService;
     return yield * repo.create(input);
   });
 
@@ -91,7 +91,7 @@ export const createItemMutation: MutationHandler<
   typeof createItemInputSchema,
   typeof itemSchema,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 > = {
   kind: 'mutation',
   key: 'createItem',
@@ -107,7 +107,7 @@ export const createItemMutation: MutationHandler<
  */
 export const productForItem = (itemId: ItemId) =>
   Effect.gen(function * () {
-    const repo = yield * ProductRepo;
+    const repo = yield * ProductRepoService;
     const opt = yield * repo.getForItem(itemId);
     return Option.getOrNull(opt);
   });
@@ -121,7 +121,7 @@ export const productForItemField: FieldHandler<
   typeof emptyStructSchema,
   typeof nullableProductSchema,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 > = {
   kind: 'field',
   parentSchema: itemSchema,

@@ -33,4 +33,4 @@ export type ItemRepoShape = {
  * Service tag for the item repository.
  * @since 1.0.0
  */
-export class ItemRepo extends Context.Tag('ItemRepo')<ItemRepo, ItemRepoShape>() {}
+export class ItemRepoService extends Context.Tag('ItemRepo')<ItemRepoService, ItemRepoShape>() {}

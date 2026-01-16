@@ -17,9 +17,9 @@ import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { ConfigService } from '../../../src/services/config/interface';
 import { GreetingService } from '../../../src/services/greeting/interface';
-import { MasterdataDb } from '../../../src/services/masterdataDb/interface';
-import { ProductRepo, type ProductRepoShape } from '../../../src/services/productRepo/interface';
-import { ItemRepo, type ItemRepoShape } from '../../../src/services/itemRepo/interface';
+import { MasterdataDbService } from '../../../src/services/masterdataDb/interface';
+import { ProductRepoService, type ProductRepoShape } from '../../../src/services/productRepo/interface';
+import { ItemRepoService, type ItemRepoShape } from '../../../src/services/itemRepo/interface';
 import { type Product } from '../../../src/domain/product/product';
 import { type Item } from '../../../src/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
@@ -98,11 +98,11 @@ const makeAppLayer = () => {
   });
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const masterdataLayer = Layer.succeed(MasterdataDb, { sql: {} as SqlClient.SqlClient });
+  const masterdataLayer = Layer.succeed(MasterdataDbService, { sql: {} as SqlClient.SqlClient });
 
   const reposLayer = Layer.mergeAll(
-    Layer.succeed(ProductRepo, productRepo),
-    Layer.succeed(ItemRepo, itemRepo),
+    Layer.succeed(ProductRepoService, productRepo),
+    Layer.succeed(ItemRepoService, itemRepo),
   );
 
   const appLayer = Layer.mergeAll(configLayer, greetingLayer, masterdataLayer, reposLayer);

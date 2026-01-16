@@ -12,8 +12,8 @@ import { type Product } from '../../domain/product/product';
 import { type ProductId, productIdSchema } from '../../domain/product/productId';
 import { type ProductInput } from '../../domain/product/productInput';
 import type { ItemId } from '../../domain/item/itemId';
-import { MasterdataDb } from '../masterdataDb/interface';
-import { ProductRepo } from './interface';
+import { MasterdataDbService } from '../masterdataDb/interface';
+import { ProductRepoService } from './interface';
 
 // row schema matches DB columns (no __typename)
 const ProductRowSchema = Schema.Struct({
@@ -31,7 +31,7 @@ const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
  * @since 1.0.0
  */
 export const productRepoImplementation = Effect.gen(function * () {
-  const { sql } = yield * MasterdataDb;
+  const { sql } = yield * MasterdataDbService;
 
   const list = Effect.logDebug('ProductRepo.list: query').pipe(
     Effect.andThen(sql`
@@ -94,4 +94,4 @@ export const productRepoImplementation = Effect.gen(function * () {
   return {
     list, getById, getForItem, create,
   } as const;
-}).pipe(Effect.map(svc => ProductRepo.of(svc)));
+}).pipe(Effect.map(svc => ProductRepoService.of(svc)));

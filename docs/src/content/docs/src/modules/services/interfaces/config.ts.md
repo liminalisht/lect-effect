@@ -16,7 +16,7 @@ Added in v1.0.0
 
 - [utils](#utils)
   - [ConfigService (class)](#configservice-class)
-  - [ConfigServiceShape (type alias)](#configserviceshape-type-alias)
+  - [ConfigService (type alias)](#ConfigService-type-alias)
 
 ---
 
@@ -34,14 +34,14 @@ export declare class ConfigService
 
 Added in v1.0.0
 
-## ConfigServiceShape (type alias)
+## ConfigService (type alias)
 
 Shape of configuration values provided by ConfigService.
 
 **Signature**
 
 ```ts
-export type ConfigServiceShape = {
+export type ConfigService = {
   readonly app: AppConfig
   readonly masterdataPg: MasterdataDbConfig
 }
