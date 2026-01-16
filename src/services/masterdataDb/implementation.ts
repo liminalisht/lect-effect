@@ -22,6 +22,5 @@ import { MasterdataDbService, type MasterdataDb } from './interface';
 export const masterdataDbImplementation: Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>
   = Effect.gen(function * () {
     const sql = yield * SqlClient.SqlClient;
-    yield * Effect.logInfo('masterdata Postgres client initialized');
     return { sql } as const; // todo: what's the point of this?
   });

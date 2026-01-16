@@ -1,6 +1,7 @@
-import { Effect, Layer } from 'effect';
+import { Effect, Layer, Logger } from 'effect';
 import { type AppError } from '../src/errors';
 import { type AppServices } from '../src/services/app/interface';
+import { AppConfigService } from '../src/services/appConfig/interface';
 import { testAppLayer } from './services/app';
 
 // Memoize the test app layer once and share across tests.
@@ -11,7 +12,15 @@ const memoizedTestAppLayer = Layer.memoize(testAppLayer);
  */
 export const withTestAppLayer = <A, E>(eff: Effect.Effect<A, E, AppServices>): Effect.Effect<A, E | AppError> =>
   Effect.scoped(
-    Effect.flatMap(memoizedTestAppLayer, layer => eff.pipe(Effect.provide(layer))),
+    Effect.flatMap(memoizedTestAppLayer, layer =>
+      AppConfigService.pipe(
+        Effect.provide(layer),
+        Effect.flatMap(config => eff.pipe(
+          Effect.provide(layer),
+          Effect.provide(Logger.minimumLogLevel(config.logLevel)),
+        )),
+      )
+    ),
   );
 
 /**

@@ -1520,7 +1520,6 @@ export const masterdataDbLayer = Layer.unwrapEffect(
       MasterdataDb,
       Effect.gen(function* () {
         const sql = yield* SqlClient.SqlClient
-        yield* Effect.logInfo("Masterdata Postgres client initialized")
         return { sql } as const
       })
     ).pipe(Layer.provide(sqlClientLayer))
