@@ -34,7 +34,7 @@ export declare const greetQuery: QueryHandler<
   Struct<{ name: NullishOr<SchemaClass<string, string, never>> }>,
   Struct<{ greeting: brand<typeof String, "Greeting"> }>,
   never,
-  GreetingService
+  GreetService
 >
 ```
 
@@ -47,7 +47,7 @@ Produces a greeting response using the greeting service.
 **Signature**
 
 ```ts
-export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetingService>
+export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetService>
 ```
 
 Added in v1.0.0
@@ -63,7 +63,7 @@ export declare const helloHandlers: QueryHandler<
   Struct<{ name: NullishOr<SchemaClass<string, string, never>> }>,
   Struct<{ greeting: brand<typeof String, "Greeting"> }>,
   never,
-  GreetingService
+  GreetService
 >[]
 ```
 

@@ -2,7 +2,7 @@ Here’s the shape I see in your current assembly, and a way to *reify* “lect�
 
 ## What you already have, categorically
 
-* Each handler is an arrow in a **Kleisli category** for `Effect`, with an explicit *environment* (service requirements) in its type, e.g. `helloHandler : NameInput → Effect<HelloResponse, _, GreetingService>`, and item/product handlers similarly requiring repos, etc.
+* Each handler is an arrow in a **Kleisli category** for `Effect`, with an explicit *environment* (service requirements) in its type, e.g. `helloHandler : NameInput → Effect<HelloResponse, _, GreetService>`, and item/product handlers similarly requiring repos, etc.
 * Each GraphQL resolver is (morally) a natural transformation
   [
   \mathrm{Effect}(-, -, R);\Rightarrow;\mathrm{Promise}(-)

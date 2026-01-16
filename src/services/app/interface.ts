@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { type ConfigService } from '../config/interface';
-import { type GreetingService } from '../greeting/interface';
+import { type GreetService } from '../greeting/interface';
 import { type ItemRepoService } from '../itemRepo/interface';
 import { type MasterdataDbService } from '../masterdataDb/interface';
 import { type ProductRepoService } from '../productRepo/interface';
@@ -14,7 +14,7 @@ import { type ProductRepoService } from '../productRepo/interface';
  */
 export type AppServices =
 	ConfigService
-	| GreetingService
+	| GreetService
 	| MasterdataDbService
 	| ProductRepoService
 	| ItemRepoService;

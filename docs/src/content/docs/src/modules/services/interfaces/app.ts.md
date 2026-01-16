@@ -28,7 +28,7 @@ Union of all services the app provides.
 **Signature**
 
 ```ts
-export type AppServices = ConfigService | GreetingService | MasterdataDb | ProductRepo | ItemRepo
+export type AppServices = ConfigService | GreetService | MasterdataDb | ProductRepo | ItemRepo
 ```
 
 Added in v1.0.0

@@ -15,33 +15,33 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [utils](#utils)
-  - [GreetingService (class)](#greetingservice-class)
-  - [GreetingServiceShape (type alias)](#greetingserviceshape-type-alias)
+  - [GreetService (class)](#GreetService-class)
+  - [Greet (type alias)](#Greet-type-alias)
 
 ---
 
 # utils
 
-## GreetingService (class)
+## GreetService (class)
 
 Service tag for greeting operations.
 
 **Signature**
 
 ```ts
-export declare class GreetingService
+export declare class GreetService
 ```
 
 Added in v1.0.0
 
-## GreetingServiceShape (type alias)
+## Greet (type alias)
 
 Interface for the greeting service implementation.
 
 **Signature**
 
 ```ts
-export type GreetingServiceShape = {
+export type Greet = {
   readonly greet: (name: Option.Option<Name>) => Effect.Effect<Greeting>
 }
 ```

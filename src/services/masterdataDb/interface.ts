@@ -5,7 +5,7 @@
 import { Context } from 'effect';
 import type * as SqlClient from '@effect/sql/SqlClient';
 
-// todo: rename to MasterdataDbServiceShape?
+// todo: rename to MasterdataDb?
 /**
  * Shape for the masterdata database service.
  * @since 1.0.0

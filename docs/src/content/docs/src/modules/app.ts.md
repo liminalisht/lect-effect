@@ -43,7 +43,7 @@ Loads configuration from the ConfigService.
 **Signature**
 
 ```ts
-export declare const getConfig: () => Effect.Effect<ConfigServiceShape, never, ConfigService>
+export declare const getConfig: () => Effect.Effect<Config, never, ConfigService>
 ```
 
 Added in v1.0.0

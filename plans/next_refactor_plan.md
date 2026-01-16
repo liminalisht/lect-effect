@@ -24,7 +24,7 @@ A scalable pattern is:
 1. **Define errors next to the module that *introduces* them** (domain errors in domain, infra errors in infra, transport errors in transport).
 2. Optionally define a **top-level coproduct** `type AppError = DomainError | InfraError | TransportError` in `src/errors.ts` *only if* you need a single public error type (often you don’t; Effect types already carry the coproduct precisely).
 
-So, when you introduce a `GreetingService` (next section), define `GreetingError` next to it if/when you need one. Keep the GraphQL errors where they are.
+So, when you introduce a `GreetService` (next section), define `GreetingError` next to it if/when you need one. Keep the GraphQL errors where they are.
 
 ---
 
@@ -48,17 +48,17 @@ import type { Name } from "../domain/schemas"
 export const GreetingSchema = Schema.String.pipe(Schema.brand("Greeting"))
 export type Greeting = Schema.Schema.Type<typeof GreetingSchema>
 
-export class GreetingService extends Context.Tag("GreetingService")<
-  GreetingService,
+export class GreetService extends Context.Tag("GreetService")<
+  GreetService,
   {
     readonly greet: (name: Option.Option<Name>) => Effect.Effect<Greeting>
   }
 >() {}
 
 // Live implementation: no dependencies for now
-export const GreetingServiceLive = Layer.succeed(
-  GreetingService,
-  GreetingService.of({
+export const GreetServiceLive = Layer.succeed(
+  GreetService,
+  GreetService.of({
     greet: (name) =>
       Effect.succeed(
         GreetingSchema.make(`Hello, ${Option.getOrElse(name, () => "World")}!`)
@@ -78,13 +78,13 @@ export const GreetingServiceLive = Layer.succeed(
 // src/domain/handlers.ts  (or move to src/application/hello.ts)
 import { Effect, Option } from "effect"
 import type * as schemas from "./schemas"
-import { GreetingService } from "../services/greeting"
+import { GreetService } from "../services/greeting"
 
 export const helloHandler = (
   input: schemas.NameInput
-): Effect.Effect<schemas.HelloResponse, never, GreetingService> =>
+): Effect.Effect<schemas.HelloResponse, never, GreetService> =>
   Effect.gen(function* () {
-    const svc = yield* GreetingService
+    const svc = yield* GreetService
     const greeting = yield* svc.greet(Option.fromNullable(input.name ?? null))
     const response: schemas.HelloResponse = { greeting }
     yield* Effect.logDebug("helloHandler output:", response)
@@ -109,14 +109,14 @@ Change it to a coproduct of all services your runtime will provide:
 ```ts
 // src/services/index.ts
 import type { ConfigService } from "./config"
-import type { GreetingService } from "./greeting"
+import type { GreetService } from "./greeting"
 
-export type AppServices = ConfigService | GreetingService
+export type AppServices = ConfigService | GreetService
 export { ConfigService, type Port, makePort } from "./config"
-export { GreetingService, GreetingServiceLive } from "./greeting"
+export { GreetService, GreetServiceLive } from "./greeting"
 ```
 
-### 3.2 Extend `appLayer` to provide GreetingService
+### 3.2 Extend `appLayer` to provide GreetService
 
 You already merge config + logger correctly, with logger depending on config.
 
@@ -126,7 +126,7 @@ Update:
 // src/services/layers/app.ts
 import { type ConfigError, Layer } from "effect"
 import type { AppServices } from "../services"
-import { GreetingServiceLive } from "../services/greeting"
+import { GreetServiceLive } from "../services/greeting"
 import { configLayer } from "./config"
 import { loggerLayer } from "./logger"
 
@@ -134,7 +134,7 @@ export const appLayer: Layer.Layer<AppServices, ConfigError.ConfigError> =
   Layer.mergeAll(
     configLayer,
     loggerLayer.pipe(Layer.provide(configLayer)),
-    GreetingServiceLive
+    GreetServiceLive
   )
 ```
 
@@ -200,8 +200,8 @@ Your worries about scaling/testing are valid; the fix is to make the boundary la
 
 ### Stratum A: pure/application tests (no GraphQL)
 
-* Test `GreetingService` (with either Live or Test layer).
-* Test `helloHandler` by providing a mock `GreetingService` layer.
+* Test `GreetService` (with either Live or Test layer).
+* Test `helloHandler` by providing a mock `GreetService` layer.
 
 ### Stratum B: resolver tests (GraphQL resolver boundary, but not HTTP)
 
@@ -232,18 +232,18 @@ Two options:
 import { describe, it, expect } from "@effect/vitest"
 import { Effect, Layer, Option } from "effect"
 import { helloHandler } from "../../src/domain/handlers"
-import { GreetingService } from "../../src/services/greeting"
+import { GreetService } from "../../src/services/greeting"
 
 const GreetingTest = Layer.succeed(
-  GreetingService,
-  GreetingService.of({
+  GreetService,
+  GreetService.of({
     greet: (name) =>
       Effect.succeed(`TEST:${Option.getOrElse(name, () => "World")}` as any)
   })
 )
 
 describe("helloHandler", () => {
-  it.effect("delegates to GreetingService", () =>
+  it.effect("delegates to GreetService", () =>
     helloHandler({ name: "Alice" }).pipe(
       Effect.provide(GreetingTest),
       Effect.map((res) => {
@@ -271,11 +271,11 @@ import { Arbitrary, Effect, Layer, Option } from "effect"
 import * as fc from "fast-check"
 import { helloHandler } from "../../src/domain/handlers"
 import * as schemas from "../../src/domain/schemas"
-import { GreetingService } from "../../src/services/greeting"
+import { GreetService } from "../../src/services/greeting"
 
 const GreetingEcho = Layer.succeed(
-  GreetingService,
-  GreetingService.of({
+  GreetService,
+  GreetService.of({
     greet: (name) =>
       Effect.succeed(`Hello, ${Option.getOrElse(name, () => "World")}!` as any)
   })
@@ -325,7 +325,7 @@ import { makeYoga } from "../../src/graphql/yoga"
 import * as schemas from "../../src/domain/schemas"
 
 import { ConfigService, makePort } from "../../src/services/config"
-import { GreetingServiceLive } from "../../src/services/greeting"
+import { GreetServiceLive } from "../../src/services/greeting"
 import { loggerLayer } from "../../src/services/layers/logger"
 
 const TestConfig = Layer.succeed(ConfigService, {
@@ -337,7 +337,7 @@ const TestConfig = Layer.succeed(ConfigService, {
 const TestLayer = Layer.mergeAll(
   TestConfig,
   loggerLayer.pipe(Layer.provide(TestConfig)),
-  GreetingServiceLive
+  GreetServiceLive
 )
 
 describe("GraphQL hello (property)", () => {
@@ -408,16 +408,16 @@ Given your TODO (“separate domain types, services, implementations”), the sm
 * `src/application/*` (optional, but I recommend it) — handlers/use-cases that compose services
 * `src/graphql/*` — schema + resolvers + server/yoga boundary
 
-Your current split (`domain`, `services`, `layers`, `graphql`) is already close; adding `GreetingService` and moving arbitraries out of domain are the first “separation pressure relief valves”.
+Your current split (`domain`, `services`, `layers`, `graphql`) is already close; adding `GreetService` and moving arbitraries out of domain are the first “separation pressure relief valves”.
 
 ---
 
 ## Checklist mapping to your TODOs
 
 * **Error types organization** → keep errors local; GraphQL errors in `src/graphql/errors.ts` already good; introduce service/domain errors when needed.
-* **Separate domain** → move “business capability” into `GreetingService`; keep schemas in domain; handler becomes orchestration.
-* **Create service called by helloHandler** → implement `GreetingService` + Live layer; update `helloHandler`.
-* **Fit into layers/AppServices** → extend `AppServices` coproduct; merge `GreetingServiceLive` into `appLayer`.
+* **Separate domain** → move “business capability” into `GreetService`; keep schemas in domain; handler becomes orchestration.
+* **Create service called by helloHandler** → implement `GreetService` + Live layer; update `helloHandler`.
+* **Fit into layers/AppServices** → extend `AppServices` coproduct; merge `GreetServiceLive` into `appLayer`.
 * **First vitest test** → `@effect/vitest` with `it.effect`. 【22view0†L56-L63】
 * **Organize tests by boundary** → `tests/domain/*`, `tests/graphql/*`, optional `tests/e2e/*`.
 * **First arbitrary test** → `Arbitrary.make(schema)` in tests. 【21view0†L194-L201】

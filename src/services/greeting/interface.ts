@@ -10,15 +10,15 @@ import { type Greeting } from '../../domain/hello/greeting';
  * Service tag for greeting operations.
  * @since 1.0.0
  */
-export class GreetingService extends Context.Tag('GreetingService')<
-  GreetingService,
-  GreetingServiceShape
+export class GreetService extends Context.Tag('GreetService')<
+  GreetService,
+  Greet
 >() {}
 
 /**
  * Interface for the greeting service implementation.
  * @since 1.0.0
  */
-export type GreetingServiceShape = {
+export type Greet = {
   readonly greet: (name: Option.Option<Name>) => Effect.Effect<Greeting>;
 };

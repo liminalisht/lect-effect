@@ -695,20 +695,20 @@ Again: pool lifetime is managed by the Layer; per-query connection is bracketed.
 Right now:
 
 ```ts
-export type AppServices = ConfigService | GreetingService
+export type AppServices = ConfigService | GreetService
 ```
 
 …as in your code. Extend:
 
 ```ts
 import type { ConfigService } from "./config"
-import type { GreetingService } from "./greeting"
+import type { GreetService } from "./greeting"
 import type { PostgresPingService } from "./postgresPing"
 import type { OraclePingService } from "./oraclePing"
 
 export type AppServices =
   | ConfigService
-  | GreetingService
+  | GreetService
   | PostgresPingService
   | OraclePingService
 ```
@@ -1188,13 +1188,13 @@ Update `AppServices`:
 ```ts
 // src/services/index.ts
 import type { ConfigService } from './config';
-import type { GreetingService } from './greeting';
+import type { GreetService } from './greeting';
 import type { UserRepo } from './userRepo';
 import type { ProductRepo } from './productRepo';
 
 export type AppServices =
   | ConfigService
-  | GreetingService
+  | GreetService
   | UserRepo
   | ProductRepo;
 ```
@@ -1759,14 +1759,14 @@ This makes the dependency DAG explicit and readable.
 
 ```ts
 import type { ConfigService } from "./config"
-import type { GreetingService } from "./greeting"
+import type { GreetService } from "./greeting"
 import type { MasterdataDb } from "./masterdataDb"
 import type { ProductRepo } from "./productRepo"
 import type { ItemRepo } from "./itemRepo"
 
 export type AppServices =
   | ConfigService
-  | GreetingService
+  | GreetService
   | MasterdataDb
   | ProductRepo
   | ItemRepo

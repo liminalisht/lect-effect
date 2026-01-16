@@ -23,12 +23,12 @@ Added in v1.0.0
 
 ## greetingLayer
 
-Provides the GreetingService implementation.
+Provides the GreetService implementation.
 
 **Signature**
 
 ```ts
-export declare const greetingLayer: Layer.Layer<GreetingService, never, never>
+export declare const greetingLayer: Layer.Layer<GreetService, never, never>
 ```
 
 Added in v1.0.0

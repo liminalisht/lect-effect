@@ -19,7 +19,7 @@ If you want a categorical slogan:
 
 The main environment is:
 
-- `AppServices = ConfigService | GreetingService | MasterdataDb | ProductRepo | ItemRepo`
+- `AppServices = ConfigService | GreetService | MasterdataDb | ProductRepo | ItemRepo`
 
 Layer composition (conceptual):
 
@@ -28,7 +28,7 @@ Layer composition (conceptual):
 - `masterdataDbLayer : Layer<MasterdataDb, ConfigService>`
 - `productRepoLayer : Layer<ProductRepo, MasterdataDb>`
 - `itemRepoLayer : Layer<ItemRepo, MasterdataDb>`
-- `greetingLayer : Layer<GreetingService>`
+- `greetingLayer : Layer<GreetService>`
 - `appLayer : Layer<AppServices, AppError>`
 
 A useful diagram:
@@ -40,7 +40,7 @@ graph TD
   Config --> DB[masterdataDbLayer -> MasterdataDb]
   DB --> ProductRepo[productRepoLayer -> ProductRepo]
   DB --> ItemRepo[itemRepoLayer -> ItemRepo]
-  Greeting[greetingLayer -> GreetingService]
+  Greeting[greetingLayer -> GreetService]
 
   Config --> App[appLayer]
   Logger --> App

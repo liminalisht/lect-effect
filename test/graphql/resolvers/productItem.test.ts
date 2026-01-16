@@ -16,7 +16,7 @@ import { itemHandlers } from '../../../src/handlers/item';
 import { productHandlers } from '../../../src/handlers/product';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
 import { ConfigService } from '../../../src/services/config/interface';
-import { GreetingService } from '../../../src/services/greeting/interface';
+import { GreetService } from '../../../src/services/greeting/interface';
 import { MasterdataDbService } from '../../../src/services/masterdataDb/interface';
 import { ProductRepoService, type ProductRepoShape } from '../../../src/services/productRepo/interface';
 import { ItemRepoService, type ItemRepoShape } from '../../../src/services/itemRepo/interface';
@@ -93,7 +93,7 @@ const makeAppLayer = () => {
     },
   });
 
-  const greetingLayer = Layer.succeed(GreetingService, {
+  const greetingLayer = Layer.succeed(GreetService, {
     greet: name => Effect.succeed(Option.match(name, { onNone: () => 'World', onSome: n => n }) as Greeting),
   });
 
