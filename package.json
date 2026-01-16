@@ -11,7 +11,7 @@
     "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "migrate:test-masterdata": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
     "start": "pnpm run build && node dist/index.js",
-    "test": "pnpm run buildtest && env-cmd -f .env.test --no-override vitest run",
+    "test": "pnpm run buildtest && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
   },
   "keywords": [],
