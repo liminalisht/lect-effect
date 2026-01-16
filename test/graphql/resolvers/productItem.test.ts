@@ -123,75 +123,87 @@ const fetchJson = async (yoga: Yoga<AppServices>, query: string, variables?: Rec
 
 describe('GraphQL product & item boundary (property)', () => {
   it.effect('createProductWithItems mutation is reflected across queries and fields', () =>
-    Effect.tryPromise({
-      try: () =>
-        fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
-          const input = normalizeInput(rawInput);
-          // const { appLayer } = makeAppLayer();
-          const yoga = await Effect.runPromise(makeYoga<AppServices>(schema).pipe(Effect.provide(testAppLayer)));
+    Effect.scoped(
+      Effect.tryPromise({
+        try: () =>
+          fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
+            const input = normalizeInput(rawInput);
 
-          const mutation = /* GraphQL */ `
-            mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
-              createProductWithItems(product: $product, items: $items) {
-                product { id description __typename }
-                items { id description pack_size }
-              }
-            }
-          `;
+            return Effect.runPromise(
+              Effect.scoped(
+                Effect.gen(function * () {
+                  const { sql } = yield * MasterdataDbService;
+                  // ensure deterministic DB state for each property case
+                  yield * sql`TRUNCATE item_prod, item, product RESTART IDENTITY;`;
 
-          const mutationJson = await fetchJson(yoga, mutation, { product: input.product, items: input.items });
-          expect(mutationJson.errors).toBeUndefined();
-          const created = mutationJson.data.createProductWithItems;
-          const productId = created.product.id;
-          const firstItemId = created.items[0]?.id;
+                  const yoga = yield * makeYoga<AppServices>(schema);
 
-          const query = /* GraphQL */ `
-            query ProductSuite($productId: Int!, $itemId: Int!) {
-              getProduct(id: $productId) {
-                id
-                description
-                items { id description pack_size }
-              }
-              getProductWithItems(id: $productId) {
-                product { id description }
-                items { id description pack_size }
-              }
-              listProducts { id description }
-              listItems {
-                id
-                description
-                pack_size
-                product { id description }
-              }
-              getItem(id: $itemId) {
-                id
-                description
-                product { id description }
-              }
-            }
-          `;
+                  const mutation = /* GraphQL */ `
+                    mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
+                      createProductWithItems(product: $product, items: $items) {
+                        product { id description __typename }
+                        items { id description pack_size }
+                      }
+                    }
+                  `;
 
-          const queryJson = await fetchJson(yoga, query, { productId, itemId: firstItemId });
-          expect(queryJson.errors).toBeUndefined();
+                  const mutationJson = yield * Effect.promise(() => fetchJson(yoga, mutation, { product: input.product, items: input.items }));
+                  expect(mutationJson.errors).toBeUndefined();
+                  const created = mutationJson.data.createProductWithItems;
+                  const productId = created.product.id;
+                  const firstItemId = created.items[0]?.id;
 
-          const { getProduct, getProductWithItems, listProducts, listItems } = queryJson.data;
+                  const query = /* GraphQL */ `
+                    query ProductSuite($productId: Int!, $itemId: Int!) {
+                      getProduct(id: $productId) {
+                        id
+                        description
+                        items { id description pack_size }
+                      }
+                      getProductWithItems(id: $productId) {
+                        product { id description }
+                        items { id description pack_size }
+                      }
+                      listProducts { id description }
+                      listItems {
+                        id
+                        description
+                        pack_size
+                        product { id description }
+                      }
+                      getItem(id: $itemId) {
+                        id
+                        description
+                        product { id description }
+                      }
+                    }
+                  `;
 
-          expect(created.product).toEqual({ id: productId, description: input.product.description ?? null, __typename: 'Product' });
-          expect(created.items).toEqual(getProduct.items);
+                  const queryJson = yield * Effect.promise(() => fetchJson(yoga, query, { productId, itemId: firstItemId }));
+                  expect(queryJson.errors).toBeUndefined();
 
-          expect(getProductWithItems).toEqual({
-            product: { id: productId, description: input.product.description ?? null },
-            items: getProduct.items,
-          });
+                  const { getProduct, getProductWithItems, listProducts, listItems } = queryJson.data;
 
-          expect(listProducts).toEqual([{ id: productId, description: input.product.description ?? null }]);
-          expect(listItems).toEqual(input.items.map((item, idx) => ({
-            id: created.items[idx].id,
-            description: item.description ?? null,
-            pack_size: item.pack_size,
-            product: { id: productId, description: input.product.description ?? null },
-          })));
-        })),
-      catch: (e: unknown) => e as Error,
-    }));
+                  expect(created.product).toEqual({ id: productId, description: input.product.description ?? null, __typename: 'Product' });
+                  expect(created.items).toEqual(getProduct.items);
+
+                  expect(getProductWithItems).toEqual({
+                    product: { id: productId, description: input.product.description ?? null },
+                    items: getProduct.items,
+                  });
+
+                  expect(listProducts).toEqual([{ id: productId, description: input.product.description ?? null }]);
+                  expect(listItems).toEqual(input.items.map((item, idx) => ({
+                    id: created.items[idx].id,
+                    description: item.description ?? null,
+                    pack_size: item.pack_size,
+                    product: { id: productId, description: input.product.description ?? null },
+                  })));
+                }).pipe(Effect.provide(testAppLayer)),
+              ),
+            );
+          })),
+        catch: (e: unknown) => e as Error,
+      }).pipe(Effect.provide(testAppLayer)),
+    ));
 });
