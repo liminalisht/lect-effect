@@ -26,6 +26,7 @@ import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } f
 import { type Port } from '../../../src/services/appConfig/interface/port';
 import { type Greeting } from '../../../src/domain/hello/greeting';
 import { type AppServices } from '../../../src/services/app/interface';
+import { testAppLayer } from '../../layers/app';
 
 const schema = makeSchema(handlersToResolvers([
   ...helloHandlers,
@@ -126,8 +127,8 @@ describe('GraphQL product & item boundary (property)', () => {
       try: () =>
         fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
           const input = normalizeInput(rawInput);
-          const { appLayer } = makeAppLayer();
-          const yoga = await Effect.runPromise(makeYoga<AppServices>(schema).pipe(Effect.provide(appLayer)));
+          // const { appLayer } = makeAppLayer();
+          const yoga = await Effect.runPromise(makeYoga<AppServices>(schema).pipe(Effect.provide(testAppLayer)));
 
           const mutation = /* GraphQL */ `
             mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
