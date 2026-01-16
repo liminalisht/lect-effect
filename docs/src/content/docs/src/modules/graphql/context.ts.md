@@ -1,6 +1,6 @@
 ---
 title: graphql/context.ts
-nav_order: 27
+nav_order: 21
 parent: Modules
 ---
 
@@ -28,7 +28,7 @@ GraphQL context enriched with an Effect runtime for `AppServices`.
 **Signature**
 
 ```ts
-export type GraphQLContext<R> = YogaInitialContext & RuntimeForAppServicesShape<R>
+export type GraphQLContext<R> = YogaInitialContext & RuntimeForServiceRequirements<R>
 ```
 
 Added in v1.0.0

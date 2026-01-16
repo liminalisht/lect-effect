@@ -21,24 +21,68 @@ import { type MasterdataDbConfigService } from '../masterdataDbConfig/interface'
 import { type GreetService } from '../greeting/interface';
 import { type AppServices } from './interface';
 
+/**
+ * Layer loading app configuration.
+ * @since 1.0.0
+ */
 export const appConfig: Layer.Layer<AppConfigService, ConfigError> = appConfigLayer;
+/**
+ * Logger layer requiring app config.
+ * @since 1.0.0
+ */
 export const logger: Layer.Layer<never, never, AppConfigService> = loggerLayer;
+/**
+ * Logger provided with configuration.
+ * @since 1.0.0
+ */
 export const configuredLogger: Layer.Layer<never, ConfigError> = logger.pipe(Layer.provide(appConfig));
 
+/**
+ * Layer loading DB configuration.
+ * @since 1.0.0
+ */
 export const masterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError> = masterdataDbConfigLayer;
+/**
+ * Raw masterdata DB layer.
+ * @since 1.0.0
+ */
 export const masterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService> = masterdataDbLayer;
+/**
+ * Masterdata DB provided with configuration.
+ * @since 1.0.0
+ */
 export const configuredMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError> = masterdataDb.pipe(Layer.provide(masterdataDbConfig));
 
+/**
+ * Product repository layer.
+ * @since 1.0.0
+ */
 export const productRepo: Layer.Layer<ProductRepoService, SqlError | ConfigError, MasterdataDbService> = productRepoLayer;
+/**
+ * Item repository layer.
+ * @since 1.0.0
+ */
 export const itemRepo: Layer.Layer<ItemRepoService, SqlError | ConfigError, MasterdataDbService> = itemRepoLayer;
+/**
+ * Combined repository layers with DB provided.
+ * @since 1.0.0
+ */
 export const masterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError>
   = Layer.mergeAll(
     productRepo,
     itemRepo,
   ).pipe(Layer.provide(configuredMasterdataDb));
 
+/**
+ * Greeting service layer.
+ * @since 1.0.0
+ */
 export const greeting: Layer.Layer<GreetService> = greetingLayer;
 
+/**
+ * Full application layer wiring services and infrastructure.
+ * @since 1.0.0
+ */
 export const app: Layer.Layer<AppServices, AppError>
   = Layer.mergeAll(
     appConfig,
@@ -48,6 +92,10 @@ export const app: Layer.Layer<AppServices, AppError>
     masterdataRepos,
   );
 
+/**
+ * Exported application layer alias.
+ * @since 1.0.0
+ */
 export const appLayer: Layer.Layer<AppServices, AppError> = app;
 
 // /**

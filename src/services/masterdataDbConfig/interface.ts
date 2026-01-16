@@ -22,5 +22,9 @@ export type MasterdataDbConfig = {
   };
 };
 
+/**
+ * Tag for accessing master data DB configuration.
+ * @since 1.0.0
+ */
 export class MasterdataDbConfigService extends Context.Tag('services/masterdataDbConfig')<MasterdataDbConfigService, MasterdataDbConfig>() {}
 

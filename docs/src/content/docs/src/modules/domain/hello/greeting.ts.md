@@ -1,6 +1,6 @@
 ---
 title: domain/hello/greeting.ts
-nav_order: 9
+nav_order: 3
 parent: Modules
 ---
 

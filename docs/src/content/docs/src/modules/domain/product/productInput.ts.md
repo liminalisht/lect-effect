@@ -1,6 +1,6 @@
 ---
 title: domain/product/productInput.ts
-nav_order: 24
+nav_order: 18
 parent: Modules
 ---
 

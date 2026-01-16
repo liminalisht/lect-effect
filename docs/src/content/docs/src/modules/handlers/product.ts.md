@@ -1,6 +1,6 @@
 ---
 title: handlers/product.ts
-nav_order: 37
+nav_order: 31
 parent: Modules
 ---
 
@@ -45,7 +45,7 @@ export declare const createProduct: (
 ) => Effect.Effect<
   { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null },
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -66,7 +66,7 @@ export declare const createProductMutation: MutationHandler<
     description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
   }>,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -87,7 +87,7 @@ export declare const createProductWithItems: (
     items: { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   },
   ParseError | SqlError | ProductNotFound,
-  ProductRepo | ItemRepo
+  ItemRepoService | ProductRepoService
 >
 ```
 
@@ -125,7 +125,7 @@ export declare const createProductWithItemsMutation: MutationHandler<
     >
   }>,
   ParseError | SqlError | ProductNotFound,
-  ProductRepo | ItemRepo
+  ItemRepoService | ProductRepoService
 >
 ```
 
@@ -143,7 +143,7 @@ export declare const getProduct: (
 ) => Effect.Effect<
   { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -166,7 +166,7 @@ export declare const getProductQuery: QueryHandler<
     }>
   >,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -187,7 +187,7 @@ export declare const getProductWithItems: (
     items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   } | null,
   ParseError | SqlError | ProductNotFound,
-  ProductRepo | ItemRepo
+  ItemRepoService | ProductRepoService
 >
 ```
 
@@ -219,7 +219,7 @@ export declare const getProductWithItemsQuery: QueryHandler<
     }>
   >,
   ParseError | SqlError | ProductNotFound,
-  ProductRepo | ItemRepo
+  ItemRepoService | ProductRepoService
 >
 ```
 
@@ -237,7 +237,7 @@ export declare const itemsForProduct: (
 ) => Effect.Effect<
   readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -265,7 +265,7 @@ export declare const itemsForProductField: FieldHandler<
     }>
   >,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -281,7 +281,7 @@ Lists all products.
 export declare const listProducts: Effect.Effect<
   readonly { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }[],
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -304,7 +304,7 @@ export declare const listProductsQuery: QueryHandler<
     }>
   >,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -328,7 +328,7 @@ export declare const productHandlers: (
         }>
       >,
       ProductRepoError,
-      ProductRepo
+      ProductRepoService
     >
   | QueryHandler<
       Schema.Struct<{}>,
@@ -340,7 +340,7 @@ export declare const productHandlers: (
         }>
       >,
       ProductRepoError,
-      ProductRepo
+      ProductRepoService
     >
   | MutationHandler<
       Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>,
@@ -350,7 +350,7 @@ export declare const productHandlers: (
         description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
       }>,
       ProductRepoError,
-      ProductRepo
+      ProductRepoService
     >
   | FieldHandler<
       Schema.Struct<{
@@ -367,7 +367,7 @@ export declare const productHandlers: (
         }>
       >,
       ItemRepoError,
-      ItemRepo
+      ItemRepoService
     >
   | QueryHandler<
       Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>,
@@ -388,7 +388,7 @@ export declare const productHandlers: (
         }>
       >,
       ParseError | SqlError | ProductNotFound,
-      ProductRepo | ItemRepo
+      ItemRepoService | ProductRepoService
     >
   | MutationHandler<
       Schema.Struct<{
@@ -417,7 +417,7 @@ export declare const productHandlers: (
         >
       }>,
       ParseError | SqlError | ProductNotFound,
-      ProductRepo | ItemRepo
+      ItemRepoService | ProductRepoService
     >
 )[]
 ```

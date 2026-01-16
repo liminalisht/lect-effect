@@ -1,6 +1,6 @@
 ---
 title: graphql/schema.ts
-nav_order: 31
+nav_order: 25
 parent: Modules
 ---
 

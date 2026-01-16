@@ -17,5 +17,9 @@ export type AppConfig = {
   readonly environment: Environment;
 };
 
+/**
+ * Tag for accessing application configuration values.
+ * @since 1.0.0
+ */
 export class AppConfigService extends Context.Tag('services/appConfig')<AppConfigService, AppConfig>() {}
 

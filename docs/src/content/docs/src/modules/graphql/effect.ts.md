@@ -1,6 +1,6 @@
 ---
 title: graphql/effect.ts
-nav_order: 28
+nav_order: 22
 parent: Modules
 ---
 
@@ -23,7 +23,7 @@ Added in v1.0.0
 
 ## runEffect
 
-Natural transformation `Effect<A, E, AppServices> -> Promise<A>`.
+Natural transformation `Effect<A, E, R> -> Promise<A>`.
 
 **Signature**
 
@@ -32,4 +32,4 @@ export declare const runEffect: <A, E, R>(eff: Effect.Effect<A, E, R>) => Promis
 ```
 
 Added in v1.0.0
-Pass any Effect whose requirements are a sub-union of `AppServices`.
+e.g. pass any Effect whose requirements are a sub-union of `AppServices`.

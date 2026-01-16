@@ -1,6 +1,6 @@
 ---
 title: domain/hello/nameInput.ts
-nav_order: 12
+nav_order: 6
 parent: Modules
 ---
 

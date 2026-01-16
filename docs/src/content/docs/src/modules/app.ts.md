@@ -16,7 +16,7 @@ Added in v1.0.0
 
 - [utils](#utils)
   - [app](#app)
-  - [getConfig](#getconfig)
+  - [getAppConfig](#getappconfig)
   - [makeGraphQLSchema](#makegraphqlschema)
   - [makeYogaServer](#makeyogaserver)
 
@@ -36,14 +36,14 @@ export declare const app: Effect.Effect<never, unknown, AppServices>
 
 Added in v1.0.0
 
-## getConfig
+## getAppConfig
 
 Loads configuration from the ConfigService.
 
 **Signature**
 
 ```ts
-export declare const getConfig: () => Effect.Effect<Config, never, ConfigService>
+export declare const getAppConfig: () => Effect.Effect<AppConfig, never, AppConfigService>
 ```
 
 Added in v1.0.0

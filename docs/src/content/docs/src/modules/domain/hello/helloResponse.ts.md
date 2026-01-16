@@ -1,6 +1,6 @@
 ---
 title: domain/hello/helloResponse.ts
-nav_order: 10
+nav_order: 4
 parent: Modules
 ---
 

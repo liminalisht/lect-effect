@@ -1,6 +1,6 @@
 ---
 title: domain/product/product.ts
-nav_order: 20
+nav_order: 14
 parent: Modules
 ---
 

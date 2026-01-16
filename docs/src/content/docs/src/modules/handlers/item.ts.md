@@ -1,6 +1,6 @@
 ---
 title: handlers/item.ts
-nav_order: 36
+nav_order: 30
 parent: Modules
 ---
 
@@ -41,7 +41,7 @@ export declare const createItem: (
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly pack_size: number },
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -65,7 +65,7 @@ export declare const createItemMutation: MutationHandler<
     pack_size: Schema.refine<number, typeof Schema.Number>
   }>,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -83,7 +83,7 @@ export declare const getItem: (
 ) => Effect.Effect<
   { readonly id: number; readonly description: string | null; readonly pack_size: number } | null,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -106,7 +106,7 @@ export declare const getItemQuery: QueryHandler<
     }>
   >,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -130,7 +130,7 @@ export declare const itemHandlers: (
         }>
       >,
       ItemRepoError,
-      ItemRepo
+      ItemRepoService
     >
   | QueryHandler<
       Schema.Struct<{}>,
@@ -142,7 +142,7 @@ export declare const itemHandlers: (
         }>
       >,
       ItemRepoError,
-      ItemRepo
+      ItemRepoService
     >
   | MutationHandler<
       Schema.Struct<{
@@ -155,7 +155,7 @@ export declare const itemHandlers: (
         pack_size: Schema.refine<number, typeof Schema.Number>
       }>,
       ItemRepoError,
-      ItemRepo
+      ItemRepoService
     >
   | FieldHandler<
       Schema.Struct<{
@@ -172,7 +172,7 @@ export declare const itemHandlers: (
         }>
       >,
       ProductRepoError,
-      ProductRepo
+      ProductRepoService
     >
 )[]
 ```
@@ -189,7 +189,7 @@ Lists all items.
 export declare const listItems: Effect.Effect<
   readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -212,7 +212,7 @@ export declare const listItemsQuery: QueryHandler<
     }>
   >,
   ItemRepoError,
-  ItemRepo
+  ItemRepoService
 >
 ```
 
@@ -230,7 +230,7 @@ export declare const productForItem: (
 ) => Effect.Effect<
   { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 
@@ -258,7 +258,7 @@ export declare const productForItemField: FieldHandler<
     }>
   >,
   ProductRepoError,
-  ProductRepo
+  ProductRepoService
 >
 ```
 

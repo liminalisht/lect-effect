@@ -1,0 +1,38 @@
+---
+title: services/masterdataDbConfig/implementation.ts
+nav_order: 54
+parent: Modules
+---
+
+## implementation overview
+
+Layer for loading and providing application configuration.
+
+Added in v1.0.0
+
+---
+
+<h2 class="text-delta">Table of contents</h2>
+
+- [utils](#utils)
+  - [masterdataDbConfigServiceImplementation](#masterdatadbconfigserviceimplementation)
+
+---
+
+# utils
+
+## masterdataDbConfigServiceImplementation
+
+Provides configuration values to the environment.
+
+**Signature**
+
+```ts
+export declare const masterdataDbConfigServiceImplementation: Effect.Effect<
+  MasterdataDbConfig,
+  ConfigError.ConfigError,
+  never
+>
+```
+
+Added in v1.0.0
