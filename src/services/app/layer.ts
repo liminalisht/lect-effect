@@ -93,7 +93,7 @@ export const app: Layer.Layer<AppServices, AppError>
   );
 
 /**
- * Exported application layer alias.
+ * Exported application layer alias (memoized once per runtime).
  * @since 1.0.0
  */
 export const appLayer: Layer.Layer<AppServices, AppError> = app;
