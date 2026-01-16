@@ -50,7 +50,7 @@ export const reposLayer: Layer.Layer<ProductRepoService | ItemRepoService, SqlEr
  * Full application layer wiring all dependencies.
  * @since 1.0.0
  */
-export const appLayer: Layer.Layer<AppServices, AppError>
+export const appLayer: Layer.Layer<AppServices, AppError, never>
   = Layer.mergeAll(
     configAndLoggerLayer,
     greetingLayer,
