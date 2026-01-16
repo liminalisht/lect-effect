@@ -120,5 +120,5 @@ describe('GraphQL product & item boundary (property)', () => {
           }).pipe(Effect.provide(testAppLayer))));
         })),
       catch: (e: unknown) => e as Error,
-    }).pipe(Effect.provide(testAppLayer))));
+    })));
 });
