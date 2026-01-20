@@ -87,7 +87,7 @@ Masterdata DB provided with configuration.
 **Signature**
 
 ```ts
-export declare const configuredMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, never>
+export declare const configuredMasterdataDb: Layer.Layer<MasterdataDbService, ConfigError | SqlError, never>
 ```
 
 Added in v1.0.0
@@ -111,7 +111,7 @@ Item repository layer.
 **Signature**
 
 ```ts
-export declare const itemRepo: Layer.Layer<ItemRepoService, SqlError | ConfigError, MasterdataDbService>
+export declare const itemRepo: Layer.Layer<ItemRepoService, ConfigError | SqlError, MasterdataDbService>
 ```
 
 Added in v1.0.0
@@ -135,7 +135,7 @@ Raw masterdata DB layer.
 **Signature**
 
 ```ts
-export declare const masterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService>
+export declare const masterdataDb: Layer.Layer<MasterdataDbService, ConfigError | SqlError, MasterdataDbConfigService>
 ```
 
 Added in v1.0.0
@@ -159,7 +159,7 @@ Combined repository layers with DB provided.
 **Signature**
 
 ```ts
-export declare const masterdataRepos: Layer.Layer<ItemRepoService | ProductRepoService, SqlError | ConfigError, never>
+export declare const masterdataRepos: Layer.Layer<ItemRepoService | ProductRepoService, ConfigError | SqlError, never>
 ```
 
 Added in v1.0.0
@@ -171,7 +171,7 @@ Product repository layer.
 **Signature**
 
 ```ts
-export declare const productRepo: Layer.Layer<ProductRepoService, SqlError | ConfigError, MasterdataDbService>
+export declare const productRepo: Layer.Layer<ProductRepoService, ConfigError | SqlError, MasterdataDbService>
 ```
 
 Added in v1.0.0

@@ -86,7 +86,7 @@ export declare const createProductWithItems: (
     product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
     items: { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   },
-  ParseError | SqlError | ProductNotFound,
+  SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
 >
 ```
@@ -124,7 +124,7 @@ export declare const createProductWithItemsMutation: MutationHandler<
       }>
     >
   }>,
-  ParseError | SqlError | ProductNotFound,
+  SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
 >
 ```
@@ -186,7 +186,7 @@ export declare const getProductWithItems: (
     product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
     items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
   } | null,
-  ParseError | SqlError | ProductNotFound,
+  SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
 >
 ```
@@ -218,7 +218,7 @@ export declare const getProductWithItemsQuery: QueryHandler<
       >
     }>
   >,
-  ParseError | SqlError | ProductNotFound,
+  SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
 >
 ```
@@ -387,7 +387,7 @@ export declare const productHandlers: (
           >
         }>
       >,
-      ParseError | SqlError | ProductNotFound,
+      SqlError | ParseError | ProductNotFound,
       ItemRepoService | ProductRepoService
     >
   | MutationHandler<
@@ -416,7 +416,7 @@ export declare const productHandlers: (
           }>
         >
       }>,
-      ParseError | SqlError | ProductNotFound,
+      SqlError | ParseError | ProductNotFound,
       ItemRepoService | ProductRepoService
     >
 )[]

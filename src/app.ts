@@ -76,6 +76,5 @@ export const app: Effect.Effect<never, ServerStartError, AppServices>
     const resolvers = makeResolvers(handlers);
     const schema = yield * makeGraphQLSchema(resolvers);
     const yoga = yield * makeYogaServer(schema);
-    yield * runYogaServer(yoga, appConfig);
-    return yield * Effect.never;
+    return yield * runYogaServer(yoga, appConfig);
   }));

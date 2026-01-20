@@ -31,14 +31,14 @@ Top-level application Effect that wires configuration, schema, and server startu
 **Signature**
 
 ```ts
-export declare const app: Effect.Effect<never, unknown, AppServices>
+export declare const app: Effect.Effect<never, ServerStartError, AppServices>
 ```
 
 Added in v1.0.0
 
 ## getAppConfig
 
-Loads configuration from the ConfigService.
+Loads configuration from the AppConfigService.
 
 **Signature**
 
@@ -55,7 +55,9 @@ Builds and logs the GraphQL schema.
 **Signature**
 
 ```ts
-export declare const makeGraphQLSchema: (resolvers: readonly GraphQLResolver[]) => Effect.Effect<GraphQLSchema>
+export declare const makeGraphQLSchema: (
+  resolvers: readonly GraphQLResolver[]
+) => Effect.Effect<GraphQLSchema, never, AppServices>
 ```
 
 Added in v1.0.0

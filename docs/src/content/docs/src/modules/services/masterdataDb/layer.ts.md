@@ -30,7 +30,7 @@ Provides the live masterdata database client.
 ```ts
 export declare const masterdataDbLayer: Layer.Layer<
   MasterdataDbService,
-  SqlError | ConfigError,
+  ConfigError | SqlError,
   MasterdataDbConfigService
 >
 ```

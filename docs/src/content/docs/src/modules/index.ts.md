@@ -41,7 +41,7 @@ Main Effect wiring the app with its layer and exit logging.
 **Signature**
 
 ```ts
-export declare const main: Effect.Effect<never, unknown, never>
+export declare const main: Effect.Effect<never, AppError, never>
 ```
 
 Added in v1.0.0
