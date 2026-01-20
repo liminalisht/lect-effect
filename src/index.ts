@@ -22,7 +22,7 @@ export const logFailure = (cause: Cause.Cause<unknown>) =>
  * Main Effect wiring the app with its layer and exit logging.
  * @since 1.0.0
  */
-export const main: Effect.Effect<never, unknown> = Effect.scoped(Effect.gen(function * () {
+export const main = Effect.scoped(Effect.gen(function * () {
   const memoizedAppLayer = yield * Layer.memoize(appLayer);
   return yield * app.pipe(
     Effect.provide(memoizedAppLayer),
