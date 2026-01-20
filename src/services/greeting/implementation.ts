@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Option } from 'effect';
-import { greetingSchema } from '../../domain/hello/greeting';
-import { GreetService } from './interface';
+import { greetingSchema } from '../../domain/hello/greeting.js';
+import { GreetService } from './interface.js';
 
 /**
  * Concrete GreetService implementation.

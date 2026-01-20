@@ -3,9 +3,9 @@
  * @since 1.0.0
  */
 import { Layer} from 'effect';
-import { type ConfigurationError } from '../errors';
-import { AppConfigService } from './interface';
-import { appConfigServiceImplementation } from './implementation';
+import { type ConfigurationError } from '../errors.js';
+import { AppConfigService } from './interface/index.js';
+import { appConfigServiceImplementation } from './implementation.js';
 
 /**
  * Provides configuration values to the environment.

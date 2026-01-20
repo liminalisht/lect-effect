@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { itemDescriptionSchema } from './itemDescription';
-import { packSizeSchema } from './packSize';
+import { itemDescriptionSchema } from './itemDescription.js';
+import { packSizeSchema } from './packSize.js';
 
 // GraphQL arg-shape: { description?, pack_size }
 /**

@@ -5,13 +5,13 @@
 import { Context, Effect, Schema } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
-import { type CreateItemInput } from '../../domain/item/createItemInput';
-import { itemIdSchema, type ItemId } from '../../domain/item/itemId';
-import { type Item } from '../../domain/item/item';
-import { type ProductId } from '../../domain/product/productId';
-import { decodeMany, decodeOne } from '../../utilities/decode';
-import { MasterdataDbService } from '../masterdataDb/interface';
-import { ItemRepoError, ItemRepoService } from './interface';
+import { type CreateItemInput } from '../../domain/item/createItemInput.js';
+import { itemIdSchema, type ItemId } from '../../domain/item/itemId.js';
+import { type Item } from '../../domain/item/item.js';
+import { type ProductId } from '../../domain/product/productId.js';
+import { decodeMany, decodeOne } from '../../utilities/decode.js';
+import { MasterdataDbService } from '../masterdataDb/interface.js';
+import { ItemRepoError, ItemRepoService } from './interface.js';
 
 const ItemRowSchema = Schema.Struct({
   id: itemIdSchema,

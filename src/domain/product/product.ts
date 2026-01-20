@@ -4,8 +4,8 @@
  */
 
 import { Schema } from 'effect';
-import { productIdSchema } from './productId';
-import { productDescriptionSchema } from './productDescription';
+import { productIdSchema } from './productId.js';
+import { productDescriptionSchema } from './productDescription.js';
 
 /**
  * Product domain entity.

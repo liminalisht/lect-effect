@@ -2,7 +2,7 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { packSizeSchema } from '../../../src/domain/item/packSize';
+import { packSizeSchema } from '../../../src/domain/item/packSize.js';
 
 const decodePackSize = Schema.decodeUnknown(packSizeSchema);
 const arbitraryPackSize = Arbitrary.make(packSizeSchema);

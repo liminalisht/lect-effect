@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ProductRepoService } from './interface';
-import { productRepoImplementation } from './implementation';
+import { ProductRepoService } from './interface.js';
+import { productRepoImplementation } from './implementation.js';
 
 /**
  * Provides the live ProductRepo implementation.

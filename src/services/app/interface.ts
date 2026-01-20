@@ -2,12 +2,12 @@
  * Application service union definition.
  * @since 1.0.0
  */
-import { AppConfig, type AppConfigService } from '../appConfig/interface';
-import { type ConfigService } from '../config/interface';
-import { type GreetService } from '../greeting/interface';
-import { type ItemRepoService } from '../itemRepo/interface';
-import { type MasterdataDbService } from '../masterdataDb/interface';
-import { type ProductRepoService } from '../productRepo/interface';
+import { AppConfig, type AppConfigService } from '../appConfig/interface/index.js';
+import { type ConfigService } from '../config/interface.js';
+import { type GreetService } from '../greeting/interface.js';
+import { type ItemRepoService } from '../itemRepo/interface.js';
+import { type MasterdataDbService } from '../masterdataDb/interface.js';
+import { type ProductRepoService } from '../productRepo/interface.js';
 
 /**
  * Union of all services the app provides.

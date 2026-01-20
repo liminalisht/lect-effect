@@ -5,8 +5,8 @@
 import {
   Config, type ConfigError, Effect,
 } from 'effect';
-import { type ConfigurationError } from '../errors';
-import { type MasterdataDbConfig } from './interface';
+import { type ConfigurationError } from '../errors.js';
+import { type MasterdataDbConfig } from './interface.js';
 
 const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationError> = Effect.gen(function * () {
   const url = yield * Config.redacted('MASTERDATA_PG_URL');

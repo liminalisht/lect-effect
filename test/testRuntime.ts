@@ -1,7 +1,7 @@
 import { Effect, Layer } from 'effect';
-import { type AppError } from '../src/errors';
-import { type AppServices } from '../src/services/app/interface';
-import { testAppLayer } from './services/app';
+import { type AppError } from '../src/errors.js';
+import { type AppServices } from '../src/services/app/interface.js';
+import { testAppLayer } from './services/app.js';
 
 // Memoize the test app layer once and share across tests.
 const memoizedTestAppLayer = Layer.memoize(testAppLayer);

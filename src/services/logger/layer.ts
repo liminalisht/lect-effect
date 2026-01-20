@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Effect, Layer, Logger } from 'effect';
-import { ConfigService } from '../config/interface';
-import { AppConfigService } from '../appConfig/interface';
+import { ConfigService } from '../config/interface.js';
+import { AppConfigService } from '../appConfig/interface/index.js';
 
 // todo : change to depend on AppService
 // todo: why is this not returning the service? i don't understand

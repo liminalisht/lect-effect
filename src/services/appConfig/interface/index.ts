@@ -3,9 +3,9 @@
  * @since 1.0.0
  */
 import { Context, Effect, Layer } from 'effect';
-import { type Environment } from './environment';
-import { type ConfiguredLogLevel } from './loglevel';
-import { type Port } from './port';
+import { type Environment } from './environment.js';
+import { type ConfiguredLogLevel } from './loglevel.js';
+import { type Port } from './port.js';
 
 /**
  * Application runtime configuration values.

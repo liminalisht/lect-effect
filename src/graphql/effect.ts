@@ -4,9 +4,9 @@
  */
 import { type Effect, Runtime } from 'effect';
 import { useContext } from '@gqloom/core/context';
-import type { AppServices } from '../services/app/interface';
-import type { GraphQLContext } from './context';
-import { RuntimeMissingFromContextError } from './errors';
+import type { AppServices } from '../services/app/interface.js';
+import type { GraphQLContext } from './context.js';
+import { RuntimeMissingFromContextError } from './errors.js';
 
 /**
  * Natural transformation `Effect<A, E, R> -> Promise<A>`.

@@ -5,7 +5,7 @@
 import { Effect } from 'effect';
 import { createYoga, type YogaServerInstance } from 'graphql-yoga';
 import { type GraphQLSchema } from 'graphql';
-import type { GraphQLContext } from './context';
+import type { GraphQLContext } from './context.js';
 
 // todo: extract so that schema is passed in here as a param
 /**

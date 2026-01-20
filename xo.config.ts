@@ -17,7 +17,7 @@ const xoConfig: FlatXoConfig = [
       indent: ['warn', 2],
       '@typescript-eslint/indent': 'off',
       '@stylistic/indent': 'off',
-      'import-x/extensions': 'off',
+      // 'import-x/extensions': 'off',
       'capitalized-comments': 'off',
       'no-warning-comments': ['off', {terms: ['todo', 'fixme', 'hack'], location: 'anywhere'}],
       'unicorn/filename-case': 'off',

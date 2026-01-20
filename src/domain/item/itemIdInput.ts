@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { itemIdSchema } from './itemId';
+import { itemIdSchema } from './itemId.js';
 
 // GraphQL arg-shape: { id }
 /**

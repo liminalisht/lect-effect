@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { greetingSchema } from './greeting';
+import { greetingSchema } from './greeting.js';
 
 /**
  * Response structure returned by the hello operation.

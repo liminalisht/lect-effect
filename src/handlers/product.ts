@@ -3,16 +3,16 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface';
-import type { ProductId } from '../domain/product/productId';
-import { productIdInputSchema, type ProductIdInput } from '../domain/product/productIdInput';
-import { productSchema } from '../domain/product/product';
-import { productWithItemsSchema, type ProductWithItems } from '../domain/product/productWithItems';
-import { productInputSchema, type ProductInput } from '../domain/product/productInput';
-import { type Item, itemSchema } from '../domain/item/item';
-import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../domain/product/createProductWithItemsInput';
-import { type QueryHandler, type MutationHandler, type FieldHandler } from './generic';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
+import type { ProductId } from '../domain/product/productId.js';
+import { productIdInputSchema, type ProductIdInput } from '../domain/product/productIdInput.js';
+import { productSchema } from '../domain/product/product.js';
+import { productWithItemsSchema, type ProductWithItems } from '../domain/product/productWithItems.js';
+import { productInputSchema, type ProductInput } from '../domain/product/productInput.js';
+import { type Item, itemSchema } from '../domain/item/item.js';
+import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../domain/product/createProductWithItemsInput.js';
+import { type QueryHandler, type MutationHandler, type FieldHandler } from './generic.js';
 
 /**
  * Fetches a single product by id or returns null.

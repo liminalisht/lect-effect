@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { itemSchema } from '../item/item';
-import { productSchema } from './product';
+import { itemSchema } from '../item/item.js';
+import { productSchema } from './product.js';
 
 /**
  * Product paired with its items.

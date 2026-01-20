@@ -4,16 +4,16 @@ import {
   Arbitrary,
   Effect,
 } from 'effect';
-import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema';
-import { handlersToResolvers } from '../../../src/graphql/resolvers';
-import { helloHandlers } from '../../../src/handlers/hello';
-import { itemHandlers } from '../../../src/handlers/item';
-import { productHandlers } from '../../../src/handlers/product';
-import { makeYoga, type Yoga } from '../../../src/graphql/yoga';
-import { MasterdataDbService } from '../../../src/services/masterdataDb/interface';
-import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput';
-import { type AppServices } from '../../../src/services/app/interface';
-import { withTestAppLayer } from '../../testRuntime';
+import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
+import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
+import { helloHandlers } from '../../../src/handlers/hello.js';
+import { itemHandlers } from '../../../src/handlers/item.js';
+import { productHandlers } from '../../../src/handlers/product.js';
+import { makeYoga, type Yoga } from '../../../src/graphql/yoga.js';
+import { MasterdataDbService } from '../../../src/services/masterdataDb/interface.js';
+import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput.js';
+import { type AppServices } from '../../../src/services/app/interface.js';
+import { withTestAppLayer } from '../../testRuntime.js';
 
 // todo: extract - maybe even explicitly in app.ts for reuse?
 const schema = makeSchema(handlersToResolvers([

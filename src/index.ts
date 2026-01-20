@@ -5,8 +5,8 @@
 import 'dotenv/config';
 import { Cause, Effect, Layer } from 'effect';
 import { NodeRuntime } from '@effect/platform-node';
-import { app } from './app';
-import { appLayer } from './services/app/layer';
+import { app } from './app.js';
+import { appLayer } from './services/app/layer.js';
 
 /**
  * Logs an exhaustive failure cause in a human-readable format.

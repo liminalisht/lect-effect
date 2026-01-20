@@ -3,10 +3,10 @@
  * @since 1.0.0
  */
 import { Effect, Option } from 'effect';
-import { nameInputSchema, type NameInput } from '../domain/hello/nameInput';
-import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse';
-import { GreetService } from '../services/greeting/interface';
-import { type QueryHandler } from './generic';
+import { nameInputSchema, type NameInput } from '../domain/hello/nameInput.js';
+import { helloResponseSchema, type HelloResponse } from '../domain/hello/helloResponse.js';
+import { GreetService } from '../services/greeting/interface.js';
+import { type QueryHandler } from './generic.js';
 /**
  * Produces a greeting response using the greeting service.
  * @since 1.0.0

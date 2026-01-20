@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { createItemInputSchema } from '../item/createItemInput';
-import { productInputSchema } from './productInput';
+import { createItemInputSchema } from '../item/createItemInput.js';
+import { productInputSchema } from './productInput.js';
 
 /**
  * Mutation payload for creating a product with its items.

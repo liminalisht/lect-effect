@@ -3,9 +3,9 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { itemIdSchema } from './itemId';
-import { itemDescriptionSchema } from './itemDescription';
-import { packSizeSchema } from './packSize';
+import { itemIdSchema } from './itemId.js';
+import { itemDescriptionSchema } from './itemDescription.js';
+import { packSizeSchema } from './packSize.js';
 /**
  * Item domain entity.
  * @since 1.0.0

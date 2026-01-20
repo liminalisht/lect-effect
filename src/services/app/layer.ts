@@ -5,21 +5,21 @@
 import { Layer } from 'effect';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
-import { type AppError } from '../../errors';
-import { loggerLayer } from '../logger/layer';
-import { greetingLayer } from '../greeting/layer';
-import { masterdataDbLayer } from '../masterdataDb/layer';
-import { productRepoLayer } from '../productRepo/layer';
-import { itemRepoLayer } from '../itemRepo/layer';
-import { type MasterdataDbService } from '../masterdataDb/interface';
-import { type ItemRepoService } from '../itemRepo/interface';
-import { type ProductRepoService } from '../productRepo/interface';
-import { type AppConfigService } from '../appConfig/interface';
-import { appConfigLayer } from '../appConfig/layer';
-import { masterdataDbConfigLayer } from '../masterdataDbConfig/layer';
-import { type MasterdataDbConfigService } from '../masterdataDbConfig/interface';
-import { type GreetService } from '../greeting/interface';
-import { type AppServices } from './interface';
+import { type AppError } from '../../errors.js';
+import { loggerLayer } from '../logger/layer.js';
+import { greetingLayer } from '../greeting/layer.js';
+import { masterdataDbLayer } from '../masterdataDb/layer.js';
+import { productRepoLayer } from '../productRepo/layer.js';
+import { itemRepoLayer } from '../itemRepo/layer.js';
+import { type MasterdataDbService } from '../masterdataDb/interface.js';
+import { type ItemRepoService } from '../itemRepo/interface.js';
+import { type ProductRepoService } from '../productRepo/interface.js';
+import { type AppConfigService } from '../appConfig/interface/index.js';
+import { appConfigLayer } from '../appConfig/layer.js';
+import { masterdataDbConfigLayer } from '../masterdataDbConfig/layer.js';
+import { type MasterdataDbConfigService } from '../masterdataDbConfig/interface.js';
+import { type GreetService } from '../greeting/interface.js';
+import { type AppServices } from './interface.js';
 
 /**
  * Layer loading app configuration.

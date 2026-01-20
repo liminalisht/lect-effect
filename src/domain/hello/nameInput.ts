@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { nameSchema } from './name';
+import { nameSchema } from './name.js';
 
 /**
  * Input payload for greeting by name.

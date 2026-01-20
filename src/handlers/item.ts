@@ -3,14 +3,14 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface';
-import type { ItemId } from '../domain/item/itemId';
-import { itemSchema } from '../domain/item/item';
-import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput';
-import { type ItemIdInput, itemIdInputSchema } from '../domain/item/itemIdInput';
-import { productSchema } from '../domain/product/product';
-import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
+import type { ItemId } from '../domain/item/itemId.js';
+import { itemSchema } from '../domain/item/item.js';
+import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput.js';
+import { type ItemIdInput, itemIdInputSchema } from '../domain/item/itemIdInput.js';
+import { productSchema } from '../domain/product/product.js';
+import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic.js';
 
 /**
  * Fetches an item by id.

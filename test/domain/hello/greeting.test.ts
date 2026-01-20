@@ -2,7 +2,7 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { greetingSchema } from '../../../src/domain/hello/greeting';
+import { greetingSchema } from '../../../src/domain/hello/greeting.js';
 
 const decodeGreeting = Schema.decodeUnknown(greetingSchema);
 const arbitraryGreeting = Arbitrary.make(greetingSchema);

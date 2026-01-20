@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { productDescriptionSchema } from './productDescription';
+import { productDescriptionSchema } from './productDescription.js';
 
 /**
  * GraphQL input for creating or updating a product.

@@ -5,8 +5,8 @@
 import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
 import { type Scope } from 'effect/Scope';
-import { ServerStartError } from './errors';
-import { type Yoga } from './yoga';
+import { ServerStartError } from './errors.js';
+import { type Yoga } from './yoga.js';
 
 // todo: grok Effect acquireRelease and Effect.async better
 /**

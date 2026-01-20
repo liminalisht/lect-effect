@@ -2,10 +2,10 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import { describe, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { helloHandler } from '../../src/handlers/hello';
-import { greetingLayer } from '../../src/services/greeting/layer';
-import { helloResponseSchema } from '../../src/domain/hello/helloResponse';
-import { nameInputSchema } from '../../src/domain/hello/nameInput';
+import { helloHandler } from '../../src/handlers/hello.js';
+import { greetingLayer } from '../../src/services/greeting/layer.js';
+import { helloResponseSchema } from '../../src/domain/hello/helloResponse.js';
+import { nameInputSchema } from '../../src/domain/hello/nameInput.js';
 
 const decodeHelloResponse = Schema.decodeUnknown(helloResponseSchema);
 const arbitraryNameInput = Arbitrary.make(nameInputSchema);

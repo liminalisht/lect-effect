@@ -3,9 +3,9 @@
  * @since 1.0.0
  */
 import { Layer} from 'effect';
-import { type ConfigurationError } from '../errors';
-import { MasterdataDbConfigService } from './interface';
-import { masterdataDbConfigServiceImplementation } from './implementation';
+import { type ConfigurationError } from '../errors.js';
+import { MasterdataDbConfigService } from './interface.js';
+import { masterdataDbConfigServiceImplementation } from './implementation.js';
 
 /**
  * Loads and provides masterdata database configuration to the environment.

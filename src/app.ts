@@ -5,17 +5,17 @@
 import { Effect } from 'effect';
 import { type GraphQLSchema } from 'graphql';
 import { type Scope } from 'effect/Scope';
-import { logSchema, makeSchema, type GraphQLResolver } from './graphql/schema';
-import * as server from './graphql/server';
-import { type Yoga, makeYoga } from './graphql/yoga';
-// import { ConfigService, type Config } from './services/config/interface';
-import { type AppServices } from './services/app/interface';
-import { type ServerStartError } from './graphql/errors';
-import { handlersToResolvers, type AnyHandler } from './graphql/resolvers';
-import { helloHandlers } from './handlers/hello';
-import { itemHandlers } from './handlers/item';
-import { productHandlers } from './handlers/product';
-import { type AppConfig, AppConfigService } from './services/appConfig/interface';
+import { logSchema, makeSchema, type GraphQLResolver } from './graphql/schema.js';
+import * as server from './graphql/server.js';
+import { type Yoga, makeYoga } from './graphql/yoga.js';
+// import { ConfigService, type Config } from './services/config/interface.js';
+import { type AppServices } from './services/app/interface.js';
+import { type ServerStartError } from './graphql/errors.js';
+import { handlersToResolvers, type AnyHandler } from './graphql/resolvers.js';
+import { helloHandlers } from './handlers/hello.js';
+import { itemHandlers } from './handlers/item.js';
+import { productHandlers } from './handlers/product.js';
+import { type AppConfig, AppConfigService } from './services/appConfig/interface/index.js';
 
 /**
  * Top-level application Effect that wires configuration, schema, and server startup.

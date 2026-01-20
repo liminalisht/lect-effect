@@ -1,21 +1,21 @@
 import { Layer } from 'effect';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
-import { greetingLayer } from '../../src/services/greeting/layer';
-import { masterdataDbLayer } from '../../src/services/masterdataDb/layer';
-import { type AppError } from '../../src/errors';
-import { type AppServices } from '../../src/services/app/interface';
-import { productRepoLayer } from '../../src/services/productRepo/layer';
-import { itemRepoLayer } from '../../src/services/itemRepo/layer';
-import { type AppConfigService } from '../../src/services/appConfig/interface';
-import { loggerLayer } from '../../src/services/logger/layer';
-import { type MasterdataDbConfigService } from '../../src/services/masterdataDbConfig/interface';
-import { type MasterdataDbService } from '../../src/services/masterdataDb/interface';
-import { type ProductRepoService } from '../../src/services/productRepo/interface';
-import { type ItemRepoService } from '../../src/services/itemRepo/interface';
-import { type GreetService } from '../../src/services/greeting/interface';
-import { testMasterdataDbConfigLayer } from './masterdataDbConfig/layer';
-import { testAppConfigLayer } from './appConfig/layer';
+import { greetingLayer } from '../../src/services/greeting/layer.js';
+import { masterdataDbLayer } from '../../src/services/masterdataDb/layer.js';
+import { type AppError } from '../../src/errors.js';
+import { type AppServices } from '../../src/services/app/interface.js';
+import { productRepoLayer } from '../../src/services/productRepo/layer.js';
+import { itemRepoLayer } from '../../src/services/itemRepo/layer.js';
+import { type AppConfigService } from '../../src/services/appConfig/interface/index.js';
+import { loggerLayer } from '../../src/services/logger/layer.js';
+import { type MasterdataDbConfigService } from '../../src/services/masterdataDbConfig/interface.js';
+import { type MasterdataDbService } from '../../src/services/masterdataDb/interface.js';
+import { type ProductRepoService } from '../../src/services/productRepo/interface.js';
+import { type ItemRepoService } from '../../src/services/itemRepo/interface.js';
+import { type GreetService } from '../../src/services/greeting/interface.js';
+import { testMasterdataDbConfigLayer } from './masterdataDbConfig/layer.js';
+import { testAppConfigLayer } from './appConfig/layer.js';
 
 export const testAppConfig: Layer.Layer<AppConfigService, ConfigError, never> = testAppConfigLayer; // different test implementation
 export const testLogger: Layer.Layer<never, never, AppConfigService> = loggerLayer; // same live implementation

@@ -7,14 +7,14 @@ import {
   getItem,
   listItems,
   productForItem,
-} from '../../src/handlers/item';
-import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface';
-import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface';
-import { itemIdSchema } from '../../src/domain/item/itemId';
-import { itemSchema } from '../../src/domain/item/item';
-import { createItemInputSchema } from '../../src/domain/item/createItemInput';
-import { productSchema } from '../../src/domain/product/product';
-import { productIdSchema } from '../../src/domain/product/productId';
+} from '../../src/handlers/item.js';
+import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
+import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
+import { itemIdSchema } from '../../src/domain/item/itemId.js';
+import { itemSchema } from '../../src/domain/item/item.js';
+import { createItemInputSchema } from '../../src/domain/item/createItemInput.js';
+import { productSchema } from '../../src/domain/product/product.js';
+import { productIdSchema } from '../../src/domain/product/productId.js';
 
 const arbitraryItemId = Arbitrary.make(itemIdSchema);
 const arbitraryItem = Arbitrary.make(itemSchema);

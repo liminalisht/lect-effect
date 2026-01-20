@@ -1,15 +1,15 @@
 import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
-import { nameInputSchema, type NameInput } from '../../../src/domain/hello/nameInput';
-import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema';
-import { handlersToResolvers } from '../../../src/graphql/resolvers';
-import { helloHandlers } from '../../../src/handlers/hello';
-import { itemHandlers } from '../../../src/handlers/item';
-import { productHandlers } from '../../../src/handlers/product';
-import { makeYoga } from '../../../src/graphql/yoga';
-import { withTestAppLayer } from '../../testRuntime';
-import { type AppServices } from '../../../src/services/app/interface';
+import { nameInputSchema, type NameInput } from '../../../src/domain/hello/nameInput.js';
+import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
+import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
+import { helloHandlers } from '../../../src/handlers/hello.js';
+import { itemHandlers } from '../../../src/handlers/item.js';
+import { productHandlers } from '../../../src/handlers/product.js';
+import { makeYoga } from '../../../src/graphql/yoga.js';
+import { withTestAppLayer } from '../../testRuntime.js';
+import { type AppServices } from '../../../src/services/app/interface.js';
 
 describe('GraphQL hello (property)', () => {
   it.effect('hello(name) matches handler semantics', () =>

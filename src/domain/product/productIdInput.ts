@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Schema } from 'effect';
-import { productIdSchema } from './productId';
+import { productIdSchema } from './productId.js';
 
 /**
  * GraphQL input for selecting a product by id.

@@ -2,9 +2,9 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { createProductWithItemsInputSchema } from '../../../src/domain/product/createProductWithItemsInput';
-import { createItemInputSchema } from '../../../src/domain/item/createItemInput';
-import { productInputSchema } from '../../../src/domain/product/productInput';
+import { createProductWithItemsInputSchema } from '../../../src/domain/product/createProductWithItemsInput.js';
+import { createItemInputSchema } from '../../../src/domain/item/createItemInput.js';
+import { productInputSchema } from '../../../src/domain/product/productInput.js';
 
 const decodeCreateProductWithItemsInput = Schema.decodeUnknown(createProductWithItemsInputSchema);
 const arbitraryCreateProductWithItemsInput = Arbitrary.make(createProductWithItemsInputSchema);
