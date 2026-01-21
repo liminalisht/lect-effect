@@ -3479,3 +3479,262 @@ You can keep this as a single checklist:
 ---
 
 If you tell me which phase you are starting from (0 vs 1 vs 2), I can also give you a **minimal diff-set** for just the next phase (the smallest patch that satisfies the exit criteria), but the lists above should already let you proceed monotonically without ambiguity.
+
+-----
+
+Below is a revised **Phase 0** (workspace + shared domain extraction) that produces an **ESM** `@lect-effect/domain` package, compatible with your backend now being `"type": "module"`.
+
+The only “new” ESM-specific obligations vs the old CJS plan are:
+
+* the domain package must be `"type": "module"` (not `commonjs` as previously suggested), and
+* **all relative imports inside the domain package must be ESM-correct**, i.e. include **`.js`** in the specifier (because the emitted files are `.js`). Your current domain files use extensionless relative imports like `./greeting`, which is the classic place ESM breaks if you run the emitted code directly in Node.
+
+---
+
+## Phase 0 — Workspace + shared domain package (ESM edition)
+
+### 0.1 Workspace plumbing
+
+* [ ] Add `pnpm-workspace.yaml` at repo root:
+
+```yaml
+packages:
+  - "."
+  - "packages/*"
+  - "apps/*"
+```
+
+This makes “packages” the objects of your repo, with workspace linking acting like an inclusion functor from each package into the whole.
+
+---
+
+## 0.2 Create `packages/domain` as an ESM library
+
+### 0.2.1 Create directories
+
+* [ ] Create:
+
+```bash
+mkdir -p packages/domain/src
+```
+
+### 0.2.2 `packages/domain/package.json` (ESM + deep imports)
+
+* [ ] Create `packages/domain/package.json`:
+
+```json
+{
+  "name": "@lect-effect/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "effect": "^3.19.14"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
+```
+
+Notes (ESM-critical):
+
+* The `exports` map keeps **deep imports** working (`@lect-effect/domain/hello/nameInput`) by mapping `./*` → `./dist/*.js`.
+* We include `.js` in the export targets because Node’s resolution at runtime is literal (no extension inference).
+
+### 0.2.3 `packages/domain/tsconfig.json`
+
+* [ ] Create `packages/domain/tsconfig.json`:
+
+```json
+{
+  "extends": "@tsconfig/node24/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "declaration": true,
+    "declarationMap": true,
+
+    "noEmit": false,
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["src"]
+}
+```
+
+This “chooses” the ESM doctrine explicitly: the emitted JS is ESM, and TypeScript will accept `.js` specifiers in your `.ts` sources and map them to `.ts` at typecheck time.
+
+### 0.2.4 Minimal barrel
+
+* [ ] Create `packages/domain/src/index.ts`:
+
+```ts
+export * from "./errors.js";
+```
+
+(You can add more later; deep-imports mean you don’t need a huge barrel immediately.)
+
+---
+
+## 0.3 Move domain sources into the new package
+
+* [ ] Move the domain tree:
+
+```bash
+git mv src/domain/* packages/domain/src/
+rmdir src/domain
+```
+
+This preserves your internal domain shape (hello/item/product/errors) exactly as-is.
+
+---
+
+## 0.4 ESM fixup: make all *relative* imports in domain use `.js`
+
+This is the key ESM delta.
+
+### 0.4.1 What to change
+
+Inside `packages/domain/src/**`, any import like:
+
+```ts
+import { greetingSchema } from './greeting';
+```
+
+must become:
+
+```ts
+import { greetingSchema } from './greeting.js';
+```
+
+Your current domain code has the extensionless form (example: `helloResponse.ts` imports `./greeting`), and similarly in other files (`nameInput.ts` imports `./name`, etc.).
+
+### 0.4.2 Mechanical checklist for fixup
+
+* [ ] Run a grep to find relative imports without `.js`:
+
+```bash
+git grep -nE "from '\\./|from \"\\./" packages/domain/src
+```
+
+* [ ] For each match where the specifier is relative (`./` or `../`) and has no extension:
+
+  * [ ] append `.js` to the import/export specifier.
+
+You are aiming for the invariant:
+
+> In the ESM subcategory of modules, all relative edges are labeled by resolvable `.js` morphisms.
+
+---
+
+## 0.5 Rewire the backend to import from `@lect-effect/domain`
+
+Now replace all backend imports that reached into `src/domain/...` with package imports.
+
+Example (from your current backend): the greeting service imports domain via `../../domain/hello/greeting`. After extraction it becomes:
+
+```ts
+import { greetingSchema } from "@lect-effect/domain/hello/greeting";
+```
+
+### 0.5.1 Mechanical checklist
+
+* [ ] Replace `../domain/...` and `../../domain/...` etc everywhere in `src/**` and `test/**` with `@lect-effect/domain/...`.
+* [ ] Confirm there are **no** remaining imports from `src/domain` (since the folder is gone).
+
+Useful search:
+
+```bash
+git grep -n "domain/" src test
+```
+
+---
+
+## 0.6 Add the workspace dependency + build ordering
+
+### 0.6.1 Root `package.json`: add dependency
+
+* [ ] In root `package.json` add:
+
+```json
+"dependencies": {
+  "@lect-effect/domain": "workspace:*",
+  ...
+}
+```
+
+### 0.6.2 Root scripts: build domain first
+
+Because `@lect-effect/domain` will be consumed via its `dist/**` exports, you want the domain to be built **before** the backend compiles/tests.
+
+* [ ] Update root scripts:
+
+```json
+"scripts": {
+  "build": "pnpm -C packages/domain build && tsc",
+  "buildtest": "pnpm run build && pnpm run typecheck:test",
+  "start": "pnpm run build && node dist/index.js",
+  ...
+}
+```
+
+(Your `buildtest` already composes `build` → `typecheck:test`, so making `build` build domain first is the minimal way to preserve the proof chain.)
+
+---
+
+## 0.7 Update tests that used `src/domain/**`
+
+Your domain tests currently live under `test/domain/**` (per repo structure) and will have imported from `src/domain/...`.
+
+* [ ] Update test imports to `@lect-effect/domain/...`.
+* [ ] Do **not** import from `packages/domain/src/**` from outside the domain package; keep the boundary strict.
+
+---
+
+## 0.8 Verification obligations
+
+This phase is complete when the following “judgments” hold:
+
+* [ ] `pnpm install`
+* [ ] `pnpm -C packages/domain build`
+* [ ] `pnpm build`
+* [ ] `pnpm test` (or `./tests.sh`)
+
+### If you hit an error
+
+**If Node throws `ERR_MODULE_NOT_FOUND` for a relative path**, it almost always means:
+
+* some emitted file still contains `from "./something"` instead of `from "./something.js"` (in either the domain package, or anywhere else you run as ESM).
+
+The local repair is always the same: fix the *relative* specifier to include `.js`.
+
+---
+
+## What changed from the old plan
+
+The previous plan explicitly recommended `"type": "commonjs"` for `@lect-effect/domain` to avoid `ERR_REQUIRE_ESM` with a CJS backend. That premise is gone: your backend is now ESM, so the correct factorization is ESM–ESM, and the main new constraint is the `.js`-qualified relative import discipline inside the domain package.
+
+---
+
+If you want, the next useful artifact after you implement Phase 0 is a **single “diff witness” file** (a tiny backend module) that imports 2–3 schemas from `@lect-effect/domain/**` and runs a `Schema.decodeUnknown` against a hardcoded value—i.e. a minimal morphism that demonstrates the new boundary is actually composable.
