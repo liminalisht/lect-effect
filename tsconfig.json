@@ -1,16 +1,21 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "dist",
     "lib": ["esnext"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "paths": {
+      "@lect-effect/domain": ["./packages/domain/src/index"],
+      "@lect-effect/domain/*": ["./packages/domain/src/*"]
+    },
     "plugins": [
       {
         "name": "@effect/language-service"
       }
     ]
   },
-  "include": ["src", "tests"],
+  "include": ["src", "test", "tests", "packages/domain/src"],
   "exclude": ["node_modules"]
 }

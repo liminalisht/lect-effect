@@ -5,10 +5,10 @@
 import { Context, type Effect } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
-import { type CreateItemInput } from '../../domain/item/createItemInput.js';
-import { type ItemId } from '../../domain/item/itemId.js';
-import { type Item } from '../../domain/item/item.js';
-import { type ProductId } from '../../domain/product/productId.js';
+import { type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
+import { type ItemId } from '@lect-effect/domain/item/itemId';
+import { type Item } from '@lect-effect/domain/item/item';
+import { type ProductId } from '@lect-effect/domain/product/productId';
 
 // todo: extract error
 /**

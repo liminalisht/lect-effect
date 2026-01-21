@@ -8,10 +8,10 @@ import {
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
 import { decodeMany, decodeOne } from '../../utilities/decode.js';
-import { type Product } from '../../domain/product/product.js';
-import { type ProductId, productIdSchema } from '../../domain/product/productId.js';
-import { type ProductInput } from '../../domain/product/productInput.js';
-import type { ItemId } from '../../domain/item/itemId.js';
+import { type Product } from '@lect-effect/domain/product/product';
+import { type ProductId, productIdSchema } from '@lect-effect/domain/product/productId';
+import { type ProductInput } from '@lect-effect/domain/product/productInput';
+import type { ItemId } from '@lect-effect/domain/item/itemId';
 import { MasterdataDbService } from '../masterdataDb/interface.js';
 import { ProductRepoService } from './interface.js';
 

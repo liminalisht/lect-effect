@@ -1,0 +1,30 @@
+{
+  "name": "@lect-effect/domain",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "effect": "^3.19.14"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

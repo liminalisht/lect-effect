@@ -1,7 +1,7 @@
 import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
-import { nameInputSchema, type NameInput } from '../../../src/domain/hello/nameInput.js';
+import { nameInputSchema, type NameInput } from '@lect-effect/domain/hello/nameInput';
 import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
 import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
 import { helloHandlers } from '../../../src/handlers/hello.js';

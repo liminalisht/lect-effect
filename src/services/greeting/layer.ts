@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Effect, Layer, Option } from 'effect';
-import { greetingSchema } from '../../domain/hello/greeting.js';
+import { greetingSchema } from '@lect-effect/domain/hello/greeting';
 import { GreetService } from './interface.js';
 
 /**

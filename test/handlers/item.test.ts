@@ -10,11 +10,11 @@ import {
 } from '../../src/handlers/item.js';
 import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
 import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
-import { itemIdSchema } from '../../src/domain/item/itemId.js';
-import { itemSchema } from '../../src/domain/item/item.js';
-import { createItemInputSchema } from '../../src/domain/item/createItemInput.js';
-import { productSchema } from '../../src/domain/product/product.js';
-import { productIdSchema } from '../../src/domain/product/productId.js';
+import { itemIdSchema } from '@lect-effect/domain/item/itemId';
+import { itemSchema } from '@lect-effect/domain/item/item';
+import { createItemInputSchema } from '@lect-effect/domain/item/createItemInput';
+import { productSchema } from '@lect-effect/domain/product/product';
+import { productIdSchema } from '@lect-effect/domain/product/productId';
 
 const arbitraryItemId = Arbitrary.make(itemIdSchema);
 const arbitraryItem = Arbitrary.make(itemSchema);

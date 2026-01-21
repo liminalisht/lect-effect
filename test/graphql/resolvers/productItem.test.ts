@@ -11,7 +11,7 @@ import { itemHandlers } from '../../../src/handlers/item.js';
 import { productHandlers } from '../../../src/handlers/product.js';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga.js';
 import { MasterdataDbService } from '../../../src/services/masterdataDb/interface.js';
-import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '../../../src/domain/product/createProductWithItemsInput.js';
+import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { type AppServices } from '../../../src/services/app/interface.js';
 import { withTestAppLayer } from '../../testRuntime.js';
 

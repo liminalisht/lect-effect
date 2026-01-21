@@ -12,12 +12,12 @@ import {
 } from '../../src/handlers/product.js';
 import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
 import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
-import { productSchema, type Product } from '../../src/domain/product/product.js';
-import { productIdSchema } from '../../src/domain/product/productId.js';
-import { productInputSchema } from '../../src/domain/product/productInput.js';
-import { itemSchema, type Item } from '../../src/domain/item/item.js';
-import { itemIdSchema } from '../../src/domain/item/itemId.js';
-import { createProductWithItemsInputSchema } from '../../src/domain/product/createProductWithItemsInput.js';
+import { productSchema, type Product } from '@lect-effect/domain/product/product';
+import { productIdSchema } from '@lect-effect/domain/product/productId';
+import { productInputSchema } from '@lect-effect/domain/product/productInput';
+import { itemSchema, type Item } from '@lect-effect/domain/item/item';
+import { itemIdSchema } from '@lect-effect/domain/item/itemId';
+import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
 
 const arbitraryProductId: fc.Arbitrary<number> = Arbitrary.make(productIdSchema);
 const arbitraryProduct = Arbitrary.make(productSchema);

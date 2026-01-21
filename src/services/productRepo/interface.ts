@@ -7,10 +7,10 @@ import {
 } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
 import { type ParseError } from 'effect/ParseResult';
-import { type Product } from '../../domain/product/product.js';
-import { type ProductId } from '../../domain/product/productId.js';
-import { type ProductInput } from '../../domain/product/productInput.js';
-import type { ItemId } from '../../domain/item/itemId.js';
+import { type Product } from '@lect-effect/domain/product/product';
+import { type ProductId } from '@lect-effect/domain/product/productId';
+import { type ProductInput } from '@lect-effect/domain/product/productInput';
+import type { ItemId } from '@lect-effect/domain/item/itemId';
 
 // todo: this is not how we do errors... why not use TaggedError like elsewhere?
 /**

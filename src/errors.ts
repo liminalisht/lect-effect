@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { type SqlError } from '@effect/sql/SqlError';
-import { type DomainError } from './domain/errors.js';
+import { type DomainError } from '@lect-effect/domain/errors';
 import { type GraphqlError } from './graphql/errors.js';
 import { type ConfigurationError } from './services/errors.js';
 

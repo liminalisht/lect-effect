@@ -5,11 +5,11 @@
 import { Effect, Option, Schema } from 'effect';
 import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
 import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
-import type { ItemId } from '../domain/item/itemId.js';
-import { itemSchema } from '../domain/item/item.js';
-import { createItemInputSchema, type CreateItemInput } from '../domain/item/createItemInput.js';
-import { type ItemIdInput, itemIdInputSchema } from '../domain/item/itemIdInput.js';
-import { productSchema } from '../domain/product/product.js';
+import type { ItemId } from '@lect-effect/domain/item/itemId';
+import { itemSchema } from '@lect-effect/domain/item/item';
+import { createItemInputSchema, type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
+import { type ItemIdInput, itemIdInputSchema } from '@lect-effect/domain/item/itemIdInput';
+import { productSchema } from '@lect-effect/domain/product/product';
 import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic.js';
 
 /**

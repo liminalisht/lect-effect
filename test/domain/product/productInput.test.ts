@@ -2,7 +2,7 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { productInputSchema } from '../../../src/domain/product/productInput.js';
+import { productInputSchema } from '@lect-effect/domain/product/productInput';
 
 const decodeProductInput = Schema.decodeUnknown(productInputSchema);
 const arbitraryProductInput = Arbitrary.make(productInputSchema);
