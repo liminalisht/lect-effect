@@ -1,3 +1,7 @@
+/**
+ * Node server entrypoint for the Angular SSR app.
+ * @since 1.0.0
+ */
 import process from 'node:process';
 import { join } from 'node:path';
 import {
@@ -69,5 +73,6 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 
 /**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ * @since 1.0.0
  */
 export const reqHandler = createNodeRequestHandler(app);

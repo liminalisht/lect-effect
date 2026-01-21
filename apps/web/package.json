@@ -1,6 +1,7 @@
 {
   "name": "web",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "homepage": "https://github.com/liminalisht/lect-effect",
   "scripts": {
     "_clean": "rm -rf dist .angular/cache",
     "_build": "ng build",
@@ -8,6 +9,7 @@
     "_start": "ng serve --proxy-config proxy.conf.json",
     "_watch": "ng build --watch --configuration development",
     "_serve:ssr": "node dist/web/server/server.mjs",
+    "_docs": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\"",
     "_install": "pnpm --dir ../.. install --filter ./apps/web --frozen-lockfile",
     "_install:nofreeze": "pnpm --dir ../.. install --filter ./apps/web --no-frozen-lockfile",
 
@@ -17,6 +19,7 @@
     "lect-effect/frontend/start": "pnpm run _start",
     "lect-effect/frontend/watch": "pnpm run _watch",
     "lect-effect/frontend/serve:ssr": "pnpm run _serve:ssr",
+    "lect-effect/frontend/docs:generate": "pnpm run _docs",
     "lect-effect/frontend/clean:build": "pnpm run _clean && pnpm run _build",
     "lect-effect/frontend/clean:build:test": "pnpm run _clean && pnpm run _build && pnpm run _test",
     "lect-effect/frontend/clean:build:test:start": "pnpm run _clean && pnpm run _build && pnpm run _test && pnpm run _start",
@@ -29,6 +32,7 @@
     "clean": "rm -rf dist .angular/cache",
     "start:build": "pnpm run _build && pnpm run _start",
     "test": "ng test --watch=false --progress=false",
+    "docs:generate": "pnpm run _docs",
     "serve:ssr:web": "node dist/web/server/server.mjs",
     "watch": "ng build --watch --configuration development"
   },

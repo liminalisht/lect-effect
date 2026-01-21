@@ -1,6 +1,14 @@
+/**
+ * Root application shell component.
+ * @since 1.0.0
+ */
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
+/**
+ * Application root component hosting the router.
+ * @since 1.0.0
+ */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -10,5 +18,9 @@ import {RouterOutlet} from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
+  /**
+   * Application title signal used in the shell.
+   * @since 1.0.0
+   */
   protected readonly title = signal('web');
 }

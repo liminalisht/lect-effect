@@ -41,6 +41,7 @@
     "lect-effect/frontend/start": "pnpm -C apps/web run lect-effect/frontend/start",
     "lect-effect/frontend/watch": "pnpm -C apps/web run lect-effect/frontend/watch",
     "lect-effect/frontend/serve:ssr": "pnpm -C apps/web run lect-effect/frontend/serve:ssr",
+    "lect-effect/frontend/docs:generate": "pnpm -C apps/web run lect-effect/frontend/docs:generate",
     "lect-effect/frontend/clean:build": "pnpm -C apps/web run lect-effect/frontend/clean:build",
     "lect-effect/frontend/clean:build:test": "pnpm -C apps/web run lect-effect/frontend/clean:build:test",
     "lect-effect/frontend/clean:build:test:start": "pnpm -C apps/web run lect-effect/frontend/clean:build:test:start",
@@ -66,7 +67,7 @@
     "lect-effect/install": "pnpm run lect-effect/domain/install && pnpm run lect-effect/backend/install && pnpm run lect-effect/frontend/install && pnpm run lect-effect/docs/install",
     "lect-effect/install:nofreeze": "pnpm run lect-effect/domain/install:nofreeze && pnpm run lect-effect/backend/install:nofreeze && pnpm run lect-effect/frontend/install:nofreeze && pnpm run lect-effect/docs/install:nofreeze",
     "lect-effect/lint": "pnpm run _lint",
-    "lect-effect/docs:generate": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate",
+    "lect-effect/docs:generate": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate && pnpm run lect-effect/frontend/docs:generate",
 
     "clean": "pnpm run lect-effect/clean",
     "build": "pnpm run lect-effect/domain/build && pnpm run lect-effect/backend/build",

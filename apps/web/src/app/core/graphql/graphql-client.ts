@@ -1,8 +1,16 @@
+/**
+ * Minimal GraphQL client built on Effect and fetch.
+ * @since 1.0.0
+ */
 import {Context, Effect, Layer} from 'effect';
 import {
   DecodeError, GraphqlError, HttpError, TransportError, type GraphQLClientError,
 } from './graphql-errors.js';
 
+/**
+ * Minimal JSON value shape for GraphQL responses.
+ * @since 1.0.0
+ */
 export type Json =
 	| null
 	| boolean
@@ -11,15 +19,27 @@ export type Json =
 	| readonly Json[]
 	| {[key: string]: Json};
 
+/**
+ * GraphQL client interface used across the app.
+ * @since 1.0.0
+ */
 export type GraphQLClient = {
   readonly request: (doc: string, variables?: unknown) => Effect.Effect<Json, GraphQLClientError>;
 };
 
+/**
+ * Context tag for injecting a GraphQL client layer.
+ * @since 1.0.0
+ */
 export const GraphQLClientTag = Context.GenericTag<GraphQLClient>('GraphQLClient');
 
 const toJson = (input: unknown): input is {readonly data?: Json; readonly errors?: unknown} =>
   typeof input === 'object' && input !== null;
 
+/**
+ * Live GraphQL client layer bound to the provided endpoint.
+ * @since 1.0.0
+ */
 export const GraphQLClientLive = (endpoint: string): Layer.Layer<GraphQLClient> =>
   Layer.succeed(GraphQLClientTag, {
     request: (doc, variables) =>

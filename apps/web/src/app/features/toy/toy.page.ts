@@ -1,3 +1,7 @@
+/**
+ * @since 1.0.0
+ * @fileoverview Toy feature page rendering remote data from the store.
+ * */
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ToyStore} from './toy.store.js';
@@ -11,7 +15,15 @@ import {ToyStore} from './toy.store.js';
   styleUrls: ['./toy.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Page component for the toy feature.
+ * @since 1.0.0
+ */
 export class ToyPage {
+  /**
+   * Injected store managing toy feature state.
+   * @since 1.0.0
+   */
   constructor(readonly store: ToyStore) {}
 
   get state() {

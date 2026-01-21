@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-pnpm lect-effect/lint -- "$@"
+set -e
+
+pnpm lect-effect/lint "$@"
 
