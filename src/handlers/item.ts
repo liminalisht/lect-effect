@@ -3,13 +3,13 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
 import type { ItemId } from '@lect-effect/domain/item/itemId';
 import { itemSchema } from '@lect-effect/domain/item/item';
 import { createItemInputSchema, type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
 import { type ItemIdInput, itemIdInputSchema } from '@lect-effect/domain/item/itemIdInput';
 import { productSchema } from '@lect-effect/domain/product/product';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
 import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic.js';
 
 /**

@@ -17,25 +17,25 @@ import { type GreetService } from '../../src/services/greeting/interface.js';
 import { testMasterdataDbConfigLayer } from './masterdataDbConfig/layer.js';
 import { testAppConfigLayer } from './appConfig/layer.js';
 
-export const testAppConfig: Layer.Layer<AppConfigService, ConfigError, never> = testAppConfigLayer; // different test implementation
+export const testAppConfig: Layer.Layer<AppConfigService, ConfigError> = testAppConfigLayer; // different test implementation
 export const testLogger: Layer.Layer<never, never, AppConfigService> = loggerLayer; // same live implementation
-export const configuredTestLogger: Layer.Layer<never, ConfigError, never> = testLogger.pipe(Layer.provide(testAppConfig));
+export const configuredTestLogger: Layer.Layer<never, ConfigError> = testLogger.pipe(Layer.provide(testAppConfig));
 
-export const testMasterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError, never> = testMasterdataDbConfigLayer; // different test implementation
+export const testMasterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError> = testMasterdataDbConfigLayer; // different test implementation
 export const testMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService> = masterdataDbLayer; // same live implementation
-export const configuredTestMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, never> = testMasterdataDb.pipe(Layer.provide(testMasterdataDbConfig));
+export const configuredTestMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError> = testMasterdataDb.pipe(Layer.provide(testMasterdataDbConfig));
 
 export const testProductRepo: Layer.Layer<ProductRepoService, SqlError | ConfigError, MasterdataDbService> = productRepoLayer; // same live implementation
 export const testItemRepo: Layer.Layer<ItemRepoService, SqlError | ConfigError, MasterdataDbService> = itemRepoLayer; // same live implementation
-export const testMasterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError, never>
+export const testMasterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError>
   = Layer.mergeAll(
     testItemRepo,
     testProductRepo,
   ).pipe(Layer.provide(configuredTestMasterdataDb));
 
-export const testGreeting: Layer.Layer<GreetService, never, never> = greetingLayer; // same live implementation
+export const testGreeting: Layer.Layer<GreetService> = greetingLayer; // same live implementation
 
-export const testApp: Layer.Layer<AppServices, AppError, never>
+export const testApp: Layer.Layer<AppServices, AppError>
   = Layer.mergeAll(
     testAppConfig,
     configuredTestLogger,

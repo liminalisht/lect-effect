@@ -16,7 +16,7 @@ const loadPort = Effect.gen(function * () {
 const loadEnvironment = Effect.gen(function * () {
   const environment = yield * Config.string('TEST_APP_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
-    .pipe(Effect.mapError(cause => ConfigError.InvalidData(['APP_ENV'], String(cause))));
+    .pipe(Effect.mapError(cause => ConfigError.InvalidData(['APP_ENV'], cause instanceof Error ? cause.message : JSON.stringify(cause))));
   return environment;
 });
 
@@ -42,7 +42,7 @@ const loadLogLevel = Effect.gen(function * () {
 //   };
 // });
 
-export const testAppConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError, never>
+export const testAppConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError>
   = Effect.gen(function * () {
     const port = yield * loadPort;
     const environment = yield * loadEnvironment;

@@ -9,7 +9,7 @@ import { MasterdataDbService } from '../../../src/services/masterdataDb/interfac
 import { MasterdataDbConfigService } from '../../../src/services/masterdataDbConfig/interface.js';
 import { testMasterdataDbConfigServiceImplementation } from './implementation.js';
 
-export const testMasterdataDbConfigLayer: Layer.Layer<MasterdataDbConfigService, ConfigError.ConfigError, never>
+export const testMasterdataDbConfigLayer: Layer.Layer<MasterdataDbConfigService, ConfigError.ConfigError>
   = Layer.effect(
     MasterdataDbConfigService,
     testMasterdataDbConfigServiceImplementation,

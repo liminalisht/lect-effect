@@ -4,6 +4,7 @@ import {
   Arbitrary,
   Effect,
 } from 'effect';
+import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
 import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
 import { helloHandlers } from '../../../src/handlers/hello.js';
@@ -11,7 +12,6 @@ import { itemHandlers } from '../../../src/handlers/item.js';
 import { productHandlers } from '../../../src/handlers/product.js';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga.js';
 import { MasterdataDbService } from '../../../src/services/masterdataDb/interface.js';
-import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { type AppServices } from '../../../src/services/app/interface.js';
 import { withTestAppLayer } from '../../testRuntime.js';
 
@@ -45,7 +45,7 @@ const fetchJson = async (yoga: Yoga<AppServices>, query: string, variables?: Rec
 describe('GraphQL product & item boundary (property)', () => {
   it.effect('createProductWithItems mutation is reflected across queries and fields', () =>
     Effect.tryPromise({
-      try: () =>
+      try: async () =>
         fc.assert(fc.asyncProperty(arbitraryCreateProductWithItemsInputNonEmpty, async (rawInput: CreateProductWithItemsInput) => {
           const input = normalizeInput(rawInput);
 

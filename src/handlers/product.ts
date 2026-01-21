@@ -3,8 +3,6 @@
  * @since 1.0.0
  */
 import { Effect, Option, Schema } from 'effect';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
 import type { ProductId } from '@lect-effect/domain/product/productId';
 import { productIdInputSchema, type ProductIdInput } from '@lect-effect/domain/product/productIdInput';
 import { productSchema } from '@lect-effect/domain/product/product';
@@ -12,6 +10,8 @@ import { productWithItemsSchema, type ProductWithItems } from '@lect-effect/doma
 import { productInputSchema, type ProductInput } from '@lect-effect/domain/product/productInput';
 import { type Item, itemSchema } from '@lect-effect/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
+import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
+import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
 import { type QueryHandler, type MutationHandler, type FieldHandler } from './generic.js';
 
 /**

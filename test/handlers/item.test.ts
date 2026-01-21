@@ -2,19 +2,19 @@ import { Arbitrary, Effect, Option } from 'effect';
 import { it } from '@effect/vitest';
 import { describe, expect } from 'vitest';
 import * as fc from 'fast-check';
+import { itemIdSchema } from '@lect-effect/domain/item/itemId';
+import { itemSchema } from '@lect-effect/domain/item/item';
+import { createItemInputSchema } from '@lect-effect/domain/item/createItemInput';
+import { productSchema } from '@lect-effect/domain/product/product';
+import { productIdSchema } from '@lect-effect/domain/product/productId';
+import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
+import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
 import {
   createItem,
   getItem,
   listItems,
   productForItem,
 } from '../../src/handlers/item.js';
-import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
-import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
-import { itemIdSchema } from '@lect-effect/domain/item/itemId';
-import { itemSchema } from '@lect-effect/domain/item/item';
-import { createItemInputSchema } from '@lect-effect/domain/item/createItemInput';
-import { productSchema } from '@lect-effect/domain/product/product';
-import { productIdSchema } from '@lect-effect/domain/product/productId';
 
 const arbitraryItemId = Arbitrary.make(itemIdSchema);
 const arbitraryItem = Arbitrary.make(itemSchema);
@@ -38,65 +38,57 @@ const unusedProductRepo: Omit<ProductRepoShape, 'getForItem'> = {
 
 describe('item handlers', () => {
   it.effect('getItem returns repository result', () =>
-    Effect.sync(() => {
-      fc.assert(fc.asyncProperty(arbitraryItemId, fc.oneof(fc.constant(null), arbitraryItem), async (id, found) => {
-        const repo: ItemRepoShape = {
-          ...unusedItemRepo,
-          getById(inputId) {
-            expect(inputId).toEqual(id);
-            return Effect.succeed(found);
-          },
-        };
+    Effect.promise(async () => fc.assert(fc.asyncProperty(arbitraryItemId, fc.oneof(fc.constant(null), arbitraryItem), async (id, found) => {
+      const repo: ItemRepoShape = {
+        ...unusedItemRepo,
+        getById(inputId) {
+          expect(inputId).toEqual(id);
+          return Effect.succeed(found);
+        },
+      };
 
-        const result = await Effect.runPromise(getItem(id).pipe(Effect.provideService(ItemRepoService, repo)));
-        expect(result).toEqual(found);
-      }));
-    }));
+      const result = await Effect.runPromise(getItem(id).pipe(Effect.provideService(ItemRepoService, repo)));
+      expect(result).toEqual(found);
+    }))));
 
   it.effect('listItems returns repository list', () =>
-    Effect.sync(() => {
-      fc.assert(fc.asyncProperty(arbitraryItemList, async items => {
-        const repo: ItemRepoShape = {
-          getById: () => Effect.dieMessage('getById unused'),
-          ...unusedItemRepo,
-          list: Effect.succeed(items),
-        };
+    Effect.promise(async () => fc.assert(fc.asyncProperty(arbitraryItemList, async items => {
+      const repo: ItemRepoShape = {
+        getById: () => Effect.dieMessage('getById unused'),
+        ...unusedItemRepo,
+        list: Effect.succeed(items),
+      };
 
-        const result = await Effect.runPromise(listItems.pipe(Effect.provideService(ItemRepoService, repo)));
-        expect(result).toEqual(items);
-      }));
-    }));
+      const result = await Effect.runPromise(listItems.pipe(Effect.provideService(ItemRepoService, repo)));
+      expect(result).toEqual(items);
+    }))));
 
   it.effect('createItem forwards input to repository', () =>
-    Effect.sync(() => {
-      fc.assert(fc.asyncProperty(arbitraryCreateItemInput, arbitraryItem, async (input, created) => {
-        const repo: ItemRepoShape = {
-          getById: () => Effect.dieMessage('getById unused'),
-          ...unusedItemRepo,
-          create(repoInput) {
-            expect(repoInput).toEqual(input);
-            return Effect.succeed(created);
-          },
-        };
+    Effect.promise(async () => fc.assert(fc.asyncProperty(arbitraryCreateItemInput, arbitraryItem, async (input, created) => {
+      const repo: ItemRepoShape = {
+        getById: () => Effect.dieMessage('getById unused'),
+        ...unusedItemRepo,
+        create(repoInput) {
+          expect(repoInput).toEqual(input);
+          return Effect.succeed(created);
+        },
+      };
 
-        const result = await Effect.runPromise(createItem(input).pipe(Effect.provideService(ItemRepoService, repo)));
-        expect(result).toEqual(created);
-      }));
-    }));
+      const result = await Effect.runPromise(createItem(input).pipe(Effect.provideService(ItemRepoService, repo)));
+      expect(result).toEqual(created);
+    }))));
 
   it.effect('productForItem returns nullable product', () =>
-    Effect.sync(() => {
-      fc.assert(fc.asyncProperty(arbitraryProductId, fc.oneof(fc.constant(null), arbitraryProduct), async (itemId, product) => {
-        const repo: ProductRepoShape = {
-          ...unusedProductRepo,
-          getForItem(inputId) {
-            expect(inputId).toEqual(itemId);
-            return Effect.succeed(Option.fromNullable(product));
-          },
-        };
+    Effect.promise(async () => fc.assert(fc.asyncProperty(arbitraryProductId, fc.oneof(fc.constant(null), arbitraryProduct), async (itemId, product) => {
+      const repo: ProductRepoShape = {
+        ...unusedProductRepo,
+        getForItem(inputId) {
+          expect(inputId).toEqual(itemId);
+          return Effect.succeed(Option.fromNullable(product));
+        },
+      };
 
-        const result = await Effect.runPromise(productForItem(itemId).pipe(Effect.provideService(ProductRepoService, repo)));
-        expect(result).toEqual(product);
-      }));
-    }));
+      const result = await Effect.runPromise(productForItem(itemId).pipe(Effect.provideService(ProductRepoService, repo)));
+      expect(result).toEqual(product);
+    }))));
 });

@@ -29,7 +29,7 @@ describe('GraphQL hello (property)', () => {
       `;
 
       yield * Effect.tryPromise({
-        try: () =>
+        try: async () =>
           fc.assert(fc.asyncProperty(arb, async (input: NameInput) => {
             // JSON cannot encode `undefined` → normalize to null
             const nameVar = input.name ?? null;

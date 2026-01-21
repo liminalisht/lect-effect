@@ -18,5 +18,5 @@ export const withTestAppLayer = <A, E>(eff: Effect.Effect<A, E, AppServices>): E
 /**
  * Run an effect using the memoized test app layer, returning a promise for convenience.
  */
-export const runWithTestAppLayer = <A, E>(eff: Effect.Effect<A, E, AppServices>) =>
+export const runWithTestAppLayer = async <A, E>(eff: Effect.Effect<A, E, AppServices>) =>
   Effect.runPromise(withTestAppLayer(eff));

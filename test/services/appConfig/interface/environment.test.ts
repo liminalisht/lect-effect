@@ -6,6 +6,7 @@ import { environmentSchema } from '../../../../src/services/appConfig/interface/
 
 const decodeEnvironment = Schema.decodeUnknown(environmentSchema);
 const arbitraryEnvironment = Arbitrary.make(environmentSchema);
+const allowedEnvironments = environmentSchema.literals as readonly string[];
 
 const validEnvironmentProperty = fc.property(arbitraryEnvironment, env => {
   const decoded = Effect.runSync(decodeEnvironment(env));
@@ -13,7 +14,7 @@ const validEnvironmentProperty = fc.property(arbitraryEnvironment, env => {
 });
 
 const invalidEnvironmentProperty = fc.property(
-  fc.string().filter(value => !environmentSchema.literals.includes(value as any)),
+  fc.string().filter(value => !allowedEnvironments.includes(value)),
   value => {
     expect(() => Effect.runSync(decodeEnvironment(value))).toThrow();
   },
