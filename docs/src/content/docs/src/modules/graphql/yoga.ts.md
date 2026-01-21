@@ -1,6 +1,6 @@
 ---
 title: graphql/yoga.ts
-nav_order: 27
+nav_order: 9
 parent: Modules
 ---
 

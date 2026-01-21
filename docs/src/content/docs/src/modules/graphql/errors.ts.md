@@ -1,6 +1,6 @@
 ---
 title: graphql/errors.ts
-nav_order: 23
+nav_order: 5
 parent: Modules
 ---
 

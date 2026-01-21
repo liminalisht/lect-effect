@@ -1,6 +1,6 @@
 ---
 title: graphql/effect.ts
-nav_order: 22
+nav_order: 4
 parent: Modules
 ---
 

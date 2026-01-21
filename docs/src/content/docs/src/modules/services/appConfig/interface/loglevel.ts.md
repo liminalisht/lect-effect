@@ -1,6 +1,6 @@
 ---
 title: services/appConfig/interface/loglevel.ts
-nav_order: 38
+nav_order: 20
 parent: Modules
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: services/appConfig/interface/index.ts
-nav_order: 37
+nav_order: 19
 parent: Modules
 ---
 

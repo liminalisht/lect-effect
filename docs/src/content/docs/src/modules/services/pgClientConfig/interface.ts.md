@@ -1,6 +1,6 @@
 ---
 title: services/pgClientConfig/interface.ts
-nav_order: 57
+nav_order: 39
 parent: Modules
 ---
 

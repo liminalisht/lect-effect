@@ -1,6 +1,6 @@
 ---
 title: graphql/server.ts
-nav_order: 26
+nav_order: 8
 parent: Modules
 ---
 

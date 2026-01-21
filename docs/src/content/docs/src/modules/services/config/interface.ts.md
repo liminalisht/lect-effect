@@ -1,6 +1,6 @@
 ---
 title: services/config/interface.ts
-nav_order: 41
+nav_order: 23
 parent: Modules
 ---
 

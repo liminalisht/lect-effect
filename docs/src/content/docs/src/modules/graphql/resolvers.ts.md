@@ -1,6 +1,6 @@
 ---
 title: graphql/resolvers.ts
-nav_order: 24
+nav_order: 6
 parent: Modules
 ---
 

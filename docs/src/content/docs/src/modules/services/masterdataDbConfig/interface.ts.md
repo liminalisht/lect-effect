@@ -1,6 +1,6 @@
 ---
 title: services/masterdataDbConfig/interface.ts
-nav_order: 55
+nav_order: 37
 parent: Modules
 ---
 

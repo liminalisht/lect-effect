@@ -1,6 +1,6 @@
 ---
 title: services/itemRepo/interface.ts
-nav_order: 48
+nav_order: 30
 parent: Modules
 ---
 
