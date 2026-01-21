@@ -2,6 +2,9 @@
   "name": "web",
   "version": "0.0.0",
   "scripts": {
+    "lect:apps:web:clean:build:test:start": "pnpm run clean && pnpm run build && pnpm run test && pnpm run start",
+    "lect:apps:web:clean:build:test": "pnpm run clean && pnpm run build && pnpm run test",
+    "lect:apps:web:clean:build": "pnpm run clean && pnpm run build",
     "lect:apps:web:clean": "pnpm run clean",
     "lect:apps:web:build": "pnpm run build",
     "lect:apps:web:start": "pnpm run start",
