@@ -6,6 +6,9 @@
   "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
+    "lect-effect/backend/build": "pnpm -C packages/domain lect-effect/packages/domain/build && pnpm run buildtest",
+    "lect-effect/backend/docs:generate": "pnpm run docs:generate",
+    "lect-effect/backend/start": "pnpm run start",
     "lect-effect/clean:build:lint": "pnpm run lect-effect/clean && pnpm run lect-effect/build && pnpm run lect-effect/lint",
     "lect-effect/clean": "pnpm -C packages/domain lect-effect/packages/domain/clean && pnpm run clean",
     "lect-effect/build": "pnpm -C packages/domain lect-effect/packages/domain/build && pnpm run buildtest",
@@ -15,6 +18,8 @@
 
     "clean": "rm -rf dist packages/domain/dist apps/web/dist apps/web/.angular/cache",
     "build": "pnpm -C packages/domain build && tsc",
+    "build:src": "pnpm -C packages/domain build && tsc",
+    "build:test": "pnpm run build && pnpm run typecheck:test",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
     "docs:generate": "pnpm run docs:generate:app && pnpm -C packages/domain run docs:generate",
     "docs:generate:app": "docgen --project tsconfig.json --src ./src/ --out ./docs/src/content/docs/src/ --exclude \"**/test/**\"",
