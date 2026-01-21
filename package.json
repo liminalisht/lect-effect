@@ -13,6 +13,8 @@
     "_test": "pnpm run _typecheck:test && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
     "_start": "pnpm run _build && node dist/src/index.js",
     "_docs": "docgen --project tsconfig.json --src ./src/ --out ./docs/src/content/docs/src/ --exclude \"**/test/**\"",
+      "_install": "pnpm install --frozen-lockfile",
+      "_install:nofreeze": "pnpm install --no-frozen-lockfile",
 
     "lect-effect/backend/clean": "pnpm run _clean",
     "lect-effect/backend/build": "pnpm run _build",
@@ -21,6 +23,8 @@
     "lect-effect/backend/docs:generate": "pnpm run _docs",
     "lect-effect/backend/clean:build": "pnpm run _clean && pnpm run _build",
     "lect-effect/backend/clean:build:test": "pnpm run _clean && pnpm run _build && pnpm run _test",
+      "lect-effect/backend/install": "pnpm run _install",
+      "lect-effect/backend/install:nofreeze": "pnpm run _install:nofreeze",
 
     "lect-effect/domain/clean": "pnpm -C packages/domain run lect-effect/domain/clean",
     "lect-effect/domain/build": "pnpm -C packages/domain run lect-effect/domain/build",
@@ -28,6 +32,8 @@
     "lect-effect/domain/docs:generate": "pnpm -C packages/domain run lect-effect/domain/docs:generate",
     "lect-effect/domain/clean:build": "pnpm -C packages/domain run lect-effect/domain/clean:build",
     "lect-effect/domain/clean:build:test": "pnpm -C packages/domain run lect-effect/domain/clean:build:test",
+      "lect-effect/domain/install": "pnpm -C packages/domain run lect-effect/domain/install",
+      "lect-effect/domain/install:nofreeze": "pnpm -C packages/domain run lect-effect/domain/install:nofreeze",
 
     "lect-effect/frontend/clean": "pnpm -C apps/web run lect-effect/frontend/clean",
     "lect-effect/frontend/build": "pnpm -C apps/web run lect-effect/frontend/build",
@@ -38,6 +44,8 @@
     "lect-effect/frontend/clean:build": "pnpm -C apps/web run lect-effect/frontend/clean:build",
     "lect-effect/frontend/clean:build:test": "pnpm -C apps/web run lect-effect/frontend/clean:build:test",
     "lect-effect/frontend/clean:build:test:start": "pnpm -C apps/web run lect-effect/frontend/clean:build:test:start",
+      "lect-effect/frontend/install": "pnpm -C apps/web run lect-effect/frontend/install",
+      "lect-effect/frontend/install:nofreeze": "pnpm -C apps/web run lect-effect/frontend/install:nofreeze",
 
     "lect-effect/docs/clean": "pnpm -C docs run lect-effect/docs/clean",
     "lect-effect/docs/build": "pnpm -C docs run lect-effect/docs/build",
@@ -45,12 +53,16 @@
     "lect-effect/docs/start": "pnpm -C docs run lect-effect/docs/start",
     "lect-effect/docs/preview": "pnpm -C docs run lect-effect/docs/preview",
     "lect-effect/docs/clean:build": "pnpm -C docs run lect-effect/docs/clean:build",
+      "lect-effect/docs/install": "pnpm -C docs run lect-effect/docs/install",
+      "lect-effect/docs/install:nofreeze": "pnpm -C docs run lect-effect/docs/install:nofreeze",
 
     "lect-effect/clean": "pnpm run lect-effect/domain/clean && pnpm run lect-effect/backend/clean && pnpm run lect-effect/frontend/clean && pnpm run lect-effect/docs/clean",
     "lect-effect/build": "pnpm run lect-effect/domain/build && pnpm run lect-effect/backend/build && pnpm run lect-effect/frontend/build",
     "lect-effect/test": "pnpm run lect-effect/domain/test && pnpm run lect-effect/backend/test && pnpm run lect-effect/frontend/test",
     "lect-effect/clean:build": "pnpm run lect-effect/clean && pnpm run lect-effect/build",
     "lect-effect/clean:build:test": "pnpm run lect-effect/clean:build && pnpm run lect-effect/test",
+      "lect-effect/install": "pnpm run lect-effect/domain/install && pnpm run lect-effect/backend/install && pnpm run lect-effect/frontend/install && pnpm run lect-effect/docs/install",
+      "lect-effect/install:nofreeze": "pnpm run lect-effect/domain/install:nofreeze && pnpm run lect-effect/backend/install:nofreeze && pnpm run lect-effect/frontend/install:nofreeze && pnpm run lect-effect/docs/install:nofreeze",
     "lect-effect/clean:build:test:lint": "pnpm run lect-effect/clean:build:test && pnpm run lect-effect/lint",
     "lect-effect/clean:build:test:lint:docs": "pnpm run lect-effect/clean:build:test:lint && pnpm run lect-effect/docs",
     "lect-effect/lint": "pnpm run _lint",

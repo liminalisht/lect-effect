@@ -8,6 +8,8 @@
     "_start": "astro dev",
     "_build": "astro build",
     "_preview": "astro preview",
+    "_install": "pnpm --dir .. install --filter ./docs --frozen-lockfile",
+    "_install:nofreeze": "pnpm --dir .. install --filter ./docs --no-frozen-lockfile",
 
     "lect-effect/docs/clean": "pnpm run _clean",
     "lect-effect/docs/dev": "pnpm run _dev",
@@ -15,6 +17,8 @@
     "lect-effect/docs/build": "pnpm run _build",
     "lect-effect/docs/preview": "pnpm run _preview",
     "lect-effect/docs/clean:build": "pnpm run _clean && pnpm run _build",
+    "lect-effect/docs/install": "pnpm run _install",
+    "lect-effect/docs/install:nofreeze": "pnpm run _install:nofreeze",
 
     "dev": "pnpm run _dev",
     "start": "pnpm run _start",
