@@ -4,7 +4,7 @@
   "scripts": {
     "_clean": "rm -rf dist .angular/cache",
     "_build": "ng build",
-    "_test": "ng test",
+    "_test": "ng test --watch=false --progress=false",
     "_start": "ng serve --proxy-config proxy.conf.json",
     "_watch": "ng build --watch --configuration development",
     "_serve:ssr": "node dist/web/server/server.mjs",
@@ -24,7 +24,7 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "clean": "rm -rf dist .angular/cache",
     "start:build": "pnpm run _build && pnpm run _start",
-    "test": "ng test",
+    "test": "ng test --watch=false --progress=false",
     "serve:ssr:web": "node dist/web/server/server.mjs",
     "watch": "ng build --watch --configuration development"
   },
