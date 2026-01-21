@@ -6,6 +6,8 @@
   "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
+    "lint": "pnpx xo --ignore 'docs-site/**'",
+
     "lect-effect:clean": "pnpm run clean",
     "lect-effect:build": "pnpm run build",
     "lect-effect:buildtest": "pnpm run buildtest",

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import {Injectable, signal, type WritableSignal} from '@angular/core';
 import {Effect, Exit} from 'effect';
-import {remoteData, type RemoteData} from '../../core/effect/remote-data.js';
+import {remoteData, RemoteData} from '../../core/effect/remote-data.js';
 import {UiRuntime} from '../../core/effect/ui-runtime.js';
 
 @Injectable()
