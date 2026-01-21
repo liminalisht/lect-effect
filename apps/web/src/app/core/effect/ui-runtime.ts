@@ -1,6 +1,7 @@
-import {type DestroyRef, Injectable} from '@angular/core';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import {DestroyRef, Injectable} from '@angular/core';
 import {
-  type Effect, type Exit, Layer, ManagedRuntime,
+  Effect, Exit, Layer, ManagedRuntime,
 } from 'effect';
 import {GraphQLClientLive, type GraphQLClient} from '../graphql/graphql-client.js';
 
