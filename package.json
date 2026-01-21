@@ -13,8 +13,8 @@
     "_test": "pnpm run _typecheck:test && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
     "_start": "pnpm run _build && node dist/src/index.js",
     "_docs": "docgen --project tsconfig.json --src ./src/ --out ./docs/src/content/docs/src/ --exclude \"**/test/**\"",
-      "_install": "pnpm install --frozen-lockfile",
-      "_install:nofreeze": "pnpm install --no-frozen-lockfile",
+    "_install": "pnpm install --frozen-lockfile",
+    "_install:nofreeze": "pnpm install --no-frozen-lockfile",
 
     "lect-effect/backend/clean": "pnpm run _clean",
     "lect-effect/backend/build": "pnpm run _build",
@@ -23,8 +23,8 @@
     "lect-effect/backend/docs:generate": "pnpm run _docs",
     "lect-effect/backend/clean:build": "pnpm run _clean && pnpm run _build",
     "lect-effect/backend/clean:build:test": "pnpm run _clean && pnpm run _build && pnpm run _test",
-      "lect-effect/backend/install": "pnpm run _install",
-      "lect-effect/backend/install:nofreeze": "pnpm run _install:nofreeze",
+    "lect-effect/backend/install": "pnpm run _install",
+    "lect-effect/backend/install:nofreeze": "pnpm run _install:nofreeze",
 
     "lect-effect/domain/clean": "pnpm -C packages/domain run lect-effect/domain/clean",
     "lect-effect/domain/build": "pnpm -C packages/domain run lect-effect/domain/build",
@@ -32,8 +32,8 @@
     "lect-effect/domain/docs:generate": "pnpm -C packages/domain run lect-effect/domain/docs:generate",
     "lect-effect/domain/clean:build": "pnpm -C packages/domain run lect-effect/domain/clean:build",
     "lect-effect/domain/clean:build:test": "pnpm -C packages/domain run lect-effect/domain/clean:build:test",
-      "lect-effect/domain/install": "pnpm -C packages/domain run lect-effect/domain/install",
-      "lect-effect/domain/install:nofreeze": "pnpm -C packages/domain run lect-effect/domain/install:nofreeze",
+    "lect-effect/domain/install": "pnpm -C packages/domain run lect-effect/domain/install",
+    "lect-effect/domain/install:nofreeze": "pnpm -C packages/domain run lect-effect/domain/install:nofreeze",
 
     "lect-effect/frontend/clean": "pnpm -C apps/web run lect-effect/frontend/clean",
     "lect-effect/frontend/build": "pnpm -C apps/web run lect-effect/frontend/build",
