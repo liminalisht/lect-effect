@@ -51,8 +51,10 @@
     "lect-effect/test": "pnpm run lect-effect/domain/test && pnpm run lect-effect/backend/test && pnpm run lect-effect/frontend/test",
     "lect-effect/clean:build": "pnpm run lect-effect/clean && pnpm run lect-effect/build",
     "lect-effect/clean:build:test": "pnpm run lect-effect/clean:build && pnpm run lect-effect/test",
+    "lect-effect/clean:build:test:lint": "pnpm run lect-effect/clean:build:test && pnpm run lect-effect/lint",
+    "lect-effect/clean:build:test:lint:docs": "pnpm run lect-effect/clean:build:test:lint && pnpm run lect-effect/docs",
     "lect-effect/lint": "pnpm run _lint",
-    "lect-effect/docs:generate": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate",
+    "lect-effect/docs": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate",
 
     "clean": "pnpm run lect-effect/clean",
     "build": "pnpm run lect-effect/domain/build && pnpm run lect-effect/backend/build",
