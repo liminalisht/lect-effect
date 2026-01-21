@@ -3,10 +3,23 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "_clean": "rm -rf dist .astro",
+    "_dev": "astro dev",
+    "_start": "astro dev",
+    "_build": "astro build",
+    "_preview": "astro preview",
+
+    "lect-effect/docs/clean": "pnpm run _clean",
+    "lect-effect/docs/dev": "pnpm run _dev",
+    "lect-effect/docs/start": "pnpm run _start",
+    "lect-effect/docs/build": "pnpm run _build",
+    "lect-effect/docs/preview": "pnpm run _preview",
+    "lect-effect/docs/clean:build": "pnpm run _clean && pnpm run _build",
+
+    "dev": "pnpm run _dev",
+    "start": "pnpm run _start",
+    "build": "pnpm run _build",
+    "preview": "pnpm run _preview",
     "astro": "astro"
   },
   "dependencies": {
