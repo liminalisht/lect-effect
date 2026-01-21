@@ -7,12 +7,12 @@
   "type": "module",
   "scripts": {
     "lint": "pnpx xo --ignore 'docs-site/**'",
-
-    "lect-effect:clean": "pnpm run clean",
-    "lect-effect:build": "pnpm run build",
-    "lect-effect:buildtest": "pnpm run buildtest",
-    "lect-effect:docs:generate": "pnpm run docs:generate",
-    "lect-effect:start": "pnpm run start",
+    "lect-effect/clean:build": "pnpm run clean",
+    "lect-effect/clean": "pnpm run clean",
+    "lect-effect/build": "pnpm run build",
+    "lect-effect/buildtest": "pnpm run buildtest",
+    "lect-effect/docs:generate": "pnpm run docs:generate",
+    "lect-effect/start": "pnpm run start",
 
 
     "clean": "rm -rf dist packages/domain/dist apps/web/dist apps/web/.angular/cache",

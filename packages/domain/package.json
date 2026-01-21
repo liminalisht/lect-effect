@@ -19,10 +19,15 @@
   "files": ["dist"],
   "sideEffects": false,
   "scripts": {
-    "lect-effect/domain/clean": "pnpm run clean",
-    "lect-effect/domain/build": "pnpm run build",
-    "lect-effect/domain/test": "pnpm run test",
-    "lect-effect/domain/docs:generate": "pnpm run docs:generate",
+
+    "lect-effect/packages/domain/clean:build:test:start": "pnpm run clean && pnpm run build && pnpm run test && pnpm run start",
+    "lect-effect/packages/domain/clean:build:test": "pnpm run clean && pnpm run build && pnpm run test",
+    "lect-effect/packages/domain/clean:build": "pnpm run clean && pnpm run build",
+    "lect-effect/packages/domain/clean": "pnpm run clean",
+    "lect-effect/packages/domain/build": "pnpm run build",
+    "lect-effect/packages/domain/test": "pnpm run test",
+    "lect-effect/packages/domain/docs:generate": "pnpm run docs:generate",
+
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --dir test",
