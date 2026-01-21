@@ -1,0 +1,22 @@
+<main class="toy-page">
+  <header>
+    <h1>Phase 2 toy store</h1>
+    <p>Runs an Effect via UiRuntime and updates a Signal.</p>
+  </header>
+
+  <section class="state">
+    @if (state(); as current) {
+      @if (current._tag === 'Initial') {
+        <p>Initial</p>
+      } @else if (current._tag === 'Loading') {
+        <p>Loading...</p>
+      } @else if (current._tag === 'Success') {
+        <p>Result: {{ current.value }}</p>
+      } @else if (current._tag === 'Failure') {
+        <p>Failed: {{ current.error | json }}</p>
+      }
+    }
+  </section>
+
+  <button type="button" (click)="store.run()">Run effect</button>
+</main>
