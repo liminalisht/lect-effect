@@ -45,6 +45,18 @@ const xoConfig: FlatXoConfig = [
         tsconfigRootDir: rootDir,
       },
     },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
   },
   {
     files: ['test/**', 'packages/domain/test/**'],
