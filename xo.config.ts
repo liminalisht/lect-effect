@@ -1,4 +1,7 @@
+import {fileURLToPath} from 'node:url';
 import {type FlatXoConfig} from 'xo';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 const xoConfig: FlatXoConfig = [
   {
@@ -28,6 +31,19 @@ const xoConfig: FlatXoConfig = [
       'unicorn/throw-new-error': 'off',
       'import-x/no-unassigned-import': 'off',
       'new-cap': 'off',
+    },
+  },
+  {
+    files: ['apps/web/**/*.ts', 'apps/web/**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        project: [
+          './apps/web/tsconfig.app.json',
+          './apps/web/tsconfig.spec.json',
+        ],
+        tsconfigRootDir: rootDir,
+      },
     },
   },
   {

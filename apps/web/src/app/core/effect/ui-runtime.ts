@@ -1,8 +1,8 @@
-import {DestroyRef, Injectable} from '@angular/core';
-import {Effect, Exit, Layer, ManagedRuntime} from 'effect';
-
-import {GraphQLClient} from '../graphql/graphql-client.js';
-import {GraphQLClientLive} from '../graphql/graphql-client.js';
+import {type DestroyRef, Injectable} from '@angular/core';
+import {
+  type Effect, type Exit, Layer, ManagedRuntime,
+} from 'effect';
+import {type GraphQLClient, GraphQLClientLive} from '../graphql/graphql-client.js';
 
 const AppLayer = GraphQLClientLive('/graphql');
 
@@ -16,7 +16,7 @@ export class UiRuntime {
     });
   }
 
-  runExit<A, E>(effect: Effect.Effect<A, E, GraphQLClient>): Promise<Exit.Exit<A, E>> {
+  async runExit<A, E>(effect: Effect.Effect<A, E, GraphQLClient>): Promise<Exit.Exit<A, E>> {
     return this.runtime.runPromiseExit(effect);
   }
 }

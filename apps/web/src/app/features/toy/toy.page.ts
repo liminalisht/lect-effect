@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
 import {ToyStore} from './toy.store.js';
 
 @Component({

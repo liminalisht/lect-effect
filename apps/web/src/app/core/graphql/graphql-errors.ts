@@ -14,7 +14,7 @@ export class GraphqlError extends Data.TaggedError('GraphqlError')<{
 export class DecodeError extends Data.TaggedError('DecodeError')<{readonly cause: unknown}> {}
 
 export type GraphQLClientError =
-  | TransportError
-  | HttpError
-  | GraphqlError
-  | DecodeError;
+	| TransportError
+	| HttpError
+	| GraphqlError
+	| DecodeError;
