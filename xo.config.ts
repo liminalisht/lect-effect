@@ -31,7 +31,7 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
-    files: ['test/**'],
+    files: ['test/**', 'packages/domain/test/**'],
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
