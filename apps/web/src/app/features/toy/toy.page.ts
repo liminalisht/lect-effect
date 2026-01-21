@@ -6,6 +6,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ToyStore} from './toy.store.js';
 
+/**
+ * Page component for the toy feature.
+ * @since 1.0.0
+ */
 @Component({
   selector: 'app-toy-page',
   standalone: true,
@@ -15,10 +19,6 @@ import {ToyStore} from './toy.store.js';
   styleUrls: ['./toy.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-/**
- * Page component for the toy feature.
- * @since 1.0.0
- */
 export class ToyPage {
   /**
    * Injected store managing toy feature state.

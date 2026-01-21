@@ -21,6 +21,8 @@ Added in v1.0.0
 
 ## ToyPage (class)
 
+Page component for the toy feature.
+
 **Signature**
 
 ```ts

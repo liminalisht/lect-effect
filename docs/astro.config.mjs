@@ -18,12 +18,16 @@ export default defineConfig({
 					autogenerate: {directory: 'guides'},
 				},
 				{
-					label: 'lect-effect',
-					autogenerate: {directory: 'src/modules', collapsed: true},
+					label: 'lect-effect/backend',
+					autogenerate: {directory: 'backend/modules', collapsed: true},
 				},
 				{
-					label: '@lect-effect/domain',
+					label: 'lect-effect/domain',
 					autogenerate: {directory: 'domain/modules', collapsed: true},
+				},
+				{
+					label: 'lect-effect/frontend',
+					autogenerate: {directory: 'frontend/modules', collapsed: true},
 				},
 			],
 		}),
