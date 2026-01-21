@@ -8,9 +8,11 @@
   "scripts": {
     "_clean": "rm -rf dist",
     "_build": "tsc",
-    "_test": "pnpm run typecheck:test && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
+    "_lint": "pnpx xo --ignore 'docs-site/**'",
+    "_typecheck:test": "tsc --noEmit -p tsconfig.test.json",
+    "_test": "pnpm run _typecheck:test && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
     "_start": "pnpm run _build && node dist/src/index.js",
-    "_docs": "pnpm run docs:generate:app",
+    "_docs": "docgen --project tsconfig.json --src ./src/ --out ./docs/src/content/docs/src/ --exclude \"**/test/**\"",
 
     "lect-effect/backend/clean": "pnpm run _clean",
     "lect-effect/backend/build": "pnpm run _build",
@@ -49,7 +51,7 @@
     "lect-effect/test": "pnpm run lect-effect/domain/test && pnpm run lect-effect/backend/test && pnpm run lect-effect/frontend/test",
     "lect-effect/clean:build": "pnpm run lect-effect/clean && pnpm run lect-effect/build",
     "lect-effect/clean:build:test": "pnpm run lect-effect/clean:build && pnpm run lect-effect/test",
-    "lect-effect/lint": "pnpm run lint",
+    "lect-effect/lint": "pnpm run _lint",
     "lect-effect/docs:generate": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate",
 
     "clean": "pnpm run lect-effect/clean",
