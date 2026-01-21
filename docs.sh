@@ -2,7 +2,5 @@
 
 set -e
 
-pnpm docs:generate
-cd docs
-pnpm install --frozen-lockfile || pnpm install
-pnpm dev "$@"
+pnpm run lect-effect/docs:generate
+pnpm -C docs run lect-effect/docs/dev -- "$@"

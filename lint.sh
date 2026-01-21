@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-set -e
+pnpm lect-effect/lint -- "$@"
 
-pnpx xo --ignore 'docs-site/**' "$@"

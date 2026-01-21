@@ -2,6 +2,6 @@
 
 set -e
 
-pnpm install
+./build.sh
 pnpm migrate:test-masterdata:up
-pnpm run test
+pnpm lect-effect/test

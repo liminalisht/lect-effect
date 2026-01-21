@@ -4,4 +4,4 @@ set -e
 
 ./build.sh
 pnpm migrate:masterdata:up
-pnpm start
+pnpm run lect-effect/run

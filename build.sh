@@ -2,6 +2,6 @@
 
 set -e
 
-./clean.sh
-pnpm install --frozen-lockfile --strict-peer-dependencies
-pnpm run buildtest
+pnpm run lect-effect/clean
+pnpm run lect-effect/install
+pnpm run lect-effect/build
