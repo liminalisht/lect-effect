@@ -3738,3 +3738,297 @@ The previous plan explicitly recommended `"type": "commonjs"` for `@lect-effect/
 ---
 
 If you want, the next useful artifact after you implement Phase 0 is a **single “diff witness” file** (a tiny backend module) that imports 2–3 schemas from `@lect-effect/domain/**` and runs a `Schema.decodeUnknown` against a hardcoded value—i.e. a minimal morphism that demonstrates the new boundary is actually composable.
+
+-----
+
+
+Below are **re-expanded, implementation-grade checklists** for **Phase 1** and **Phase 2**, assuming **Phase 0 is complete**: you now have a separate ESM workspace package `@lect-effect/domain` that both backend and frontend can import.
+
+I’m staying faithful to the plan’s stated Phase 1/2 goals and artifacts (zoneless + OnPush; then core “edge” layer with `RemoteData`, `GraphQLClient`, `UiRuntime`, and a toy store).
+
+---
+
+## Phase 1 — Angular skeleton
+
+Goal: *An Angular app exists and boots with explicit reactivity defaults (zoneless + signals), and can import `@lect-effect/domain` + `effect`.*
+
+### Phase 1 checklist
+
+#### 1. Workspace plumbing sanity (should already be true after Phase 0)
+
+* [ ] `pnpm-workspace.yaml` includes:
+
+  * [ ] `"packages/*"`
+  * [ ] `"apps/*"` (so `apps/web` is a workspace object)
+* [ ] `pnpm install` at repo root completes without peer-dep drama.
+
+*(If this is already satisfied from Phase 0, treat it as a discharged lemma and move on.)*
+
+#### 2. Scaffold the Angular app into `apps/web`
+
+* [ ] From repo root, scaffold **standalone + routing + zoneless**:
+
+  * [ ] Run:
+
+    ```bash
+    pnpm dlx @angular/cli@latest new web \
+      --directory apps/web \
+      --package-manager pnpm \
+      --routing \
+      --style scss \
+      --zoneless \
+      --skip-git \
+      --skip-install
+    ```
+* [ ] Install all workspace deps:
+
+  * [ ] Run from repo root:
+
+    ```bash
+    pnpm install
+    ```
+
+This matches the plan’s “create `apps/web/` via Angular CLI (standalone + routing + zoneless)”.
+
+#### 3. Add shared deps in the **frontend package**
+
+* [ ] Add Effect + shared domain as dependencies of `apps/web`:
+
+  * [ ] Run:
+
+    ```bash
+    pnpm -C apps/web add effect @lect-effect/domain@workspace:*
+    ```
+  * [ ] (If you prefer, pin exactly to workspace root: `@lect-effect/domain@workspace:*` is the intended “inclusion functor” here.)
+
+This is explicitly called out in the plan.
+
+#### 4. Ensure zoneless is actually wired
+
+* [ ] Open `apps/web/src/app/app.config.ts`
+* [ ] Ensure `provideZonelessChangeDetection()` is present in the providers list:
+
+  * [ ] Something like:
+
+    ```ts
+    import { ApplicationConfig, provideZonelessChangeDetection } from "@angular/core";
+    import { provideRouter } from "@angular/router";
+    import { routes } from "./app.routes";
+
+    export const appConfig: ApplicationConfig = {
+      providers: [provideRouter(routes), provideZonelessChangeDetection()]
+    };
+    ```
+* [ ] Sanity check: search for Zone usage
+
+  * [ ] `rg "zone\.js|Zone" apps/web/src` should be empty (or at least not imported by your app entry).
+
+This is the plan’s “Wire zoneless” bullet.
+
+#### 5. Enforce `OnPush` in the root component
+
+* [ ] In `apps/web/src/app/app.component.ts`:
+
+  * [ ] Set `changeDetection: ChangeDetectionStrategy.OnPush`
+  * [ ] (Optional but recommended) remove unused mutable patterns from the generated template.
+
+This is explicitly required by the plan.
+
+#### 6. Wire a dev proxy for `/graphql`
+
+You want the browser to talk to the backend without CORS and without smuggling the backend URL into code.
+
+* [ ] Create `apps/web/proxy.conf.json`:
+
+  * [ ] Minimal:
+
+    ```json
+    {
+      "/graphql": {
+        "target": "http://localhost:4000",
+        "secure": false,
+        "changeOrigin": true
+      }
+    }
+    ```
+* [ ] Update `apps/web/package.json` start script:
+
+  * [ ] Ensure it uses:
+
+    * [ ] `ng serve --proxy-config proxy.conf.json`
+
+Again: exactly as required in the plan.
+
+#### 7. Phase 1 verification (proof obligations)
+
+* [ ] Build the domain once (important if `@lect-effect/domain` is consumed from its `dist/`):
+
+  * [ ] Run:
+
+    ```bash
+    pnpm -C packages/domain build
+    ```
+* [ ] Start Angular:
+
+  * [ ] Run:
+
+    ```bash
+    pnpm -C apps/web start
+    ```
+* [ ] Browser loads root route; the app renders.
+* [ ] Add a *temporary* import witness (then delete):
+
+  * [ ] In some file imported by the app (e.g. `app.component.ts`), add:
+
+    ```ts
+    import { Schema } from "effect";
+    import * as Domain from "@lect-effect/domain";
+    void Schema;
+    void Domain;
+    ```
+  * [ ] Confirm: `ng serve` still compiles.
+
+#### 8. Phase 1 exit criteria
+
+* [ ] Angular boots **zoneless**, root component is **OnPush**, and the app compiles while importing `effect` + `@lect-effect/domain`.
+
+---
+
+## Phase 2 — Core edge layer
+
+Goal: *You can run one `Effect` from a store (and only from a store) and observe a `Signal` update. You also lay down the GraphQL client + error coproduct + runtime bridge, even if the toy effect is not yet a real GraphQL call.*
+
+In categorical terms: we are constructing the *Kleisli boundary* explicitly. UI components live in the ordinary category of pure renderers-from-signals; stores are the only morphisms into the Kleisli category `Signal ⟶ Effect ⟶ Signal`.
+
+### Phase 2 checklist
+
+#### 1. Create the core module tree (files + exports)
+
+Create these files (exact paths from the plan):
+
+* [ ] `apps/web/src/app/core/effect/remote-data.ts`
+* [ ] `apps/web/src/app/core/graphql/graphql-errors.ts`
+* [ ] `apps/web/src/app/core/graphql/graphql-client.ts`
+* [ ] `apps/web/src/app/core/effect/ui-runtime.ts`
+
+Keep these “core” modules **acyclic** and dependency-minimal.
+
+#### 2. Implement `RemoteData`
+
+* [ ] In `core/effect/remote-data.ts` define:
+
+  * [ ] `RemoteData<E, A> = Initial | Loading | Failure<E> | Success<A>`
+  * [ ] constructors:
+
+    * [ ] `RemoteData.initial()`
+    * [ ] `RemoteData.loading()`
+    * [ ] `RemoteData.failure(e)`
+    * [ ] `RemoteData.success(a)`
+
+This is explicitly in the Phase 2 plan checklist.
+
+#### 3. Implement a tagged error coproduct for GraphQL transport
+
+* [ ] In `core/graphql/graphql-errors.ts`, define errors as a **sum type** (tagged union):
+
+  * [ ] `TransportError` (fetch threw / network)
+  * [ ] `HttpError` (non-2xx status)
+  * [ ] `GraphqlError` (GraphQL `errors` array present)
+  * [ ] `DecodeError` (Effect Schema decode failed)
+* [ ] Make them structurally comparable / printable (Effect’s `Data.TaggedError` is a good fit).
+
+This is explicitly required (“tagged error coproduct for transport/http/graphql errors”).
+
+#### 4. Implement `GraphQLClient` as an Effect service + Layer
+
+* [ ] In `core/graphql/graphql-client.ts`:
+
+  * [ ] Define a `Tag` / `GenericTag` for `GraphQLClient` (the dependency object).
+  * [ ] Define the minimal interface (keep it small):
+
+    * [ ] `requestRaw(doc: string, variables: unknown): Effect<unknown, GraphQLClientError>`
+    * [ ] or directly `request<A>(doc: string, variables: unknown, schema: Schema.Schema<A>): Effect<A, GraphQLClientError>`
+  * [ ] Implement `GraphQLClientLive(endpoint)` as a `Layer` using `fetch`:
+
+    * [ ] POST JSON to `endpoint`
+    * [ ] interpret HTTP status
+    * [ ] parse JSON
+    * [ ] treat GraphQL envelope as untrusted
+    * [ ] optionally decode with schema (if you choose the “request+schema” API)
+
+This matches the plan line items (“Tag … GraphQLClientLive(endpoint) Layer using fetch”).
+
+**Discipline note (important for later phases):** this client lives in `core/` and must not import from `features/**`. The dependency arrows are one-way.
+
+#### 5. Implement `UiRuntime` (bridge from Angular DI to Effect runtime)
+
+* [ ] In `core/effect/ui-runtime.ts`:
+
+  * [ ] Create an `AppLayer` (your chosen Layer composition), minimally:
+
+    * [ ] `GraphQLClientLive("/graphql")` (or configurable later)
+  * [ ] Create `ManagedRuntime.make(AppLayer)`
+  * [ ] Expose exactly one “runner” method shape and standardize on it:
+
+    * [ ] either `runPromiseExit(effect)`
+    * [ ] or `runPromiseEither(effect)`
+    * [ ] or `runFork(effect)` for fire-and-forget
+  * [ ] Ensure runtime is disposed with the Angular lifecycle (e.g. `DestroyRef`).
+
+This is precisely required by the plan (“ManagedRuntime.make(AppLayer) … method returning Exit or Either”).
+
+#### 6. Add a toy store to prove the boundary
+
+Create a minimal “feature” (not `core/`) whose *only job* is to prove “only stores run Effects”.
+
+* [ ] Create folder: `apps/web/src/app/features/toy/`
+* [ ] Create `toy.store.ts` (injectable):
+
+  * [ ] has `state: WritableSignal<RemoteData<never, number>> = signal(RemoteData.initial())`
+  * [ ] has a command method `run()` that:
+
+    * [ ] sets `Loading`
+    * [ ] runs `Effect.succeed(123)` **through `UiRuntime`**
+    * [ ] writes `Success(123)` into the signal
+* [ ] Absolutely no `Effect.runPromise` in the component; no `fetch` in the component; no `Layer` in the component.
+
+This is the plan’s “tiny store with signal(RemoteData.initial()) … run trivial Effect … writes Success into a signal”.
+
+#### 7. Add a toy page component that renders store state
+
+* [ ] Create `toy.page.ts` as a **standalone component**, `OnPush`.
+* [ ] Template shows:
+
+  * [ ] initial/loading/success states
+  * [ ] a button that calls `store.run()`
+* [ ] Route it as the root route (temporary):
+
+  * [ ] `apps/web/src/app/app.routes.ts`: route `""` → `ToyPage`
+
+#### 8. Phase 2 verification (proof obligations)
+
+* [ ] Start backend (whatever your backend command is).
+* [ ] Start Angular (`pnpm -C apps/web start`).
+* [ ] Visit `/`.
+* [ ] Click the button.
+* [ ] Observe: UI transitions `Initial → Loading → Success(123)` **without Zone.js** and without manual change detection.
+
+This is exactly the verification requirement in the plan.
+
+#### 9. Phase 2 exit criteria
+
+* [ ] It is *physically true in code* that only stores run Effects (via `UiRuntime`).
+
+---
+
+## Micro-justification of why this Phase 1/2 structure is “best” for your preferences
+
+* `core/**` is the **initial object** for infrastructure concerns: small, stable, dependency-light. Everything may depend on it; it depends on nothing “above”.
+* `features/**` are algebras over `core/**`: they *interpret* core services into user-facing state (`Signals`) and commands.
+* Components are **pure renderers** (functors from the poset/category of Signals into a DOM presentation), with no hidden effectful morphisms.
+
+This factorization is exactly what prevents the “rat’s nest”: it forces a **thin waist** (the store boundary + `UiRuntime`) and keeps Angular’s reactivity as a controlled propagation graph rather than an ambient side-effect system.
+
+---
+
+If you want, in the next message I can also provide a **minimal diff-set** for Phase 1 (files + exact edits) and Phase 2 (exact file contents) that is small enough to apply mechanically—but the checklists above should already be precise enough to execute without inventing additional abstractions.
