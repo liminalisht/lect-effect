@@ -1,7 +1,7 @@
 import {Injectable, signal, type WritableSignal} from '@angular/core';
 import {Effect, Exit} from 'effect';
 import {remoteData, type RemoteData} from '../../core/effect/remote-data.js';
-import {UiRuntime} from '../../core/effect/ui-runtime.js';
+import {type UiRuntime} from '../../core/effect/ui-runtime.js';
 
 @Injectable()
 export class ToyStore {
