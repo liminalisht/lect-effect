@@ -1,8 +1,6 @@
-import {type DestroyRef, Injectable} from '@angular/core';
-import {
-  type Effect, type Exit, Layer, ManagedRuntime,
-} from 'effect';
-import {type GraphQLClient, GraphQLClientLive} from '../graphql/graphql-client.js';
+import {DestroyRef, Injectable} from '@angular/core';
+import {Effect, Exit, Layer, ManagedRuntime} from 'effect';
+import {GraphQLClientLive, type GraphQLClient} from '../graphql/graphql-client.js';
 
 const AppLayer = GraphQLClientLive('/graphql');
 
