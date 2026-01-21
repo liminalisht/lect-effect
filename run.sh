@@ -3,5 +3,6 @@
 set -e
 
 ./build.sh
-pnpm migrate:masterdata
+pnpm migrate:masterdata:down
+pnpm migrate:masterdata:up
 pnpm start

@@ -3,5 +3,6 @@
 set -e
 
 pnpm install
-pnpm migrate:test-masterdata
+pnpm migrate:test-masterdata:down
+pnpm migrate:test-masterdata:up
 pnpm run test

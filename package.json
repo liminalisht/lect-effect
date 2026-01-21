@@ -4,12 +4,15 @@
   "description": "",
   "homepage": "https://github.com/liminalisht/lect-effect",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "buildtest": "pnpm run build && pnpm run typecheck:test",
     "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ./docs/src/content/docs/src/ --exclude \"**/test/**\"",
-    "migrate:masterdata": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
-    "migrate:test-masterdata": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
+    "migrate:masterdata:up": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb up",
+    "migrate:masterdata:down": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m migrations/masterdatadb down 2",
+    "migrate:test-masterdata:up": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb up",
+    "migrate:test-masterdata:down": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m migrations/masterdatadb down 2",
     "start": "pnpm run build && node dist/index.js",
     "test": "pnpm run buildtest && env-cmd -f .env.test --no-override vitest run --no-file-parallelism",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json"

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-exports.shorthands = undefined;
+export const shorthands = undefined;
 
-exports.up = pgm => {
+export const up = pgm => {
 	// Create `item` table
 	pgm.createTable('item', {
 		id: {type: 'serial', primaryKey: true},
@@ -24,7 +24,7 @@ exports.up = pgm => {
 	pgm.createIndex('item_prod', 'product_id');
 };
 
-exports.down = pgm => {
+export const down = pgm => {
 	// Drop association first due to FK
 	pgm.dropTable('item_prod');
 	pgm.dropTable('item');
