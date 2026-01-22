@@ -58,7 +58,7 @@ export class CreateProductFormComponent {
     toUnknown: stringToNullIfBlank,
   });
 
-  readonly items = signal<ReadonlyArray<ItemDraft>>([makeItemDraft()]);
+  readonly items = signal<readonly ItemDraft[]>([makeItemDraft()]);
 
   readonly canSubmit = computed(() => {
     const drafts = this.items();
@@ -73,33 +73,40 @@ export class CreateProductFormComponent {
 
   removeItem(index: number): void {
     this.items.update(items => {
-      if (items.length <= 1) return items;
+      if (items.length <= 1) {
+        return items;
+      }
+
       return items.filter((_, i) => i !== index);
     });
   }
 
   onProductDescriptionInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
+    const {value} = (event.target as HTMLInputElement);
     this.productDescription.setRaw(value);
   }
 
   onItemDescriptionInput(index: number, event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
+    const {value} = (event.target as HTMLInputElement);
     const draft = this.items()[index];
     draft?.description.setRaw(value);
   }
 
   onItemPackSizeInput(index: number, event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
+    const {value} = (event.target as HTMLInputElement);
     const draft = this.items()[index];
     draft?.packSize.setRaw(value);
   }
 
   submit(): void {
-    if (!this.canSubmit()) return;
+    if (!this.canSubmit()) {
+      return;
+    }
 
     const drafts = this.items();
-    if (drafts.length === 0) return;
+    if (drafts.length === 0) {
+      return;
+    }
 
     const payload: CreateProductWithItemsInput = {
       product: {

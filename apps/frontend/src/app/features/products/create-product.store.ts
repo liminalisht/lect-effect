@@ -15,23 +15,22 @@ import {createProductWithItems} from '../../../api/product.api.js';
  */
 @Injectable()
 export class CreateProductStore {
-  private readonly runtime = inject(UiRuntime);
-  private readonly state_ = signal<RemoteData<unknown, ProductWithItems>>(remoteData.initial());
+  /** Remote data state for the view. */
+  readonly state = signal<RemoteData<unknown, ProductWithItems>>(remoteData.initial());
 
-  /** Readonly remote data state for the view. */
-  readonly state = this.state_.asReadonly();
+  private readonly runtime = inject(UiRuntime);
 
   /** Runs the createProductWithItems mutation and updates remote data. */
   async create(input: unknown): Promise<void> {
-    this.state_.set(remoteData.loading());
+    this.state.set(remoteData.loading());
 
     const exit = await this.runtime.runExit(createProductWithItems(input));
 
     if (Exit.isSuccess(exit)) {
-      this.state_.set(remoteData.success(exit.value));
+      this.state.set(remoteData.success(exit.value));
       return;
     }
 
-    this.state_.set(remoteData.failure(exit.cause));
+    this.state.set(remoteData.failure(exit.cause));
   }
 }

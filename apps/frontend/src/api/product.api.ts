@@ -44,9 +44,7 @@ const normalizeInput = (input: CreateProductWithItemsInput): CreateProductWithIt
  * Calls the createProductWithItems GraphQL mutation and returns the decoded result.
  * @since 1.0.0
  */
-export const createProductWithItems = (
-  rawInput: unknown,
-): Effect.Effect<ProductWithItems, CreateProductWithItemsApiError, GraphQLClient> =>
+export const createProductWithItems = (rawInput: unknown): Effect.Effect<ProductWithItems, CreateProductWithItemsApiError, GraphQLClient> =>
   Effect.gen(function * () {
     const input = yield * Schema.decodeUnknown(createProductWithItemsInputSchema)(rawInput);
     const variables = normalizeInput(input);
