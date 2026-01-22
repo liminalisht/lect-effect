@@ -1,0 +1,61 @@
+{
+  "name": "@lect-effect/backend",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/liminalisht/lect-effect",
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "scripts": {
+    "_clean": "rm -rf dist",
+    "_build": "tsc -p tsconfig.json",
+    "_typecheck:test": "tsc --noEmit -p tsconfig.test.json",
+    "_test": "pnpm run _typecheck:test && env-cmd -f ../../.env.test --no-override vitest run --no-file-parallelism",
+    "_start": "pnpm run _build && env-cmd -f ../../.env --no-override node dist/src/index.js",
+    "_docs": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/backend/ --exclude \"**/test/**\"",
+    "_install": "pnpm --dir ../.. install --filter ./apps/backend --frozen-lockfile",
+    "_install:nofreeze": "pnpm --dir ../.. install --filter ./apps/backend --no-frozen-lockfile",
+
+    "lect-effect/backend/clean": "pnpm run _clean",
+    "lect-effect/backend/build": "pnpm run _build",
+    "lect-effect/backend/test": "pnpm run _test",
+    "lect-effect/backend/start": "pnpm run _start",
+    "lect-effect/backend/docs:generate": "pnpm run _docs",
+    "lect-effect/backend/clean:build": "pnpm run _clean && pnpm run _build",
+    "lect-effect/backend/clean:build:test": "pnpm run _clean && pnpm run _build && pnpm run _test",
+    "lect-effect/backend/install": "pnpm run _install",
+    "lect-effect/backend/install:nofreeze": "pnpm run _install:nofreeze",
+
+    "clean": "pnpm run _clean",
+    "build": "pnpm run _build",
+    "test": "pnpm run _test",
+    "start": "pnpm run _start",
+    "docs:generate": "pnpm run _docs",
+    "install": "pnpm run _install"
+  },
+  "dependencies": {
+    "@lect-effect/domain": "workspace:*",
+    "@effect/platform-node": "^0.104.0",
+    "@effect/sql": "^0.49.0",
+    "@effect/sql-pg": "^0.50.1",
+    "@gqloom/core": "^0.15.0",
+    "@gqloom/effect": "^0.13.0",
+    "dotenv": "^17.2.3",
+    "effect": "^3.19.14",
+    "graphql": "^16.12.0",
+    "graphql-yoga": "^5.18.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@effect/docgen": "^0.5.2",
+    "@effect/language-service": "^0.64.1",
+    "@effect/vitest": "^0.27.0",
+    "@tsconfig/node24": "^24.0.3",
+    "@types/node": "^25.0.3",
+    "env-cmd": "^11.0.0",
+    "fast-check": "^4.5.3",
+    "node-pg-migrate": "^8.0.4",
+    "vitest": "^3.2.4",
+    "xo": "^1.2.3"
+  },
+  "packageManager": "pnpm@10.22.0"
+}
