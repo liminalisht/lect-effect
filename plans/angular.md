@@ -1313,11 +1313,11 @@ I’ll assume the repo already contains (or will contain, per your plan) `apps/w
 * Pros: zero additional backend work.
 * Cons: codegen requires the server running.
 
-Your backend already starts a Yoga GraphQL server at `http://localhost:<port>/graphql`  (default port comes from config; the docs show `APP_PORT` default 4000).
+Your backend already starts a Yoga GraphQL server at `http://localhost:<port>/graphql`  (default port comes from config; the docs show `BACKEND_PORT` default 4000).
 
 So for MWE we target:
 
-* `http://localhost:4000/graphql` (or whatever `APP_PORT` is)
+* `http://localhost:4000/graphql` (or whatever `BACKEND_PORT` is)
 
 ---
 
@@ -1650,7 +1650,7 @@ Below is a **minimal, end‑to‑end slice** that composes:
 
 This matches your backend facts:
 
-* Server logs it serves GraphQL at `http://localhost:<port>/graphql`, with `APP_PORT` default `4000`.
+* Server logs it serves GraphQL at `http://localhost:<port>/graphql`, with `BACKEND_PORT` default `4000`.
 * The mutation and its variable types/selection set are exactly the ones used in tests.
 * The shared domain schemas for `CreateItemInput`, `CreateProductWithItemsInput`, `ProductInput`, `ProductWithItems`, etc. are as in your domain files.
 

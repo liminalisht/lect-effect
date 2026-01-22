@@ -11,24 +11,24 @@ import { type Port, portSchema } from './interface/port.js';
 import { type AppConfig } from './interface/index.js';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
-  const port = yield * Config.number('APP_PORT')
+  const port = yield * Config.number('BACKEND_PORT')
     .pipe(Config.withDefault(4000))
     .pipe(Effect.map(number => portSchema.make(number)));
   return port;
 });
 
 const loadEnvironment: Effect.Effect<Environment, ConfigurationError> = Effect.gen(function * () {
-  const environment = yield * Config.string('APP_ENV')
+  const environment = yield * Config.string('BACKEND_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
     .pipe(Effect.mapError(cause => ConfigError.InvalidData(
-      ['APP_ENV'],
+      ['BACKEND_ENV'],
       cause instanceof Error ? cause.message : JSON.stringify(cause),
     )));
   return environment;
 });
 
 const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effect.gen(function * () {
-  const logLevel = yield * Config.logLevel('APP_LOG_LEVEL')
+  const logLevel = yield * Config.logLevel('BACKEND_LOG_LEVEL')
     .pipe(Config.withDefault(LogLevel.Info));
   return logLevel;
 });

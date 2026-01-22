@@ -1417,8 +1417,8 @@ export class ConfigService extends Context.Tag("ConfigService")<
 >() {}
 
 export const ConfigLayer = Effect.gen(function* () {
-  const port = yield* Config.number("APP_PORT").pipe(Effect.map(portFromNumber))
-  const logLevel = yield* Config.logLevel("APP_LOG_LEVEL")
+  const port = yield* Config.number("BACKEND_PORT").pipe(Effect.map(portFromNumber))
+  const logLevel = yield* Config.logLevel("BACKEND_LOG_LEVEL")
 
   const masterdataPg: MasterdataPgConfig = {
     url: yield* Config.redacted("MASTERDATA_PG_URL"),

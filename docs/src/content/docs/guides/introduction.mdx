@@ -92,9 +92,9 @@ Config is read through Effect `Config` and typically provided by `.env` / `.env.
 
 **App (prod/dev)**
 
-* `APP_PORT` (default: 4000)
-* `APP_ENV` (one of `dev | test | staging | prod`)
-* `APP_LOG_LEVEL` (default: Info)
+* `BACKEND_PORT` (default: 4000)
+* `BACKEND_ENV` (one of `dev | test | staging | prod`)
+* `BACKEND_LOG_LEVEL` (default: Info)
 * `MASTERDATA_PG_URL` (required)
 * `MASTERDATA_PG_POOL_MIN` (default: 0)
 * `MASTERDATA_PG_POOL_MAX` (default: 10)
@@ -102,9 +102,9 @@ Config is read through Effect `Config` and typically provided by `.env` / `.env.
 
 **Tests**
 
-* `TEST_APP_PORT` (default: 3000)
-* `TEST_APP_ENV`
-* `TEST_APP_LOG_LEVEL`
+* `TEST_BACKEND_PORT` (default: 3000)
+* `TEST_BACKEND_ENV`
+* `TEST_BACKEND_LOG_LEVEL`
 * `TEST_MASTERDATA_PG_URL`
 * `TEST_MASTERDATA_PG_POOL_MIN`, `TEST_MASTERDATA_PG_POOL_MAX`, `TEST_MASTERDATA_PG_IDLE_TIMEOUT_MS`
 

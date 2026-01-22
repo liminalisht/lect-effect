@@ -61,7 +61,7 @@ The key: you *do not* touch handlers, domain schemas, or repo implementations; y
 
 ### Step 3 — Define a lect registry and select it from config
 
-Add something like `APP_LECT` with a `Schema.Literal(...ids...)`. Then:
+Add something like `BACKEND_LECT` with a `Schema.Literal(...ids...)`. Then:
 
 * `loadLectId` reads/validates the lect id.
 * `lect = registry[lectId]`.
@@ -81,7 +81,7 @@ To keep code small, do **one** of these (in increasing purity):
    Keep `ConfigService` but change its `masterdataPg` field from a *value* to an *effectful thunk* (or function) so it’s only evaluated when `masterdataDbLayer` is actually built. Then a hello-only lect never constructs `masterdataDbLayer`, hence never reads those env vars.
 
 2. **Split config tags** (cleaner, still modest):
-   `AppConfigService` reads `APP_*`.
+   `AppConfigService` reads `BACKEND_*`.
    `MasterdataDbConfigService` reads `MASTERDATA_*`.
    `masterdataDbLayer` depends on `MasterdataDbConfigService` instead of the monolithic `ConfigService`.
    This makes `CfgKeys(L)` literally trackable per module.

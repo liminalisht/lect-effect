@@ -7,21 +7,21 @@ import { portSchema } from '../../../src/services/appConfig/interface/port.js';
 import { type AppConfig, AppConfigService } from '../../../src/services/appConfig/interface/index.js';
 
 const loadPort = Effect.gen(function * () {
-  const port = yield * Config.number('TEST_APP_PORT')
+  const port = yield * Config.number('TEST_BACKEND_PORT')
     .pipe(Config.withDefault(3000))
     .pipe(Effect.map(number => portSchema.make(number)));
   return port;
 });
 
 const loadEnvironment = Effect.gen(function * () {
-  const environment = yield * Config.string('TEST_APP_ENV')
+  const environment = yield * Config.string('TEST_BACKEND_ENV')
     .pipe(Effect.flatMap(env => Schema.decodeUnknown(environmentSchema)(env)))
-    .pipe(Effect.mapError(cause => ConfigError.InvalidData(['APP_ENV'], cause instanceof Error ? cause.message : JSON.stringify(cause))));
+    .pipe(Effect.mapError(cause => ConfigError.InvalidData(['BACKEND_ENV'], cause instanceof Error ? cause.message : JSON.stringify(cause))));
   return environment;
 });
 
 const loadLogLevel = Effect.gen(function * () {
-  const logLevel = yield * Config.logLevel('TEST_APP_LOG_LEVEL')
+  const logLevel = yield * Config.logLevel('TEST_BACKEND_LOG_LEVEL')
     .pipe(Config.withDefault(LogLevel.None));
   return logLevel;
 });
