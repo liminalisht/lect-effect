@@ -3,6 +3,7 @@
  * @since 1.0.0
  */
 import {type Routes} from '@angular/router';
+import { HelloPage } from './features/hello/hello.page.js';
 import {ToyPage} from './features/toy/toy.page.js';
 
 /**
@@ -10,5 +11,7 @@ import {ToyPage} from './features/toy/toy.page.js';
  * @since 1.0.0
  */
 export const routes: Routes = [
-  {path: '', component: ToyPage},
+  { path: '', component: HelloPage },
+  { path: 'toy', component: ToyPage },
+  { path: '**', redirectTo: '' },
 ];

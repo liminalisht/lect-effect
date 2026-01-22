@@ -1,0 +1,21 @@
+<h1>Hello</h1>
+
+<label>
+  Name (optional):
+  <input
+    [value]="store.name()"
+    (input)="onNameInput($event)"
+    placeholder="World"
+  />
+</label>
+
+<button type="button" (click)="store.run()">Greet</button>
+
+<hr />
+
+@if (store.greeting() !== null) {
+  <p><strong>Greeting:</strong> {{ store.greeting() }}</p>
+}
+
+<h2>Debug</h2>
+<pre>{{ store.state() | json }}</pre>

@@ -1,0 +1,598 @@
+.
+├── apps
+│   └── web
+│       ├── angular.json
+│       ├── dist
+│       │   └── web
+│       │       ├── 3rdpartylicenses.txt
+│       │       ├── browser
+│       │       │   ├── favicon.ico
+│       │       │   ├── index.csr.html
+│       │       │   ├── index.html
+│       │       │   ├── main-3KITM4DR.js
+│       │       │   └── styles-5INURTSO.css
+│       │       ├── prerendered-routes.json
+│       │       └── server
+│       │           ├── angular-app-engine-manifest.mjs
+│       │           ├── angular-app-manifest.mjs
+│       │           ├── assets-chunks
+│       │           │   ├── index_csr_html.mjs
+│       │           │   ├── index_html.mjs
+│       │           │   ├── index_server_html.mjs
+│       │           │   └── styles-5INURTSO_css.mjs
+│       │           ├── chunk-BAB2RSDS.mjs
+│       │           ├── chunk-EOKHPW4D.mjs
+│       │           ├── chunk-L2MVFUKD.mjs
+│       │           ├── chunk-WVCJAG3M.mjs
+│       │           ├── index.server.html
+│       │           ├── main.server.mjs
+│       │           ├── polyfills.server.mjs
+│       │           └── server.mjs
+│       ├── node_modules
+│       │   ├── @angular
+│       │   │   ├── build -> ../../../../node_modules/.pnpm/@angular+build@21.1.0_3541c56f260aec1b2395446b45f29a72/node_modules/@angular/build
+│       │   │   ├── cli -> ../../../../node_modules/.pnpm/@angular+cli@21.1.0_@types+node@20.19.30_chokidar@5.0.0_hono@4.11.4/node_modules/@angular/cli
+│       │   │   ├── common -> ../../../../node_modules/.pnpm/@angular+common@21.1.0_@angular+core@21.1.0_@angular+compiler@21.1.0_rxjs@7.8.2__rxjs@7.8.2/node_modules/@angular/common
+│       │   │   ├── compiler -> ../../../../node_modules/.pnpm/@angular+compiler@21.1.0/node_modules/@angular/compiler
+│       │   │   ├── compiler-cli -> ../../../../node_modules/.pnpm/@angular+compiler-cli@21.1.0_@angular+compiler@21.1.0_typescript@5.9.3/node_modules/@angular/compiler-cli
+│       │   │   ├── core -> ../../../../node_modules/.pnpm/@angular+core@21.1.0_@angular+compiler@21.1.0_rxjs@7.8.2/node_modules/@angular/core
+│       │   │   ├── forms -> ../../../../node_modules/.pnpm/@angular+forms@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@angular+compiler@21._5decc6bcc888632db53ce9f855c87e3e/node_modules/@angular/forms
+│       │   │   ├── platform-browser -> ../../../../node_modules/.pnpm/@angular+platform-browser@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@angular+c_94cc96c27e849685dc3d85c033aa0c2e/node_modules/@angular/platform-browser
+│       │   │   ├── platform-browser-dynamic -> ../../../../node_modules/.pnpm/@angular+platform-browser-dynamic@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@a_4c0d6e7a1873f87b253bbc05af28f0c1/node_modules/@angular/platform-browser-dynamic
+│       │   │   ├── platform-server -> ../../../../node_modules/.pnpm/@angular+platform-server@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@angular+co_0030667f96c3f146f450afc7b89f746b/node_modules/@angular/platform-server
+│       │   │   ├── router -> ../../../../node_modules/.pnpm/@angular+router@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@angular+compiler@21_d563b0450c46b4751e60d63c377eec82/node_modules/@angular/router
+│       │   │   └── ssr -> ../../../../node_modules/.pnpm/@angular+ssr@21.1.0_@angular+common@21.1.0_@angular+core@21.1.0_@angular+compiler@21.1._60f3ff2c9ed03849cf4ebb21b8cce025/node_modules/@angular/ssr
+│       │   ├── @lect-effect
+│       │   │   └── domain -> ../../../../packages/domain
+│       │   ├── @types
+│       │   │   ├── express -> ../../../../node_modules/.pnpm/@types+express@5.0.6/node_modules/@types/express
+│       │   │   └── node -> ../../../../node_modules/.pnpm/@types+node@20.19.30/node_modules/@types/node
+│       │   ├── effect -> ../../../node_modules/.pnpm/effect@3.19.14/node_modules/effect
+│       │   ├── express -> ../../../node_modules/.pnpm/express@5.2.1/node_modules/express
+│       │   ├── jsdom -> ../../../node_modules/.pnpm/jsdom@27.4.0/node_modules/jsdom
+│       │   ├── rxjs -> ../../../node_modules/.pnpm/rxjs@7.8.2/node_modules/rxjs
+│       │   ├── tslib -> ../../../node_modules/.pnpm/tslib@2.8.1/node_modules/tslib
+│       │   ├── typescript -> ../../../node_modules/.pnpm/typescript@5.9.3/node_modules/typescript
+│       │   └── vitest -> ../../../node_modules/.pnpm/vitest@4.0.17_@types+node@20.19.30_jsdom@27.4.0_sass@1.97.1_tsx@4.21.0/node_modules/vitest
+│       ├── package.json
+│       ├── proxy.conf.json
+│       ├── public
+│       │   └── favicon.ico
+│       ├── README.md
+│       ├── src
+│       │   ├── app
+│       │   │   ├── app.config.server.ts
+│       │   │   ├── app.config.ts
+│       │   │   ├── app.html
+│       │   │   ├── app.routes.server.ts
+│       │   │   ├── app.routes.ts
+│       │   │   ├── app.scss
+│       │   │   ├── app.spec.ts
+│       │   │   ├── app.ts
+│       │   │   ├── core
+│       │   │   │   ├── effect
+│       │   │   │   │   ├── remote-data.ts
+│       │   │   │   │   └── ui-runtime.ts
+│       │   │   │   └── graphql
+│       │   │   │       ├── graphql-client.ts
+│       │   │   │       └── graphql-errors.ts
+│       │   │   └── features
+│       │   │       └── toy
+│       │   │           ├── toy.page.html
+│       │   │           ├── toy.page.scss
+│       │   │           ├── toy.page.ts
+│       │   │           └── toy.store.ts
+│       │   ├── index.html
+│       │   ├── main.server.ts
+│       │   ├── main.ts
+│       │   ├── server.ts
+│       │   └── styles.scss
+│       ├── tsconfig.app.json
+│       ├── tsconfig.json
+│       └── tsconfig.spec.json
+├── archive.zip
+├── build.sh
+├── code_other_project.md
+├── code.md
+├── dist
+│   ├── packages
+│   │   └── domain
+│   │       └── src
+│   │           ├── errors.js
+│   │           ├── hello
+│   │           │   ├── greeting.js
+│   │           │   ├── helloResponse.js
+│   │           │   ├── name.js
+│   │           │   └── nameInput.js
+│   │           ├── item
+│   │           │   ├── createItemInput.js
+│   │           │   ├── item.js
+│   │           │   ├── itemDescription.js
+│   │           │   ├── itemId.js
+│   │           │   ├── itemIdInput.js
+│   │           │   └── packSize.js
+│   │           └── product
+│   │               ├── createProductWithItemsInput.js
+│   │               ├── product.js
+│   │               ├── productDescription.js
+│   │               ├── productId.js
+│   │               ├── productIdInput.js
+│   │               ├── productInput.js
+│   │               └── productWithItems.js
+│   ├── src
+│   │   ├── app.js
+│   │   ├── errors.js
+│   │   ├── graphql
+│   │   │   ├── context.js
+│   │   │   ├── effect.js
+│   │   │   ├── errors.js
+│   │   │   ├── resolvers.js
+│   │   │   ├── schema.js
+│   │   │   ├── server.js
+│   │   │   └── yoga.js
+│   │   ├── handlers
+│   │   │   ├── generic.js
+│   │   │   ├── hello.js
+│   │   │   ├── item.js
+│   │   │   └── product.js
+│   │   ├── index.js
+│   │   ├── services
+│   │   │   ├── app
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── appConfig
+│   │   │   │   ├── implementation.js
+│   │   │   │   ├── interface
+│   │   │   │   │   ├── environment.js
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   ├── loglevel.js
+│   │   │   │   │   └── port.js
+│   │   │   │   └── layer.js
+│   │   │   ├── config
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── errors.js
+│   │   │   ├── greeting
+│   │   │   │   ├── implementation.js
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── itemRepo
+│   │   │   │   ├── implementation.js
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── logger
+│   │   │   │   └── layer.js
+│   │   │   ├── masterdataDb
+│   │   │   │   ├── implementation.js
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── masterdataDbConfig
+│   │   │   │   ├── implementation.js
+│   │   │   │   ├── interface.js
+│   │   │   │   └── layer.js
+│   │   │   ├── pgClientConfig
+│   │   │   │   └── interface.js
+│   │   │   └── productRepo
+│   │   │       ├── implementation.js
+│   │   │       ├── interface.js
+│   │   │       └── layer.js
+│   │   └── utilities
+│   │       └── decode.js
+│   └── test
+│       ├── graphql
+│       │   └── resolvers
+│       │       ├── hello.test.js
+│       │       └── productItem.test.js
+│       ├── handlers
+│       │   ├── hello.test.js
+│       │   ├── item.test.js
+│       │   └── product.test.js
+│       ├── services
+│       │   ├── app.js
+│       │   ├── appConfig
+│       │   │   ├── implementation.js
+│       │   │   ├── interface
+│       │   │   │   ├── environment.test.js
+│       │   │   │   └── port.test.js
+│       │   │   ├── layer.js
+│       │   │   └── logLevel.test.js
+│       │   └── masterdataDbConfig
+│       │       ├── implementation.js
+│       │       └── layer.js
+│       └── testRuntime.js
+├── docker-compose.yml
+├── docs
+│   ├── astro.config.mjs
+│   ├── node_modules
+│   │   ├── @astrojs
+│   │   │   └── starlight -> ../.pnpm/@astrojs+starlight@0.37.2_astro@5.16.9_rollup@4.55.1_typescript@5.9.3_/node_modules/@astrojs/starlight
+│   │   ├── astro -> .pnpm/astro@5.16.9_rollup@4.55.1_typescript@5.9.3/node_modules/astro
+│   │   ├── sharp -> .pnpm/sharp@0.34.5/node_modules/sharp
+│   │   └── starlight-theme-gruvbox -> .pnpm/starlight-theme-gruvbox@1.0.0_@astrojs+starlight@0.37.2_astro@5.16.9_rollup@4.55.1_type_9e87ec939906183354a0b679f0408a9c/node_modules/starlight-theme-gruvbox
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── public
+│   │   └── favicon.svg
+│   ├── README.md
+│   ├── src
+│   │   ├── assets
+│   │   │   └── lect-effect.png
+│   │   ├── content
+│   │   │   └── docs
+│   │   │       ├── backend
+│   │   │       │   ├── _config.yml
+│   │   │       │   ├── index.md
+│   │   │       │   └── modules
+│   │   │       │       ├── app.ts.md
+│   │   │       │       ├── errors.ts.md
+│   │   │       │       ├── graphql
+│   │   │       │       │   ├── context.ts.md
+│   │   │       │       │   ├── effect.ts.md
+│   │   │       │       │   ├── errors.ts.md
+│   │   │       │       │   ├── resolvers.ts.md
+│   │   │       │       │   ├── schema.ts.md
+│   │   │       │       │   ├── server.ts.md
+│   │   │       │       │   └── yoga.ts.md
+│   │   │       │       ├── handlers
+│   │   │       │       │   ├── generic.ts.md
+│   │   │       │       │   ├── hello.ts.md
+│   │   │       │       │   ├── item.ts.md
+│   │   │       │       │   └── product.ts.md
+│   │   │       │       ├── index.md
+│   │   │       │       ├── index.ts.md
+│   │   │       │       ├── services
+│   │   │       │       │   ├── app
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── appConfig
+│   │   │       │       │   │   ├── implementation.ts.md
+│   │   │       │       │   │   ├── interface
+│   │   │       │       │   │   │   ├── environment.ts.md
+│   │   │       │       │   │   │   ├── index.ts.md
+│   │   │       │       │   │   │   ├── loglevel.ts.md
+│   │   │       │       │   │   │   └── port.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── config
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── errors.ts.md
+│   │   │       │       │   ├── greeting
+│   │   │       │       │   │   ├── implementation.ts.md
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── itemRepo
+│   │   │       │       │   │   ├── implementation.ts.md
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── logger
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── masterdataDb
+│   │   │       │       │   │   ├── implementation.ts.md
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── masterdataDbConfig
+│   │   │       │       │   │   ├── implementation.ts.md
+│   │   │       │       │   │   ├── interface.ts.md
+│   │   │       │       │   │   └── layer.ts.md
+│   │   │       │       │   ├── pgClientConfig
+│   │   │       │       │   │   └── interface.ts.md
+│   │   │       │       │   └── productRepo
+│   │   │       │       │       ├── implementation.ts.md
+│   │   │       │       │       ├── interface.ts.md
+│   │   │       │       │       └── layer.ts.md
+│   │   │       │       └── utilities
+│   │   │       │           └── decode.ts.md
+│   │   │       ├── domain
+│   │   │       │   ├── _config.yml
+│   │   │       │   ├── index.md
+│   │   │       │   └── modules
+│   │   │       │       ├── errors.ts.md
+│   │   │       │       ├── hello
+│   │   │       │       │   ├── greeting.ts.md
+│   │   │       │       │   ├── helloResponse.ts.md
+│   │   │       │       │   ├── name.ts.md
+│   │   │       │       │   └── nameInput.ts.md
+│   │   │       │       ├── index.md
+│   │   │       │       ├── item
+│   │   │       │       │   ├── createItemInput.ts.md
+│   │   │       │       │   ├── item.ts.md
+│   │   │       │       │   ├── itemDescription.ts.md
+│   │   │       │       │   ├── itemId.ts.md
+│   │   │       │       │   ├── itemIdInput.ts.md
+│   │   │       │       │   └── packSize.ts.md
+│   │   │       │       └── product
+│   │   │       │           ├── createProductWithItemsInput.ts.md
+│   │   │       │           ├── product.ts.md
+│   │   │       │           ├── productDescription.ts.md
+│   │   │       │           ├── productId.ts.md
+│   │   │       │           ├── productIdInput.ts.md
+│   │   │       │           ├── productInput.ts.md
+│   │   │       │           └── productWithItems.ts.md
+│   │   │       ├── frontend
+│   │   │       │   ├── _config.yml
+│   │   │       │   ├── index.md
+│   │   │       │   └── modules
+│   │   │       │       ├── app
+│   │   │       │       │   ├── app.config.server.ts.md
+│   │   │       │       │   ├── app.config.ts.md
+│   │   │       │       │   ├── app.routes.server.ts.md
+│   │   │       │       │   ├── app.routes.ts.md
+│   │   │       │       │   ├── app.ts.md
+│   │   │       │       │   ├── core
+│   │   │       │       │   │   ├── effect
+│   │   │       │       │   │   │   ├── remote-data.ts.md
+│   │   │       │       │   │   │   └── ui-runtime.ts.md
+│   │   │       │       │   │   └── graphql
+│   │   │       │       │   │       ├── graphql-client.ts.md
+│   │   │       │       │   │       └── graphql-errors.ts.md
+│   │   │       │       │   └── features
+│   │   │       │       │       └── toy
+│   │   │       │       │           ├── toy.page.ts.md
+│   │   │       │       │           └── toy.store.ts.md
+│   │   │       │       ├── index.md
+│   │   │       │       ├── main.server.ts.md
+│   │   │       │       ├── main.ts.md
+│   │   │       │       └── server.ts.md
+│   │   │       ├── guides
+│   │   │       │   ├── architecture.mdx
+│   │   │       │   ├── code-organization.mdx
+│   │   │       │   ├── contributing.mdx
+│   │   │       │   └── introduction.mdx
+│   │   │       └── index.mdx
+│   │   └── content.config.ts
+│   └── tsconfig.json
+├── docs.sh
+├── effect.llms.full.md
+├── git_archive.sh
+├── iterate.sh
+├── lint.sh
+├── migrations
+│   └── masterdatadb
+│       ├── 20251204000000000_create_product.js
+│       └── 20251205000000000_create_item_and_item_prod.js
+├── node_modules
+│   ├── @effect
+│   │   ├── docgen -> ../.pnpm/@effect+docgen@0.5.2_tsx@4.21.0_typescript@5.9.3/node_modules/@effect/docgen
+│   │   ├── language-service -> ../.pnpm/@effect+language-service@0.64.1/node_modules/@effect/language-service
+│   │   ├── platform-node -> ../.pnpm/@effect+platform-node@0.104.0_@effect+cluster@0.56.1_@effect+platform@0.94.1_effect@3.1_08c0332ad83ff6c8a557f1ee9832a4d0/node_modules/@effect/platform-node
+│   │   ├── sql -> ../.pnpm/@effect+sql@0.49.0_@effect+experimental@0.58.0_@effect+platform@0.94.1_effect@3.19.14___ce3b2d15b6609bd13504cde864558e45/node_modules/@effect/sql
+│   │   ├── sql-pg -> ../.pnpm/@effect+sql-pg@0.50.1_@effect+experimental@0.58.0_@effect+platform@0.94.1_effect@3.19.1_d0a510e7a0609465e93466da9f44663b/node_modules/@effect/sql-pg
+│   │   └── vitest -> ../.pnpm/@effect+vitest@0.27.0_effect@3.19.14_vitest@3.2.4_@types+node@25.0.3_jsdom@27.4.0_sass@1.97.1_tsx@4.21.0_/node_modules/@effect/vitest
+│   ├── @gqloom
+│   │   ├── core -> ../.pnpm/@gqloom+core@0.15.0_graphql@16.12.0/node_modules/@gqloom/core
+│   │   └── effect -> ../.pnpm/@gqloom+effect@0.13.0_@gqloom+core@0.15.0_graphql@16.12.0__effect@3.19.14_graphql@16.12.0/node_modules/@gqloom/effect
+│   ├── @lect-effect
+│   │   └── domain -> ../../packages/domain
+│   ├── @tsconfig
+│   │   └── node24 -> ../.pnpm/@tsconfig+node24@24.0.3/node_modules/@tsconfig/node24
+│   ├── @types
+│   │   └── node -> ../.pnpm/@types+node@25.0.3/node_modules/@types/node
+│   ├── concurrently -> .pnpm/concurrently@9.2.1/node_modules/concurrently
+│   ├── dotenv -> .pnpm/dotenv@17.2.3/node_modules/dotenv
+│   ├── effect -> .pnpm/effect@3.19.14/node_modules/effect
+│   ├── env-cmd -> .pnpm/env-cmd@11.0.0/node_modules/env-cmd
+│   ├── fast-check -> .pnpm/fast-check@4.5.3/node_modules/fast-check
+│   ├── graphql -> .pnpm/graphql@16.12.0/node_modules/graphql
+│   ├── graphql-yoga -> .pnpm/graphql-yoga@5.18.0_graphql@16.12.0/node_modules/graphql-yoga
+│   ├── node-pg-migrate -> .pnpm/node-pg-migrate@8.0.4_pg@8.16.3/node_modules/node-pg-migrate
+│   ├── typescript -> .pnpm/typescript@5.9.3/node_modules/typescript
+│   ├── vitest -> .pnpm/vitest@3.2.4_@types+node@25.0.3_jsdom@27.4.0_sass@1.97.1_tsx@4.21.0/node_modules/vitest
+│   └── xo -> .pnpm/xo@1.2.3_@types+eslint@8.56.12_@typescript-eslint+utils@8.52.0_eslint@9.39.2_typescript@5.9.3__typescript@5.9.3/node_modules/xo
+├── package.json
+├── packages
+│   └── domain
+│       ├── dist
+│       │   ├── errors.d.ts
+│       │   ├── errors.d.ts.map
+│       │   ├── errors.js
+│       │   ├── hello
+│       │   │   ├── greeting.d.ts
+│       │   │   ├── greeting.d.ts.map
+│       │   │   ├── greeting.js
+│       │   │   ├── helloResponse.d.ts
+│       │   │   ├── helloResponse.d.ts.map
+│       │   │   ├── helloResponse.js
+│       │   │   ├── name.d.ts
+│       │   │   ├── name.d.ts.map
+│       │   │   ├── name.js
+│       │   │   ├── nameInput.d.ts
+│       │   │   ├── nameInput.d.ts.map
+│       │   │   └── nameInput.js
+│       │   ├── item
+│       │   │   ├── createItemInput.d.ts
+│       │   │   ├── createItemInput.d.ts.map
+│       │   │   ├── createItemInput.js
+│       │   │   ├── item.d.ts
+│       │   │   ├── item.d.ts.map
+│       │   │   ├── item.js
+│       │   │   ├── itemDescription.d.ts
+│       │   │   ├── itemDescription.d.ts.map
+│       │   │   ├── itemDescription.js
+│       │   │   ├── itemId.d.ts
+│       │   │   ├── itemId.d.ts.map
+│       │   │   ├── itemId.js
+│       │   │   ├── itemIdInput.d.ts
+│       │   │   ├── itemIdInput.d.ts.map
+│       │   │   ├── itemIdInput.js
+│       │   │   ├── packSize.d.ts
+│       │   │   ├── packSize.d.ts.map
+│       │   │   └── packSize.js
+│       │   └── product
+│       │       ├── createProductWithItemsInput.d.ts
+│       │       ├── createProductWithItemsInput.d.ts.map
+│       │       ├── createProductWithItemsInput.js
+│       │       ├── product.d.ts
+│       │       ├── product.d.ts.map
+│       │       ├── product.js
+│       │       ├── productDescription.d.ts
+│       │       ├── productDescription.d.ts.map
+│       │       ├── productDescription.js
+│       │       ├── productId.d.ts
+│       │       ├── productId.d.ts.map
+│       │       ├── productId.js
+│       │       ├── productIdInput.d.ts
+│       │       ├── productIdInput.d.ts.map
+│       │       ├── productIdInput.js
+│       │       ├── productInput.d.ts
+│       │       ├── productInput.d.ts.map
+│       │       ├── productInput.js
+│       │       ├── productWithItems.d.ts
+│       │       ├── productWithItems.d.ts.map
+│       │       └── productWithItems.js
+│       ├── node_modules
+│       │   ├── @effect
+│       │   │   └── vitest -> ../../../../node_modules/.pnpm/@effect+vitest@0.27.0_effect@3.19.14_vitest@3.2.4_@types+node@25.0.3_jsdom@27.4.0_sass@1.97.1_tsx@4.21.0_/node_modules/@effect/vitest
+│       │   ├── effect -> ../../../node_modules/.pnpm/effect@3.19.14/node_modules/effect
+│       │   ├── fast-check -> ../../../node_modules/.pnpm/fast-check@4.5.3/node_modules/fast-check
+│       │   ├── typescript -> ../../../node_modules/.pnpm/typescript@5.9.3/node_modules/typescript
+│       │   └── vitest -> ../../../node_modules/.pnpm/vitest@3.2.4_@types+node@25.0.3_jsdom@27.4.0_sass@1.97.1_tsx@4.21.0/node_modules/vitest
+│       ├── package.json
+│       ├── src
+│       │   ├── errors.ts
+│       │   ├── hello
+│       │   │   ├── greeting.ts
+│       │   │   ├── helloResponse.ts
+│       │   │   ├── name.ts
+│       │   │   └── nameInput.ts
+│       │   ├── item
+│       │   │   ├── createItemInput.ts
+│       │   │   ├── item.ts
+│       │   │   ├── itemDescription.ts
+│       │   │   ├── itemId.ts
+│       │   │   ├── itemIdInput.ts
+│       │   │   └── packSize.ts
+│       │   └── product
+│       │       ├── createProductWithItemsInput.ts
+│       │       ├── product.ts
+│       │       ├── productDescription.ts
+│       │       ├── productId.ts
+│       │       ├── productIdInput.ts
+│       │       ├── productInput.ts
+│       │       └── productWithItems.ts
+│       ├── test
+│       │   ├── hello
+│       │   │   ├── greeting.test.ts
+│       │   │   ├── helloResponse.test.ts
+│       │   │   ├── name.test.ts
+│       │   │   └── nameInput.test.ts
+│       │   ├── item
+│       │   │   ├── createItemInput.test.ts
+│       │   │   ├── item.test.ts
+│       │   │   ├── itemDescription.test.ts
+│       │   │   ├── itemId.test.ts
+│       │   │   ├── itemIdInput.test.ts
+│       │   │   └── packSize.test.ts
+│       │   └── product
+│       │       ├── createProductWithItemsInput.test.ts
+│       │       ├── product.test.ts
+│       │       ├── productDescription.test.ts
+│       │       ├── productId.test.ts
+│       │       ├── productIdInput.test.ts
+│       │       ├── productInput.test.ts
+│       │       └── productWithItems.test.ts
+│       └── tsconfig.json
+├── plans
+│   ├── angular.md
+│   ├── effect-refactor-plan.md
+│   ├── lect_plan.md
+│   ├── massive_refactor_plan.md
+│   ├── next_refactor_plan.md
+│   ├── packagejson.md
+│   ├── refactor_plan.md
+│   └── sql_plan.md
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── README.md
+├── run.backend.sh
+├── run.frontend.sh
+├── run.sh
+├── src
+│   ├── app.ts
+│   ├── errors.ts
+│   ├── graphql
+│   │   ├── context.ts
+│   │   ├── effect.ts
+│   │   ├── errors.ts
+│   │   ├── resolvers.ts
+│   │   ├── schema.ts
+│   │   ├── server.ts
+│   │   └── yoga.ts
+│   ├── handlers
+│   │   ├── generic.ts
+│   │   ├── hello.ts
+│   │   ├── item.ts
+│   │   └── product.ts
+│   ├── index.ts
+│   ├── services
+│   │   ├── app
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── appConfig
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface
+│   │   │   │   ├── environment.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── loglevel.ts
+│   │   │   │   └── port.ts
+│   │   │   └── layer.ts
+│   │   ├── config
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── errors.ts
+│   │   ├── greeting
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── itemRepo
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── logger
+│   │   │   └── layer.ts
+│   │   ├── masterdataDb
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── masterdataDbConfig
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface.ts
+│   │   │   └── layer.ts
+│   │   ├── pgClientConfig
+│   │   │   └── interface.ts
+│   │   └── productRepo
+│   │       ├── implementation.ts
+│   │       ├── interface.ts
+│   │       └── layer.ts
+│   └── utilities
+│       └── decode.ts
+├── test
+│   ├── graphql
+│   │   └── resolvers
+│   │       ├── hello.test.ts
+│   │       └── productItem.test.ts
+│   ├── handlers
+│   │   ├── hello.test.ts
+│   │   ├── item.test.ts
+│   │   └── product.test.ts
+│   ├── services
+│   │   ├── app.ts
+│   │   ├── appConfig
+│   │   │   ├── implementation.ts
+│   │   │   ├── interface
+│   │   │   │   ├── environment.test.ts
+│   │   │   │   └── port.test.ts
+│   │   │   ├── layer.ts
+│   │   │   └── logLevel.test.ts
+│   │   └── masterdataDbConfig
+│   │       ├── implementation.ts
+│   │       └── layer.ts
+│   └── testRuntime.ts
+├── tests.sh
+├── todo.md
+├── tree.txt
+├── tsconfig.json
+├── tsconfig.test.json
+├── vitest.config.ts
+└── xo.config.ts
+
+192 directories, 404 files
