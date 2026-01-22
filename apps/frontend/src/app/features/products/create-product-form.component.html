@@ -1,0 +1,74 @@
+<section class="create-product-form">
+  <header>
+    <h2>Create Product</h2>
+    <p>Draft product + items with schema-backed fields; no Angular Forms.</p>
+  </header>
+
+  <div class="field">
+    <label>
+      Product description
+      <input
+        [value]="productDescription.raw()"
+        (input)="onProductDescriptionInput($event)"
+        placeholder="e.g., Example product"
+      />
+    </label>
+    @if (!productDescription.isValid()) {
+      <p class="error">Enter a description or leave blank to send null.</p>
+    }
+  </div>
+
+  <div class="items">
+    <div class="items__header">
+      <h3>Items</h3>
+      <button type="button" (click)="addItem()">Add item</button>
+    </div>
+
+    @for (item of items(); track $index) {
+      <div class="item">
+        <div class="field">
+          <label>
+            Item description
+            <input
+              [value]="item.description.raw()"
+              (input)="onItemDescriptionInput($index, $event)"
+              placeholder="optional"
+            />
+          </label>
+          @if (!item.description.isValid()) {
+            <p class="error">Description must be text or blank.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label>
+            Pack size
+            <input
+              type="number"
+              inputmode="numeric"
+              [value]="item.packSize.raw()"
+              (input)="onItemPackSizeInput($index, $event)"
+              placeholder="e.g., 12"
+            />
+          </label>
+          @if (!item.packSize.isValid()) {
+            <p class="error">Pack size must be an integer.</p>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="remove"
+          (click)="removeItem($index)"
+          [disabled]="items().length <= 1"
+        >
+          Remove
+        </button>
+      </div>
+    }
+  </div>
+
+  <footer class="actions">
+    <button type="button" (click)="submit()" [disabled]="!canSubmit()">Submit</button>
+  </footer>
+</section>

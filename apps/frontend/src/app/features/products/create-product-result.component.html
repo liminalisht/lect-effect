@@ -1,0 +1,29 @@
+<section class="create-product-result">
+  @if (state._tag === 'Initial') {
+    <p>Submit the form to create a product.</p>
+  } @else if (state._tag === 'Loading') {
+    <p>Creating product…</p>
+  } @else if (state._tag === 'Failure') {
+    <div class="error">
+      <p>Creation failed.</p>
+      <pre>{{ state.error | json }}</pre>
+    </div>
+  } @else if (state._tag === 'Success') {
+    <div class="success">
+      <h3>Created product</h3>
+      <p><strong>ID:</strong> {{ state.value.product.id }}</p>
+      <p><strong>Description:</strong> {{ state.value.product.description ?? '—' }}</p>
+
+      <h4>Items</h4>
+      <ul>
+        @for (item of state.value.items; track item.id) {
+          <li>
+            <div><strong>ID:</strong> {{ item.id }}</div>
+            <div><strong>Description:</strong> {{ item.description ?? '—' }}</div>
+            <div><strong>Pack size:</strong> {{ item.pack_size }}</div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</section>

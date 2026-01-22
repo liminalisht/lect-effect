@@ -1,0 +1,79 @@
+.create-product-form {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #d5d7de;
+  border-radius: 8px;
+  background: #f8f9fb;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+input {
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #c8ccd7;
+  font-size: 1rem;
+}
+
+.items {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.items__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #e1e4ec;
+  border-radius: 6px;
+  background: #fff;
+}
+
+button {
+  align-self: flex-start;
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #1c64f2;
+  background: #1c64f2;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.remove {
+  border-color: #d92d20;
+  background: #d92d20;
+}
+
+.error {
+  margin: 0;
+  color: #c0122d;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

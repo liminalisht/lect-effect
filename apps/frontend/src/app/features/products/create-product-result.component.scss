@@ -1,0 +1,29 @@
+.create-product-result {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #d5d7de;
+  border-radius: 8px;
+  background: #f8f9fb;
+}
+
+.error pre {
+  background: #fff1f2;
+  border: 1px solid #f8c4cb;
+  padding: 0.75rem;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+.success ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.success li {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e1e4ec;
+  border-radius: 6px;
+  background: #fff;
+}

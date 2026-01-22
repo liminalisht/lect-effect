@@ -1,0 +1,10 @@
+<main class="create-product-page">
+  <header>
+    <h1>Create product with items</h1>
+    <p>Second end-to-end slice: schema-backed form → store → GraphQL.</p>
+  </header>
+
+  <app-create-product-form (submitted)="onSubmit($event)"></app-create-product-form>
+
+  <app-create-product-result [state]="store.state()"></app-create-product-result>
+</main>
