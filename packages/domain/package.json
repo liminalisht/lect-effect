@@ -19,26 +19,12 @@
   "files": ["dist"],
   "sideEffects": false,
   "scripts": {
-    "_clean": "rm -rf dist",
-    "_build": "tsc -p tsconfig.json",
-    "_test": "vitest run --dir test",
-    "_docs": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/domain/ --exclude \"**/test/**\"",
-    "_install": "pnpm --dir ../.. install --filter ./packages/domain --frozen-lockfile",
-    "_install:nofreeze": "pnpm --dir ../.. install --filter ./packages/domain --no-frozen-lockfile",
-
-    "lect-effect/domain/clean": "pnpm run _clean",
-    "lect-effect/domain/build": "pnpm run _build",
-    "lect-effect/domain/test": "pnpm run _test",
-    "lect-effect/domain/docs:generate": "pnpm run _docs",
-    "lect-effect/domain/clean:build": "pnpm run _clean && pnpm run _build",
-    "lect-effect/domain/clean:build:test": "pnpm run _clean && pnpm run _build && pnpm run _test",
-    "lect-effect/domain/install": "pnpm run _install",
-    "lect-effect/domain/install:nofreeze": "pnpm run _install:nofreeze",
-
-    "clean": "pnpm run _clean",
-    "build": "pnpm run _build",
-    "test": "pnpm run _test",
-    "docs:generate": "pnpm run _docs"
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --dir test",
+    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/domain/ --exclude \"**/test/**\"",
+    "install": "pnpm --dir ../.. install --filter ./packages/domain --frozen-lockfile",
+    "install:nofreeze": "pnpm --dir ../.. install --filter ./packages/domain --no-frozen-lockfile"
   },
   "dependencies": {
     "effect": "^3.19.14"

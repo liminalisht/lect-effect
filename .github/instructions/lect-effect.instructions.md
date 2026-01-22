@@ -26,7 +26,7 @@ To run tests, use:
 
 If we need to run the project, we can do so with:
 ```sh
-./run.sh
+./start.sh
 ```
 
 ## 4. Linting

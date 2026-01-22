@@ -3,4 +3,4 @@
 set -e
 
 ./build.sh
-pnpm lect-effect/frontend/start
+pnpm -C apps/frontend start

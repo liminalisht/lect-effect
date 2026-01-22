@@ -3,5 +3,5 @@
 set -e
 
 ./build.sh
-pnpm migrate:test-masterdata:up
+pnpm lect-effect/migrate/test-masterdata:up
 pnpm lect-effect/test
