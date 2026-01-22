@@ -11,11 +11,12 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import { type Express } from 'express';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const browserDistFolder: string = join(import.meta.dirname, '../browser');
 
-const app = express();
-const angularApp = new AngularNodeAppEngine();
+const app: Express = express();
+const angularApp: AngularNodeAppEngine = new AngularNodeAppEngine();
 
 /**
  * Example Express Rest API endpoints can be defined here.

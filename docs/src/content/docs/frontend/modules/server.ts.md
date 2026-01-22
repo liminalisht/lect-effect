@@ -1,6 +1,6 @@
 ---
 title: server.ts
-nav_order: 14
+nav_order: 17
 parent: Modules
 ---
 
@@ -28,7 +28,7 @@ Request handler used by the Angular CLI (for dev-server and during build) or Fir
 **Signature**
 
 ```ts
-export declare const reqHandler: Express
+export declare const reqHandler: express.Express
 ```
 
 Added in v1.0.0

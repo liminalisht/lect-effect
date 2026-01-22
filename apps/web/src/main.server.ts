@@ -1,5 +1,7 @@
 /**
- * Server bootstrap entrypoint for Angular SSR.
+ * Server bootstrap entrypoint for Angular SSR. This file is compiled into the
+ * server bundle (`dist/web/server/main.server.mjs`) and is loaded automatically
+ * by Angular's SSR runtime; it is not imported directly from `server.ts`.
  * @since 1.0.0
  */
 import { type BootstrapContext, bootstrapApplication } from '@angular/platform-browser';

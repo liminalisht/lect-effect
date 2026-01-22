@@ -1,20 +1,17 @@
 /**
+ * @fileoverview Hello API client using Effect and shared schemas.
+ * @since 1.0.0
+ *
  * Implementation requirements (these are the “laws”):
-
-The module must not import Angular.
-
-It must:
-
-validate variables via shared schema nameInputSchema,
-
-call GraphQL with GraphQLClientTag.request(...),
-
-validate the returned data via a schema,
-
-return HelloResponse (not the whole GraphQL envelope).
-
-Because GraphQLClient.request returns the GraphQL data JSON (not { data, errors }), you must decode the shape { greet: HelloResponse } and then project .greet. This matches the backend test shape (json.data.greet.greeting)
-
+ * - Do not import Angular.
+ * - Validate variables via shared schema `nameInputSchema`.
+ * - Call GraphQL with `GraphQLClientTag.request(...)`.
+ * - Validate the returned data via a schema.
+ * - Return `HelloResponse` (not the whole GraphQL envelope).
+ *
+ * Because `GraphQLClient.request` returns only the GraphQL data JSON (not `{ data, errors }`),
+ * decode the shape `{ greet: HelloResponse }` and then project `.greet`. This matches the backend
+ * test shape (`json.data.greet.greeting`).
  */
 import { Effect, Schema } from 'effect';
 import type { ParseError } from 'effect/ParseResult';
@@ -23,6 +20,10 @@ import { helloResponseSchema, type HelloResponse } from '@lect-effect/domain/hel
 import { GraphQLClientTag, type GraphQLClient } from '../app/core/graphql/graphql-client.js';
 import type { GraphQLClientError } from '../app/core/graphql/graphql-errors.js';
 
+/**
+ * Errors possible from the hello API call.
+ * @since 1.0.0
+ */
 export type HelloApiError = GraphQLClientError | ParseError;
 
 // Must match backend schema/tests:
@@ -42,6 +43,10 @@ const normalizeNameVar = (input: NameInput): {name: string | null} => ({
   name: input.name ?? null,
 });
 
+/**
+ * Calls the hello GraphQL resolver and returns a normalized greeting.
+ * @since 1.0.0
+ */
 export const greet = (input: unknown): Effect.Effect<HelloResponse, HelloApiError, GraphQLClient> =>
   Effect.gen(function * () {
     // normalize empty string → null (optional but recommended)

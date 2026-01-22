@@ -17,4 +17,4 @@ const serverConfig: ApplicationConfig = {
  * Merged application configuration for server bootstrap.
  * @since 1.0.0
  */
-export const config = mergeApplicationConfig(appConfig, serverConfig);
+export const config: ApplicationConfig = mergeApplicationConfig(appConfig, serverConfig);

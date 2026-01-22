@@ -1,12 +1,14 @@
 ---
 title: main.server.ts
-nav_order: 12
+nav_order: 15
 parent: Modules
 ---
 
 ## main.server overview
 
-Server bootstrap entrypoint for Angular SSR.
+Server bootstrap entrypoint for Angular SSR. This file is compiled into the
+server bundle (`dist/web/server/main.server.mjs`) and is loaded automatically
+by Angular's SSR runtime; it is not imported directly from `server.ts`.
 
 Added in v1.0.0
 
