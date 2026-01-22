@@ -8,14 +8,14 @@ Here’s a concrete, repo-wide scripting plan that fits your conventions (public
 - Each package’s public script simply delegates to its atomic in the same package (no cross-calls).
 - Root public scripts delegate to the package public scripts using `pnpm -C <path> run lect-effect/<area>/<action>`.
 
-### Frontend (apps/web/package.json)
+### Frontend (apps/frontend/package.json)
 Atomics (private):
 - `_clean`: `rm -rf dist .angular/cache`
 - `_build`: `ng build`
 - `_test`: `ng test`
 - `_start`: `ng serve --proxy-config proxy.conf.json`
 - `_watch`: `ng build --watch --configuration development`
-- `_serve:ssr`: `node dist/web/server/server.mjs`
+- `_serve:ssr`: `node dist/frontend/server/server.mjs`
 
 Public:
 - `lect-effect/frontend/clean`: `pnpm run _clean`
@@ -70,7 +70,7 @@ Root public scripts call package-level public scripts with `pnpm -C ... run ...`
 
 Each root script uses the public interface of subpackages, e.g.:
 - `pnpm -C packages/domain run lect-effect/domain/build`
-- `pnpm -C apps/web run lect-effect/frontend/build`
+- `pnpm -C apps/frontend run lect-effect/frontend/build`
 - Local backend public `lect-effect/backend/build` inside root.
 
 ### Docs package (docs/package.json)
@@ -90,7 +90,7 @@ Public:
 Root can optionally add `lect-effect/docs/build` passthrough: `pnpm -C docs run lect-effect/docs/build`.
 
 ## Rollout Steps
-1) Update package.json scripts to the atomic/public pattern above; remove old lect-effect/apps/web/* aliases.
+1) Update package.json scripts to the atomic/public pattern above; remove old lect-effect/apps/frontend/* aliases.
 2) Update package.json similarly; remove old lect-effect/packages/domain/* aliases.
 3) Add root backend atomics/public; replace old lect-effect/* aliases with the new layout.
 4) Add root orchestration scripts that only call public subpackage scripts via `pnpm -C <path> run lect-effect.`.

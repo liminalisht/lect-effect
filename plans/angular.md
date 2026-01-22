@@ -85,7 +85,7 @@ This aligns with your backend approach (Vitest + fast-check + `@effect/vitest`) 
 This mirrors your backend layering (domain → handlers/services) but adapted for Angular:
 
 ```
-apps/web/src/app/
+apps/frontend/src/app/
   core/
     effect/
       ui-runtime.ts        // ManagedRuntime boundary
@@ -633,7 +633,7 @@ Below is a concrete, **mechanical** sequence of edits that turns your current re
 
 * **`lect-effect` backend** (unchanged logical behavior)
 * **`@lect-effect/domain` shared package** (extracted from `src/domain`)
-* **`apps/web` Angular frontend** (zoneless + signals + Effect runtime bridge)
+* **`apps/frontend` Angular frontend** (zoneless + signals + Effect runtime bridge)
 
 I’m optimizing for a minimal working example (MWE) that:
 
@@ -855,11 +855,11 @@ At this point your backend should compile again.
 
 ---
 
-## Phase 3 — Add `apps/web` Angular app (zoneless + signals + Effect)
+## Phase 3 — Add `apps/frontend` Angular app (zoneless + signals + Effect)
 
-We will create the Angular app inside `apps/web` as in the architecture plan.
+We will create the Angular app inside `apps/frontend` as in the architecture plan.
 
-### 7. Scaffold Angular app into `apps/web`
+### 7. Scaffold Angular app into `apps/frontend`
 
 Use Angular CLI’s `ng new` with **zoneless** enabled.
 
@@ -873,7 +873,7 @@ From repo root:
 
 ```bash
 pnpm dlx @angular/cli@latest new web \
-  --directory apps/web \
+  --directory apps/frontend \
   --package-manager pnpm \
   --routing \
   --style scss \
@@ -895,10 +895,10 @@ pnpm install
 From repo root:
 
 ```bash
-pnpm -C apps/web add @lect-effect/domain@workspace:* effect
+pnpm -C apps/frontend add @lect-effect/domain@workspace:* effect
 ```
 
-(Angular deps are already in `apps/web/package.json` from `ng new`.)
+(Angular deps are already in `apps/frontend/package.json` from `ng new`.)
 
 ---
 
@@ -906,7 +906,7 @@ pnpm -C apps/web add @lect-effect/domain@workspace:* effect
 
 Your backend prints it serves GraphQL at `http://localhost:${port}/graphql`, and config defaults `port = 4000`.
 
-Create `apps/web/proxy.conf.json`:
+Create `apps/frontend/proxy.conf.json`:
 
 ```json
 {
@@ -918,7 +918,7 @@ Create `apps/web/proxy.conf.json`:
 }
 ```
 
-Update `apps/web/package.json` start script to:
+Update `apps/frontend/package.json` start script to:
 
 ```json
 "start": "ng serve --proxy-config proxy.conf.json"
@@ -936,7 +936,7 @@ Also, since we are zoneless: Angular’s own guide explicitly recommends moving 
 
 ### 10. Ensure zoneless provider exists in `app.config.ts`
 
-Depending on what `ng new --zoneless` generated, ensure `apps/web/src/app/app.config.ts` includes:
+Depending on what `ng new --zoneless` generated, ensure `apps/frontend/src/app/app.config.ts` includes:
 
 ```ts
 import { ApplicationConfig, provideZonelessChangeDetection } from "@angular/core";
@@ -954,7 +954,7 @@ This matches Angular’s zoneless guide. ([Angular][3])
 
 ### 11. Core GraphQL client as an Effect service
 
-Create `apps/web/src/app/core/graphql/graphql-client.ts`:
+Create `apps/frontend/src/app/core/graphql/graphql-client.ts`:
 
 ```ts
 import { Context, Effect, Layer, Schema } from "effect";
@@ -1017,7 +1017,7 @@ This is the “ambient functor” from HTTP to your Effect world: `fetch` is the
 
 ### 12. Core UI runtime bridge (ManagedRuntime)
 
-Create `apps/web/src/app/core/effect/ui-runtime.service.ts`:
+Create `apps/frontend/src/app/core/effect/ui-runtime.service.ts`:
 
 ```ts
 import { DestroyRef, Injectable } from "@angular/core";
@@ -1047,7 +1047,7 @@ This makes “where effects occur” explicit: **all fibers are launched through
 
 ### 13. A minimal `RemoteData` (optional but keeps state explicit)
 
-Create `apps/web/src/app/core/state/remote-data.ts`:
+Create `apps/frontend/src/app/core/state/remote-data.ts`:
 
 ```ts
 export type RemoteData<E, A> =
@@ -1068,7 +1068,7 @@ export const RemoteData = {
 
 ### 14. Feature: Hello API (GraphQL + schema validation)
 
-Create `apps/web/src/app/feature/hello/hello.api.ts`:
+Create `apps/frontend/src/app/feature/hello/hello.api.ts`:
 
 ```ts
 import { Effect, Schema } from "effect";
@@ -1126,7 +1126,7 @@ This is the critical invariant: **GraphQL is untyped JSON; schemas reintroduce a
 
 ### 15. Feature: Hello store (Signals + explicit Effect launch)
 
-Create `apps/web/src/app/feature/hello/hello.store.ts`:
+Create `apps/frontend/src/app/feature/hello/hello.store.ts`:
 
 ```ts
 import { Injectable, computed, signal } from "@angular/core";
@@ -1166,7 +1166,7 @@ export class HelloStore {
 
 ### 16. Hello page component (OnPush + signals)
 
-Create `apps/web/src/app/feature/hello/hello.page.ts`:
+Create `apps/frontend/src/app/feature/hello/hello.page.ts`:
 
 ```ts
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
@@ -1211,7 +1211,7 @@ OnPush is recommended by Angular’s zoneless guide as a step toward compatibili
 
 ### 17. Wire routing
 
-Edit `apps/web/src/app/app.routes.ts`:
+Edit `apps/frontend/src/app/app.routes.ts`:
 
 ```ts
 import { Routes } from "@angular/router";
@@ -1245,7 +1245,7 @@ Confirm you see something like: `GraphQL Server running on http://localhost:4000
 ### 19. Terminal B: start the Angular dev server
 
 ```bash
-pnpm -C apps/web start
+pnpm -C apps/frontend start
 ```
 
 Open `http://localhost:4200/`, type a name, click **Greet**.
@@ -1270,7 +1270,7 @@ You should see the greeting rendered, with the response validated by `helloRespo
 
 Because `@lect-effect/domain` is initially built as CommonJS, Angular may warn about it (tree-shaking). If it does, the pragmatic MWE fix is:
 
-* in `apps/web/angular.json`, under build options, add it to `allowedCommonJsDependencies`.
+* in `apps/frontend/angular.json`, under build options, add it to `allowedCommonJsDependencies`.
 
 Long-term, you can upgrade `@lect-effect/domain` to dual ESM/CJS exports, but that is strictly a later refinement.
 
@@ -1304,7 +1304,7 @@ So: “typed twice” = compile-time via codegen + runtime via schema decoding.
 
 ## Step-by-step: GraphQL type derivation for an MWE
 
-I’ll assume the repo already contains (or will contain, per your plan) `apps/web/` as the Angular app and the backend is reachable at `/graphql` when running `pnpm start` (your docs explicitly say it logs a GraphQL URL on startup).
+I’ll assume the repo already contains (or will contain, per your plan) `apps/frontend/` as the Angular app and the backend is reachable at `/graphql` when running `pnpm start` (your docs explicitly say it logs a GraphQL URL on startup).
 
 ### 0) Pick the simplest schema source (MWE choice)
 
@@ -1323,7 +1323,7 @@ So for MWE we target:
 
 ### 1) Install codegen tooling **in the frontend workspace**
 
-In `apps/web`:
+In `apps/frontend`:
 
 ```bash
 pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset graphql
@@ -1337,9 +1337,9 @@ Why these:
 
 ---
 
-### 2) Add a `codegen.ts` in `apps/web/`
+### 2) Add a `codegen.ts` in `apps/frontend/`
 
-Create `apps/web/codegen.ts`:
+Create `apps/frontend/codegen.ts`:
 
 ```ts
 import type { CodegenConfig } from '@graphql-codegen/cli';
@@ -1383,9 +1383,9 @@ Notes:
 
 ---
 
-### 3) Add scripts in `apps/web/package.json`
+### 3) Add scripts in `apps/frontend/package.json`
 
-In `apps/web/package.json`:
+In `apps/frontend/package.json`:
 
 ```json
 {
@@ -1452,7 +1452,7 @@ Now you colocate:
 
 inside `src/app/api/**`.
 
-Example: `apps/web/src/app/api/product.api.ts`
+Example: `apps/frontend/src/app/api/product.api.ts`
 
 ```ts
 import { Effect, Schema } from 'effect';
@@ -1499,7 +1499,7 @@ This is exactly the “API typed twice” invariant you want, and it preserves y
 
    (Those are your documented standard arrows).
 
-2. In `apps/web`:
+2. In `apps/frontend`:
 
    ```bash
    pnpm graphql:codegen
@@ -1508,7 +1508,7 @@ This is exactly the “API typed twice” invariant you want, and it preserves y
 
 At this point you have generated:
 
-* `apps/web/src/app/gql/*` containing typed documents and TS types.
+* `apps/frontend/src/app/gql/*` containing typed documents and TS types.
 
 ---
 
@@ -1571,7 +1571,7 @@ You want:
 * **One canonical domain package** containing `ProductId`, `Product`, `ProductWithItems`, etc., as schemas+types.
 * The backend and frontend both import that package.
 
-GraphQL codegen will also generate a `Product` type (from the GraphQL schema), but in this architecture that type is **boundary-local**: it lives in `apps/web/src/app/gql/**` and should not leak past the `api/**` layer. That matches your backend doctrine that GraphQL is a representation, not the meaning.
+GraphQL codegen will also generate a `Product` type (from the GraphQL schema), but in this architecture that type is **boundary-local**: it lives in `apps/frontend/src/app/gql/**` and should not leak past the `api/**` layer. That matches your backend doctrine that GraphQL is a representation, not the meaning.
 
 When a GraphQL query returns only a subset of fields, you have two principled options:
 
@@ -1722,13 +1722,13 @@ The relevant schemas/types correspond to your current definitions:
 
 ### Install dev deps in the Angular app
 
-In `apps/web/`:
+In `apps/frontend/`:
 
 ```bash
 pnpm add -D @graphql-codegen/cli @graphql-codegen/client-preset graphql
 ```
 
-### `apps/web/src/app/graphql/createProductWithItems.graphql`
+### `apps/frontend/src/app/graphql/createProductWithItems.graphql`
 
 Use the *exact* mutation shape from your backend tests:
 
@@ -1744,7 +1744,7 @@ mutation CreateProductWithItems(
 }
 ```
 
-### `apps/web/codegen.ts`
+### `apps/frontend/codegen.ts`
 
 ```ts
 import type { CodegenConfig } from "@graphql-codegen/cli";
@@ -1771,7 +1771,7 @@ export default config;
 
 This `documentMode: "string"` pattern is explicitly supported by the client preset.
 
-### `apps/web/package.json` (scripts)
+### `apps/frontend/package.json` (scripts)
 
 ```json
 {
@@ -1784,15 +1784,15 @@ This `documentMode: "string"` pattern is explicitly supported by the client pres
 Run:
 
 ```bash
-pnpm -C apps/web codegen
+pnpm -C apps/frontend codegen
 ```
 
 ### Representative generated output (excerpt)
 
-After codegen, you’ll get files under `apps/web/src/app/gql/`. One of them will export:
+After codegen, you’ll get files under `apps/frontend/src/app/gql/`. One of them will export:
 
 ```ts
-// apps/web/src/app/gql/graphql.ts  (GENERATED)
+// apps/frontend/src/app/gql/graphql.ts  (GENERATED)
 export type CreateProductWithItemsMutationVariables = Exact<{
   product: CreateProductWithItemsProductInput;
   items: Array<CreateItemInput>;
@@ -1825,7 +1825,7 @@ export const CreateProductWithItemsDocument =
 
 ## 3) Core: RemoteData + GraphQL client as Effect services
 
-### `apps/web/src/app/core/effect/remote-data.ts`
+### `apps/frontend/src/app/core/effect/remote-data.ts`
 
 ```ts
 export type RemoteData<E, A> =
@@ -1842,7 +1842,7 @@ export const RemoteData = {
 } as const;
 ```
 
-### `apps/web/src/app/core/graphql/graphql-errors.ts`
+### `apps/frontend/src/app/core/graphql/graphql-errors.ts`
 
 ```ts
 import { Data } from "effect";
@@ -1856,7 +1856,7 @@ export class FrontendGraphQLError extends Data.TaggedError(
 )<{ readonly errors: ReadonlyArray<unknown> }> {}
 ```
 
-### `apps/web/src/app/core/graphql/graphql-client.ts`
+### `apps/frontend/src/app/core/graphql/graphql-client.ts`
 
 ```ts
 import { Context, Effect, Layer } from "effect";
@@ -1923,7 +1923,7 @@ export const GraphQLClientLive = (endpoint: string) =>
 
 ## 4) Core: UI runtime (single place that “runs” Effects)
 
-### `apps/web/src/app/core/effect/ui-runtime.ts`
+### `apps/frontend/src/app/core/effect/ui-runtime.ts`
 
 ```ts
 import { Injectable } from "@angular/core";
@@ -1953,7 +1953,7 @@ Notes:
 
 ## 5) ProductApi: validate input, call GraphQL, validate output
 
-### `apps/web/src/app/api/product.api.ts`
+### `apps/frontend/src/app/api/product.api.ts`
 
 ```ts
 import { Effect, Schema } from "effect";
@@ -2016,7 +2016,7 @@ This is the crux: **compile‑time** types from GraphQL codegen + **runtime** tr
 
 ## 6) Store: a small state machine over a Signal
 
-### `apps/web/src/app/features/products/create-product.store.ts`
+### `apps/frontend/src/app/features/products/create-product.store.ts`
 
 ```ts
 import { Injectable, signal } from "@angular/core";
@@ -2066,7 +2066,7 @@ export class CreateProductStore {
 
 ### 7.1 Form component (local draft state + schema validation)
 
-### `apps/web/src/app/features/products/create-product-form.component.ts`
+### `apps/frontend/src/app/features/products/create-product-form.component.ts`
 
 ```ts
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from "@angular/core";
@@ -2213,7 +2213,7 @@ This component is “almost pure”: it manages local state, but does not know G
 
 ### 7.2 Result component (pure render)
 
-### `apps/web/src/app/features/products/create-product-result.component.ts`
+### `apps/frontend/src/app/features/products/create-product-result.component.ts`
 
 ```ts
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
@@ -2275,7 +2275,7 @@ export class CreateProductResultComponent {
 
 ### 7.3 Page component tying them together
 
-### `apps/web/src/app/features/products/create-product.page.ts`
+### `apps/frontend/src/app/features/products/create-product.page.ts`
 
 ```ts
 import { ChangeDetectionStrategy, Component } from "@angular/core";
@@ -2313,7 +2313,7 @@ Dependency graph is now linear and readable:
 
 ## 8) Bootstrap: standalone + zoneless
 
-### `apps/web/src/app/app.component.ts`
+### `apps/frontend/src/app/app.component.ts`
 
 ```ts
 import { ChangeDetectionStrategy, Component } from "@angular/core";
@@ -2329,7 +2329,7 @@ import { CreateProductPageComponent } from "./features/products/create-product.p
 export class AppComponent {}
 ```
 
-### `apps/web/src/app/app.config.ts`
+### `apps/frontend/src/app/app.config.ts`
 
 ```ts
 import { ApplicationConfig } from "@angular/core";
@@ -2344,7 +2344,7 @@ export const appConfig: ApplicationConfig = {
 
 Angular supports the zoneless provider and recommends `OnPush` as the default.
 
-### `apps/web/src/main.ts`
+### `apps/frontend/src/main.ts`
 
 ```ts
 import { bootstrapApplication } from "@angular/platform-browser";
@@ -2358,7 +2358,7 @@ bootstrapApplication(AppComponent, appConfig).catch(console.error);
 
 ## 9) Dev server proxy (so UiRuntime can call `/graphql`)
 
-### `apps/web/proxy.conf.json`
+### `apps/frontend/proxy.conf.json`
 
 ```json
 {
@@ -2789,8 +2789,8 @@ apps/
 **What it is:** a compile-time functor from GraphQL schema + documents → typed document strings + (optionally) result/variables TS types.
 **Where:**
 
-* Config: `apps/web/codegen.ts`
-* Generated output: `apps/web/src/app/gql/**`
+* Config: `apps/frontend/codegen.ts`
+* Generated output: `apps/frontend/src/app/gql/**`
 * Documents: either `src/app/**/*.graphql` or TS-colocated documents depending on your chosen config.
 
 **Key decision (minimal runtime):** `documentMode: "string"` (typed *strings*, no GraphQL AST/printing shipped to browser).
@@ -2803,9 +2803,9 @@ If your GraphQL variables are already intentionally isomorphic to domain input t
 ### C. `GraphQLClient` (Effect service boundary for HTTP)
 
 **What it is:** the minimal “ambient functor” from HTTP (`fetch`) into `Effect`, tagged as a service so it composes via layers.
-**Where:** `apps/web/src/app/core/graphql/graphql-client.ts`.
+**Where:** `apps/frontend/src/app/core/graphql/graphql-client.ts`.
 
-**Associated error coproduct:** `apps/web/src/app/core/graphql/graphql-errors.ts` defines tagged errors (`GraphQLTransportError`, `GraphQLHttpError`, `GraphQLResponseError`, etc.).
+**Associated error coproduct:** `apps/frontend/src/app/core/graphql/graphql-errors.ts` defines tagged errors (`GraphQLTransportError`, `GraphQLHttpError`, `GraphQLResponseError`, etc.).
 
 **Codegen interoperability:** the client should accept a structural “document string” (anything with `toString(): string`), which is exactly what typed document strings provide.
 
@@ -2814,7 +2814,7 @@ If your GraphQL variables are already intentionally isomorphic to domain input t
 ### D. `UiRuntime` (the only executor)
 
 **What it is:** a single `ManagedRuntime` living in Angular DI, i.e. the “place where effects occur”.
-**Where:** `apps/web/src/app/core/effect/ui-runtime.ts` (or `ui-runtime.service.ts` in the notes).
+**Where:** `apps/frontend/src/app/core/effect/ui-runtime.ts` (or `ui-runtime.service.ts` in the notes).
 
 **Why it matters:** it is the unique natural transformation
 [
@@ -2827,7 +2827,7 @@ that you permit in the codebase (everything else stays in the Kleisli category).
 ### E. `RemoteData<E, A>` (explicit async state algebra)
 
 **What it is:** a tiny coproduct encoding async state.
-**Where:** `apps/web/src/app/core/effect/remote-data.ts`.
+**Where:** `apps/frontend/src/app/core/effect/remote-data.ts`.
 
 **Why it matters:** you can pattern-match state in templates (`@switch`, `@if`) without hidden conventions.
 
@@ -2841,7 +2841,7 @@ that you permit in the codebase (everything else stays in the Kleisli category).
 * `parsed : Signal<Either<ParseError, A>>`
 * `value/error/isValid` derived from `parsed`
 
-**Where:** `apps/web/src/app/core/forms/schema-field.ts`.
+**Where:** `apps/frontend/src/app/core/forms/schema-field.ts`.
 
 **Why it’s “lawful”:** it is literally composition in the functor category:
 [
@@ -2873,14 +2873,14 @@ So you separate *typing in time* (signals) from *typing by schema* (either/parse
 2. execute GraphQL
 3. decode output via schema built from domain pieces
 
-**Where:** `apps/web/src/app/api/*.ts` (or `feature/*/*.api.ts` in the Hello slice—normalize to `api/`).
+**Where:** `apps/frontend/src/app/api/*.ts` (or `feature/*/*.api.ts` in the Hello slice—normalize to `api/`).
 
 ---
 
 ### I. Stores (route/feature-local state machines)
 
 **What it is:** per-route coalgebras producing signals; commands trigger effect execution through `UiRuntime` and update the signals with `RemoteData` results.
-**Where:** `apps/web/src/app/features/**/**.store.ts` (e.g. `hello.store.ts`, `products.store.ts`, `create-product.store.ts`).
+**Where:** `apps/frontend/src/app/features/**/**.store.ts` (e.g. `hello.store.ts`, `products.store.ts`, `create-product.store.ts`).
 
 **Optional refinement:** “latest-wins” epoch gating to avoid stale overwrites when concurrent requests race.
 
@@ -2909,7 +2909,7 @@ So you separate *typing in time* (signals) from *typing by schema* (either/parse
 ### L. Dev proxy
 
 **What it is:** make `/graphql` resolve to backend during `ng serve` without hardcoding `http://localhost:4000` in browser code.
-**Where:** `apps/web/proxy.conf.json`.
+**Where:** `apps/frontend/proxy.conf.json`.
 
 ---
 
@@ -2995,11 +2995,11 @@ I’m describing these as a chain of “prove small lemmas, then compose them”
 
 **Build:**
 
-* `apps/web/codegen.ts`
+* `apps/frontend/codegen.ts`
 * generate `src/app/gql/**`
 * update GraphQL client to accept `toString()`-able documents (structural)
 
-**Exit condition:** `pnpm -C apps/web codegen` produces typed documents; operations are checked against the running schema; runtime decoding still uses Effect schemas.
+**Exit condition:** `pnpm -C apps/frontend codegen` produces typed documents; operations are checked against the running schema; runtime decoding still uses Effect schemas.
 
 **Note:** per the compromise in the notes, do **not** let generated variable types become your “domain”; keep domain schemas as truth and treat codegen as compile-time witness (especially valuable for *result projections*).
 
@@ -3071,7 +3071,7 @@ You can treat these as the “typing rules” of the frontend category.
 
   * [ ] `"."`
   * [ ] `"packages/*"`
-  * [ ] `"apps/*"` (even if `apps/web` doesn’t exist yet)
+  * [ ] `"apps/*"` (even if `apps/frontend` doesn’t exist yet)
 
 **Create domain package**
 
@@ -3123,12 +3123,12 @@ An Angular app exists and boots with the “explicit reactivity” defaults (zon
 
 **Create Angular app**
 
-* [ ] Create `apps/web/` via Angular CLI (standalone + routing + zoneless).
+* [ ] Create `apps/frontend/` via Angular CLI (standalone + routing + zoneless).
 * [ ] `pnpm install` at workspace root.
 
 **Wire zoneless**
 
-* [ ] `apps/web/src/app/app.config.ts` includes:
+* [ ] `apps/frontend/src/app/app.config.ts` includes:
 
   * [ ] `provideZonelessChangeDetection()`
 
@@ -3138,16 +3138,16 @@ An Angular app exists and boots with the “explicit reactivity” defaults (zon
 
 **Wire dev proxy**
 
-* [ ] Add `apps/web/proxy.conf.json` that routes `/graphql` → backend server.
-* [ ] `apps/web/package.json` start script uses `--proxy-config proxy.conf.json`.
+* [ ] Add `apps/frontend/proxy.conf.json` that routes `/graphql` → backend server.
+* [ ] `apps/frontend/package.json` start script uses `--proxy-config proxy.conf.json`.
 
 **Add shared deps**
 
-* [ ] `pnpm -C apps/web add effect @lect-effect/domain@workspace:*`
+* [ ] `pnpm -C apps/frontend add effect @lect-effect/domain@workspace:*`
 
 **Verification**
 
-* [ ] `pnpm -C apps/web start`
+* [ ] `pnpm -C apps/frontend start`
 * [ ] Browser loads root route and renders “hello world” template.
 
 **Exit criteria**
@@ -3166,17 +3166,17 @@ You can run one Effect from a store and observe a signal update. No feature logi
 
 **Create core modules**
 
-* [ ] `apps/web/src/app/core/effect/remote-data.ts`
+* [ ] `apps/frontend/src/app/core/effect/remote-data.ts`
 
   * [ ] `RemoteData = Initial | Loading | Failure | Success`
-* [ ] `apps/web/src/app/core/graphql/graphql-errors.ts`
+* [ ] `apps/frontend/src/app/core/graphql/graphql-errors.ts`
 
   * [ ] tagged error coproduct for transport/http/graphql errors
-* [ ] `apps/web/src/app/core/graphql/graphql-client.ts`
+* [ ] `apps/frontend/src/app/core/graphql/graphql-client.ts`
 
   * [ ] Effect `Tag` (or `GenericTag`) for `GraphQLClient`
   * [ ] `GraphQLClientLive(endpoint)` Layer using `fetch`
-* [ ] `apps/web/src/app/core/effect/ui-runtime.ts`
+* [ ] `apps/frontend/src/app/core/effect/ui-runtime.ts`
 
   * [ ] `ManagedRuntime.make(AppLayer)`
   * [ ] a method returning `Exit` or `Either` (pick one and stick to it)
@@ -3211,7 +3211,7 @@ Prove the main factorization on the smallest possible operation:
 
 **API module**
 
-* [ ] `apps/web/src/app/api/hello.api.ts`
+* [ ] `apps/frontend/src/app/api/hello.api.ts`
 
   * [ ] uses `GraphQLClient.request(...)`
   * [ ] validates variables (input) via **shared domain schema**
@@ -3219,11 +3219,11 @@ Prove the main factorization on the smallest possible operation:
 
 **Feature module**
 
-* [ ] `apps/web/src/app/features/hello/hello.store.ts`
+* [ ] `apps/frontend/src/app/features/hello/hello.store.ts`
 
   * [ ] state: `RemoteData<Err, HelloResponse>`
   * [ ] command: `run(name)` triggers the Effect and updates signal
-* [ ] `apps/web/src/app/features/hello/hello.page.ts`
+* [ ] `apps/frontend/src/app/features/hello/hello.page.ts`
 
   * [ ] OnPush
   * [ ] reads store signals, wires button click → store command
@@ -3235,7 +3235,7 @@ Prove the main factorization on the smallest possible operation:
 **Verification**
 
 * [ ] Backend running (`./run.sh` or `pnpm start`)
-* [ ] Angular running (`pnpm -C apps/web start`)
+* [ ] Angular running (`pnpm -C apps/frontend start`)
 * [ ] Clicking “Greet” produces a decoded greeting (Success state)
 
 **Exit criteria**
@@ -3254,7 +3254,7 @@ Introduce the reusable abstraction for field-level parsing/validation without ad
 
 **Implement the abstraction**
 
-* [ ] `apps/web/src/app/core/forms/schema-field.ts`
+* [ ] `apps/frontend/src/app/core/forms/schema-field.ts`
 
   * [ ] `schemaField(schema, initialRaw, toUnknown?)`
   * [ ] returns:
@@ -3295,7 +3295,7 @@ Demonstrate the full architecture on a mutation + nontrivial payload:
 
 **API**
 
-* [ ] `apps/web/src/app/api/product.api.ts`
+* [ ] `apps/frontend/src/app/api/product.api.ts`
 
   * [ ] `createProductWithItems(input: unknown)`:
 
@@ -3305,14 +3305,14 @@ Demonstrate the full architecture on a mutation + nontrivial payload:
 
 **Store**
 
-* [ ] `apps/web/src/app/features/products/create-product.store.ts`
+* [ ] `apps/frontend/src/app/features/products/create-product.store.ts`
 
   * [ ] `created: Signal<RemoteData<Err, ProductWithItems>>`
   * [ ] `create(input)` sets Loading → Success/Failure
 
 **Component A: form**
 
-* [ ] `apps/web/src/app/features/products/create-product-form.component.ts`
+* [ ] `apps/frontend/src/app/features/products/create-product-form.component.ts`
 
   * [ ] uses `schemaField` for leaf fields (description, pack size, etc.)
   * [ ] has a computed `Either<ParseError, CreateProductWithItemsInput>` for whole form
@@ -3320,14 +3320,14 @@ Demonstrate the full architecture on a mutation + nontrivial payload:
 
 **Component B: result**
 
-* [ ] `apps/web/src/app/features/products/create-product-result.component.ts`
+* [ ] `apps/frontend/src/app/features/products/create-product-result.component.ts`
 
   * [ ] `input.required<RemoteData<Err, ProductWithItems>>()`
   * [ ] pure renderer (no services)
 
 **Page composition**
 
-* [ ] `apps/web/src/app/features/products/create-product.page.ts`
+* [ ] `apps/frontend/src/app/features/products/create-product.page.ts`
 
   * [ ] provides store
   * [ ] wires `(submitted) → store.create($event)`
@@ -3362,18 +3362,18 @@ Introduce GraphQL Code Generator as a compile-time witness:
 
 **Install**
 
-* [ ] `pnpm -C apps/web add -D @graphql-codegen/cli @graphql-codegen/client-preset graphql`
+* [ ] `pnpm -C apps/frontend add -D @graphql-codegen/cli @graphql-codegen/client-preset graphql`
 
 **Add documents**
 
 * [ ] Put operation documents in one consistent place:
 
-  * [ ] `apps/web/src/app/graphql/*.graphql` (recommended)
+  * [ ] `apps/frontend/src/app/graphql/*.graphql` (recommended)
   * [ ] include the `CreateProductWithItems` mutation document
 
 **Codegen config**
 
-* [ ] `apps/web/codegen.ts`
+* [ ] `apps/frontend/codegen.ts`
 
   * [ ] `schema: "http://localhost:4000/graphql"` (MWE)
   * [ ] `preset: "client"`
@@ -3381,11 +3381,11 @@ Introduce GraphQL Code Generator as a compile-time witness:
 
 **Generated output**
 
-* [ ] `apps/web/src/app/gql/**` is generated (gitignored or not—your call)
+* [ ] `apps/frontend/src/app/gql/**` is generated (gitignored or not—your call)
 
 **Scripts**
 
-* [ ] `apps/web/package.json` has:
+* [ ] `apps/frontend/package.json` has:
 
   * [ ] `"codegen": "graphql-codegen --config codegen.ts"`
   * [ ] `"prebuild": "pnpm codegen"` (or equivalent)
@@ -3401,7 +3401,7 @@ Introduce GraphQL Code Generator as a compile-time witness:
 
 **Verification**
 
-* [ ] With backend running: `pnpm -C apps/web codegen` succeeds
+* [ ] With backend running: `pnpm -C apps/frontend codegen` succeeds
 * [ ] Break a field name in the `.graphql` document → codegen/typecheck fails (expected)
 * [ ] Restore → build succeeds
 
@@ -3443,7 +3443,7 @@ You can test stores and API modules without rendering Angular components, by sub
 
 **Verification**
 
-* [ ] `pnpm -C apps/web test` (Vitest) green
+* [ ] `pnpm -C apps/frontend test` (Vitest) green
 
 **Exit criteria**
 
@@ -3759,12 +3759,12 @@ Goal: *An Angular app exists and boots with explicit reactivity defaults (zonele
 * [ ] `pnpm-workspace.yaml` includes:
 
   * [ ] `"packages/*"`
-  * [ ] `"apps/*"` (so `apps/web` is a workspace object)
+  * [ ] `"apps/*"` (so `apps/frontend` is a workspace object)
 * [ ] `pnpm install` at repo root completes without peer-dep drama.
 
 *(If this is already satisfied from Phase 0, treat it as a discharged lemma and move on.)*
 
-#### 2. Scaffold the Angular app into `apps/web`
+#### 2. Scaffold the Angular app into `apps/frontend`
 
 * [ ] From repo root, scaffold **standalone + routing + zoneless**:
 
@@ -3772,7 +3772,7 @@ Goal: *An Angular app exists and boots with explicit reactivity defaults (zonele
 
     ```bash
     pnpm dlx @angular/cli@latest new web \
-      --directory apps/web \
+      --directory apps/frontend \
       --package-manager pnpm \
       --routing \
       --style scss \
@@ -3788,16 +3788,16 @@ Goal: *An Angular app exists and boots with explicit reactivity defaults (zonele
     pnpm install
     ```
 
-This matches the plan’s “create `apps/web/` via Angular CLI (standalone + routing + zoneless)”.
+This matches the plan’s “create `apps/frontend/` via Angular CLI (standalone + routing + zoneless)”.
 
 #### 3. Add shared deps in the **frontend package**
 
-* [ ] Add Effect + shared domain as dependencies of `apps/web`:
+* [ ] Add Effect + shared domain as dependencies of `apps/frontend`:
 
   * [ ] Run:
 
     ```bash
-    pnpm -C apps/web add effect @lect-effect/domain@workspace:*
+    pnpm -C apps/frontend add effect @lect-effect/domain@workspace:*
     ```
   * [ ] (If you prefer, pin exactly to workspace root: `@lect-effect/domain@workspace:*` is the intended “inclusion functor” here.)
 
@@ -3805,7 +3805,7 @@ This is explicitly called out in the plan.
 
 #### 4. Ensure zoneless is actually wired
 
-* [ ] Open `apps/web/src/app/app.config.ts`
+* [ ] Open `apps/frontend/src/app/app.config.ts`
 * [ ] Ensure `provideZonelessChangeDetection()` is present in the providers list:
 
   * [ ] Something like:
@@ -3821,13 +3821,13 @@ This is explicitly called out in the plan.
     ```
 * [ ] Sanity check: search for Zone usage
 
-  * [ ] `rg "zone\.js|Zone" apps/web/src` should be empty (or at least not imported by your app entry).
+  * [ ] `rg "zone\.js|Zone" apps/frontend/src` should be empty (or at least not imported by your app entry).
 
 This is the plan’s “Wire zoneless” bullet.
 
 #### 5. Enforce `OnPush` in the root component
 
-* [ ] In `apps/web/src/app/app.component.ts`:
+* [ ] In `apps/frontend/src/app/app.component.ts`:
 
   * [ ] Set `changeDetection: ChangeDetectionStrategy.OnPush`
   * [ ] (Optional but recommended) remove unused mutable patterns from the generated template.
@@ -3838,7 +3838,7 @@ This is explicitly required by the plan.
 
 You want the browser to talk to the backend without CORS and without smuggling the backend URL into code.
 
-* [ ] Create `apps/web/proxy.conf.json`:
+* [ ] Create `apps/frontend/proxy.conf.json`:
 
   * [ ] Minimal:
 
@@ -3851,7 +3851,7 @@ You want the browser to talk to the backend without CORS and without smuggling t
       }
     }
     ```
-* [ ] Update `apps/web/package.json` start script:
+* [ ] Update `apps/frontend/package.json` start script:
 
   * [ ] Ensure it uses:
 
@@ -3873,7 +3873,7 @@ Again: exactly as required in the plan.
   * [ ] Run:
 
     ```bash
-    pnpm -C apps/web start
+    pnpm -C apps/frontend start
     ```
 * [ ] Browser loads root route; the app renders.
 * [ ] Add a *temporary* import witness (then delete):
@@ -3906,10 +3906,10 @@ In categorical terms: we are constructing the *Kleisli boundary* explicitly. UI 
 
 Create these files (exact paths from the plan):
 
-* [ ] `apps/web/src/app/core/effect/remote-data.ts`
-* [ ] `apps/web/src/app/core/graphql/graphql-errors.ts`
-* [ ] `apps/web/src/app/core/graphql/graphql-client.ts`
-* [ ] `apps/web/src/app/core/effect/ui-runtime.ts`
+* [ ] `apps/frontend/src/app/core/effect/remote-data.ts`
+* [ ] `apps/frontend/src/app/core/graphql/graphql-errors.ts`
+* [ ] `apps/frontend/src/app/core/graphql/graphql-client.ts`
+* [ ] `apps/frontend/src/app/core/effect/ui-runtime.ts`
 
 Keep these “core” modules **acyclic** and dependency-minimal.
 
@@ -3981,7 +3981,7 @@ This is precisely required by the plan (“ManagedRuntime.make(AppLayer) … met
 
 Create a minimal “feature” (not `core/`) whose *only job* is to prove “only stores run Effects”.
 
-* [ ] Create folder: `apps/web/src/app/features/toy/`
+* [ ] Create folder: `apps/frontend/src/app/features/toy/`
 * [ ] Create `toy.store.ts` (injectable):
 
   * [ ] has `state: WritableSignal<RemoteData<never, number>> = signal(RemoteData.initial())`
@@ -4003,12 +4003,12 @@ This is the plan’s “tiny store with signal(RemoteData.initial()) … run tri
   * [ ] a button that calls `store.run()`
 * [ ] Route it as the root route (temporary):
 
-  * [ ] `apps/web/src/app/app.routes.ts`: route `""` → `ToyPage`
+  * [ ] `apps/frontend/src/app/app.routes.ts`: route `""` → `ToyPage`
 
 #### 8. Phase 2 verification (proof obligations)
 
 * [ ] Start backend (whatever your backend command is).
-* [ ] Start Angular (`pnpm -C apps/web start`).
+* [ ] Start Angular (`pnpm -C apps/frontend start`).
 * [ ] Visit `/`.
 * [ ] Click the button.
 * [ ] Observe: UI transitions `Initial → Loading → Success(123)` **without Zone.js** and without manual change detection.

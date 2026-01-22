@@ -6,13 +6,13 @@ Yes — I would do both, *provided you’re still early enough that a one-time r
   * `apps/**` = “executable boundary objects” (effects, I/O, deployment concerns)
 * That aligns with the “one Kleisli boundary” instinct: effectful edges concentrate at app boundaries; libraries remain testable and reusable.
 
-Your current root already behaves like an *orchestrator* (it proxies into `packages/domain` and `apps/web` via scripts), so we can refactor while preserving your public commands (`pnpm run lect-effect/run`, `./run.sh`, etc.). Evidence: root scripts already proxy frontend calls through `pnpm -C apps/web …` and compose backend+frontend with `concurrently`.
+Your current root already behaves like an *orchestrator* (it proxies into `packages/domain` and `apps/frontend` via scripts), so we can refactor while preserving your public commands (`pnpm run lect-effect/run`, `./run.sh`, etc.). Evidence: root scripts already proxy frontend calls through `pnpm -C apps/frontend …` and compose backend+frontend with `concurrently`.
 
 Below are the concrete checklists.
 
 ---
 
-## A. Rename `apps/web` → `apps/frontend`
+## A. Rename `apps/frontend` → `apps/frontend`
 
 ### A1. Minimal rename (folder only; keep Angular project name `web`)
 
@@ -20,13 +20,13 @@ This is the smallest “commuting diagram” change: only the *path* changes; th
 
 #### Filesystem move
 
-* [ ] `git mv apps/web apps/frontend`
+* [ ] `git mv apps/frontend apps/frontend`
 
-#### Update root scripts that hardcode `apps/web`
+#### Update root scripts that hardcode `apps/frontend`
 
-Your root `package.json` currently proxies frontend scripts via `pnpm -C apps/web …`.
+Your root `package.json` currently proxies frontend scripts via `pnpm -C apps/frontend …`.
 
-* [ ] In root `package.json`, replace every `pnpm -C apps/web` with `pnpm -C apps/frontend` for the **frontend proxy scripts**, e.g.:
+* [ ] In root `package.json`, replace every `pnpm -C apps/frontend` with `pnpm -C apps/frontend` for the **frontend proxy scripts**, e.g.:
 
   * `lect-effect/frontend/clean`
   * `lect-effect/frontend/build`
@@ -44,26 +44,26 @@ Your root `package.json` currently proxies frontend scripts via `pnpm -C apps/we
 
 * [ ] Update the concurrent “run both” scripts:
 
-  * `lect-effect/run`: currently runs `"pnpm -C apps/web run lect-effect/frontend/start"`
+  * `lect-effect/run`: currently runs `"pnpm -C apps/frontend run lect-effect/frontend/start"`
   * `lect-effect/run:with-docs`: same issue
 
 #### Update the frontend package’s self-install scripts
 
-Your `apps/web/package.json` contains scripts that refer to `./apps/web` explicitly (filters).
+Your `apps/frontend/package.json` contains scripts that refer to `./apps/frontend` explicitly (filters).
 
 * [ ] In `apps/frontend/package.json` (after the rename), update:
 
-  * `_install`: `--filter ./apps/web` → `--filter ./apps/frontend`
+  * `_install`: `--filter ./apps/frontend` → `--filter ./apps/frontend`
   * `_install:nofreeze`: same replacement
 
-#### Update any repo scripts that mention `apps/web`
+#### Update any repo scripts that mention `apps/frontend`
 
 You have shell wrappers that call the *script names* (`pnpm lect-effect/frontend/start`, etc.), which is good: they don’t mention the directory directly.
 So **they should keep working** as long as the root proxy script keeps the same name.
 
 Still, do the mechanical search:
 
-* [ ] `git grep -n "apps/web"` and replace occurrences with `apps/frontend`
+* [ ] `git grep -n "apps/frontend"` and replace occurrences with `apps/frontend`
 
   * Root `package.json` will be the main hit.
   * Frontend `package.json` `_install` scripts are another hit.
@@ -76,14 +76,14 @@ Still, do the mechanical search:
 
 ### A2. Full rename (folder + Angular project name)
 
-Only do this if you want the output folders to say `dist/frontend` instead of `dist/web`.
+Only do this if you want the output folders to say `dist/frontend` instead of `dist/frontend`.
 
 Additional steps (on top of A1):
 
 * [ ] In `apps/frontend/angular.json`, rename the project key `web` → `frontend`, and update any `outputPath` / builder references.
 * [ ] Update `apps/frontend/package.json` where you run SSR:
 
-  * currently `_serve:ssr` runs `node dist/web/server/server.mjs`
+  * currently `_serve:ssr` runs `node dist/frontend/server/server.mjs`
   * after renaming the Angular project output, that typically becomes `dist/frontend/server/server.mjs` (depending on your `outputPath`).
 
 This is more churn, so I’d only do it if “`web`” as an identity is actively annoying.
@@ -216,16 +216,16 @@ Within root scripts, the current start is literally `node dist/src/index.js`, so
 
 If (as the plan states) your workspace file includes `"apps/*"` and `"packages/*"`, then:
 
-* renaming `apps/web → apps/frontend` needs **no** workspace change (still matches `apps/*`)
+* renaming `apps/frontend → apps/frontend` needs **no** workspace change (still matches `apps/*`)
 * adding `apps/backend` needs **no** workspace change (also matches `apps/*`)
 
-So: **probably no**, unless your workspace file enumerates `apps/web` explicitly (then you’d update it).
+So: **probably no**, unless your workspace file enumerates `apps/frontend` explicitly (then you’d update it).
 
 ---
 
 ## D. Recommendation on ordering (minimize breakage)
 
-1. **Rename** `apps/web → apps/frontend` (small surface area).
+1. **Rename** `apps/frontend → apps/frontend` (small surface area).
 2. Turn root frontend proxies to point at `apps/frontend`.
 3. Only then **move backend** into `apps/backend`, keeping root script *names* stable by proxying.
 

@@ -34,13 +34,13 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
-    files: ['apps/web/**/*.ts', 'apps/web/**/*.tsx'],
+    files: ['apps/frontend/**/*.ts', 'apps/frontend/**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: false,
         project: [
-          './apps/web/tsconfig.app.json',
-          './apps/web/tsconfig.spec.json',
+          './apps/frontend/tsconfig.app.json',
+          './apps/frontend/tsconfig.spec.json',
         ],
         tsconfigRootDir: rootDir,
       },

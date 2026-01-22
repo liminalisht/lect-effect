@@ -11,11 +11,10 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
-import { type Express } from 'express';
 
 const browserDistFolder: string = join(import.meta.dirname, '../browser');
 
-const app: Express = express();
+const app: express.Express = express();
 const angularApp: AngularNodeAppEngine = new AngularNodeAppEngine();
 
 /**

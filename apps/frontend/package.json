@@ -8,7 +8,7 @@
     "_test": "ng test --watch=false --progress=false",
     "_start": "ng serve --proxy-config proxy.conf.json",
     "_watch": "ng build --watch --configuration development",
-    "_serve:ssr": "node dist/web/server/server.mjs",
+    "_serve:ssr": "node dist/frontend/server/server.mjs",
     "_docs": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\"",
     "_install": "pnpm --dir ../.. install --filter ./apps/web --frozen-lockfile",
     "_install:nofreeze": "pnpm --dir ../.. install --filter ./apps/web --no-frozen-lockfile",
@@ -33,7 +33,7 @@
     "start:build": "pnpm run _build && pnpm run _start",
     "test": "ng test --watch=false --progress=false",
     "docs:generate": "pnpm run _docs",
-    "serve:ssr:web": "node dist/web/server/server.mjs",
+    "serve:ssr:web": "node dist/frontend/server/server.mjs",
     "watch": "ng build --watch --configuration development"
   },
   "prettier": {
