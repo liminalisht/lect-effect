@@ -7,6 +7,10 @@ import {CommonModule} from '@angular/common';
 import type {ProductWithItems} from '@lect-effect/domain/product/productWithItems';
 import type {RemoteData} from '../../core/effect/remote-data.js';
 
+/**
+ * Angular component rendering remote data from createProductWithItems.
+ * @since 1.0.0
+ */
 @Component({
   selector: 'app-create-product-result',
   standalone: true,
@@ -16,5 +20,9 @@ import type {RemoteData} from '../../core/effect/remote-data.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateProductResultComponent {
+  /**
+   * Remote data to render.
+   * @since 1.0.0
+   */
   @Input({required: true}) state!: RemoteData<unknown, ProductWithItems>;
 }

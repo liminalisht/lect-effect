@@ -1,6 +1,6 @@
 ---
 title: app/features/hello/hello.store.ts
-nav_order: 12
+nav_order: 14
 parent: Modules
 ---
 

@@ -1,5 +1,6 @@
 /**
  * Schema-governed form field helpers built on Angular signals.
+ * @since 1.0.0
  */
 import {
   computed, signal, type Signal, type WritableSignal,
@@ -15,6 +16,10 @@ type SchemaFieldOptions<Raw, A> = {
   readonly toUnknown?: ToUnknown<Raw>;
 };
 
+/**
+ * Schema-backed form field interface with raw + derived validation signals.
+ * @since 1.0.0
+ */
 export type SchemaField<Raw, A> = {
   readonly raw: WritableSignal<Raw>;
   readonly parsed: Signal<Either.Either<A, ParseError>>;
@@ -27,6 +32,10 @@ export type SchemaField<Raw, A> = {
 const decodeEither = <A>(schema: Schema.Schema<A>) =>
   Schema.decodeUnknownEither(schema);
 
+/**
+ * Builds a schema-backed form field with derived validation signals.
+ * @since 1.0.0
+ */
 export const schemaField = <Raw, A>(options: SchemaFieldOptions<Raw, A>): SchemaField<Raw, A> => {
   const {schema, initialRaw, toUnknown} = options;
   const toUnknownFn: ToUnknown<Raw> = toUnknown ?? (value => value as unknown);
@@ -57,11 +66,19 @@ export const schemaField = <Raw, A>(options: SchemaFieldOptions<Raw, A>): Schema
   };
 };
 
+/**
+ * Trims a string and returns null when blank.
+ * @since 1.0.0
+ */
 export const stringToNullIfBlank = (value: string): string | null => {
   const trimmed = value.trim();
   return trimmed === '' ? null : trimmed;
 };
 
+/**
+ * Parses an integer or returns null when blank/invalid.
+ * @since 1.0.0
+ */
 export const stringToInt = (value: string): number | null => {
   const trimmed = value.trim();
   if (trimmed === '') {

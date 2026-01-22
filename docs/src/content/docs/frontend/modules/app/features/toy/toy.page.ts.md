@@ -1,6 +1,6 @@
 ---
 title: app/features/toy/toy.page.ts
-nav_order: 13
+nav_order: 19
 parent: Modules
 ---
 

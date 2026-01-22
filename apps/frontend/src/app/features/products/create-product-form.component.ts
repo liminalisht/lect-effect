@@ -41,6 +41,10 @@ const makeItemDraft = (): ItemDraft => ({
   }),
 });
 
+/**
+ * Angular standalone form component for creating a product with items.
+ * @since 1.0.0
+ */
 @Component({
   selector: 'app-create-product-form',
   standalone: true,
@@ -50,16 +54,32 @@ const makeItemDraft = (): ItemDraft => ({
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateProductFormComponent {
+  /**
+   * Emits validated create-product payloads.
+   * @since 1.0.0
+   */
   @Output() readonly submitted = new EventEmitter<CreateProductWithItemsInput>();
 
+  /**
+   * Field for the optional product description (blank → null).
+   * @since 1.0.0
+   */
   readonly productDescription = schemaField({
     schema: Schema.NullOr(productDescriptionSchema),
     initialRaw: '',
     toUnknown: stringToNullIfBlank,
   });
 
+  /**
+   * Draft items being edited in the form.
+   * @since 1.0.0
+   */
   readonly items = signal<readonly ItemDraft[]>([makeItemDraft()]);
 
+  /**
+   * Whether the form is currently valid and can be submitted.
+   * @since 1.0.0
+   */
   readonly canSubmit = computed(() => {
     const drafts = this.items();
     return drafts.length > 0
@@ -67,10 +87,18 @@ export class CreateProductFormComponent {
       && drafts.every(draft => draft.description.isValid() && draft.packSize.isValid());
   });
 
+  /**
+   * Adds a blank item draft row.
+   * @since 1.0.0
+   */
   addItem(): void {
     this.items.update(items => [...items, makeItemDraft()]);
   }
 
+  /**
+   * Removes an item draft by index (keeps at least one row).
+   * @since 1.0.0
+   */
   removeItem(index: number): void {
     this.items.update(items => {
       if (items.length <= 1) {
@@ -81,23 +109,39 @@ export class CreateProductFormComponent {
     });
   }
 
+  /**
+   * Handles product description edits.
+   * @since 1.0.0
+   */
   onProductDescriptionInput(event: Event): void {
     const {value} = (event.target as HTMLInputElement);
     this.productDescription.setRaw(value);
   }
 
+  /**
+   * Handles item description edits.
+   * @since 1.0.0
+   */
   onItemDescriptionInput(index: number, event: Event): void {
     const {value} = (event.target as HTMLInputElement);
     const draft = this.items()[index];
     draft?.description.setRaw(value);
   }
 
+  /**
+   * Handles item pack size edits.
+   * @since 1.0.0
+   */
   onItemPackSizeInput(index: number, event: Event): void {
     const {value} = (event.target as HTMLInputElement);
     const draft = this.items()[index];
     draft?.packSize.setRaw(value);
   }
 
+  /**
+   * Emits a validated payload when the draft is valid.
+   * @since 1.0.0
+   */
   submit(): void {
     if (!this.canSubmit()) {
       return;
