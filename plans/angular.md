@@ -4032,3 +4032,645 @@ This factorization is exactly what prevents the “rat’s nest”: it forces a 
 ---
 
 If you want, in the next message I can also provide a **minimal diff-set** for Phase 1 (files + exact edits) and Phase 2 (exact file contents) that is small enough to apply mechanically—but the checklists above should already be precise enough to execute without inventing additional abstractions.
+
+-----
+
+
+
+According to a document from **January 21, 2026** (your current repo snapshot), the “hello” GraphQL surface you already have is:
+
+* **Query**: `query Hello($name: String) { greet(name: $name) { greeting } }`
+* **Backend handler key**: `greet` with input schema `nameInputSchema` and output schema `helloResponseSchema`
+* **Important encoding fact**: JSON cannot encode `undefined`, so tests normalize `undefined → null` for the variable
+
+And on the frontend you already have the infrastructure we want to reuse unchanged:
+
+* `UiRuntime` provides a memoized `ManagedRuntime` with `GraphQLClientLive('/graphql')` and exposes `runExit` / `runPromiseExit`
+* `GraphQLClient` is an Effect service with `request(doc: string, variables?: unknown)` returning `Effect<Json, GraphQLClientError>`
+* `RemoteData<E, A>` is your tagged sum for UI loading state, with constructors in `remoteData`
+
+So Phase 3 (“Hello end-to-end”) is just adding the **next slice** in the pipeline:
+[
+\text{Component} \to \text{Store(Signals)} \to \text{Effect(HelloApi)} \to \text{GraphQLClient} \to \text{Store(Signals)} \to \text{Component}.
+]
+
+Below is a **detailed implementation checklist**, mechanically aligned with how your repo is already written (standalone components, `OnPush`, `.js` extensions for local imports, Effects only run in stores).
+
+---
+
+## Phase 3 checklist: Hello end-to-end
+
+### 0. Pre-flight verification
+
+* [ ] Confirm the backend is running and serving GraphQL at `/graphql` (your frontend runtime is wired to `GraphQLClientLive('/graphql')`).
+* [ ] Confirm the backend query really is `greet(name: $name) { greeting }` (it is, per your property test and handler key).
+* [ ] Decide how you want to treat “empty input”:
+
+  * Recommended: normalize empty string → `null` (so it behaves like “no name” and matches the backend semantics that use `Option.fromNullable(input.name ?? null)`).
+  * [ ] Commit to this normalization rule now, so it becomes a stable convention.
+
+---
+
+## 1. Add the Hello API module (pure Effect, no Angular)
+
+You currently have **no** `apps/web/src/app/api` directory. Create it and add a single file.
+
+* [ ] Create directory: `apps/web/src/app/api/`
+* [ ] Create file: `apps/web/src/app/api/hello.api.ts`
+
+Implementation requirements (these are the “laws”):
+
+* The module must **not** import Angular.
+* It must:
+
+  1. validate variables via shared schema `nameInputSchema`,
+  2. call GraphQL with `GraphQLClientTag.request(...)`,
+  3. validate the returned `data` via a schema,
+  4. return `HelloResponse` (not the whole GraphQL envelope).
+
+Because `GraphQLClient.request` returns the **GraphQL `data`** JSON (not `{ data, errors }`), you must decode the *shape* `{ greet: HelloResponse }` and then project `.greet`. This matches the backend test shape (`json.data.greet.greeting`).
+
+**Drop-in minimal code** (adjust only import paths if you’ve renamed folders):
+
+```ts
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { Effect, Schema } from 'effect';
+import type { ParseError } from 'effect/ParseResult';
+
+import { nameInputSchema, type NameInput } from '@lect-effect/domain/hello/nameInput';
+import { helloResponseSchema, type HelloResponse } from '@lect-effect/domain/hello/helloResponse';
+
+import { GraphQLClientTag, type GraphQLClient } from '../core/graphql/graphql-client.js';
+import type { GraphQLClientError } from '../core/graphql/graphql-errors.js';
+
+export type HelloApiError = GraphQLClientError | ParseError;
+
+// Must match backend schema/tests:
+const HelloQuery = /* GraphQL */ `
+  query Hello($name: String) {
+    greet(name: $name) { greeting }
+  }
+`;
+
+// GraphQLClient.request returns the `data` payload, so we decode `{ greet: ... }`.
+const HelloDataSchema = Schema.Struct({
+  greet: helloResponseSchema,
+});
+
+const normalizeNameVar = (input: NameInput): { name: string | null } => ({
+  // JSON cannot encode `undefined` → normalize to null
+  name: input.name ?? null,
+});
+
+export const greet = (
+  input: unknown,
+): Effect.Effect<HelloResponse, HelloApiError, GraphQLClient> =>
+  Effect.gen(function* () {
+    const variables = yield* Schema.decodeUnknown(nameInputSchema)(input).pipe(
+      // normalize empty string → null (optional but recommended)
+      Effect.map((i) => {
+        const trimmed = (i.name ?? '').trim();
+        const normalized: NameInput = { name: trimmed === '' ? null : trimmed };
+        return normalizeNameVar(normalized);
+      }),
+    );
+
+    const client = yield* GraphQLClientTag;
+
+    const dataJson = yield* client.request(HelloQuery, variables);
+
+    const decoded = yield* Schema.decodeUnknown(HelloDataSchema)(dataJson);
+    return decoded.greet;
+  });
+```
+
+Facts this code is aligned with:
+
+* Query name + field selection match the backend property test.
+* Variables normalize `undefined → null` exactly as your tests already do.
+* Shared schemas are exactly the ones from the domain package:
+
+  * `nameInputSchema` is `{ name: NullishOr(string) }`
+  * `helloResponseSchema` is `{ greeting: Greeting }`
+
+---
+
+## 2. Add the Hello store (the *only* place you run Effects)
+
+Follow the same architecture as `ToyStore`: the store is the *interpreter* from UI events into Effects, and it reifies results into `RemoteData` signals. This preserves a clean factorization:
+
+* components are (mostly) pure and observe signals,
+
+* stores are effectful and explicit,
+
+* API modules are pure Effect combinators.
+
+* [ ] Create directory: `apps/web/src/app/features/hello/`
+
+* [ ] Create file: `apps/web/src/app/features/hello/hello.store.ts`
+
+Checklist for `HelloStore`:
+
+* [ ] Inject `UiRuntime` (same as `ToyStore`).
+* [ ] Maintain a private signal:
+
+  * `state_: Signal<RemoteData<unknown, HelloResponse>>` initialized via `remoteData.initial()`.
+* [ ] Expose `state = state_.asReadonly()`.
+* [ ] Maintain a `name_` signal for the current input string.
+* [ ] Expose:
+
+  * `setName(name: string): void`
+  * `run(): Promise<void>` (or `greet(): Promise<void>`) which:
+
+    * sets `Loading`,
+    * runs `HelloApi.greet({ name: ... })` via `runtime.runExit(...)`,
+    * folds the `Exit` into `Success` / `Failure`.
+
+**Drop-in minimal code**:
+
+```ts
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Exit } from 'effect';
+
+import type { HelloResponse } from '@lect-effect/domain/hello/helloResponse';
+import { remoteData, type RemoteData } from '../../core/effect/remote-data.js';
+import { UiRuntime } from '../../core/effect/ui-runtime.js';
+
+import { greet } from '../../api/hello.api.js';
+
+@Injectable({ providedIn: 'root' })
+export class HelloStore {
+  private readonly runtime = inject(UiRuntime);
+
+  private readonly name_ = signal<string>('');
+  readonly name = this.name_.asReadonly();
+
+  private readonly state_ = signal<RemoteData<unknown, HelloResponse>>(remoteData.initial());
+  readonly state = this.state_.asReadonly();
+
+  readonly greeting = computed(() => {
+    const s = this.state_();
+    return s._tag === 'Success' ? s.value.greeting : null;
+  });
+
+  setName(name: string): void {
+    this.name_.set(name);
+  }
+
+  async run(): Promise<void> {
+    this.state_.set(remoteData.loading());
+
+    const raw = this.name_().trim();
+    const input = { name: raw === '' ? null : raw };
+
+    const exit = await this.runtime.runExit(greet(input));
+
+    if (Exit.isSuccess(exit)) {
+      this.state_.set(remoteData.success(exit.value));
+    } else {
+      // keep it minimal: store the whole Cause as unknown (matches ToyStore’s strategy)
+      this.state_.set(remoteData.failure(exit.cause));
+    }
+  }
+}
+```
+
+This is aligned with your existing `ToyStore` fold of `Exit` into `RemoteData` and your `RemoteData` constructors.
+
+---
+
+## 3. Add the Hello page (standalone component, OnPush, signal-driven)
+
+* [ ] Create file: `apps/web/src/app/features/hello/hello.page.ts`
+* [ ] Create file: `apps/web/src/app/features/hello/hello.page.html`
+* [ ] Create file: `apps/web/src/app/features/hello/hello.page.scss`
+
+Checklist for the page:
+
+* [ ] Standalone component (`standalone: true`).
+* [ ] `ChangeDetectionStrategy.OnPush` (same as `ToyPage`).
+* [ ] `imports: [CommonModule]` (you’ll likely want `JsonPipe` for quick debug).
+* [ ] Inject `HelloStore`.
+* [ ] Template:
+
+  * input textbox bound *imperatively* via `(input)` handler to `store.setName(...)`
+  * button `(click)` calls `store.run()`
+  * render:
+
+    * `store.greeting()` if present
+    * and/or raw `store.state() | json` for visibility (as in ToyPage)
+
+**Minimal page TS**:
+
+```ts
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HelloStore } from './hello.store.js';
+
+@Component({
+  selector: 'app-hello-page',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './hello.page.html',
+  styleUrl: './hello.page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class HelloPage {
+  protected readonly store = inject(HelloStore);
+
+  protected onNameInput(ev: Event): void {
+    const value = (ev.target as HTMLInputElement).value;
+    this.store.setName(value);
+  }
+}
+```
+
+**Minimal page HTML**:
+
+```html
+<h1>Hello</h1>
+
+<label>
+  Name (optional):
+  <input
+    [value]="store.name()"
+    (input)="onNameInput($event)"
+    placeholder="World"
+  />
+</label>
+
+<button type="button" (click)="store.run()">Greet</button>
+
+<hr />
+
+@if (store.greeting() !== null) {
+  <p><strong>Greeting:</strong> {{ store.greeting() }}</p>
+}
+
+<h2>Debug</h2>
+<pre>{{ store.state() | json }}</pre>
+```
+
+---
+
+## 4. Wire the route to Hello (and optionally keep Toy)
+
+Right now `app.routes.ts` routes `'' → ToyPage`.
+
+* [ ] Edit: `apps/web/src/app/app.routes.ts`
+* [ ] Change root route to Hello:
+
+  * `'' → HelloPage`
+* [ ] Optional: keep Toy reachable:
+
+  * `'toy' → ToyPage`
+
+**Minimal routing edit**:
+
+```ts
+import type { Routes } from '@angular/router';
+import { HelloPage } from './features/hello/hello.page.js';
+import { ToyPage } from './features/toy/toy.page.js';
+
+export const routes: Routes = [
+  { path: '', component: HelloPage },
+  { path: 'toy', component: ToyPage },
+  { path: '**', redirectTo: '' },
+];
+```
+
+(Keep the `.js` extensions: your repo is already doing this for routes/imports.)
+
+---
+
+## 5. Run + validate (exit criteria)
+
+You should be able to treat these as your “proof obligations” for Phase 3:
+
+* [ ] **Typecheck/build** the frontend:
+
+  * `pnpm -C apps/web build` (script exists)
+* [ ] **Run** the frontend:
+
+  * `pnpm -C apps/web start` (script exists)
+* [ ] In the browser:
+
+  * [ ] With empty input, click “Greet” → greeting mentions “World” (matches backend semantic).
+  * [ ] With `name = Alice`, click “Greet” → greeting contains “Alice”.
+* [ ] Confirm state transitions:
+
+  * Initial → Loading → Success (or Failure), as a `RemoteData` tagged value.
+
+---
+
+## 6. Tiny “make it nicer” options (still Phase 3-safe)
+
+These are optional, but they reduce entropy without introducing new abstractions:
+
+* [ ] In `HelloStore`, store `Cause.pretty(exit.cause)` as a string (instead of the raw `Cause`) so failures render cleanly.
+* [ ] In the template, replace the debug JSON block with a small `@if` split on `_tag` (your `RemoteData` is already a tagged enum).
+
+---
+
+### Why this is the best organizational move (in one paragraph)
+
+This slice keeps a strict factorization where **Effects are only launched in one place (stores)**, the **GraphQL boundary is tamed by schemas** (a “reintroduction of laws” over untyped JSON), and components remain essentially **functors from the store’s signal algebra into DOM**—i.e., they observe, render, and emit events, but do not interpret the world. This is the closest Angular analogue to keeping your semantics in the backend: a small number of explicit morphisms, not an ambient soup of implicit dependencies.
+
+If you want, I can also give you the **exact file diffs** (patch-style) for these edits, but the checklist above should already be executable line-by-line.
+
+
+-----
+
+
+Below is a concrete, repo-shaped checklist for **Phase 4** and **Phase 5**, assuming **`apps/frontend` is the active Angular app** (your routes live in `apps/frontend/src/app/app.routes.ts` today, with `HelloPage` and `ToyPage` already wired).
+
+I’ll keep the dependency DAG linear (a “thin category”):
+**domain ⟶ api ⟶ store ⟶ components/page** (no reverse edges).
+
+---
+
+## Phase 4 — Form semantics abstraction (`core/forms/schema-field.ts`)
+
+Goal: implement a *small algebra* of fields where a field is an object with:
+
+* a **raw** signal (what the user typed),
+* a **validated** view (decoded by an Effect `Schema`),
+* and enough observables to render errors / disable submit,
+  without Angular Forms.
+
+### 4.1 Create the module
+
+* [ ] Create directory: `apps/frontend/src/app/core/forms/`
+* [ ] Create file: `apps/frontend/src/app/core/forms/schema-field.ts`
+
+### 4.2 Define the minimal “field object” interface
+
+You want something that behaves like a functor `Raw ⟶ Either(ParseError, A)` with extra structure:
+
+* [ ] Export a `SchemaField<Raw, A>` type containing (at least):
+
+  * [ ] `raw: WritableSignal<Raw>`
+  * [ ] `parsed: Signal<Either<ParseError, A>>` *(or equivalent)*
+  * [ ] `value: Signal<A | null>` *(Right → value, Left → null)*
+  * [ ] `error: Signal<ParseError | null>` *(Right → null, Left → error)*
+  * [ ] `isValid: Signal<boolean>`
+  * [ ] `setRaw(raw: Raw): void` convenience
+
+### 4.3 Implement `schemaField(...)`
+
+* [ ] Export a constructor:
+
+  * [ ] `schemaField<Raw, A>(opts: { schema: Schema.Schema<A>; initialRaw: Raw; toUnknown?: (raw: Raw) => unknown })`
+
+* [ ] Internally:
+
+  * [ ] `raw = signal(initialRaw)`
+  * [ ] `toUnknown = opts.toUnknown ?? (x => x as unknown)`
+  * [ ] `parsed = computed(() => decodeEither(schema)(toUnknown(raw())))`
+
+* [ ] Implement `decodeEither(schema)` in a way that stays **pure at the call site**, but uses Effect’s decoder:
+
+  * [ ] Use `Schema.decodeUnknown(schema)` (effectful decoder)
+  * [ ] Wrap in `Effect.either(...)`
+  * [ ] `Effect.runSync(...)` to obtain an `Either<ParseError, A>`
+
+This mirrors the “schema as the validator” approach you’re already using at the API boundary (e.g. `Schema.decodeUnknown(nameInputSchema)` inside `greet`), but now you’re doing it *locally* for UI drafts.
+
+### 4.4 Add 2–3 “parsing adapters” you will need in Phase 5
+
+Your domain schemas include:
+
+* optional/nullable `description` fields (string-or-null)
+* integer `pack_size` (`Schema.Number.pipe(Schema.int())`)
+
+So you will want adapters:
+
+* [ ] `stringToNullIfBlank(s: string): string | null`
+
+  * map `""` (and maybe whitespace) → `null`
+  * map non-blank → trimmed string (or raw string; choose once and be consistent)
+
+* [ ] `stringToInt(s: string): number`
+
+  * parse `Number.parseInt(s, 10)` (or `Number(s)`), producing `NaN` when invalid so the schema rejects it
+
+* [ ] (optional) `valueAsNumberFromInputEvent(e): number` if you prefer `<input type="number">` and `valueAsNumber`
+
+### 4.5 Phase 4 exit check
+
+* [ ] You can create a field with `raw` as a signal, and derive `isValid`/`error` purely from `Schema`.
+* [ ] No Angular Forms imported.
+* [ ] At least one component uses this abstraction (you can count the Phase 5 form as the “proof artifact”).
+
+---
+
+## Phase 5 — Second end-to-end slice: “Create Product With Items”
+
+**You already have the mutation in the backend**:
+
+* the GraphQL shape is:
+  `mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) { createProductWithItems(product: $product, items: $items) { product { id description __typename } items { id description pack_size } } }`
+* and the handler key is `createProductWithItems`
+
+**You already have domain schemas**:
+
+* input is `{ product: productInputSchema, items: Array(createItemInputSchema) }`
+* `productInputSchema.description` is optional and nullable
+* `createItemInputSchema.pack_size` is an int schema
+
+### 5.1 API layer: `api/product.api.ts`
+
+You currently keep API effects in `apps/frontend/src/api/` (e.g. `hello.api.ts`), so do the same here for minimal churn.
+
+* [ ] Create file: `apps/frontend/src/api/product.api.ts`
+
+#### 5.1.1 Define the GraphQL document string
+
+* [ ] Add `CreateProductWithItemsMutation` constant as a raw GraphQL string matching the backend test exactly.
+
+#### 5.1.2 Validate input via shared schema
+
+* [ ] Import `createProductWithItemsInputSchema` from `@lect-effect/domain` (or deep import if your barrel doesn’t export it yet).
+* [ ] In your effect, do:
+
+  * [ ] `const input = yield* Schema.decodeUnknown(createProductWithItemsInputSchema)(rawInput)`
+
+#### 5.1.3 Normalize optional fields for JSON/GraphQL variables
+
+Backend tests explicitly normalize `undefined` → `null` for `description` fields because JSON can’t represent `undefined` values.
+
+* [ ] Add a small normalizer that ensures:
+
+  * [ ] `product.description ?? null`
+  * [ ] each `item.description ?? null`
+
+(You *can* also omit fields instead; but normalizing to `null` is consistent with your existing testing/encoding stance.)
+
+#### 5.1.4 Execute request using your existing GraphQL client service
+
+You already have:
+
+* `GraphQLClientTag` providing `request(query, variables)` in `apps/frontend/src/app/core/graphql/graphql-client.ts`.
+
+* [ ] In your API effect:
+
+  * [ ] `const client = yield* GraphQLClientTag`
+  * [ ] `const data = yield* client.request(CreateProductWithItemsMutation, variables)`
+
+#### 5.1.5 Decode response via shared schema
+
+* [ ] Build a response schema:
+
+  * [ ] `Schema.Struct({ createProductWithItems: productWithItemsSchema })`
+* [ ] Decode:
+
+  * [ ] `const decoded = yield* Schema.decodeUnknown(ResponseSchema)(data)`
+  * [ ] return `decoded.createProductWithItems`
+
+### 5.2 Store layer: `features/products/create-product.store.ts`
+
+Pattern-match your existing “run effect and store RemoteData” style (as in `HelloStore`, which sets Loading then runs `runtime.runExit(...)`).
+
+* [ ] Create folder: `apps/frontend/src/app/features/products/`
+* [ ] Create file: `apps/frontend/src/app/features/products/create-product.store.ts`
+
+#### 5.2.1 Store state
+
+* [ ] `readonly state = signal<RemoteData<unknown, ProductWithItems>>(remoteData.initial())`
+
+  * This matches your existing RemoteData algebra (`Initial | Loading | Failure | Success`).
+
+#### 5.2.2 Command method
+
+* [ ] `async create(input: unknown): Promise<void>`
+
+  * [ ] set state → `Loading`
+  * [ ] `exit = await runtime.runExit(createProductWithItems(input))`
+  * [ ] `Exit.match(exit, { onSuccess, onFailure })`
+  * [ ] onSuccess → `remoteData.success(value)`
+  * [ ] onFailure → `remoteData.failure(cause)` (or `Cause.pretty(cause)` if you prefer string errors)
+
+#### 5.2.3 Provide scope
+
+To keep the dependency graph explicit:
+
+* [ ] **Do not** `providedIn: 'root'` unless you want singleton behavior.
+* [ ] Provide the store at the page component via `providers: [CreateProductStore]` (like `ToyPage` does).
+
+### 5.3 UI layer: the two components + the page
+
+#### 5.3.1 `create-product-form.component.*`
+
+* [ ] Create:
+
+  * [ ] `apps/frontend/src/app/features/products/create-product-form.component.ts`
+  * [ ] `.html`
+  * [ ] `.scss`
+
+**Draft state is local** (Phase 4’s point): use `schemaField` for each input.
+
+Checklist for the form component:
+
+* [ ] Local product field:
+
+  * [ ] `productDescription = schemaField({ schema: Schema.NullOr(productDescriptionSchema), initialRaw: '' , toUnknown: stringToNullIfBlank })`
+
+    * `productDescriptionSchema` is `Schema.String` in domain; the input allows optional/nullable, but your UI can decide blank → null.
+
+* [ ] Local items array draft:
+
+  * [ ] `items = signal<ReadonlyArray<ItemDraft>>([...])`
+  * [ ] `ItemDraft` contains:
+
+    * [ ] `description: SchemaField<string, string | null>` using `itemDescriptionSchema` (already nullable)
+    * [ ] `packSize: SchemaField<string, number>` using `packSizeSchema` with `toUnknown: stringToInt`
+
+* [ ] UI actions:
+
+  * [ ] `addItem()` appends a new draft
+  * [ ] `removeItem(i)` removes by index (ensure at least 1 remains, if you want)
+
+* [ ] Derived submit eligibility:
+
+  * [ ] `canSubmit = computed(() => items().length > 0 && items().every(d => d.packSize.isValid() && d.description.isValid()) && productDescription.isValid())`
+
+* [ ] Emission boundary:
+
+  * [ ] Expose `submitted` output event with a **fully constructed input object**:
+
+    * `{ product: { description: productDescription.value() }, items: items().map(...) }`
+  * [ ] Do **not** call the API directly here; this component should only emit.
+
+#### 5.3.2 `create-product-result.component.*`
+
+* [ ] Create:
+
+  * [ ] `apps/frontend/src/app/features/products/create-product-result.component.ts`
+  * [ ] `.html`
+  * [ ] `.scss`
+
+Checklist:
+
+* [ ] Take `state` as an **input** (explicit dependency):
+
+  * [ ] `state = input.required<RemoteData<unknown, ProductWithItems>>()`
+* [ ] Render by `_tag` cases (`Initial|Loading|Failure|Success`).
+* [ ] In `Success`, render:
+
+  * [ ] `product.id`, `product.description`
+  * [ ] items list showing `id`, `description`, `pack_size`
+
+#### 5.3.3 `create-product.page.*`
+
+* [ ] Create:
+
+  * [ ] `apps/frontend/src/app/features/products/create-product.page.ts`
+  * [ ] `.html`
+  * [ ] `.scss`
+
+Checklist:
+
+* [ ] Provide the store locally:
+
+  * [ ] `providers: [CreateProductStore]`
+* [ ] Compose (categorical “composition node”):
+
+  * [ ] template contains `<app-create-product-form (submitted)="store.create($event)">`
+  * [ ] and `<app-create-product-result [state]="store.state()">` (or equivalent)
+* [ ] Keep this page thin: it wires morphisms, it doesn’t validate.
+
+### 5.4 Wire routing
+
+Your current routes are `'' → HelloPage` and `'toy' → ToyPage`.
+
+* [ ] Update `apps/frontend/src/app/app.routes.ts`:
+
+  * [ ] import `CreateProductPage` (remember your repo’s `.js` extension convention for relative imports)
+  * [ ] add a route, e.g.
+
+    * [ ] `{ path: 'products/create', component: CreateProductPage }`
+
+### 5.5 Phase 5 exit checks
+
+* [ ] You can navigate to `/products/create`.
+* [ ] The form:
+
+  * [ ] lets you enter product description
+  * [ ] lets you enter ≥1 item with integer `pack_size`
+  * [ ] blocks submission while `pack_size` is invalid (schemaField drives this)
+* [ ] On submit:
+
+  * [ ] store enters `Loading`
+  * [ ] mutation executes
+  * [ ] result component renders created `product` + `items`
+
+---
+
+## One pragmatic note about “where the API lives”
+
+Right now you already have `apps/frontend/src/api/hello.api.ts`. So for Phase 5, keep `product.api.ts` there too. Later, if you want, you can *refactor* the API folder under `src/app/`—but doing it now adds noise with no semantic gain.
+
+---
+
+If you want, I can also provide a “golden shape” for the three new feature templates (`form.html`, `result.html`, `page.html`) that uses your existing `@if`/`@for` block syntax (like `HelloPage` already does)—but the checklist above is sufficient to implement Phases 4 and 5 without taking on extra refactors.
