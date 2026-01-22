@@ -14,20 +14,19 @@ export default defineConfig({
 			social: [{icon: 'github', label: 'GitHub', href: 'https://github.com/liminalisht/lect-effect'}],
 			sidebar: [
 				{
-					label: 'guides',
+					label: 'introduction to lect-effect',
 					autogenerate: {directory: 'guides'},
 				},
 				{
-					label: 'domain',
+					label: '@lect-effect/backend',
+					autogenerate: {directory: 'backend/modules', collapsed: true},
+				},
+				{
+					label: '@lect-effect/domain',
 					autogenerate: {directory: 'domain/modules', collapsed: true},
 				},
 				{
-					label: 'backend',
-					autogenerate: {directory: 'backend/modules', collapsed: true},
-				},
-
-				{
-					label: 'frontend',
+					label: '@lect-effect/frontend',
 					autogenerate: {directory: 'frontend/modules', collapsed: true},
 				},
 			],

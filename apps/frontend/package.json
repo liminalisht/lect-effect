@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@lect-effect/frontend",
   "version": "1.0.0",
   "homepage": "https://github.com/liminalisht/lect-effect",
   "scripts": {
@@ -10,8 +10,8 @@
     "_watch": "ng build --watch --configuration development",
     "_serve:ssr": "node dist/frontend/server/server.mjs",
     "_docs": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\"",
-    "_install": "pnpm --dir ../.. install --filter ./apps/web --frozen-lockfile",
-    "_install:nofreeze": "pnpm --dir ../.. install --filter ./apps/web --no-frozen-lockfile",
+    "_install": "pnpm --dir ../.. install --filter ./apps/frontend --frozen-lockfile",
+    "_install:nofreeze": "pnpm --dir ../.. install --filter ./apps/frontend --no-frozen-lockfile",
 
     "lect-effect/frontend/clean": "pnpm run _clean",
     "lect-effect/frontend/build": "pnpm run _build",
