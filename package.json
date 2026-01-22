@@ -55,13 +55,13 @@
     "lect-effect/docs/install": "pnpm -C docs run lect-effect/docs/install",
     "lect-effect/docs/install:nofreeze": "pnpm -C docs run lect-effect/docs/install:nofreeze",
 
-    "lect-effect/build": "pnpm run lect-effect/domain/build && pnpm run lect-effect/backend/build && pnpm run lect-effect/frontend/build",
-    "lect-effect/clean": "pnpm run lect-effect/domain/clean && pnpm run lect-effect/backend/clean && pnpm run lect-effect/frontend/clean && pnpm run lect-effect/docs/clean",
+    "lect-effect/build": "pnpm run lect-effect/domain/build && pnpm run lect-effect/backend/build && pnpm run lect-effect/frontend/build && pnpm run lect-effect/docs/build",
+    "lect-effect/clean": "pnpm run _clean && pnpm run lect-effect/domain/clean && pnpm run lect-effect/backend/clean && pnpm run lect-effect/frontend/clean && pnpm run lect-effect/docs/clean",
     "lect-effect/clean:build": "pnpm run lect-effect/clean && pnpm run lect-effect/build",
     "lect-effect/clean:build:test": "pnpm run lect-effect/clean:build && pnpm run lect-effect/test",
     "lect-effect/docs:generate": "pnpm run lect-effect/backend/docs:generate && pnpm run lect-effect/domain/docs:generate && pnpm run lect-effect/frontend/docs:generate",
-    "lect-effect/install": "pnpm run lect-effect/domain/install && pnpm run lect-effect/backend/install && pnpm run lect-effect/frontend/install && pnpm run lect-effect/docs/install",
-    "lect-effect/install:nofreeze": "pnpm run lect-effect/domain/install:nofreeze && pnpm run lect-effect/backend/install:nofreeze && pnpm run lect-effect/frontend/install:nofreeze && pnpm run lect-effect/docs/install:nofreeze",
+    "lect-effect/install": "pnpm install --frozen-lockfile",
+    "lect-effect/install:nofreeze": "pnpm install --no-frozen-lockfile",
     "lect-effect/lint": "pnpm run _lint",
     "lect-effect/run": "concurrently --names backend,frontend --prefix-colors blue,green \"pnpm run lect-effect/backend/start\" \"pnpm -C apps/frontend run lect-effect/frontend/start\"",
     "lect-effect/run:with-docs": "concurrently --names backend,frontend,docs --prefix-colors blue,green,magenta \"pnpm run lect-effect/backend/start\" \"pnpm -C apps/frontend run lect-effect/frontend/start\" \"pnpm -C docs run lect-effect/docs/dev\"",
@@ -83,29 +83,15 @@
   "volta": {
     "node": "24.12.0"
   },
-  "dependencies": {
-    "@lect-effect/domain": "workspace:*",
-    "@effect/platform-node": "^0.104.0",
-    "@effect/sql": "^0.49.0",
-    "@effect/sql-pg": "^0.50.1",
-    "@gqloom/core": "^0.15.0",
-    "@gqloom/effect": "^0.13.0",
-    "dotenv": "^17.2.3",
-    "effect": "^3.19.14",
-    "graphql": "^16.12.0",
-    "graphql-yoga": "^5.18.0",
-    "typescript": "^5.9.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@effect/docgen": "^0.5.2",
     "@effect/language-service": "^0.64.1",
-    "@effect/vitest": "^0.27.0",
     "@tsconfig/node24": "^24.0.3",
     "@types/node": "^25.0.3",
     "concurrently": "^9.0.0",
     "env-cmd": "^11.0.0",
-    "fast-check": "^4.5.3",
     "node-pg-migrate": "^8.0.4",
+    "typescript": "^5.9.3",
     "vitest": "^3.2.4",
     "xo": "^1.2.3"
   }
