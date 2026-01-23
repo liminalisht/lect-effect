@@ -2,11 +2,7 @@
  * Product repository service implementation.
  * @since 1.0.0
  */
-import {
-  Context, Effect, Option, Schema,
-} from 'effect';
-import type * as SqlError from '@effect/sql/SqlError';
-import { type ParseError } from 'effect/ParseResult';
+import { Effect, Option, Schema } from 'effect';
 import { type Product } from '@lect-effect/domain/product/product';
 import { type ProductId, productIdSchema } from '@lect-effect/domain/product/productId';
 import { type ProductInput } from '@lect-effect/domain/product/productInput';

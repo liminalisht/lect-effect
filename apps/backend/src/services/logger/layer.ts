@@ -3,7 +3,6 @@
  * @since 1.0.0
  */
 import { Effect, Layer, Logger } from 'effect';
-import { ConfigService } from '../config/interface.js';
 import { AppConfigService } from '../appConfig/interface/index.js';
 
 // todo : change to depend on AppService

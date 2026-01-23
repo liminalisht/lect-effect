@@ -2,16 +2,14 @@
  * Item repository service implementation.
  * @since 1.0.0
  */
-import { Context, Effect, Schema } from 'effect';
-import type * as SqlError from '@effect/sql/SqlError';
-import { type ParseError } from 'effect/ParseResult';
+import { Effect, Schema } from 'effect';
 import { type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
 import { itemIdSchema, type ItemId } from '@lect-effect/domain/item/itemId';
 import { type Item } from '@lect-effect/domain/item/item';
 import { type ProductId } from '@lect-effect/domain/product/productId';
 import { decodeMany, decodeOne } from '../../utilities/decode.js';
 import { MasterdataDbService } from '../masterdataDb/interface.js';
-import { ItemRepoError, ItemRepoService } from './interface.js';
+import { ItemRepoService } from './interface.js';
 
 const ItemRowSchema = Schema.Struct({
   id: itemIdSchema,
