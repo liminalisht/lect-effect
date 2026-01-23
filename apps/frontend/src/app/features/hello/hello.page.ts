@@ -14,6 +14,7 @@ import { HelloStore } from './hello.store.js';
   selector: 'app-hello-page',
   standalone: true,
   imports: [CommonModule],
+  providers: [HelloStore],
   templateUrl: './hello.page.html',
   styleUrl: './hello.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

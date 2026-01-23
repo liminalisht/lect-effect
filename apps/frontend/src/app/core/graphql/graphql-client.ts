@@ -1,84 +1,85 @@
-/**
- * Minimal GraphQL client built on Effect and fetch.
- * @since 1.0.0
- */
 import {Context, Effect, Layer} from 'effect';
+import type {Json} from '../json/json.js';
 import {
-  DecodeError, GraphqlError, HttpError, TransportError, type GraphQLClientError,
+  DecodeError,
+  GraphQLClientError,
+  GraphqlError,
+  HttpError,
+  TransportError,
 } from './graphql-errors.js';
+import {FrontendConfigService} from '../config/frontend-config.js';
 
-/**
- * Minimal JSON value shape for GraphQL responses.
- * @since 1.0.0
- */
-export type Json =
-	| null
-	| boolean
-	| number
-	| string
-	| readonly Json[]
-	| {[key: string]: Json};
-
-/**
- * GraphQL client interface used across the app.
- * @since 1.0.0
- */
 export type GraphQLClient = {
-  readonly request: (doc: string, variables?: unknown) => Effect.Effect<Json, GraphQLClientError>;
+  readonly request: <A extends Record<string, Json>>(
+    doc: string,
+    variables?: Record<string, Json>,
+  ) => Effect.Effect<A, GraphQLClientError>;
 };
 
-/**
- * Context tag for injecting a GraphQL client layer.
- * @since 1.0.0
- */
-export const GraphQLClientTag = Context.GenericTag<GraphQLClient>('GraphQLClient');
+export class GraphQLClientService extends Context.Tag('GraphQLClientService')<
+  GraphQLClientService,
+  GraphQLClient
+>() {}
 
-const toJson = (input: unknown): input is {readonly data?: Json; readonly errors?: unknown} =>
-  typeof input === 'object' && input !== null;
+export const GraphQLClientLive: Layer.Layer<
+  GraphQLClientService,
+  never,
+  FrontendConfigService
+> = Layer.effect(
+  GraphQLClientService,
+  Effect.gen(function* () {
+    const { graphqlEndpoint } = yield* FrontendConfigService;
 
-/**
- * Live GraphQL client layer bound to the provided endpoint.
- * @since 1.0.0
- */
-export const GraphQLClientLive = (endpoint: string): Layer.Layer<GraphQLClient> =>
-  Layer.succeed(GraphQLClientTag, {
-    request: (doc, variables) =>
-      Effect.gen(function * () {
-        const response = yield * Effect.tryPromise({
-          try: async () =>
-            fetch(endpoint, {
+    return GraphQLClientService.of({
+      request: <A extends Record<string, Json>>(
+        doc: string,
+        variables?: Record<string, Json>,
+      ) =>
+        Effect.gen(function* () {
+          const response = yield* Effect.tryPromise({
+            try: async () => fetch(graphqlEndpoint, {
               method: 'POST',
               headers: {'content-type': 'application/json'},
-              body: JSON.stringify({query: doc, variables}),
+              body: JSON.stringify({ query: doc, variables }),
             }),
-          catch: cause => new TransportError({cause}),
-        });
-
-        if (!response.ok) {
-          const body = yield * Effect.tryPromise({
-            try: async () => response.text(),
-            catch: cause => new DecodeError({cause}),
+            catch: cause => new TransportError({ cause }),
           });
-          return yield * Effect.fail(new HttpError({status: response.status, body}));
-        }
 
-        const parsed = yield * Effect.tryPromise({
-          try: async () => response.json() as Promise<unknown>,
-          catch: cause => new DecodeError({cause}),
-        });
+          if (!response.ok) {
+            const errorText = yield* Effect.tryPromise({
+              try: () => response.text(),
+              catch: cause => new DecodeError({ cause }),
+            });
 
-        if (!toJson(parsed)) {
-          return yield * Effect.fail(new DecodeError({cause: parsed}));
-        }
+            return yield* Effect.fail(new HttpError({
+              status: response.status,
+              body: errorText,
+            }));
+          }
 
-        if (Array.isArray(parsed.errors) && parsed.errors.length > 0) {
-          return yield * Effect.fail(new GraphqlError({errors: parsed.errors}));
-        }
+          const json = yield* Effect.tryPromise({
+            try: async () => response.json() as unknown,
+            catch: cause => new DecodeError({ cause }),
+          });
 
-        if (parsed.data === undefined) {
-          return yield * Effect.fail(new GraphqlError({errors: []}));
-        }
+          if (typeof json !== 'object' || json === null) {
+            return yield* Effect.fail(new DecodeError({
+              cause: new Error('Response JSON was not an object'),
+            }));
+          }
 
-        return parsed.data;
-      }),
-  });
+          const {data, errors} = json as {data?: A; errors?: unknown};
+
+          if (Array.isArray(errors) && errors.length > 0) {
+            return yield* Effect.fail(new GraphqlError({errors}));
+          }
+
+          if (data === undefined) {
+            return yield* Effect.fail(new GraphqlError({errors: []}));
+          }
+
+          return data;
+        }),
+    });
+  }),
+);
