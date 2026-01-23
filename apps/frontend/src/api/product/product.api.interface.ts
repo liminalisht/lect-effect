@@ -1,6 +1,5 @@
 import { Context, type Effect } from 'effect';
 import type { ParseError } from 'effect/ParseResult';
-import type { CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
 import type { ProductWithItems } from '@lect-effect/domain/product/productWithItems';
 import type { GraphQLClientError } from '../../app/core/graphql/graphql-errors';
 

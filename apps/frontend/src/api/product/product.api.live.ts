@@ -1,7 +1,7 @@
 import { Effect, Schema } from 'effect';
-import { type CreateProductWithItemsInput, createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
-import { type ProductWithItems, productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
-import { GraphQLClientService } from '../../app/core/graphql/graphql-client';
+import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
+import { productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
+import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { ProductApiService } from './product.api.interface.js';
 
 const createProductMutation = `

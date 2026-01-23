@@ -66,7 +66,7 @@ export class UiRuntime {
 
   constructor() {
     this.destroyRef.onDestroy(() => {
-      this.runtime.dispose();
+      void this.runtime.dispose();
     });
   }
 

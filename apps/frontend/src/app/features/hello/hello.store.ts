@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import {
   computed, inject, Injectable, signal,
 } from '@angular/core';

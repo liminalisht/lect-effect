@@ -1,7 +1,7 @@
 import { Effect, Schema } from 'effect';
 import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
-import { GraphQLClientService } from '../../app/core/graphql/graphql-client';
+import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { HelloApiService } from './hello.api.interface.js';
 
 const helloQuery = `
