@@ -19,15 +19,15 @@ export default defineConfig({
 				},
 				{
 					label: '@lect-effect/backend',
-					autogenerate: {directory: 'backend', collapsed: true},
+					autogenerate: {directory: 'backend/modules', collapsed: true},
 				},
 				{
 					label: '@lect-effect/domain',
-					autogenerate: {directory: 'domain', collapsed: true},
+					autogenerate: {directory: 'domain/modules', collapsed: true},
 				},
 				{
 					label: '@lect-effect/frontend',
-					autogenerate: {directory: 'frontend', collapsed: true},
+					autogenerate: {directory: 'frontend/modules', collapsed: true},
 				},
 			],
 		}),
