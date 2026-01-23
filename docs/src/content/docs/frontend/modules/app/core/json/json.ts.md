@@ -14,12 +14,12 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Types](#types)
   - [Json (type alias)](#json-type-alias)
 
 ---
 
-# utils
+# Types
 
 ## Json (type alias)
 

@@ -12,12 +12,14 @@ import {ProductApiService, type ProductApiError} from '../../../api/product/prod
 /**
  * Feature store for product creation with associated items.
  * @since 1.0.0
+ * @category Stores
  */
 @Injectable()
 export class CreateProductStore {
   /**
    * Remote data state for the view.
    * @since 1.0.0
+   * @category Signals
    */
   readonly state = signal<RemoteData<Cause.Cause<ProductApiError>, ProductWithItems>>(remoteData.initial<Cause.Cause<ProductApiError>, ProductWithItems>());
 
@@ -26,6 +28,7 @@ export class CreateProductStore {
   /**
    * Runs the createProductWithItems mutation and updates remote data.
    * @since 1.0.0
+   * @category Methods
    */
   async create(input: unknown): Promise<void> {
     this.state.set(remoteData.loading<Cause.Cause<ProductApiError>, ProductWithItems>());

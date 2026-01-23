@@ -14,14 +14,30 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [GraphQLClient (type alias)](#graphqlclient-type-alias)
+- [Layers](#layers)
   - [GraphQLClientLive](#graphqlclientlive)
+- [Service Interfaces](#service-interfaces)
+  - [GraphQLClient (type alias)](#graphqlclient-type-alias)
+- [Services](#services)
   - [GraphQLClientService (class)](#graphqlclientservice-class)
 
 ---
 
-# utils
+# Layers
+
+## GraphQLClientLive
+
+Live GraphQL client layer backed by fetch.
+
+**Signature**
+
+```ts
+export declare const GraphQLClientLive: Layer.Layer<GraphQLClientService, never, FrontendConfigService>
+```
+
+Added in v1.0.0
+
+# Service Interfaces
 
 ## GraphQLClient (type alias)
 
@@ -40,17 +56,7 @@ export type GraphQLClient = {
 
 Added in v1.0.0
 
-## GraphQLClientLive
-
-Live GraphQL client layer backed by fetch.
-
-**Signature**
-
-```ts
-export declare const GraphQLClientLive: Layer.Layer<GraphQLClientService, never, FrontendConfigService>
-```
-
-Added in v1.0.0
+# Services
 
 ## GraphQLClientService (class)
 

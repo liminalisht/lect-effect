@@ -12,6 +12,7 @@ import { type ProductRepoService } from '../productRepo/interface.js';
 /**
  * Union of all services the app provides.
  * @since 1.0.0
+ * @category Application Services
  */
 export type AppServices =
 	AppConfigService

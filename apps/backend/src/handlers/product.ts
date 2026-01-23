@@ -17,6 +17,7 @@ import { type QueryHandler, type MutationHandler, type FieldHandler } from './ge
 /**
  * Fetches a single product by id or returns null.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const getProduct = (id: ProductId) =>
   Effect.gen(function * () {
@@ -35,6 +36,7 @@ const nullableProductWithItemsSchema = Schema.NullOr(productWithItemsSchema);
 /**
  * Query handler for fetching a single product.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const getProductQuery: QueryHandler<
   typeof productIdInputSchema,
@@ -53,6 +55,7 @@ export const getProductQuery: QueryHandler<
 /**
  * Lists all products.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const listProducts = Effect.gen(function * () {
   const repo = yield * ProductRepoService;
@@ -62,6 +65,7 @@ export const listProducts = Effect.gen(function * () {
 /**
  * Query handler for listing products.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const listProductsQuery: QueryHandler<
   typeof emptyStructSchema,
@@ -80,6 +84,7 @@ export const listProductsQuery: QueryHandler<
 /**
  * Creates a new product.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const createProduct = (input: ProductInput) =>
   Effect.gen(function * () {
@@ -90,6 +95,7 @@ export const createProduct = (input: ProductInput) =>
 /**
  * Mutation handler for creating a product.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const createProductMutation: MutationHandler<
   typeof productInputSchema,
@@ -108,6 +114,7 @@ export const createProductMutation: MutationHandler<
 /**
  * Lists items for a given product id.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const itemsForProduct = (productId: ProductId) =>
   Effect.gen(function * () {
@@ -118,6 +125,7 @@ export const itemsForProduct = (productId: ProductId) =>
 /**
  * Field resolver for loading items for the parent product.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const itemsForProductField: FieldHandler<
   typeof productSchema,
@@ -138,6 +146,7 @@ export const itemsForProductField: FieldHandler<
 /**
  * Fetches a product with its items, or null when missing.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const getProductWithItems = (id: ProductId) =>
   Effect.gen(function * () {
@@ -156,6 +165,7 @@ export const getProductWithItems = (id: ProductId) =>
 /**
  * Query handler for fetching a product along with its items.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const getProductWithItemsQuery: QueryHandler<
   typeof productIdInputSchema,
@@ -174,6 +184,7 @@ export const getProductWithItemsQuery: QueryHandler<
 /**
  * Creates a product and associated items, linking them.
  * @since 1.0.0
+ * @category Product Handler Effects
  */
 export const createProductWithItems = (input: CreateProductWithItemsInput) =>
   Effect.gen(function * () {
@@ -195,6 +206,7 @@ export const createProductWithItems = (input: CreateProductWithItemsInput) =>
 /**
  * Mutation handler for creating a product and linking its items.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const createProductWithItemsMutation: MutationHandler<
   typeof createProductWithItemsInputSchema,
@@ -213,6 +225,7 @@ export const createProductWithItemsMutation: MutationHandler<
 /**
  * Registered product handlers for GraphQL resolver conversion.
  * @since 1.0.0
+ * @category Product Handlers
  */
 export const productHandlers = [
   getProductQuery,

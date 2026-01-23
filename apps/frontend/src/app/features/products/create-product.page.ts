@@ -12,6 +12,7 @@ import {CreateProductStore} from './create-product.store.js';
 /**
  * Composition page that wires form, result, and store for product creation.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-create-product-page',
@@ -28,6 +29,7 @@ export class CreateProductPage {
   /**
    * Handles form submit by delegating to the store.
    * @since 1.0.0
+   * @category Methods
    */
   onSubmit(input: CreateProductWithItemsInput): void {
     void this.store.create(input);

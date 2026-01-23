@@ -36,6 +36,7 @@ const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effec
 /**
  * Loads application configuration from environment variables.
  * @since 1.0.0
+ * @category Service Implementations
  */
 export const appConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError>
   = Effect.gen(function * () {

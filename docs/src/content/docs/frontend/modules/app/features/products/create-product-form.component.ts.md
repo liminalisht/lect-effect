@@ -14,7 +14,7 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Components](#components)
   - [CreateProductFormComponent (class)](#createproductformcomponent-class)
     - [addItem (method)](#additem-method)
     - [removeItem (method)](#removeitem-method)
@@ -29,7 +29,7 @@ Added in v1.0.0
 
 ---
 
-# utils
+# Components
 
 ## CreateProductFormComponent (class)
 

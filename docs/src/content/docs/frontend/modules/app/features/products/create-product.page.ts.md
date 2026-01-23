@@ -14,13 +14,13 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Components](#components)
   - [CreateProductPage (class)](#createproductpage-class)
     - [onSubmit (method)](#onsubmit-method)
 
 ---
 
-# utils
+# Components
 
 ## CreateProductPage (class)
 

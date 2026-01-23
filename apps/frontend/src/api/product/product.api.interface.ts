@@ -10,12 +10,14 @@ import type { GraphQLClientError } from '../../app/core/graphql/graphql-errors';
 /**
  * Error union produced by product API operations.
  * @since 1.0.0
+ * @category Service Errors
  */
 export type ProductApiError = GraphQLClientError | ParseError;
 
 /**
  * Public surface of the product API service.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type ProductApi = {
   readonly createProductWithItems: (
@@ -26,6 +28,7 @@ export type ProductApi = {
 /**
  * Tag for locating the product API service in an Effect environment.
  * @since 1.0.0
+ * @category Services
  */
 export class ProductApiService extends Context.Tag('ProductApiService')<
   ProductApiService,

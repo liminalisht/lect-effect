@@ -13,6 +13,7 @@ import { makeAppLayer, type AppEnv } from './app-layer.js';
 /**
  * Facade for running Effect programs within the Angular app lifecycle.
  * @since 1.0.0
+ * @category Services
  */
 @Injectable({ providedIn: 'root' })
 export class UiRuntime {

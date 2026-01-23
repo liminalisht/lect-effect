@@ -14,13 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Service Interfaces](#service-interfaces)
   - [AppConfig (type alias)](#appconfig-type-alias)
+- [Services](#services)
   - [AppConfigService (class)](#appconfigservice-class)
 
 ---
 
-# utils
+# Service Interfaces
 
 ## AppConfig (type alias)
 
@@ -37,6 +38,8 @@ export type AppConfig = {
 ```
 
 Added in v1.0.0
+
+# Services
 
 ## AppConfigService (class)
 

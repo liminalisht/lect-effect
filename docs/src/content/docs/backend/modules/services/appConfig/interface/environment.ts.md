@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [Environment (type alias)](#environment-type-alias)
+- [Schemas](#schemas)
   - [environmentSchema](#environmentschema)
+- [Types](#types)
+  - [Environment (type alias)](#environment-type-alias)
 
 ---
 
-# utils
-
-## Environment (type alias)
-
-Deployment environment discriminator.
-
-**Signature**
-
-```ts
-export type Environment = Schema.Schema.Type<typeof environmentSchema>
-```
-
-Added in v1.0.0
+# Schemas
 
 ## environmentSchema
 
@@ -42,6 +31,20 @@ Schema for allowed deployment environments.
 
 ```ts
 export declare const environmentSchema: Schema.Literal<["dev", "test", "staging", "prod"]>
+```
+
+Added in v1.0.0
+
+# Types
+
+## Environment (type alias)
+
+Deployment environment discriminator.
+
+**Signature**
+
+```ts
+export type Environment = Schema.Schema.Type<typeof environmentSchema>
 ```
 
 Added in v1.0.0

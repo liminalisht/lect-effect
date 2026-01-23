@@ -14,24 +14,25 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Product Handler Effects](#product-handler-effects)
   - [createProduct](#createproduct)
-  - [createProductMutation](#createproductmutation)
   - [createProductWithItems](#createproductwithitems)
-  - [createProductWithItemsMutation](#createproductwithitemsmutation)
   - [getProduct](#getproduct)
-  - [getProductQuery](#getproductquery)
   - [getProductWithItems](#getproductwithitems)
-  - [getProductWithItemsQuery](#getproductwithitemsquery)
   - [itemsForProduct](#itemsforproduct)
-  - [itemsForProductField](#itemsforproductfield)
   - [listProducts](#listproducts)
+- [Product Handlers](#product-handlers)
+  - [createProductMutation](#createproductmutation)
+  - [createProductWithItemsMutation](#createproductwithitemsmutation)
+  - [getProductQuery](#getproductquery)
+  - [getProductWithItemsQuery](#getproductwithitemsquery)
+  - [itemsForProductField](#itemsforproductfield)
   - [listProductsQuery](#listproductsquery)
   - [productHandlers](#producthandlers)
 
 ---
 
-# utils
+# Product Handler Effects
 
 ## createProduct
 
@@ -44,27 +45,6 @@ export declare const createProduct: (
   input: ProductInput
 ) => Effect.Effect<
   { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null },
-  ProductRepoError,
-  ProductRepoService
->
-```
-
-Added in v1.0.0
-
-## createProductMutation
-
-Mutation handler for creating a product.
-
-**Signature**
-
-```ts
-export declare const createProductMutation: MutationHandler<
-  Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>,
-  Schema.Struct<{
-    __typename: Schema.optional<Schema.Literal<["Product"]>>
-    id: Schema.refine<number, typeof Schema.Number>
-    description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
-  }>,
   ProductRepoError,
   ProductRepoService
 >
@@ -88,6 +68,102 @@ export declare const createProductWithItems: (
   },
   SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
+>
+```
+
+Added in v1.0.0
+
+## getProduct
+
+Fetches a single product by id or returns null.
+
+**Signature**
+
+```ts
+export declare const getProduct: (
+  id: ProductId
+) => Effect.Effect<
+  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
+  ProductRepoError,
+  ProductRepoService
+>
+```
+
+Added in v1.0.0
+
+## getProductWithItems
+
+Fetches a product with its items, or null when missing.
+
+**Signature**
+
+```ts
+export declare const getProductWithItems: (
+  id: ProductId
+) => Effect.Effect<
+  {
+    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
+    items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
+  } | null,
+  SqlError | ParseError | ProductNotFound,
+  ItemRepoService | ProductRepoService
+>
+```
+
+Added in v1.0.0
+
+## itemsForProduct
+
+Lists items for a given product id.
+
+**Signature**
+
+```ts
+export declare const itemsForProduct: (
+  productId: ProductId
+) => Effect.Effect<
+  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  ItemRepoError,
+  ItemRepoService
+>
+```
+
+Added in v1.0.0
+
+## listProducts
+
+Lists all products.
+
+**Signature**
+
+```ts
+export declare const listProducts: Effect.Effect<
+  readonly { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }[],
+  ProductRepoError,
+  ProductRepoService
+>
+```
+
+Added in v1.0.0
+
+# Product Handlers
+
+## createProductMutation
+
+Mutation handler for creating a product.
+
+**Signature**
+
+```ts
+export declare const createProductMutation: MutationHandler<
+  Schema.Struct<{ description: Schema.optional<Schema.NullOr<Schema.SchemaClass<string, string, never>>> }>,
+  Schema.Struct<{
+    __typename: Schema.optional<Schema.Literal<["Product"]>>
+    id: Schema.refine<number, typeof Schema.Number>
+    description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
+  }>,
+  ProductRepoError,
+  ProductRepoService
 >
 ```
 
@@ -131,24 +207,6 @@ export declare const createProductWithItemsMutation: MutationHandler<
 
 Added in v1.0.0
 
-## getProduct
-
-Fetches a single product by id or returns null.
-
-**Signature**
-
-```ts
-export declare const getProduct: (
-  id: ProductId
-) => Effect.Effect<
-  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
-  ProductRepoError,
-  ProductRepoService
->
-```
-
-Added in v1.0.0
-
 ## getProductQuery
 
 Query handler for fetching a single product.
@@ -167,27 +225,6 @@ export declare const getProductQuery: QueryHandler<
   >,
   ProductRepoError,
   ProductRepoService
->
-```
-
-Added in v1.0.0
-
-## getProductWithItems
-
-Fetches a product with its items, or null when missing.
-
-**Signature**
-
-```ts
-export declare const getProductWithItems: (
-  id: ProductId
-) => Effect.Effect<
-  {
-    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
-    items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
-  } | null,
-  SqlError | ParseError | ProductNotFound,
-  ItemRepoService | ProductRepoService
 >
 ```
 
@@ -225,24 +262,6 @@ export declare const getProductWithItemsQuery: QueryHandler<
 
 Added in v1.0.0
 
-## itemsForProduct
-
-Lists items for a given product id.
-
-**Signature**
-
-```ts
-export declare const itemsForProduct: (
-  productId: ProductId
-) => Effect.Effect<
-  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
-  ItemRepoError,
-  ItemRepoService
->
-```
-
-Added in v1.0.0
-
 ## itemsForProductField
 
 Field resolver for loading items for the parent product.
@@ -266,22 +285,6 @@ export declare const itemsForProductField: FieldHandler<
   >,
   ItemRepoError,
   ItemRepoService
->
-```
-
-Added in v1.0.0
-
-## listProducts
-
-Lists all products.
-
-**Signature**
-
-```ts
-export declare const listProducts: Effect.Effect<
-  readonly { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }[],
-  ProductRepoError,
-  ProductRepoService
 >
 ```
 

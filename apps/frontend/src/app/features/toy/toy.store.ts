@@ -11,12 +11,14 @@ import {UiRuntime} from '../../core/effect/ui-runtime.js';
 /**
  * Toy feature store that runs an Effect and maps it to remote data state.
  * @since 1.0.0
+ * @category Stores
  */
 @Injectable()
 export class ToyStore {
   /**
    * Remote data state reflected into the view.
    * @since 1.0.0
+   * @category signals
    */
   readonly state: WritableSignal<RemoteData<unknown, number>> = signal(remoteData.initial());
 
@@ -25,6 +27,7 @@ export class ToyStore {
   /**
    * Runs the example effect and updates the remote data signal.
    * @since 1.0.0
+   * @category Methods
    */
   run(): void {
     this.state.set(remoteData.loading());

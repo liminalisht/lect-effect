@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [ItemIdInput (type alias)](#itemidinput-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [itemIdInputSchema](#itemidinputschema)
+- [Domain Types](#domain-types)
+  - [ItemIdInput (type alias)](#itemidinput-type-alias)
 
 ---
 
-# utils
-
-## ItemIdInput (type alias)
-
-GraphQL input for selecting an item by id.
-
-**Signature**
-
-```ts
-export type ItemIdInput = Schema.Schema.Type<typeof itemIdInputSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## itemIdInputSchema
 
@@ -42,6 +31,20 @@ Input schema for selecting an item by id.
 
 ```ts
 export declare const itemIdInputSchema: Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## ItemIdInput (type alias)
+
+GraphQL input for selecting an item by id.
+
+**Signature**
+
+```ts
+export type ItemIdInput = Schema.Schema.Type<typeof itemIdInputSchema>
 ```
 
 Added in v1.0.0

@@ -8,6 +8,7 @@ import {RouterOutlet} from '@angular/router';
 /**
  * Application root component hosting the router.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class App {
   /**
    * Application title signal used in the shell.
    * @since 1.0.0
+   * @category Signals
    */
   protected readonly title = signal('web');
 }

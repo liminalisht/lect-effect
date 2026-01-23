@@ -10,6 +10,7 @@ import { appConfigServiceImplementation } from './implementation.js';
 /**
  * Provides configuration values to the environment.
  * @since 1.0.0
+ * @category Layers
  */
 export const appConfigLayer: Layer.Layer<AppConfigService, ConfigurationError>
   = Layer.effect(

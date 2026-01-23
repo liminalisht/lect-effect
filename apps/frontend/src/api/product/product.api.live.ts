@@ -32,6 +32,7 @@ const CreateProductWithItemsResultSchema = Schema.Struct({
 /**
  * Layer constructor yielding the live product API service.
  * @since 1.0.0
+ * @category Service Implementations
  */
 export const productApiLive = Effect.gen(function * () {
   const client = yield * GraphQLClientService;

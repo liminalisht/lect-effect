@@ -19,6 +19,7 @@ import { type AppConfig, AppConfigService } from './services/appConfig/interface
 /**
  * Loads configuration from the AppConfigService.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const getAppConfig = (): Effect.Effect<AppConfig, never, AppConfigService> => Effect.gen(function * () {
   yield * Effect.logDebug('getting config...');
@@ -30,6 +31,7 @@ export const getAppConfig = (): Effect.Effect<AppConfig, never, AppConfigService
 /**
  * Builds and logs the GraphQL schema.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const makeGraphQLSchema = (resolvers: readonly GraphQLResolver[]): Effect.Effect<GraphQLSchema, never, AppServices> => Effect.gen(function * () {
   yield * Effect.logDebug('making graphql schema...');
@@ -42,6 +44,7 @@ export const makeGraphQLSchema = (resolvers: readonly GraphQLResolver[]): Effect
 /**
  * Constructs the Yoga server instance with the provided schema.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga<AppServices>, never, AppServices> => Effect.gen(function * () {
   yield * Effect.logDebug('making yoga server instance...');
@@ -68,6 +71,7 @@ const makeResolvers = (handlers: readonly AnyHandler[]): readonly GraphQLResolve
 /**
  * Top-level application Effect that wires configuration, schema, and server startup.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const app: Effect.Effect<never, ServerStartError, AppServices>
   = Effect.scoped(Effect.gen(function * () {

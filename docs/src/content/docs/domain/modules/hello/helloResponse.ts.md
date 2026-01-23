@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [HelloResponse (type alias)](#helloresponse-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [helloResponseSchema](#helloresponseschema)
+- [Domain Types](#domain-types)
+  - [HelloResponse (type alias)](#helloresponse-type-alias)
 
 ---
 
-# utils
-
-## HelloResponse (type alias)
-
-Response structure returned by the hello operation.
-
-**Signature**
-
-```ts
-export type HelloResponse = Schema.Schema.Type<typeof helloResponseSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## helloResponseSchema
 
@@ -42,6 +31,20 @@ Schema for the hello response envelope.
 
 ```ts
 export declare const helloResponseSchema: Schema.Struct<{ greeting: Schema.brand<typeof Schema.String, "Greeting"> }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## HelloResponse (type alias)
+
+Response structure returned by the hello operation.
+
+**Signature**
+
+```ts
+export type HelloResponse = Schema.Schema.Type<typeof helloResponseSchema>
 ```
 
 Added in v1.0.0

@@ -14,7 +14,7 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Client Errors](#graphql-client-errors)
   - [DecodeError (class)](#decodeerror-class)
   - [GraphQLClientError (type alias)](#graphqlclienterror-type-alias)
   - [GraphqlError (class)](#graphqlerror-class)
@@ -23,7 +23,7 @@ Added in v1.0.0
 
 ---
 
-# utils
+# GraphQL Client Errors
 
 ## DecodeError (class)
 

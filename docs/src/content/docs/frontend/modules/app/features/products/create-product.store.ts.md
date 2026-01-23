@@ -14,14 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Stores](#stores)
   - [CreateProductStore (class)](#createproductstore-class)
     - [create (method)](#create-method)
     - [state (property)](#state-property)
 
 ---
 
-# utils
+# Stores
 
 ## CreateProductStore (class)
 

@@ -12,6 +12,7 @@ import { type ConfigurationError } from './services/errors.js';
 /**
  * Union type of all application-specific errors.
  * @since 1.0.0
+ * @category Application Errors
  */
 export type AppError =
 	ConfigurationError

@@ -12,14 +12,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Stores](#stores)
   - [ToyStore (class)](#toystore-class)
     - [run (method)](#run-method)
     - [state (property)](#state-property)
 
 ---
 
-# utils
+# Stores
 
 ## ToyStore (class)
 

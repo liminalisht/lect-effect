@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [CreateProductWithItemsInput (type alias)](#createproductwithitemsinput-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [createProductWithItemsInputSchema](#createproductwithitemsinputschema)
+- [Domain Types](#domain-types)
+  - [CreateProductWithItemsInput (type alias)](#createproductwithitemsinput-type-alias)
 
 ---
 
-# utils
-
-## CreateProductWithItemsInput (type alias)
-
-Mutation payload for creating a product with its items.
-
-**Signature**
-
-```ts
-export type CreateProductWithItemsInput = Schema.Schema.Type<typeof createProductWithItemsInputSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## createProductWithItemsInputSchema
 
@@ -50,6 +39,20 @@ export declare const createProductWithItemsInputSchema: Schema.Struct<{
     }>
   >
 }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## CreateProductWithItemsInput (type alias)
+
+Mutation payload for creating a product with its items.
+
+**Signature**
+
+```ts
+export type CreateProductWithItemsInput = Schema.Schema.Type<typeof createProductWithItemsInputSchema>
 ```
 
 Added in v1.0.0

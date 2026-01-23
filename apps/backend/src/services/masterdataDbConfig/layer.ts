@@ -10,6 +10,7 @@ import { masterdataDbConfigServiceImplementation } from './implementation.js';
 /**
  * Loads and provides masterdata database configuration to the environment.
  * @since 1.0.0
+ * @category Layers
  */
 export const masterdataDbConfigLayer: Layer.Layer<MasterdataDbConfigService, ConfigurationError>
   = Layer.effect(

@@ -10,6 +10,7 @@ import {CreateProductPage} from './features/products/create-product.page.js';
 /**
  * Client-side route configuration for the app shell.
  * @since 1.0.0
+ * @category Routes
  */
 export const routes: Routes = [
   { path: '', component: HelloPage },

@@ -9,5 +9,6 @@ import { helloApiLive } from './hello.api.live.js';
 /**
  * Layer providing the live hello API implementation.
  * @since 1.0.0
+ * @category Layers
  */
 export const HelloApiLayer = Layer.effect(HelloApiService, helloApiLive);

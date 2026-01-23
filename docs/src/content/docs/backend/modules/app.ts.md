@@ -14,7 +14,7 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Application Setup](#application-setup)
   - [app](#app)
   - [getAppConfig](#getappconfig)
   - [makeGraphQLSchema](#makegraphqlschema)
@@ -22,7 +22,7 @@ Added in v1.0.0
 
 ---
 
-# utils
+# Application Setup
 
 ## app
 

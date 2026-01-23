@@ -14,13 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Service Interfaces](#service-interfaces)
   - [MasterdataDbConfig (type alias)](#masterdatadbconfig-type-alias)
+- [Services](#services)
   - [MasterdataDbConfigService (class)](#masterdatadbconfigservice-class)
 
 ---
 
-# utils
+# Service Interfaces
 
 ## MasterdataDbConfig (type alias)
 
@@ -40,6 +41,8 @@ export type MasterdataDbConfig = {
 ```
 
 Added in v1.0.0
+
+# Services
 
 ## MasterdataDbConfigService (class)
 

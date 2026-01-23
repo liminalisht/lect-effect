@@ -14,12 +14,12 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Services Errors](#services-errors)
   - [ConfigurationError (type alias)](#configurationerror-type-alias)
 
 ---
 
-# utils
+# Services Errors
 
 ## ConfigurationError (type alias)
 

@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [ItemId (type alias)](#itemid-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [itemIdSchema](#itemidschema)
+- [Domain Types](#domain-types)
+  - [ItemId (type alias)](#itemid-type-alias)
 
 ---
 
-# utils
-
-## ItemId (type alias)
-
-Item identifier.
-
-**Signature**
-
-```ts
-export type ItemId = Schema.Schema.Type<typeof itemIdSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## itemIdSchema
 
@@ -42,6 +31,20 @@ Identifier schema for items.
 
 ```ts
 export declare const itemIdSchema: Schema.refine<number, typeof Schema.Number>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## ItemId (type alias)
+
+Item identifier.
+
+**Signature**
+
+```ts
+export type ItemId = Schema.Schema.Type<typeof itemIdSchema>
 ```
 
 Added in v1.0.0

@@ -14,14 +14,29 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [greetQuery](#greetquery)
+- [Hello Handler Effects](#hello-handler-effects)
   - [helloHandler](#hellohandler)
+- [Hello Handlers](#hello-handlers)
+  - [greetQuery](#greetquery)
   - [helloHandlers](#hellohandlers)
 
 ---
 
-# utils
+# Hello Handler Effects
+
+## helloHandler
+
+Produces a greeting response using the greeting service.
+
+**Signature**
+
+```ts
+export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetService>
+```
+
+Added in v1.0.0
+
+# Hello Handlers
 
 ## greetQuery
 
@@ -36,18 +51,6 @@ export declare const greetQuery: QueryHandler<
   never,
   GreetService
 >
-```
-
-Added in v1.0.0
-
-## helloHandler
-
-Produces a greeting response using the greeting service.
-
-**Signature**
-
-```ts
-export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetService>
 ```
 
 Added in v1.0.0

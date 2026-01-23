@@ -14,13 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Service Interfaces](#service-interfaces)
   - [Greet (type alias)](#greet-type-alias)
+- [Services](#services)
   - [GreetService (class)](#greetservice-class)
 
 ---
 
-# utils
+# Service Interfaces
 
 ## Greet (type alias)
 
@@ -35,6 +36,8 @@ export type Greet = {
 ```
 
 Added in v1.0.0
+
+# Services
 
 ## GreetService (class)
 

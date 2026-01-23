@@ -10,6 +10,7 @@ import { type Port } from './port.js';
 /**
  * Application runtime configuration values.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type AppConfig = {
   readonly port: Port;
@@ -20,6 +21,7 @@ export type AppConfig = {
 /**
  * Tag for accessing application configuration values.
  * @since 1.0.0
+ * @category Services
  */
 export class AppConfigService extends Context.Tag('services/appConfig')<AppConfigService, AppConfig>() {}
 

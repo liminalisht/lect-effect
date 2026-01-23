@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [GreetServiceImplementation](#greetserviceimplementation)
+- [Layers](#layers)
   - [greetingLayer](#greetinglayer)
+- [Service Implementations](#service-implementations)
+  - [GreetServiceImplementation](#greetserviceimplementation)
 
 ---
 
-# utils
-
-## GreetServiceImplementation
-
-Concrete greeting service implementation.
-
-**Signature**
-
-```ts
-export declare const GreetServiceImplementation: Greet
-```
-
-Added in v1.0.0
+# Layers
 
 ## greetingLayer
 
@@ -42,6 +31,20 @@ Provides the GreetService implementation.
 
 ```ts
 export declare const greetingLayer: Layer.Layer<GreetService, never, never>
+```
+
+Added in v1.0.0
+
+# Service Implementations
+
+## GreetServiceImplementation
+
+Concrete greeting service implementation.
+
+**Signature**
+
+```ts
+export declare const GreetServiceImplementation: Greet
 ```
 
 Added in v1.0.0

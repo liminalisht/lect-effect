@@ -7,5 +7,6 @@ import { type LogLevel } from 'effect';
 /**
  * Allowed logging level derived from environment configuration.
  * @since 1.0.0
+ * @category Types
  */
 export type ConfiguredLogLevel = LogLevel.LogLevel;

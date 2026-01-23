@@ -10,6 +10,7 @@ import { type MasterdataDb } from './interface.js';
 /**
  * Live implementation of the MasterdataDb service
  * @since 1.0.0
+ * @category Service Implementations
  */
 export const masterdataDbImplementation: Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>
   = Effect.gen(function * () {

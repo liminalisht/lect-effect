@@ -14,13 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Yoga Server Type](#graphql-yoga-server-type)
   - [Yoga (type alias)](#yoga-type-alias)
+- [GraphQL Yoga Server Utilities](#graphql-yoga-server-utilities)
   - [makeYoga](#makeyoga)
 
 ---
 
-# utils
+# GraphQL Yoga Server Type
 
 ## Yoga (type alias)
 
@@ -33,6 +34,8 @@ export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>
 ```
 
 Added in v1.0.0
+
+# GraphQL Yoga Server Utilities
 
 ## makeYoga
 

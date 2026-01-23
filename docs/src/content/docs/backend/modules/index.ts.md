@@ -14,13 +14,13 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Application Setup](#application-setup)
   - [logFailure](#logfailure)
   - [main](#main)
 
 ---
 
-# utils
+# Application Setup
 
 ## logFailure
 

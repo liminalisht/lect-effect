@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [Item (type alias)](#item-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [itemSchema](#itemschema)
+- [Domain Types](#domain-types)
+  - [Item (type alias)](#item-type-alias)
 
 ---
 
-# utils
-
-## Item (type alias)
-
-Item domain entity.
-
-**Signature**
-
-```ts
-export type Item = Schema.Schema.Type<typeof itemSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## itemSchema
 
@@ -46,6 +35,20 @@ export declare const itemSchema: Schema.Struct<{
   description: Schema.NullOr<typeof Schema.String>
   pack_size: Schema.refine<number, typeof Schema.Number>
 }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## Item (type alias)
+
+Item domain entity.
+
+**Signature**
+
+```ts
+export type Item = Schema.Schema.Type<typeof itemSchema>
 ```
 
 Added in v1.0.0

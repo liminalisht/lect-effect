@@ -17,6 +17,7 @@ import { masterdataDbImplementation } from './implementation.js';
 /**
  * Provides the live masterdata database client.
  * @since 1.0.0
+ * @category Layers
  */
 export const masterdataDbLayer: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService>
   = Layer.unwrapEffect(Effect.gen(function * () {

@@ -9,6 +9,7 @@ import {ToyStore} from './toy.store.js';
 /**
  * Page component for the toy feature.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-toy-page',
@@ -23,6 +24,7 @@ export class ToyPage {
   /**
    * Injected store managing toy feature state.
    * @since 1.0.0
+   * @category Properties
    */
   constructor(readonly store: ToyStore) {}
 

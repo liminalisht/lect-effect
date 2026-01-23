@@ -9,6 +9,7 @@ import { HelloStore } from './hello.store.js';
 /**
  * Hello feature page component.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-hello-page',

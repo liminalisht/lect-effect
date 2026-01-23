@@ -14,9 +14,11 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Handler Types](#graphql-handler-types)
   - [AnyHandler (type alias)](#anyhandler-type-alias)
+- [GraphQL Resolver Types](#graphql-resolver-types)
   - [ResolverFromHandler (type alias)](#resolverfromhandler-type-alias)
+- [GraphQL Resolver Utilities](#graphql-resolver-utilities)
   - [genericFieldResolver](#genericfieldresolver)
   - [genericMutationResolver](#genericmutationresolver)
   - [genericQueryResolver](#genericqueryresolver)
@@ -25,7 +27,7 @@ Added in v1.0.0
 
 ---
 
-# utils
+# GraphQL Handler Types
 
 ## AnyHandler (type alias)
 
@@ -41,6 +43,8 @@ export type AnyHandler =
 ```
 
 Added in v1.0.0
+
+# GraphQL Resolver Types
 
 ## ResolverFromHandler (type alias)
 
@@ -60,6 +64,8 @@ export type ResolverFromHandler<H> =
 ```
 
 Added in v1.0.0
+
+# GraphQL Resolver Utilities
 
 ## genericFieldResolver
 

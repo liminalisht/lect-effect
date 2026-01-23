@@ -15,6 +15,7 @@ import { type QueryHandler, type FieldHandler, type MutationHandler } from './ge
 /**
  * Fetches an item by id.
  * @since 1.0.0
+ * @category Item Handler Effects
  */
 export const getItem = (id: ItemId) =>
   Effect.gen(function * () {
@@ -31,6 +32,7 @@ const nullableProductSchema = Schema.NullOr(productSchema);
 /**
  * Query handler for fetching a single item.
  * @since 1.0.0
+ * @category Item Handlers
  */
 export const getItemQuery: QueryHandler<
   typeof itemIdInputSchema,
@@ -49,6 +51,7 @@ export const getItemQuery: QueryHandler<
 /**
  * Lists all items.
  * @since 1.0.0
+ * @category Item Handler Effects
  */
 export const listItems = Effect.gen(function * () {
   const repo = yield * ItemRepoService;
@@ -58,6 +61,7 @@ export const listItems = Effect.gen(function * () {
 /**
  * Query handler for listing all items.
  * @since 1.0.0
+ * @category Item Handlers
  */
 export const listItemsQuery: QueryHandler<
   typeof emptyStructSchema,
@@ -76,6 +80,7 @@ export const listItemsQuery: QueryHandler<
 /**
  * Creates a new item.
  * @since 1.0.0
+ * @category Item Handler Effects
  */
 export const createItem = (input: CreateItemInput) =>
   Effect.gen(function * () {
@@ -86,6 +91,7 @@ export const createItem = (input: CreateItemInput) =>
 /**
  * Mutation handler for creating a new item.
  * @since 1.0.0
+ * @category Item Handlers
  */
 export const createItemMutation: MutationHandler<
   typeof createItemInputSchema,
@@ -104,6 +110,7 @@ export const createItemMutation: MutationHandler<
 /**
  * Looks up the product for a given item id, returning null when absent.
  * @since 1.0.0
+ * @category Item Handler Effects
  */
 export const productForItem = (itemId: ItemId) =>
   Effect.gen(function * () {
@@ -115,6 +122,7 @@ export const productForItem = (itemId: ItemId) =>
 /**
  * Field resolver for loading the product related to an item.
  * @since 1.0.0
+ * @category Item Handlers
  */
 export const productForItemField: FieldHandler<
   typeof itemSchema,
@@ -135,6 +143,7 @@ export const productForItemField: FieldHandler<
 /**
  * Registered item handlers for GraphQL resolver conversion.
  * @since 1.0.0
+ * @category Item Handlers
  */
 export const itemHandlers = [
   getItemQuery,

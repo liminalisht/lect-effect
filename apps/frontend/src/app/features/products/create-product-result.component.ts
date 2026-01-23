@@ -10,6 +10,7 @@ import type {RemoteData} from '../../core/effect/remote-data.js';
 /**
  * Angular component rendering remote data from createProductWithItems.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-create-product-result',
@@ -23,6 +24,7 @@ export class CreateProductResultComponent {
   /**
    * Remote data to render.
    * @since 1.0.0
+   * @category Inputs
    */
   @Input({required: true}) state!: RemoteData<unknown, ProductWithItems>;
 }

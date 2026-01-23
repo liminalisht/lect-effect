@@ -14,14 +14,16 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Service Errors](#service-errors)
   - [ItemRepoError (type alias)](#itemrepoerror-type-alias)
-  - [ItemRepoService (class)](#itemreposervice-class)
+- [Service Interfaces](#service-interfaces)
   - [ItemRepoShape (type alias)](#itemreposhape-type-alias)
+- [Services](#services)
+  - [ItemRepoService (class)](#itemreposervice-class)
 
 ---
 
-# utils
+# Service Errors
 
 ## ItemRepoError (type alias)
 
@@ -35,17 +37,7 @@ export type ItemRepoError = SqlError.SqlError | ParseError
 
 Added in v1.0.0
 
-## ItemRepoService (class)
-
-Service tag for the item repository.
-
-**Signature**
-
-```ts
-export declare class ItemRepoService
-```
-
-Added in v1.0.0
+# Service Interfaces
 
 ## ItemRepoShape (type alias)
 
@@ -61,6 +53,20 @@ export type ItemRepoShape = {
   readonly listForProduct: (productId: ProductId) => Effect.Effect<readonly Item[], ItemRepoError>
   readonly linkToProduct: (itemId: ItemId, productId: ProductId) => Effect.Effect<void, ItemRepoError>
 }
+```
+
+Added in v1.0.0
+
+# Services
+
+## ItemRepoService (class)
+
+Service tag for the item repository.
+
+**Signature**
+
+```ts
+export declare class ItemRepoService
 ```
 
 Added in v1.0.0

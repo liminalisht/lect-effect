@@ -14,13 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Service Interfaces](#service-interfaces)
   - [Config (type alias)](#config-type-alias)
+- [Services](#services)
   - [ConfigService (class)](#configservice-class)
 
 ---
 
-# utils
+# Service Interfaces
 
 ## Config (type alias)
 
@@ -36,6 +37,8 @@ export type Config = {
 ```
 
 Added in v1.0.0
+
+# Services
 
 ## ConfigService (class)
 

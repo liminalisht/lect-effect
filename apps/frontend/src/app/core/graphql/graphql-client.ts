@@ -16,6 +16,7 @@ import {
 /**
  * Minimal GraphQL client interface returning Effect results.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type GraphQLClient = {
   readonly request: <A extends Record<string, Json>>(
@@ -27,15 +28,18 @@ export type GraphQLClient = {
 /**
  * Tag for locating the GraphQL client service in an Effect environment.
  * @since 1.0.0
+ * @category Services
  */
 export class GraphQLClientService extends Context.Tag('GraphQLClientService')<
   GraphQLClientService,
   GraphQLClient
 >() {}
 
+// todo: extract implementation
 /**
  * Live GraphQL client layer backed by fetch.
  * @since 1.0.0
+ * @category Layers
  */
 export const GraphQLClientLive: Layer.Layer<
   GraphQLClientService,

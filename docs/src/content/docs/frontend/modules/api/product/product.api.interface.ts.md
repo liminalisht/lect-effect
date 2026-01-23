@@ -14,14 +14,30 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [ProductApi (type alias)](#productapi-type-alias)
+- [Service Errors](#service-errors)
   - [ProductApiError (type alias)](#productapierror-type-alias)
+- [Service Interfaces](#service-interfaces)
+  - [ProductApi (type alias)](#productapi-type-alias)
+- [Services](#services)
   - [ProductApiService (class)](#productapiservice-class)
 
 ---
 
-# utils
+# Service Errors
+
+## ProductApiError (type alias)
+
+Error union produced by product API operations.
+
+**Signature**
+
+```ts
+export type ProductApiError = GraphQLClientError | ParseError
+```
+
+Added in v1.0.0
+
+# Service Interfaces
 
 ## ProductApi (type alias)
 
@@ -37,17 +53,7 @@ export type ProductApi = {
 
 Added in v1.0.0
 
-## ProductApiError (type alias)
-
-Error union produced by product API operations.
-
-**Signature**
-
-```ts
-export type ProductApiError = GraphQLClientError | ParseError
-```
-
-Added in v1.0.0
+# Services
 
 ## ProductApiService (class)
 

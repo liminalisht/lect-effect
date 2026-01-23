@@ -12,6 +12,7 @@ import { runEffect } from './effect.js';
 /**
  * Union of supported handler shapes.
  * @since 1.0.0
+ * @category GraphQL Handler Types
  */
 export type AnyHandler =
 	| FieldHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
@@ -21,6 +22,7 @@ export type AnyHandler =
 /**
  * Resolves the gqloom resolver type produced from a handler.
  * @since 1.0.0
+ * @category GraphQL Resolver Types
  */
 export type ResolverFromHandler<H> =
   H extends FieldHandler<infer P, infer I, infer O, infer E, infer R>
@@ -34,6 +36,7 @@ export type ResolverFromHandler<H> =
 /**
  * Converts handler definitions into gqloom resolvers while preserving types.
  * @since 1.0.0
+ * @category GraphQL Resolver Utilities
  */
 export const handlersToResolvers = <HS extends readonly AnyHandler[]>(handlers: HS) =>
   handlers.map(handler => handlerToResolver(handler)) as { [K in keyof HS]: ResolverFromHandler<HS[K]> };
@@ -41,6 +44,7 @@ export const handlersToResolvers = <HS extends readonly AnyHandler[]>(handlers: 
 /**
  * Dispatches a handler to the appropriate resolver factory.
  * @since 1.0.0
+ * @category GraphQL Resolver Utilities
  */
 export const handlerToResolver = <H extends AnyHandler>(handler: H): ResolverFromHandler<H> => {
   switch (handler.kind) {
@@ -89,6 +93,7 @@ type FieldResolverConfig<P, I, O, E, R> = {
 /**
  * Builds a typed field resolver for gqloom.
  * @since 1.0.0
+ * @category GraphQL Resolver Utilities
  */
 export const genericFieldResolver = <
   P extends Schema.Schema.AnyNoContext,
@@ -118,6 +123,7 @@ type MutationResolverConfig<I, O, E, R> = {
 /**
  * Builds a typed mutation resolver for gqloom.
  * @since 1.0.0
+ * @category GraphQL Resolver Utilities
  */
 export const genericMutationResolver = <
   I extends Schema.Schema.AnyNoContext,
@@ -144,6 +150,7 @@ type QueryResolverConfig<I, O, E, R> = {
 /**
  * Builds a typed query resolver for gqloom.
  * @since 1.0.0
+ * @category GraphQL Resolver Utilities
  */
 export const genericQueryResolver = <
   I extends Schema.Schema.AnyNoContext,

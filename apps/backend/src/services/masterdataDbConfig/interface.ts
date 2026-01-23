@@ -12,6 +12,7 @@ type IdleTimeoutMillis = number;
 /**
  * Configuration for the master data database connection and pool.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type MasterdataDbConfig = {
   readonly url: Url;
@@ -25,6 +26,7 @@ export type MasterdataDbConfig = {
 /**
  * Tag for accessing master data DB configuration.
  * @since 1.0.0
+ * @category Services
  */
 export class MasterdataDbConfigService extends Context.Tag('services/masterdataDbConfig')<MasterdataDbConfigService, MasterdataDbConfig>() {}
 

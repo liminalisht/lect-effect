@@ -14,6 +14,7 @@ import { type ProductApiService } from '../../../api/product/product.api.interfa
 /**
  * Union of services required by the UI Effect runtime.
  * @since 1.0.0
+ * @category Application Services
  */
 export type AppEnv =
 	| FrontendConfigService
@@ -24,6 +25,7 @@ export type AppEnv =
 /**
  * Build the composed application layer used by UiRuntime.
  * @since 1.0.0
+ * @category Application Layers
  */
 export const makeAppLayer = (cfg: FrontendConfig): Layer.Layer<AppEnv> => {
   const configLayer = Layer.succeed(FrontendConfigService, cfg);

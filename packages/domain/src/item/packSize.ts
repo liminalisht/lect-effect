@@ -7,6 +7,7 @@ import { Schema } from 'effect';
 /**
  * Pack size value object.
  * @since 1.0.0
+ * @category Domain Types
  */
 export type PackSize = Schema.Schema.Type<typeof packSizeSchema>;
 
@@ -14,6 +15,7 @@ export type PackSize = Schema.Schema.Type<typeof packSizeSchema>;
 /**
  * Schema for item pack size.
  * @since 1.0.0
+ * @category Domain Schemas
  */
 export const packSizeSchema = Schema.Number.pipe(Schema.int()).annotations({
   description: 'item pack size',

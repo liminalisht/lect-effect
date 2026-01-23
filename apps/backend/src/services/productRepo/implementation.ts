@@ -29,6 +29,7 @@ const toDomain = (r: Schema.Schema.Type<typeof ProductRowSchema>): Product => ({
 /**
  * Live implementation of the ProductRepo.
  * @since 1.0.0
+ * @category Service Implementations
  */
 export const productRepoImplementation = Effect.gen(function * () {
   const { sql } = yield * MasterdataDbService;

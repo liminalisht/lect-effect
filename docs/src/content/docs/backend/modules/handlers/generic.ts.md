@@ -14,14 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Resolver Types](#graphql-resolver-types)
   - [FieldHandler (type alias)](#fieldhandler-type-alias)
   - [MutationHandler (type alias)](#mutationhandler-type-alias)
   - [QueryHandler (type alias)](#queryhandler-type-alias)
 
 ---
 
-# utils
+# GraphQL Resolver Types
 
 ## FieldHandler (type alias)
 

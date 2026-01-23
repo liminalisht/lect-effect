@@ -11,12 +11,14 @@ import type { GraphQLContext } from './context.js';
 /**
  * Alias for the configured Yoga server instance.
  * @since 1.0.0
+ * @category GraphQL Yoga Server Type
  */
 export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>;
 
 /**
  * Constructs a Yoga server with the Effect runtime injected into context.
  * @since 1.0.0
+ * @category GraphQL Yoga Server Utilities
  */
 export const makeYoga
   = <R>(schema: GraphQLSchema): Effect.Effect<Yoga<R>, never, R> => Effect.gen(function * () {

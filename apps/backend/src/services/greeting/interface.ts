@@ -9,6 +9,7 @@ import { type Greeting } from '@lect-effect/domain/hello/greeting';
 /**
  * Service tag for greeting operations.
  * @since 1.0.0
+ * @category Services
  */
 export class GreetService extends Context.Tag('services/greeting')<
   GreetService,
@@ -18,6 +19,7 @@ export class GreetService extends Context.Tag('services/greeting')<
 /**
  * Interface for the greeting service implementation.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type Greet = {
   readonly greet: (name: Option.Option<Name>) => Effect.Effect<Greeting>;

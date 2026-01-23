@@ -17,6 +17,7 @@ const rawFrontendConfig: RawFrontendConfig = {
 /**
  * Application configuration used when bootstrapping in the browser.
  * @since 1.0.0
+ * @category Application Configuration
  */
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -14,34 +14,17 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [SchemaField (type alias)](#schemafield-type-alias)
+- [Constructors](#constructors)
   - [schemaField](#schemafield)
+- [Conversions](#conversions)
   - [stringToInt](#stringtoint)
   - [stringToNullIfBlank](#stringtonullifblank)
+- [Types](#types)
+  - [SchemaField (type alias)](#schemafield-type-alias)
 
 ---
 
-# utils
-
-## SchemaField (type alias)
-
-Schema-backed form field interface with raw + derived validation signals.
-
-**Signature**
-
-```ts
-export type SchemaField<Raw, A> = {
-  readonly raw: WritableSignal<Raw>
-  readonly parsed: Signal<Either.Either<A, ParseError>>
-  readonly value: Signal<A | null>
-  readonly error: Signal<ParseError | null>
-  readonly isValid: Signal<boolean>
-  readonly setRaw: (raw: Raw) => void
-}
-```
-
-Added in v1.0.0
+# Constructors
 
 ## schemaField
 
@@ -54,6 +37,8 @@ export declare const schemaField: <Raw, A>(options: SchemaFieldOptions<Raw, A>) 
 ```
 
 Added in v1.0.0
+
+# Conversions
 
 ## stringToInt
 
@@ -75,6 +60,27 @@ Trims a string and returns null when blank.
 
 ```ts
 export declare const stringToNullIfBlank: (value: string) => string | null
+```
+
+Added in v1.0.0
+
+# Types
+
+## SchemaField (type alias)
+
+Schema-backed form field interface with raw + derived validation signals.
+
+**Signature**
+
+```ts
+export type SchemaField<Raw, A> = {
+  readonly raw: WritableSignal<Raw>
+  readonly parsed: Signal<Either.Either<A, ParseError>>
+  readonly value: Signal<A | null>
+  readonly error: Signal<ParseError | null>
+  readonly isValid: Signal<boolean>
+  readonly setRaw: (raw: Raw) => void
+}
 ```
 
 Added in v1.0.0

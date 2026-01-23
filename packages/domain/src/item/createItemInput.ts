@@ -10,11 +10,13 @@ import { packSizeSchema } from './packSize.js';
 /**
  * GraphQL input for creating or updating an item.
  * @since 1.0.0
+ * @category Domain Types
  */
 export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>;
 /**
  * Input schema for creating or updating an item.
  * @since 1.0.0
+ * @category Domain Schemas
  */
 export const createItemInputSchema = Schema.Struct({
   description: Schema.optional(itemDescriptionSchema).annotations({ description: 'item description (nullable & optional)' }),

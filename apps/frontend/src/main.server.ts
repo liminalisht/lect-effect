@@ -11,6 +11,7 @@ import { config } from './app/app.config.server.js';
 /**
  * Bootstraps the Angular app with server configuration.
  * @since 1.0.0
+ * @category Bootstrap Function
  */
 const bootstrap = async (context: BootstrapContext) =>
   bootstrapApplication(App, config, context);

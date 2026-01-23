@@ -14,12 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Effect Utilities](#graphql-effect-utilities)
   - [runEffect](#runeffect)
 
 ---
 
-# utils
+# GraphQL Effect Utilities
+
+e.g. pass any Effect whose requirements are a sub-union of `AppServices`.
 
 ## runEffect
 
@@ -32,4 +34,3 @@ export declare const runEffect: <A, E, R>(eff: Effect.Effect<A, E, R>) => Promis
 ```
 
 Added in v1.0.0
-e.g. pass any Effect whose requirements are a sub-union of `AppServices`.

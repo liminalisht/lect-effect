@@ -7,6 +7,7 @@ import { type Effect, type Schema } from 'effect';
 /**
  * Describes a field resolver operating on a parent type.
  * @since 1.0.0
+ * @category GraphQL Resolver Types
  */
 export type FieldHandler<
   P extends Schema.Schema.AnyNoContext,
@@ -27,6 +28,7 @@ export type FieldHandler<
 /**
  * Describes a query resolver for a root-level operation.
  * @since 1.0.0
+ * @category GraphQL Resolver Types
  */
 export type QueryHandler<
   I extends Schema.Schema.AnyNoContext,
@@ -45,6 +47,7 @@ export type QueryHandler<
 /**
  * Describes a mutation resolver for a root-level operation.
  * @since 1.0.0
+ * @category GraphQL Resolver Types
  */
 export type MutationHandler<
   I extends Schema.Schema.AnyNoContext,

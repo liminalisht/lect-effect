@@ -14,20 +14,21 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Item Handler Effects](#item-handler-effects)
   - [createItem](#createitem)
-  - [createItemMutation](#createitemmutation)
   - [getItem](#getitem)
+  - [listItems](#listitems)
+  - [productForItem](#productforitem)
+- [Item Handlers](#item-handlers)
+  - [createItemMutation](#createitemmutation)
   - [getItemQuery](#getitemquery)
   - [itemHandlers](#itemhandlers)
-  - [listItems](#listitems)
   - [listItemsQuery](#listitemsquery)
-  - [productForItem](#productforitem)
   - [productForItemField](#productforitemfield)
 
 ---
 
-# utils
+# Item Handler Effects
 
 ## createItem
 
@@ -47,6 +48,60 @@ export declare const createItem: (
 
 Added in v1.0.0
 
+## getItem
+
+Fetches an item by id.
+
+**Signature**
+
+```ts
+export declare const getItem: (
+  id: ItemId
+) => Effect.Effect<
+  { readonly id: number; readonly description: string | null; readonly pack_size: number } | null,
+  ItemRepoError,
+  ItemRepoService
+>
+```
+
+Added in v1.0.0
+
+## listItems
+
+Lists all items.
+
+**Signature**
+
+```ts
+export declare const listItems: Effect.Effect<
+  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  ItemRepoError,
+  ItemRepoService
+>
+```
+
+Added in v1.0.0
+
+## productForItem
+
+Looks up the product for a given item id, returning null when absent.
+
+**Signature**
+
+```ts
+export declare const productForItem: (
+  itemId: ItemId
+) => Effect.Effect<
+  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
+  ProductRepoError,
+  ProductRepoService
+>
+```
+
+Added in v1.0.0
+
+# Item Handlers
+
 ## createItemMutation
 
 Mutation handler for creating a new item.
@@ -64,24 +119,6 @@ export declare const createItemMutation: MutationHandler<
     description: Schema.NullOr<typeof Schema.String>
     pack_size: Schema.refine<number, typeof Schema.Number>
   }>,
-  ItemRepoError,
-  ItemRepoService
->
-```
-
-Added in v1.0.0
-
-## getItem
-
-Fetches an item by id.
-
-**Signature**
-
-```ts
-export declare const getItem: (
-  id: ItemId
-) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly pack_size: number } | null,
   ItemRepoError,
   ItemRepoService
 >
@@ -179,22 +216,6 @@ export declare const itemHandlers: (
 
 Added in v1.0.0
 
-## listItems
-
-Lists all items.
-
-**Signature**
-
-```ts
-export declare const listItems: Effect.Effect<
-  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
-  ItemRepoError,
-  ItemRepoService
->
-```
-
-Added in v1.0.0
-
 ## listItemsQuery
 
 Query handler for listing all items.
@@ -213,24 +234,6 @@ export declare const listItemsQuery: QueryHandler<
   >,
   ItemRepoError,
   ItemRepoService
->
-```
-
-Added in v1.0.0
-
-## productForItem
-
-Looks up the product for a given item id, returning null when absent.
-
-**Signature**
-
-```ts
-export declare const productForItem: (
-  itemId: ItemId
-) => Effect.Effect<
-  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
-  ProductRepoError,
-  ProductRepoService
 >
 ```
 

@@ -15,6 +15,7 @@ import { HelloApiService, type HelloApiError } from '../../../api/hello/hello.ap
 /**
  * Feature store coordinating hello input and Effect execution.
  * @since 1.0.0
+ * @category Stores
  */
 @Injectable()
 export class HelloStore {
@@ -25,17 +26,20 @@ export class HelloStore {
   /**
    * Current input value as a readonly signal.
    * @since 1.0.0
+   * @category Signals
    */
   readonly name = this.name_.asReadonly();
   /**
    * Remote data state for the hello request.
    * @since 1.0.0
+   * @category Signals
    */
   readonly state = this.state_.asReadonly();
 
   /**
    * Derived greeting when available.
    * @since 1.0.0
+   * @category Signals
    */
   readonly greeting = computed(() => {
     const s = this.state_();
@@ -45,6 +49,7 @@ export class HelloStore {
   /**
    * Update the name input.
    * @since 1.0.0
+   * @category Methods
    */
   setName(name: string): void {
     this.name_.set(name);
@@ -53,6 +58,7 @@ export class HelloStore {
   /**
    * Execute the greet program and update remote data state.
    * @since 1.0.0
+   * @category Methods
    */
   async run(): Promise<void> {
     this.state_.set(remoteData.loading<Cause.Cause<HelloApiError>, HelloResponse>());

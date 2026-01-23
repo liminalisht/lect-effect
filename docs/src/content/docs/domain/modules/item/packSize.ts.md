@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [PackSize (type alias)](#packsize-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [packSizeSchema](#packsizeschema)
+- [Domain Types](#domain-types)
+  - [PackSize (type alias)](#packsize-type-alias)
 
 ---
 
-# utils
-
-## PackSize (type alias)
-
-Pack size value object.
-
-**Signature**
-
-```ts
-export type PackSize = Schema.Schema.Type<typeof packSizeSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## packSizeSchema
 
@@ -42,6 +31,20 @@ Schema for item pack size.
 
 ```ts
 export declare const packSizeSchema: Schema.refine<number, typeof Schema.Number>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## PackSize (type alias)
+
+Pack size value object.
+
+**Signature**
+
+```ts
+export type PackSize = Schema.Schema.Type<typeof packSizeSchema>
 ```
 
 Added in v1.0.0

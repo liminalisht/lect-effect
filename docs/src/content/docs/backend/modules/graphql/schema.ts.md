@@ -14,14 +14,15 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Resolver Types](#graphql-resolver-types)
   - [GraphQLResolver (type alias)](#graphqlresolver-type-alias)
+- [GraphQL Schema Utilities](#graphql-schema-utilities)
   - [logSchema](#logschema)
   - [makeSchema](#makeschema)
 
 ---
 
-# utils
+# GraphQL Resolver Types
 
 ## GraphQLResolver (type alias)
 
@@ -34,6 +35,8 @@ export type GraphQLResolver = Parameters<typeof weave>[2]
 ```
 
 Added in v1.0.0
+
+# GraphQL Schema Utilities
 
 ## logSchema
 

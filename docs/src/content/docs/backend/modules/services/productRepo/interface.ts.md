@@ -14,13 +14,28 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Services](#services)
+  - [ProductRepoService (class)](#productreposervice-class)
 - [utils](#utils)
   - [ProductNotFound (class)](#productnotfound-class)
   - [ProductRepoError (type alias)](#productrepoerror-type-alias)
-  - [ProductRepoService (class)](#productreposervice-class)
   - [ProductRepoShape (type alias)](#productreposhape-type-alias)
 
 ---
+
+# Services
+
+## ProductRepoService (class)
+
+Service tag for the product repository.
+
+**Signature**
+
+```ts
+export declare class ProductRepoService
+```
+
+Added in v1.0.0
 
 # utils
 
@@ -44,18 +59,6 @@ Error type union for product repository operations.
 
 ```ts
 export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError
-```
-
-Added in v1.0.0
-
-## ProductRepoService (class)
-
-Service tag for the product repository.
-
-**Signature**
-
-```ts
-export declare class ProductRepoService
 ```
 
 Added in v1.0.0

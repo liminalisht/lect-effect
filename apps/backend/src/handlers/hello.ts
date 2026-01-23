@@ -10,6 +10,7 @@ import { type QueryHandler } from './generic.js';
 /**
  * Produces a greeting response using the greeting service.
  * @since 1.0.0
+ * @category Hello Handler Effects
  */
 export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, never, GreetService> =>
   Effect.gen(function * () {
@@ -25,6 +26,7 @@ export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, nev
 /**
  * Query handler for greeting users.
  * @since 1.0.0
+ * @category Hello Handlers
  */
 export const greetQuery: QueryHandler<
   typeof nameInputSchema,
@@ -43,6 +45,7 @@ export const greetQuery: QueryHandler<
 /**
  * Registered hello handlers for GraphQL resolver conversion.
  * @since 1.0.0
+ * @category Hello Handlers
  */
 export const helloHandlers = [
   greetQuery,

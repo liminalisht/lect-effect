@@ -14,12 +14,12 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Server Utilities](#graphql-server-utilities)
   - [listen](#listen)
 
 ---
 
-# utils
+# GraphQL Server Utilities
 
 ## listen
 

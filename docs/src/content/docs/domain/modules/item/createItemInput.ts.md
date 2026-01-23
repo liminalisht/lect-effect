@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [CreateItemInput (type alias)](#createiteminput-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [createItemInputSchema](#createiteminputschema)
+- [Domain Types](#domain-types)
+  - [CreateItemInput (type alias)](#createiteminput-type-alias)
 
 ---
 
-# utils
-
-## CreateItemInput (type alias)
-
-GraphQL input for creating or updating an item.
-
-**Signature**
-
-```ts
-export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## createItemInputSchema
 
@@ -45,6 +34,20 @@ export declare const createItemInputSchema: Schema.Struct<{
   description: Schema.optional<Schema.NullOr<typeof Schema.String>>
   pack_size: Schema.refine<number, typeof Schema.Number>
 }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## CreateItemInput (type alias)
+
+GraphQL input for creating or updating an item.
+
+**Signature**
+
+```ts
+export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>
 ```
 
 Added in v1.0.0

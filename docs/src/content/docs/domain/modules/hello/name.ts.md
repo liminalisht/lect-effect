@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [Name (type alias)](#name-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [nameSchema](#nameschema)
+- [Domain Types](#domain-types)
+  - [Name (type alias)](#name-type-alias)
 
 ---
 
-# utils
-
-## Name (type alias)
-
-Person name value object.
-
-**Signature**
-
-```ts
-export type Name = Schema.Schema.Type<typeof nameSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## nameSchema
 
@@ -42,6 +31,20 @@ Schema for validated names.
 
 ```ts
 export declare const nameSchema: Schema.SchemaClass<string, string, never>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## Name (type alias)
+
+Person name value object.
+
+**Signature**
+
+```ts
+export type Name = Schema.Schema.Type<typeof nameSchema>
 ```
 
 Added in v1.0.0

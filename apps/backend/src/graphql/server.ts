@@ -12,6 +12,7 @@ import { type Yoga } from './yoga.js';
 /**
  * Starts an HTTP server for the provided Yoga instance.
  * @since 1.0.0
+ * @category GraphQL Server Utilities
  */
 export const listen = <R>(
   yoga: Yoga<R>,

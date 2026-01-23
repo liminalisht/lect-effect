@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [ProductId (type alias)](#productid-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [productIdSchema](#productidschema)
+- [Domain Types](#domain-types)
+  - [ProductId (type alias)](#productid-type-alias)
 
 ---
 
-# utils
-
-## ProductId (type alias)
-
-Product identifier.
-
-**Signature**
-
-```ts
-export type ProductId = Schema.Schema.Type<typeof productIdSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## productIdSchema
 
@@ -42,6 +31,20 @@ Schema for product identifiers.
 
 ```ts
 export declare const productIdSchema: Schema.refine<number, typeof Schema.Number>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## ProductId (type alias)
+
+Product identifier.
+
+**Signature**
+
+```ts
+export type ProductId = Schema.Schema.Type<typeof productIdSchema>
 ```
 
 Added in v1.0.0

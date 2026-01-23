@@ -14,7 +14,7 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Stores](#stores)
   - [HelloStore (class)](#hellostore-class)
     - [setName (method)](#setname-method)
     - [run (method)](#run-method)
@@ -24,7 +24,7 @@ Added in v1.0.0
 
 ---
 
-# utils
+# Stores
 
 ## HelloStore (class)
 

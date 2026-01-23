@@ -14,14 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [GraphQL Errors](#graphql-errors)
   - [GraphqlError (type alias)](#graphqlerror-type-alias)
   - [RuntimeMissingFromContextError (class)](#runtimemissingfromcontexterror-class)
   - [ServerStartError (class)](#serverstarterror-class)
 
 ---
 
-# utils
+# GraphQL Errors
 
 ## GraphqlError (type alias)
 

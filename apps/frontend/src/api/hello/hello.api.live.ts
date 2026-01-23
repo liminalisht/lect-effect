@@ -19,6 +19,7 @@ const helloQuery = `
 /**
  * Layer constructor yielding the live hello API service.
  * @since 1.0.0
+ * @category Service Implementations
  */
 export const helloApiLive = Effect.gen(function * () {
   const client = yield * GraphQLClientService;

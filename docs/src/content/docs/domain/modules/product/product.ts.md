@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [Product (type alias)](#product-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [productSchema](#productschema)
+- [Domain Types](#domain-types)
+  - [Product (type alias)](#product-type-alias)
 
 ---
 
-# utils
-
-## Product (type alias)
-
-Product domain entity.
-
-**Signature**
-
-```ts
-export type Product = Schema.Schema.Type<typeof productSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## productSchema
 
@@ -46,6 +35,20 @@ export declare const productSchema: Schema.Struct<{
   id: Schema.refine<number, typeof Schema.Number>
   description: Schema.NullOr<Schema.SchemaClass<string, string, never>>
 }>
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## Product (type alias)
+
+Product domain entity.
+
+**Signature**
+
+```ts
+export type Product = Schema.Schema.Type<typeof productSchema>
 ```
 
 Added in v1.0.0

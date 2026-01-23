@@ -74,5 +74,6 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 /**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
  * @since 1.0.0
+ * @category Request Handler
  */
 export const reqHandler = createNodeRequestHandler(app);

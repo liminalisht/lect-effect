@@ -14,14 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Services](#services)
   - [UiRuntime (class)](#uiruntime-class)
     - [runExit (property)](#runexit-property)
     - [runPromise (property)](#runpromise-property)
 
 ---
 
-# utils
+# Services
 
 ## UiRuntime (class)
 

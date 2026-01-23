@@ -11,6 +11,7 @@ import { AppConfigService } from '../appConfig/interface/index.js';
 /**
  * Provides a minimum log level based on configuration.
  * @since 1.0.0
+ * @category Layers
  */
 export const loggerLayer: Layer.Layer<never, never, AppConfigService>
   = Layer.unwrapEffect(Effect.gen(function * () {

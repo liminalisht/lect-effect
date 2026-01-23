@@ -44,6 +44,7 @@ const makeItemDraft = (): ItemDraft => ({
 /**
  * Angular standalone form component for creating a product with items.
  * @since 1.0.0
+ * @category Components
  */
 @Component({
   selector: 'app-create-product-form',
@@ -57,12 +58,14 @@ export class CreateProductFormComponent {
   /**
    * Emits validated create-product payloads.
    * @since 1.0.0
+   * @category Outputs
    */
   @Output() readonly submitted = new EventEmitter<CreateProductWithItemsInput>();
 
   /**
    * Field for the optional product description (blank → null).
    * @since 1.0.0
+   * @category Signals
    */
   readonly productDescription = schemaField({
     schema: Schema.NullOr(productDescriptionSchema),
@@ -73,12 +76,14 @@ export class CreateProductFormComponent {
   /**
    * Draft items being edited in the form.
    * @since 1.0.0
+   * @category Signals
    */
   readonly items = signal<readonly ItemDraft[]>([makeItemDraft()]);
 
   /**
    * Whether the form is currently valid and can be submitted.
    * @since 1.0.0
+   * @category Signals
    */
   readonly canSubmit = computed(() => {
     const drafts = this.items();
@@ -88,6 +93,7 @@ export class CreateProductFormComponent {
   /**
    * Adds a blank item draft row.
    * @since 1.0.0
+   * @category Methods
    */
   addItem(): void {
     this.items.update(items => [...items, makeItemDraft()]);
@@ -96,6 +102,7 @@ export class CreateProductFormComponent {
   /**
    * Removes an item draft by index (keeps at least one row).
    * @since 1.0.0
+   * @category Methods
    */
   removeItem(index: number): void {
     this.items.update(items => {
@@ -110,6 +117,7 @@ export class CreateProductFormComponent {
   /**
    * Handles product description edits.
    * @since 1.0.0
+   * @category Methods
    */
   onProductDescriptionInput(event: Event): void {
     const {value} = (event.target as HTMLInputElement);
@@ -119,6 +127,7 @@ export class CreateProductFormComponent {
   /**
    * Handles item description edits.
    * @since 1.0.0
+   * @category Methods
    */
   onItemDescriptionInput(index: number, event: Event): void {
     const {value} = (event.target as HTMLInputElement);
@@ -129,6 +138,7 @@ export class CreateProductFormComponent {
   /**
    * Handles item pack size edits.
    * @since 1.0.0
+   * @category Methods
    */
   onItemPackSizeInput(index: number, event: Event): void {
     const {value} = (event.target as HTMLInputElement);
@@ -139,6 +149,7 @@ export class CreateProductFormComponent {
   /**
    * Emits a validated payload when the draft is valid.
    * @since 1.0.0
+   * @category Methods
    */
   submit(): void {
     if (!this.canSubmit()) {

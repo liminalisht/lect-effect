@@ -14,25 +14,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
-  - [Greeting (type alias)](#greeting-type-alias)
+- [Domain Schemas](#domain-schemas)
   - [greetingSchema](#greetingschema)
+- [Domain Types](#domain-types)
+  - [Greeting (type alias)](#greeting-type-alias)
 
 ---
 
-# utils
-
-## Greeting (type alias)
-
-Greeting message value object.
-
-**Signature**
-
-```ts
-export type Greeting = Schema.Schema.Type<typeof greetingSchema>
-```
-
-Added in v1.0.0
+# Domain Schemas
 
 ## greetingSchema
 
@@ -42,6 +31,20 @@ Schema for greeting messages.
 
 ```ts
 export declare const greetingSchema: Schema.brand<typeof Schema.String, "Greeting">
+```
+
+Added in v1.0.0
+
+# Domain Types
+
+## Greeting (type alias)
+
+Greeting message value object.
+
+**Signature**
+
+```ts
+export type Greeting = Schema.Schema.Type<typeof greetingSchema>
 ```
 
 Added in v1.0.0

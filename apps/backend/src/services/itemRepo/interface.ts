@@ -14,12 +14,14 @@ import { type ProductId } from '@lect-effect/domain/product/productId';
 /**
  * Error type union for item repository operations.
  * @since 1.0.0
+ * @category Service Errors
  */
 export type ItemRepoError = SqlError.SqlError | ParseError;
 
 /**
  * Interface for item repository capabilities.
  * @since 1.0.0
+ * @category Service Interfaces
  */
 export type ItemRepoShape = {
   readonly getById: (id: ItemId) => Effect.Effect<Item | null, ItemRepoError>;
@@ -32,5 +34,6 @@ export type ItemRepoShape = {
 /**
  * Service tag for the item repository.
  * @since 1.0.0
+ * @category Services
  */
 export class ItemRepoService extends Context.Tag('services/itemRepo')<ItemRepoService, ItemRepoShape>() {}

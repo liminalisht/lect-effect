@@ -11,6 +11,7 @@ import { appLayer } from './services/app/layer.js';
 /**
  * Logs an exhaustive failure cause in a human-readable format.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const logFailure = (cause: Cause.Cause<unknown>) =>
   Effect.all([
@@ -21,6 +22,7 @@ export const logFailure = (cause: Cause.Cause<unknown>) =>
 /**
  * Main Effect wiring the app with its layer and exit logging.
  * @since 1.0.0
+ * @category Application Setup
  */
 export const main = Effect.scoped(Effect.gen(function * () {
   const memoizedAppLayer = yield * Layer.memoize(appLayer);

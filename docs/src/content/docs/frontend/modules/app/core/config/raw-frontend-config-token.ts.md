@@ -14,12 +14,12 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Injection Tokens](#injection-tokens)
   - [RAW_FRONTEND_CONFIG](#raw_frontend_config)
 
 ---
 
-# utils
+# Injection Tokens
 
 ## RAW_FRONTEND_CONFIG
 

@@ -10,6 +10,7 @@ import { itemRepoServiceImplementation } from './implementation.js';
 /**
  * Provides the live ItemRepo implementation.
  * @since 1.0.0
+ * @category Layers
  */
 export const itemRepoLayer: Layer.Layer<ItemRepoService, never, MasterdataDbService>
   = Layer.effect(ItemRepoService, itemRepoServiceImplementation);

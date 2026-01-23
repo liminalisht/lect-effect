@@ -12,14 +12,14 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [utils](#utils)
+- [Components](#components)
   - [HelloPage (class)](#hellopage-class)
     - [onNameInput (method)](#onnameinput-method)
     - [store (property)](#store-property)
 
 ---
 
-# utils
+# Components
 
 ## HelloPage (class)
 
