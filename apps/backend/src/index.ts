@@ -2,7 +2,7 @@
  * Application entrypoint wiring runtime and top-level effects.
  * @since 1.0.0
  */
-import 'dotenv/config';
+import 'dotenv/config'; // eslint-disable-line import-x/no-unassigned-import
 import { Cause, Effect, Layer } from 'effect';
 import { NodeRuntime } from '@effect/platform-node';
 import { app } from './app.js';
