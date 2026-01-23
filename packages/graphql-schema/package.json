@@ -1,0 +1,29 @@
+{
+  "name": "@lect-effect/graphql-schema",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/liminalisht/lect-effect",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "schema.graphql"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist schema.graphql",
+    "build": "tsc -p tsconfig.json",
+    "schema:print": "pnpm -C ../../apps/backend build && pnpm run build && node dist/index.js",
+    "install": "pnpm --dir ../.. install --filter ./packages/graphql-schema --frozen-lockfile",
+    "install:nofreeze": "pnpm --dir ../.. install --filter ./packages/graphql-schema --no-frozen-lockfile"
+  },
+  "dependencies": {
+    "@effect/platform": "^0.94.1",
+    "@effect/platform-node": "^0.104.0",
+    "effect": "^3.19.14"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

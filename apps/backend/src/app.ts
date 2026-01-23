@@ -59,7 +59,12 @@ const runYogaServer = (yoga: Yoga<AppServices>, appConfig: AppConfig): Effect.Ef
   return yield * Effect.never;
 });
 
-const selectHandlers = (_appConfig: AppConfig): readonly AnyHandler[] => ([
+/**
+ * Selects the set of GraphQL handlers to be included in the application.
+ * @since 1.0.0
+ * @category Application Setup
+ */
+export const selectHandlers = (_appConfig?: AppConfig): readonly AnyHandler[] => ([
   ...helloHandlers,
   ...itemHandlers,
   ...productHandlers,
