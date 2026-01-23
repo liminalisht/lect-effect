@@ -14,7 +14,8 @@
   "scripts": {
     "clean": "rm -rf dist schema.graphql",
     "build": "tsc -p tsconfig.json",
-    "schema:print": "pnpm -C ../../apps/backend build && pnpm run build && node dist/index.js",
+    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/graphql-schema/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\"",
+    "schema:generate": "pnpm -C ../../apps/backend build && pnpm run build && node dist/index.js",
     "install": "pnpm --dir ../.. install --filter ./packages/graphql-schema --frozen-lockfile",
     "install:nofreeze": "pnpm --dir ../.. install --filter ./packages/graphql-schema --no-frozen-lockfile"
   },
@@ -24,6 +25,7 @@
     "effect": "^3.19.14"
   },
   "devDependencies": {
+    "@effect/docgen": "^0.5.2",
     "typescript": "^5.9.3"
   }
 }

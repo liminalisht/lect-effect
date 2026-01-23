@@ -21,11 +21,10 @@ Added in v1.0.0
 
 # GraphQL Effect Utilities
 
-e.g. pass any Effect whose requirements are a sub-union of `AppServices`.
-
 ## runEffect
 
 Natural transformation `Effect<A, E, R> -> Promise<A>`.
+E.g., pass any Effect whose requirements are a sub-union of `AppServices`.
 
 **Signature**
 

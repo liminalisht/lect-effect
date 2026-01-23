@@ -8,16 +8,16 @@
   "scripts": {
     "lect-effect/build": "pnpm -C packages/domain build && pnpm -C apps/backend build && pnpm -C packages/graphql-schema build && pnpm -C apps/frontend build && pnpm -C docs build",
     "lect-effect/clean": "pnpm -C packages/domain clean && pnpm -C apps/backend clean && pnpm -C packages/graphql-schema clean && pnpm -C apps/frontend clean && pnpm -C docs clean",
-    "lect-effect/docs:generate": "pnpm -C apps/backend docs:generate && pnpm -C packages/domain docs:generate && pnpm -C apps/frontend docs:generate",
+    "lect-effect/docs:generate": "pnpm -C apps/backend docs:generate && pnpm -C apps/frontend docs:generate && pnpm -C packages/domain docs:generate && pnpm -C packages/graphql-schema docs:generate",
     "lect-effect/install": "pnpm install --frozen-lockfile --recursive",
     "lect-effect/install:nofreeze": "pnpm install --no-frozen-lockfile --recursive",
     "lect-effect/lint": "pnpx xo --ignore 'docs-site/**'",
     "lect-effect/migrate/masterdata:up": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m apps/backend/migrations/masterdatadb up",
     "lect-effect/migrate/test-masterdata:up": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m apps/backend/migrations/masterdatadb up",
+    "lect-effect/schema:generate": "pnpm -C packages/graphql-schema schema:generate",
     "lect-effect/start": "concurrently --names backend,frontend --prefix-colors blue,green \"pnpm -C apps/backend start\" \"pnpm -C apps/frontend start\"",
     "lect-effect/start:with-docs": "concurrently --names backend,frontend,docs --prefix-colors blue,green,magenta \"pnpm -C apps/backend start\" \"pnpm -C apps/frontend start\" \"pnpm -C docs dev\"",
-    "lect-effect/test": "pnpm -C packages/domain test && pnpm -C apps/backend test && pnpm -C apps/frontend test",
-    "lect-effect/schema:print": "pnpm -C packages/graphql-schema schema:print"
+    "lect-effect/test": "pnpm -C packages/domain test && pnpm -C apps/backend test && pnpm -C apps/frontend test"
   },
   "keywords": [],
   "author": "Abraham Howland",

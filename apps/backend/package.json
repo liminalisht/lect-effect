@@ -11,7 +11,7 @@
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
     "test": "pnpm run typecheck:test && env-cmd -f ../../.env.test --no-override vitest run --no-file-parallelism",
     "start": "pnpm run build && env-cmd -f ../../.env --no-override node dist/src/index.js",
-    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/backend/ --exclude \"**/test/**\"",
+    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/backend/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\"",
     "install": "pnpm --dir ../.. install --filter ./apps/backend --frozen-lockfile",
     "install:nofreeze": "pnpm --dir ../.. install --filter ./apps/backend --no-frozen-lockfile"
   },

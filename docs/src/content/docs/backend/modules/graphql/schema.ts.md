@@ -19,6 +19,7 @@ Added in v1.0.0
 - [GraphQL Schema Utilities](#graphql-schema-utilities)
   - [logSchema](#logschema)
   - [makeSchema](#makeschema)
+  - [printSortedSchema](#printsortedschema)
 
 ---
 
@@ -58,6 +59,18 @@ Builds the GraphQL schema from registered resolvers.
 
 ```ts
 export declare const makeSchema: (resolvers: readonly GraphQLResolver[]) => GraphQLSchema
+```
+
+Added in v1.0.0
+
+## printSortedSchema
+
+Produces a stable SDL string for a schema.
+
+**Signature**
+
+```ts
+export declare const printSortedSchema: (schema: GraphQLSchema) => string
 ```
 
 Added in v1.0.0

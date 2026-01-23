@@ -19,6 +19,7 @@ Added in v1.0.0
   - [getAppConfig](#getappconfig)
   - [makeGraphQLSchema](#makegraphqlschema)
   - [makeYogaServer](#makeyogaserver)
+  - [selectHandlers](#selecthandlers)
 
 ---
 
@@ -70,6 +71,18 @@ Constructs the Yoga server instance with the provided schema.
 
 ```ts
 export declare const makeYogaServer: (schema: GraphQLSchema) => Effect.Effect<Yoga<AppServices>, never, AppServices>
+```
+
+Added in v1.0.0
+
+## selectHandlers
+
+Selects the set of GraphQL handlers to be included in the application.
+
+**Signature**
+
+```ts
+export declare const selectHandlers: (_appConfig?: AppConfig) => readonly AnyHandler[]
 ```
 
 Added in v1.0.0

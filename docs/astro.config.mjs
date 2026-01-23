@@ -18,12 +18,16 @@ export default defineConfig({
 					autogenerate: {directory: 'guides', collapsed: true},
 				},
 				{
-					label: '@lect-effect/backend',
-					autogenerate: {directory: 'backend/modules', collapsed: true},
-				},
-				{
 					label: '@lect-effect/domain',
 					autogenerate: {directory: 'domain/modules', collapsed: true},
+				},
+				{
+					label: '@lect-effect/graphql-schema',
+					autogenerate: {directory: 'graphql-schema/modules', collapsed: true},
+				},
+				{
+					label: '@lect-effect/backend',
+					autogenerate: {directory: 'backend/modules', collapsed: true},
 				},
 				{
 					label: '@lect-effect/frontend',
