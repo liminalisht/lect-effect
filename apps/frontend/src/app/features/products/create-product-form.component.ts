@@ -83,8 +83,8 @@ export class CreateProductFormComponent {
   readonly canSubmit = computed(() => {
     const drafts = this.items();
     return drafts.length > 0
-      && this.productDescription.isValid()
-      && drafts.every(draft => draft.description.isValid() && draft.packSize.isValid());
+    	&& this.productDescription.isValid()
+    	&& drafts.every(draft => draft.description.isValid() && draft.packSize.isValid());
   });
 
   /**

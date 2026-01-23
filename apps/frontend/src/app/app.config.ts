@@ -2,22 +2,17 @@
  * Browser application configuration providers.
  * @since 1.0.0
  */
-import { type ApplicationConfig, EnvironmentProviders, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { type ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { routes } from './app.routes.js';
 import { RAW_FRONTEND_CONFIG } from './core/config/raw-frontend-config-token.js';
+import type { RawFrontendConfig } from './core/config/frontend-config.js';
 
-// todo: is this right? what's the type?
-const provideFrontendConfig = () => {
-  return {
-    provide: RAW_FRONTEND_CONFIG,
-    useValue: {
-      graphqlEndpoint: '/graphql',
-      logLevel: 'Info',
-    },
-  };
-}
+const rawFrontendConfig: RawFrontendConfig = {
+  graphqlEndpoint: '/graphql',
+  logLevel: 'Info',
+};
 
 /**
  * Application configuration used when bootstrapping in the browser.
@@ -25,7 +20,7 @@ const provideFrontendConfig = () => {
  */
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideFrontendConfig(),
+    { provide: RAW_FRONTEND_CONFIG, useValue: rawFrontendConfig },
     provideBrowserGlobalErrorListeners(),
     provideClientHydration(withEventReplay()),
     provideRouter(routes),

@@ -42,8 +42,9 @@
 //   }
 // }
 import { DestroyRef, inject, Injectable } from '@angular/core';
-import { Effect, Either, Exit, ManagedRuntime } from 'effect';
-
+import {
+  type Effect, Either, type Exit, ManagedRuntime,
+} from 'effect';
 import { RAW_FRONTEND_CONFIG } from '../config/raw-frontend-config-token.js';
 import { decodeFrontendConfigEither } from '../config/frontend-config.js';
 import { makeAppLayer, type AppEnv } from './app-layer.js';
@@ -59,6 +60,7 @@ export class UiRuntime {
       // hard-fail: config is a bootstrap invariant
       throw decoded.left;
     }
+
     return ManagedRuntime.make(makeAppLayer(decoded.right));
   })();
 
@@ -68,11 +70,11 @@ export class UiRuntime {
     });
   }
 
-  runExit = <A, E, R extends AppEnv>(
+  runExit = async <A, E, R extends AppEnv>(
     effect: Effect.Effect<A, E, R>,
   ): Promise<Exit.Exit<A, E>> => this.runtime.runPromiseExit(effect);
 
-  runPromise = <A, E, R extends AppEnv>(
+  runPromise = async <A, E, R extends AppEnv>(
     effect: Effect.Effect<A, E, R>,
   ): Promise<A> => this.runtime.runPromise(effect);
 }

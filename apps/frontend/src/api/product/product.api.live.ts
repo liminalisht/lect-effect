@@ -1,8 +1,8 @@
 import { Effect, Schema } from 'effect';
-import { GraphQLClientService } from '../../app/core/graphql/graphql-client';
-import { ProductApiService } from './product.api.interface.js';
 import { type CreateProductWithItemsInput, createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { type ProductWithItems, productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
+import { GraphQLClientService } from '../../app/core/graphql/graphql-client';
+import { ProductApiService } from './product.api.interface.js';
 
 const createProductMutation = `
   mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
@@ -25,13 +25,13 @@ const CreateProductWithItemsResultSchema = Schema.Struct({
   createProductWithItems: productWithItemsSchema,
 });
 
-export const productApiLive = Effect.gen(function* () {
-  const client = yield* GraphQLClientService;
+export const productApiLive = Effect.gen(function * () {
+  const client = yield * GraphQLClientService;
 
   return ProductApiService.of({
     createProductWithItems: (input: unknown) =>
-      Effect.gen(function* () {
-        const validated = yield* Schema.decodeUnknown(createProductWithItemsInputSchema)(input);
+      Effect.gen(function * () {
+        const validated = yield * Schema.decodeUnknown(createProductWithItemsInputSchema)(input);
 
         // normalize (keep your current semantics)
         const normalized = {
@@ -46,11 +46,11 @@ export const productApiLive = Effect.gen(function* () {
           })),
         };
 
-        const response = yield* client.request(createProductMutation, {
+        const response = yield * client.request(createProductMutation, {
           product: normalized.product,
           items: normalized.items,
         });
-        const decoded = yield* Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
+        const decoded = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
         return decoded.createProductWithItems;
       }),
   });

@@ -1,4 +1,6 @@
-import { Context, Either, LogLevel, Schema } from 'effect';
+import {
+  Context, Either, LogLevel, Schema,
+} from 'effect';
 import type { ParseError } from 'effect/ParseResult';
 
 export const LogLevelNameSchema = Schema.Literal(
@@ -28,20 +30,33 @@ export type FrontendConfig = Readonly<{
 
 const logLevelFromName = (name: LogLevelName): LogLevel.LogLevel => {
   switch (name) {
-    case 'All': return LogLevel.All;
-    case 'Fatal': return LogLevel.Fatal;
-    case 'Error': return LogLevel.Error;
-    case 'Warning': return LogLevel.Warning;
-    case 'Info': return LogLevel.Info;
-    case 'Debug': return LogLevel.Debug;
-    case 'Trace': return LogLevel.Trace;
-    case 'None': return LogLevel.None;
+  case 'All': {return LogLevel.All;
+  }
+
+  case 'Fatal': {return LogLevel.Fatal;
+  }
+
+  case 'Error': {return LogLevel.Error;
+  }
+
+  case 'Warning': {return LogLevel.Warning;
+  }
+
+  case 'Info': {return LogLevel.Info;
+  }
+
+  case 'Debug': {return LogLevel.Debug;
+  }
+
+  case 'Trace': {return LogLevel.Trace;
+  }
+
+  case 'None': {return LogLevel.None;
+  }
   }
 };
 
-export const decodeFrontendConfigEither = (
-  raw: unknown,
-): Either.Either<FrontendConfig, ParseError> => {
+export const decodeFrontendConfigEither = (raw: unknown): Either.Either<FrontendConfig, ParseError> => {
   const decoded = Schema.decodeUnknownEither(RawFrontendConfigSchema)(raw);
   if (Either.isLeft(decoded)) {
     return Either.left(decoded.left);
