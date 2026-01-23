@@ -1,3 +1,7 @@
+/**
+ * Live implementation of the product API backed by GraphQL.
+ * @since 1.0.0
+ */
 import { Effect, Schema } from 'effect';
 import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
@@ -25,6 +29,10 @@ const CreateProductWithItemsResultSchema = Schema.Struct({
   createProductWithItems: productWithItemsSchema,
 });
 
+/**
+ * Layer constructor yielding the live product API service.
+ * @since 1.0.0
+ */
 export const productApiLive = Effect.gen(function * () {
   const client = yield * GraphQLClientService;
 

@@ -1,10 +1,12 @@
 ---
 title: app/core/effect/ui-runtime.ts
-nav_order: 9
+nav_order: 16
 parent: Modules
 ---
 
 ## ui-runtime overview
+
+Managed Effect runtime wiring for the UI layer.
 
 Added in v1.0.0
 
@@ -14,7 +16,8 @@ Added in v1.0.0
 
 - [utils](#utils)
   - [UiRuntime (class)](#uiruntime-class)
-    - [runExit (method)](#runexit-method)
+    - [runExit (property)](#runexit-property)
+    - [runPromise (property)](#runpromise-property)
 
 ---
 
@@ -22,26 +25,38 @@ Added in v1.0.0
 
 ## UiRuntime (class)
 
-Managed runtime facade exposed to UI features.
+Facade for running Effect programs within the Angular app lifecycle.
 
 **Signature**
 
 ```ts
 export declare class UiRuntime {
-  constructor(destroyRef: DestroyRef)
+  constructor()
 }
 ```
 
 Added in v1.0.0
 
-### runExit (method)
+### runExit (property)
 
-Runs an Effect using the configured runtime and returns its Exit value.
+Run an Effect and capture its Exit using the shared runtime.
 
 **Signature**
 
 ```ts
-async runExit<A, E>(effect: Effect.Effect<A, E, GraphQLClient>): Promise<Exit.Exit<A, E>>
+runExit: <A, E, R extends AppEnv>(effect: Effect.Effect<A, E, R>) => Promise<Exit.Exit<A, E>>
+```
+
+Added in v1.0.0
+
+### runPromise (property)
+
+Run an Effect and resolve its success value using the shared runtime.
+
+**Signature**
+
+```ts
+runPromise: <A, E, R extends AppEnv>(effect: Effect.Effect<A, E, R>) => Promise<A>
 ```
 
 Added in v1.0.0

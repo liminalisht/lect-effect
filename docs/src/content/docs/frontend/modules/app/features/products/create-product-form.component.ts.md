@@ -1,6 +1,6 @@
 ---
 title: app/features/products/create-product-form.component.ts
-nav_order: 15
+nav_order: 24
 parent: Modules
 ---
 

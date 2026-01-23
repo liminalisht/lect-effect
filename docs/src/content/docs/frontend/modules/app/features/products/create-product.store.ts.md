@@ -1,6 +1,6 @@
 ---
 title: app/features/products/create-product.store.ts
-nav_order: 18
+nav_order: 27
 parent: Modules
 ---
 
@@ -54,7 +54,7 @@ Remote data state for the view.
 **Signature**
 
 ```ts
-readonly state: WritableSignal<RemoteData<unknown, { readonly product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null; }; readonly items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number; }[]; }>>
+readonly state: WritableSignal<RemoteData<Cause.Cause<ProductApiError>, { readonly product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null; }; readonly items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number; }[]; }>>
 ```
 
 Added in v1.0.0

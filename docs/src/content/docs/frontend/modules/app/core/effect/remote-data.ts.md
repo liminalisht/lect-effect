@@ -1,6 +1,6 @@
 ---
 title: app/core/effect/remote-data.ts
-nav_order: 8
+nav_order: 15
 parent: Modules
 ---
 

@@ -1,3 +1,7 @@
+/**
+ * Application Effect layer composition for the frontend runtime.
+ * @since 1.0.0
+ */
 import { Layer } from 'effect';
 import { type FrontendConfig, FrontendConfigService } from '../config/frontend-config.js';
 import { FrontendLoggerLayer } from '../logging/logging.layer.js';
@@ -7,12 +11,20 @@ import { type HelloApiService } from '../../../api/hello/hello.api.interface.js'
 import { ProductApiLayer } from '../../../api/product/product.api.layer.js';
 import { type ProductApiService } from '../../../api/product/product.api.interface.js';
 
+/**
+ * Union of services required by the UI Effect runtime.
+ * @since 1.0.0
+ */
 export type AppEnv =
 	| FrontendConfigService
 	| GraphQLClientService
 	| HelloApiService
 	| ProductApiService;
 
+/**
+ * Build the composed application layer used by UiRuntime.
+ * @since 1.0.0
+ */
 export const makeAppLayer = (cfg: FrontendConfig): Layer.Layer<AppEnv> => {
   const configLayer = Layer.succeed(FrontendConfigService, cfg);
 

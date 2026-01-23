@@ -1,3 +1,7 @@
+/**
+ * GraphQL client service wiring for frontend Effect programs.
+ * @since 1.0.0
+ */
 import {Context, Effect, Layer} from 'effect';
 import type {Json} from '../json/json.js';
 import {FrontendConfigService} from '../config/frontend-config.js';
@@ -9,6 +13,10 @@ import {
   TransportError,
 } from './graphql-errors.js';
 
+/**
+ * Minimal GraphQL client interface returning Effect results.
+ * @since 1.0.0
+ */
 export type GraphQLClient = {
   readonly request: <A extends Record<string, Json>>(
     doc: string,
@@ -16,11 +24,19 @@ export type GraphQLClient = {
   ) => Effect.Effect<A, GraphQLClientError>;
 };
 
+/**
+ * Tag for locating the GraphQL client service in an Effect environment.
+ * @since 1.0.0
+ */
 export class GraphQLClientService extends Context.Tag('GraphQLClientService')<
   GraphQLClientService,
   GraphQLClient
 >() {}
 
+/**
+ * Live GraphQL client layer backed by fetch.
+ * @since 1.0.0
+ */
 export const GraphQLClientLive: Layer.Layer<
   GraphQLClientService,
   never,

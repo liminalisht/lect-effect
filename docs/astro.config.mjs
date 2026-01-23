@@ -15,7 +15,7 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'introduction to lect-effect',
-					autogenerate: {directory: 'guides'},
+					autogenerate: {directory: 'guides', collapsed: true},
 				},
 				{
 					label: '@lect-effect/backend',

@@ -1,12 +1,12 @@
 ---
 title: app/core/graphql/graphql-client.ts
-nav_order: 11
+nav_order: 18
 parent: Modules
 ---
 
 ## graphql-client overview
 
-Minimal GraphQL client built on Effect and fetch.
+GraphQL client service wiring for frontend Effect programs.
 
 Added in v1.0.0
 
@@ -17,8 +17,7 @@ Added in v1.0.0
 - [utils](#utils)
   - [GraphQLClient (type alias)](#graphqlclient-type-alias)
   - [GraphQLClientLive](#graphqlclientlive)
-  - [GraphQLClientTag](#graphqlclienttag)
-  - [Json (type alias)](#json-type-alias)
+  - [GraphQLClientService (class)](#graphqlclientservice-class)
 
 ---
 
@@ -26,13 +25,16 @@ Added in v1.0.0
 
 ## GraphQLClient (type alias)
 
-GraphQL client interface used across the app.
+Minimal GraphQL client interface returning Effect results.
 
 **Signature**
 
 ```ts
 export type GraphQLClient = {
-  readonly request: (doc: string, variables?: unknown) => Effect.Effect<Json, GraphQLClientError>
+  readonly request: <A extends Record<string, Json>>(
+    doc: string,
+    variables?: Record<string, Json>
+  ) => Effect.Effect<A, GraphQLClientError>
 }
 ```
 
@@ -40,36 +42,24 @@ Added in v1.0.0
 
 ## GraphQLClientLive
 
-Live GraphQL client layer bound to the provided endpoint.
+Live GraphQL client layer backed by fetch.
 
 **Signature**
 
 ```ts
-export declare const GraphQLClientLive: (endpoint: string) => Layer.Layer<GraphQLClient>
+export declare const GraphQLClientLive: Layer.Layer<GraphQLClientService, never, FrontendConfigService>
 ```
 
 Added in v1.0.0
 
-## GraphQLClientTag
+## GraphQLClientService (class)
 
-Context tag for injecting a GraphQL client layer.
-
-**Signature**
-
-```ts
-export declare const GraphQLClientTag: Context.Tag<GraphQLClient, GraphQLClient>
-```
-
-Added in v1.0.0
-
-## Json (type alias)
-
-Minimal JSON value shape for GraphQL responses.
+Tag for locating the GraphQL client service in an Effect environment.
 
 **Signature**
 
 ```ts
-export type Json = null | boolean | number | string | readonly Json[] | { [key: string]: Json }
+export declare class GraphQLClientService
 ```
 
 Added in v1.0.0

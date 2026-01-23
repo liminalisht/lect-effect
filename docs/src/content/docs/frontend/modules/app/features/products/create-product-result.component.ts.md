@@ -1,6 +1,6 @@
 ---
 title: app/features/products/create-product-result.component.ts
-nav_order: 16
+nav_order: 25
 parent: Modules
 ---
 

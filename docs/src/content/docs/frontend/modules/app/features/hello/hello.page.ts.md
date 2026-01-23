@@ -1,6 +1,6 @@
 ---
 title: app/features/hello/hello.page.ts
-nav_order: 13
+nav_order: 22
 parent: Modules
 ---
 

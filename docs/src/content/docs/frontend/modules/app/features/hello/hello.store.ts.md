@@ -1,10 +1,12 @@
 ---
 title: app/features/hello/hello.store.ts
-nav_order: 14
+nav_order: 23
 parent: Modules
 ---
 
 ## hello.store overview
+
+Store backing the Hello feature page.
 
 Added in v1.0.0
 
@@ -26,7 +28,7 @@ Added in v1.0.0
 
 ## HelloStore (class)
 
-Store backing the Hello page; handles user input and maps Effect results to remote data.
+Feature store coordinating hello input and Effect execution.
 
 **Signature**
 
@@ -38,7 +40,7 @@ Added in v1.0.0
 
 ### setName (method)
 
-Sets the current name input value.
+Update the name input.
 
 **Signature**
 
@@ -50,7 +52,7 @@ Added in v1.0.0
 
 ### run (method)
 
-Executes the greeting call and updates remote data state.
+Execute the greet program and update remote data state.
 
 **Signature**
 
@@ -62,7 +64,7 @@ Added in v1.0.0
 
 ### name (property)
 
-Readonly view of the current name input.
+Current input value as a readonly signal.
 
 **Signature**
 
@@ -74,19 +76,19 @@ Added in v1.0.0
 
 ### state (property)
 
-Readonly view of the hello request remote data state.
+Remote data state for the hello request.
 
 **Signature**
 
 ```ts
-readonly state: Signal<RemoteData<unknown, { readonly greeting: string & Brand<"Greeting">; }>>
+readonly state: Signal<RemoteData<Cause.Cause<HelloApiError>, { readonly greeting: string & Brand<"Greeting">; }>>
 ```
 
 Added in v1.0.0
 
 ### greeting (property)
 
-Derived greeting when the remote data is successful.
+Derived greeting when available.
 
 **Signature**
 

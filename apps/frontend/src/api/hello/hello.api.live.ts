@@ -1,3 +1,7 @@
+/**
+ * Live implementation of the hello API backed by GraphQL.
+ * @since 1.0.0
+ */
 import { Effect, Schema } from 'effect';
 import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
@@ -12,6 +16,10 @@ const helloQuery = `
   }
 `;
 
+/**
+ * Layer constructor yielding the live hello API service.
+ * @since 1.0.0
+ */
 export const helloApiLive = Effect.gen(function * () {
   const client = yield * GraphQLClientService;
 

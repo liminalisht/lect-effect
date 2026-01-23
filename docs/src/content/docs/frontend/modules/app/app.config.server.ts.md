@@ -1,6 +1,6 @@
 ---
 title: app/app.config.server.ts
-nav_order: 3
+nav_order: 7
 parent: Modules
 ---
 

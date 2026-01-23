@@ -1,6 +1,6 @@
 ---
 title: app/features/toy/toy.store.ts
-nav_order: 20
+nav_order: 29
 parent: Modules
 ---
 
