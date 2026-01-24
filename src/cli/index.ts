@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process';
 import process from 'node:process';
 import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Effect, Option } from 'effect';
+import { Effect, type Option } from 'effect';
 import {
   cleanSteps,
   docsDev,
@@ -29,7 +29,7 @@ type ShellRunError = {
   cause: unknown;
 };
 
-const runShell: (command: string) => Effect.Effect<void, ShellRunError, never> = (command: string) =>
+const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
   Effect.gen(function * () {
     yield * Effect.logDebug(`$ ${command}`);
     return yield * Effect.try({
@@ -38,7 +38,7 @@ const runShell: (command: string) => Effect.Effect<void, ShellRunError, never> =
     });
   });
 
-const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError, never> = (commands: readonly string[]) =>
+const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError> = (commands: readonly string[]) =>
   Effect.gen(function * () {
     for (const cmd of commands) {
       yield * runShell(cmd);
@@ -78,7 +78,7 @@ const schemaCommand = Command.make('schema:generate', {}, () =>
 
 const lintCommand = Command.make('lint', {
   fix: Options.boolean('fix').pipe(Options.optional),
-}, ({ fix }) => runAll([...fullBuildSteps, lintShellCommand(fix)].map(step => step.command))).pipe(Command.withDescription('Build everything, then lint (supports --fix).')) satisfies Command.Command<'lint', never, ShellRunError, { readonly fix: Option.Option<boolean> }>;
+}, ({ fix }) => runAll([...fullBuildSteps, lintShellCommand(fix)].map(step => step.command))).pipe(Command.withDescription('Build everything, then lint (supports --fix).')) satisfies Command.Command<'lint', never, ShellRunError, {readonly fix: Option.Option<boolean>}>;
 
 const docsCommand = Command.make('docs', {}, () =>
   runAll([
@@ -102,7 +102,7 @@ const iterateCommand = Command.make('iterate', {}, () =>
 const archiveCommand = Command.make('archive', {}, () =>
   runShell(gitArchiveHead.command)).pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, {}>;
 
-const rootCommand: Command.Command<'lect-effect', never, ShellRunError, { readonly subcommand: Option.Option<any> }> = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(
+const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonly subcommand: Option.Option<any>}> = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(
   Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
   Command.withSubcommands([
     buildCommand,
@@ -118,7 +118,7 @@ const rootCommand: Command.Command<'lect-effect', never, ShellRunError, { readon
     iterateCommand,
     archiveCommand,
   ]),
- );
+);
 
 const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
   name: 'lect-effect',
@@ -130,4 +130,4 @@ const argv: readonly string[] = process.argv.length > 2 ? process.argv : [...pro
 
 const main: Effect.Effect<unknown, unknown, unknown> = cli(argv).pipe(Effect.provide(NodeContext.layer));
 
-NodeRuntime.runMain(main as Effect.Effect<unknown, unknown, never>);
+NodeRuntime.runMain(main as Effect.Effect<unknown, unknown>);
