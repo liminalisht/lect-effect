@@ -217,7 +217,10 @@ export const docsDev: ShellCommand = { name: 'docsDev', command: 'pnpm -C docs d
  */
 export const lintShellCommand = (fix: Option.Option<boolean>): ShellCommand => ({
   name: 'lintWorkspace',
-  command: `pnpm lect-effect/lint${Option.match(fix, { onNone: () => '', onSome: () => ' --fix' })}`,
+  command: `pnpm lect-effect/lint${Option.match(fix, {
+    onNone: () => '',
+    onSome: value => (value ? ' --fix' : ''),
+  })}`,
 });
 
 /** Run test suites for domain, backend, and frontend.
