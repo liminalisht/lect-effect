@@ -18,6 +18,10 @@ export default defineConfig({
 					autogenerate: {directory: 'guides', collapsed: true},
 				},
 				{
+					label: '@lect-effect/cli',
+					autogenerate: {directory: 'cli/modules', collapsed: true},
+				},
+				{
 					label: '@lect-effect/domain',
 					autogenerate: {directory: 'domain/modules', collapsed: true},
 				},
