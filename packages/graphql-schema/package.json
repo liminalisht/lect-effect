@@ -22,7 +22,7 @@
   "dependencies": {
     "@effect/platform": "^0.94.1",
     "@effect/platform-node": "^0.104.0",
-    "effect": "^3.19.14"
+    "effect": "^3.19.15"
   },
   "devDependencies": {
     "@effect/docgen": "^0.5.2",

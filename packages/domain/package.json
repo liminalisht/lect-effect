@@ -27,7 +27,7 @@
     "install:nofreeze": "pnpm --dir ../.. install --filter ./packages/domain --no-frozen-lockfile"
   },
   "dependencies": {
-    "effect": "^3.19.14"
+    "effect": "^3.19.15"
   },
   "devDependencies": {
     "@effect/docgen": "^0.5.2",

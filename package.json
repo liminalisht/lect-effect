@@ -6,7 +6,9 @@
   "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
-    "lect-effect": "pnpm exec tsx src/cli/index.ts",
+    "lect-effect": "pnpm run lect-effect/self:build && node dist/cli/index.js",
+    "lect-effect/self:clean": "rm -rf dist/cli",
+    "lect-effect/self:build": "pnpm run lect-effect/self:clean && pnpm exec tsc -p tsconfig.cli.json",
     "lect-effect/build": "pnpm -C packages/domain build && pnpm -C apps/backend build && pnpm -C packages/graphql-schema build && pnpm -C packages/graphql-schema schema:generate && pnpm -C apps/frontend build && pnpm -C docs build",
     "lect-effect/clean": "pnpm -C packages/domain clean && pnpm -C apps/backend clean && pnpm -C packages/graphql-schema clean && pnpm -C apps/frontend clean && pnpm -C docs clean",
     "lect-effect/docs:generate": "pnpm -C apps/backend docs:generate && pnpm -C apps/frontend docs:generate && pnpm -C packages/domain docs:generate && pnpm -C packages/graphql-schema docs:generate",
@@ -40,7 +42,6 @@
     "concurrently": "^9.0.0",
     "env-cmd": "^11.0.0",
     "node-pg-migrate": "^8.0.4",
-    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4",
     "xo": "^1.2.3"
