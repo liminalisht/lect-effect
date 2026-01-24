@@ -88,8 +88,8 @@ const docsCommand = Command.make('docs', {}, () =>
     'pnpm lect-effect/docs:generate',
     [
       'for section in backend frontend domain graphql-schema; do',
-      'src="docs/src/content/docs/${section}/modules/index.md";',
-      'dst="docs/src/content/docs/${section}/modules/_index.md";',
+      'src="docs/src/content/docs/$section/modules/index.md";',
+      'dst="docs/src/content/docs/$section/modules/_index.md";',
       'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',
       'done',
     ].join(' '),
