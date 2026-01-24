@@ -6,8 +6,8 @@ import { Effect, Schema } from 'effect';
 import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
-import { ProductApiService } from './product.api.interface.js';
 import { CreateProductWithItemsDocument } from '../../graphql/generated/graphql.js';
+import { ProductApiService } from './product.api.interface.js';
 
 const CreateProductWithItemsResultSchema = Schema.Struct({
   createProductWithItems: productWithItemsSchema,

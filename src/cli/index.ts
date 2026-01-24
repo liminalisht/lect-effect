@@ -1,7 +1,7 @@
-import { Command } from '@effect/cli';
-import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Effect } from 'effect';
 import { execSync } from 'node:child_process';
+import { Command, Options } from '@effect/cli';
+import { NodeContext, NodeRuntime } from '@effect/platform-node';
+import { Effect, Option } from 'effect';
 
 const runShell = (command: string) =>
   Effect.try({
@@ -9,10 +9,10 @@ const runShell = (command: string) =>
     catch: error => error as Error,
   });
 
-const runAll = (commands: ReadonlyArray<string>) =>
+const runAll = (commands: readonly string[]) =>
   Effect.forEach(commands, cmd => runShell(cmd), { discard: true });
 
-const fullBuildSteps: ReadonlyArray<string> = [
+const fullBuildSteps: readonly string[] = [
   'pnpm install --frozen-lockfile --recursive',
   'pnpm -C packages/domain clean',
   'pnpm -C apps/backend clean',
@@ -28,32 +28,27 @@ const fullBuildSteps: ReadonlyArray<string> = [
   'pnpm -C docs build',
 ];
 
-const buildCommand = Command.make('build', {}, () => runAll(fullBuildSteps)).pipe(
-  Command.withDescription('Install, clean, then build all workspace packages in dependency order.')
-);
+const buildCommand = Command.make('build', {}, () => runAll(fullBuildSteps)).pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.'));
 
 const startCommand = Command.make('start', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm lect-effect/migrate/masterdata:up',
     'pnpm lect-effect/start',
-  ])
-).pipe(Command.withDescription('Build everything, run migrations, then start backend+frontend.'));
+  ])).pipe(Command.withDescription('Build everything, run migrations, then start backend+frontend.'));
 
 const startBackendCommand = Command.make('start:backend', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm lect-effect/migrate/masterdata:up',
     'pnpm -C apps/backend start',
-  ])
-).pipe(Command.withDescription('Build everything, migrate, then start backend only.'));
+  ])).pipe(Command.withDescription('Build everything, migrate, then start backend only.'));
 
 const startFrontendCommand = Command.make('start:frontend', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm -C apps/frontend start',
-  ])
-).pipe(Command.withDescription('Build everything, then start frontend only.'));
+  ])).pipe(Command.withDescription('Build everything, then start frontend only.'));
 
 const cleanCommand = Command.make('clean', {}, () =>
   runAll([
@@ -62,20 +57,24 @@ const cleanCommand = Command.make('clean', {}, () =>
     'pnpm -C packages/graphql-schema clean',
     'pnpm -C apps/frontend clean',
     'pnpm -C docs clean',
-  ])
-).pipe(Command.withDescription('Clean build artifacts for all workspace packages.'));
+  ])).pipe(Command.withDescription('Clean build artifacts for all workspace packages.'));
 
 const installCommand = Command.make('install', {}, () =>
-  runShell('pnpm install --frozen-lockfile --recursive')
-).pipe(Command.withDescription('Install workspace dependencies using the frozen lockfile.'));
+  runShell('pnpm install --frozen-lockfile --recursive')).pipe(Command.withDescription('Install workspace dependencies using the frozen lockfile.'));
 
 const schemaCommand = Command.make('schema:generate', {}, () =>
-  runShell('pnpm -C packages/graphql-schema schema:generate')
-).pipe(Command.withDescription('Regenerate the GraphQL schema artifact.'));
+  runShell('pnpm -C packages/graphql-schema schema:generate')).pipe(Command.withDescription('Regenerate the GraphQL schema artifact.'));
 
-const lintCommand = Command.make('lint', {}, () => runShell('pnpm lect-effect/lint')).pipe(
-  Command.withDescription('Run lint across the workspace.')
-);
+const lintCommand = Command.make('lint', {
+  fix: Options.boolean('fix').pipe(Options.optional),
+}, ({ fix }) => {
+  const fixFlag = Option.match(fix, {
+    onNone: () => '',
+    onSome: () => ' --fix',
+  });
+
+  return runAll([...fullBuildSteps, `pnpm lect-effect/lint${fixFlag}`]);
+}).pipe(Command.withDescription('Build everything, then lint (supports --fix).'));
 
 const docsCommand = Command.make('docs', {}, () =>
   runAll([
@@ -84,16 +83,14 @@ const docsCommand = Command.make('docs', {}, () =>
     'pnpm lect-effect/docs:generate',
     'for section in backend frontend domain graphql-schema; do src="docs/src/content/docs/${section}/modules/index.md"; dst="docs/src/content/docs/${section}/modules/_index.md"; if [ -f "$src" ]; then mv "$src" "$dst"; fi; done',
     'pnpm -C docs dev',
-  ])
-).pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.'));
+  ])).pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.'));
 
 const testCommand = Command.make('test', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm lect-effect/migrate/test-masterdata:up',
     'pnpm lect-effect/test',
-  ])
-).pipe(Command.withDescription('Build, run test DB migrations, then execute tests.'));
+  ])).pipe(Command.withDescription('Build, run test DB migrations, then execute tests.'));
 
 const rootCommand = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(
   Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
@@ -108,7 +105,7 @@ const rootCommand = Command.make('lect-effect', {}, () => Effect.succeed(undefin
     lintCommand,
     docsCommand,
     testCommand,
-  ])
+  ]),
 );
 
 const cli = Command.run(rootCommand, {
