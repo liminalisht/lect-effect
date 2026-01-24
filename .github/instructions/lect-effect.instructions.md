@@ -10,6 +10,8 @@ You are an AI coding agent collaborating on **lect-effect**. Your job is to prod
 
 ## 1. Building
 
+`./lect-effect.sh` is the main CLI entrypoint for this project. It supports various commands for building, testing, running, and linting the project.
+
 After you make any code change, before thinking you're done, you should build the project and make sure that it compiles successfully:
 ```sh
 ./lect-effect.sh build
