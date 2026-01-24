@@ -3,6 +3,8 @@
  * @since 1.0.0
  */
 import {Context, Effect, Layer} from 'effect';
+import { print } from 'graphql';
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import type {Json} from '../json/json.js';
 import {FrontendConfigService} from '../config/frontend-config.js';
 import {
@@ -19,10 +21,10 @@ import {
  * @category Service Interfaces
  */
 export type GraphQLClient = {
-  readonly request: <A extends Record<string, Json>>(
-    doc: string,
-    variables?: Record<string, Json>,
-  ) => Effect.Effect<A, GraphQLClientError>;
+  readonly request: <TData, TVariables extends Record<string, Json> | undefined = undefined>(
+    doc: TypedDocumentNode<TData, TVariables>,
+    variables?: TVariables,
+  ) => Effect.Effect<TData, GraphQLClientError>;
 };
 
 /**
@@ -51,16 +53,16 @@ export const GraphQLClientLive: Layer.Layer<
     const { graphqlEndpoint } = yield * FrontendConfigService;
 
     return GraphQLClientService.of({
-      request: <A extends Record<string, Json>>(
-        doc: string,
-        variables?: Record<string, Json>,
+      request: <TData, TVariables extends Record<string, Json> | undefined = undefined>(
+        doc: TypedDocumentNode<TData, TVariables>,
+        variables?: TVariables,
       ) =>
         Effect.gen(function * () {
           const response = yield * Effect.tryPromise({
             try: async () => fetch(graphqlEndpoint, {
               method: 'POST',
               headers: {'content-type': 'application/json'},
-              body: JSON.stringify({ query: doc, variables }),
+              body: JSON.stringify({ query: print(doc), variables }),
             }),
             catch: cause => new TransportError({ cause }),
           });
@@ -88,7 +90,7 @@ export const GraphQLClientLive: Layer.Layer<
             }));
           }
 
-          const {data, errors} = json as {data?: A; errors?: unknown};
+          const {data, errors} = json as {data?: TData; errors?: unknown};
 
           if (Array.isArray(errors) && errors.length > 0) {
             return yield * Effect.fail(new GraphqlError({errors}));

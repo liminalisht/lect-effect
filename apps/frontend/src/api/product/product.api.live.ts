@@ -7,23 +7,7 @@ import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/c
 import { productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { ProductApiService } from './product.api.interface.js';
-
-const createProductMutation = `
-  mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
-    createProductWithItems(product: $product, items: $items) {
-      product {
-        id
-        description
-        __typename
-      }
-      items {
-        id
-        description
-        pack_size
-      }
-    }
-  }
-`;
+import { CreateProductWithItemsDocument } from '../../graphql/generated/graphql.js';
 
 const CreateProductWithItemsResultSchema = Schema.Struct({
   createProductWithItems: productWithItemsSchema,
@@ -51,11 +35,12 @@ export const productApiLive = Effect.gen(function * () {
           },
           items: validated.items.map(item => ({
             ...item,
-            pack_size: item.pack_size ?? null, // todo: is this necessary?
+            description: item.description ?? null,
+            pack_size: item.pack_size,
           })),
         };
 
-        const response = yield * client.request(createProductMutation, {
+        const response = yield * client.request(CreateProductWithItemsDocument, {
           product: normalized.product,
           items: normalized.items,
         });

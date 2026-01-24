@@ -1,0 +1,14 @@
+mutation CreateProductWithItems($product: CreateProductWithItemsProductInput!, $items: [CreateItemInput!]!) {
+  createProductWithItems(product: $product, items: $items) {
+    product {
+      id
+      description
+      __typename
+    }
+    items {
+      id
+      description
+      pack_size
+    }
+  }
+}

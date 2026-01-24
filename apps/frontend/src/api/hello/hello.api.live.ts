@@ -7,14 +7,7 @@ import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { HelloApiService } from './hello.api.interface.js';
-
-const helloQuery = `
-  query Hello($name: String) {
-    greet(name: $name) {
-      greeting
-    }
-  }
-`;
+import { HelloDocument } from '../../graphql/generated/graphql.js';
 
 /**
  * Layer constructor yielding the live hello API service.
@@ -29,7 +22,7 @@ export const helloApiLive = Effect.gen(function * () {
       Effect.gen(function * () {
         const decoded = yield * Schema.decodeUnknown(nameInputSchema)({ name });
         const variables = { name: decoded.name ?? null };
-        const response = yield * client.request(helloQuery, variables);
+        const response = yield * client.request(HelloDocument, variables);
         const decodedResponse = yield * Schema.decodeUnknown(Schema.Struct({ greet: helloResponseSchema }))(response);
         return decodedResponse.greet;
       }),
