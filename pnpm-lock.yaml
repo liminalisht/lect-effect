@@ -21,6 +21,9 @@ importers:
         specifier: ^3.19.15
         version: 3.19.15
     devDependencies:
+      '@effect/docgen':
+        specifier: ^0.5.2
+        version: 0.5.2(tsx@4.21.0)(typescript@5.9.3)
       '@effect/language-service':
         specifier: ^0.64.1
         version: 0.64.1

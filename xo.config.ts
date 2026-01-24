@@ -6,7 +6,7 @@ const rootDir = fileURLToPath(new URL('.', import.meta.url));
 const xoConfig: FlatXoConfig = [
   {
     files: ['**/*'],
-    ignores: ['docs-site/**', '**/node_modules/**', '**/dist/**', '**/build/**'],
+    ignores: ['docs-site/**', 'apps/frontend/src/graphql/generated/**', '**/node_modules/**', '**/dist/**', '**/build/**'],
     rules: {},
   },
   {
