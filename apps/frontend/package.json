@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "homepage": "https://github.com/liminalisht/lect-effect",
   "scripts": {
-    "clean": "rm -rf dist .angular/cache",
-    "build": "ng build",
+    "clean": "rm -rf dist .angular/cache src/graphql/generated",
+    "build": "pnpm run graphql:codegen && ng build",
     "test": "ng test --watch=false --progress=false",
     "start": "ng serve --proxy-config proxy.conf.json",
     "watch": "ng build --watch --configuration development",
