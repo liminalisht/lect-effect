@@ -44,81 +44,102 @@ const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError
       yield * runShell(cmd);
     }
   });
+const emptyConfig = {} as const satisfies Record<string, never>;
 
-const buildCommand = Command.make('build', {}, () => runAll(fullBuildSteps.map(step => step.command))).pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.')) satisfies Command.Command<'build', never, ShellRunError, {}>;
+const buildCommand = Command
+  .make('build', emptyConfig, () => runAll(fullBuildSteps.map(step => step.command)))
+  .pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.')) satisfies Command.Command<'build', never, ShellRunError, Record<string, never>>;
 
-const startCommand = Command.make('start', {}, () =>
-  runAll([
-    ...fullBuildSteps,
-    migrateMasterdataUp,
-    startBackendAndFrontend,
-  ].map(step => step.command))).pipe(Command.withDescription('Build everything, run migrations, then start backend+frontend.')) satisfies Command.Command<'start', never, ShellRunError, {}>;
+const startCommand = Command
+  .make('start', emptyConfig, () =>
+    runAll([
+      ...fullBuildSteps,
+      migrateMasterdataUp,
+      startBackendAndFrontend,
+    ].map(step => step.command)))
+  .pipe(Command.withDescription('Build everything, run migrations, then start backend+frontend.')) satisfies Command.Command<'start', never, ShellRunError, Record<string, never>>;
 
-const startBackendCommand = Command.make('start:backend', {}, () =>
-  runAll([
-    ...fullBuildSteps,
-    migrateMasterdataUp,
-    startBackendRuntime,
-  ].map(step => step.command))).pipe(Command.withDescription('Build everything, migrate, then start backend only.')) satisfies Command.Command<'start:backend', never, ShellRunError, {}>;
+const startBackendCommand = Command
+  .make('start:backend', emptyConfig, () =>
+    runAll([
+      ...fullBuildSteps,
+      migrateMasterdataUp,
+      startBackendRuntime,
+    ].map(step => step.command)))
+  .pipe(Command.withDescription('Build everything, migrate, then start backend only.')) satisfies Command.Command<'start:backend', never, ShellRunError, Record<string, never>>;
 
-const startFrontendCommand = Command.make('start:frontend', {}, () =>
-  runAll([
-    ...fullBuildSteps,
-    startFrontendRuntime,
-  ].map(step => step.command))).pipe(Command.withDescription('Build everything, then start frontend only.')) satisfies Command.Command<'start:frontend', never, ShellRunError, {}>;
+const startFrontendCommand = Command
+  .make('start:frontend', emptyConfig, () =>
+    runAll([
+      ...fullBuildSteps,
+      startFrontendRuntime,
+    ].map(step => step.command)))
+  .pipe(Command.withDescription('Build everything, then start frontend only.')) satisfies Command.Command<'start:frontend', never, ShellRunError, Record<string, never>>;
 
-const cleanCommand = Command.make('clean', {}, () =>
-  runAll(cleanSteps.map(step => step.command))).pipe(Command.withDescription('Clean build artifacts for all workspace packages.')) satisfies Command.Command<'clean', never, ShellRunError, {}>;
+const cleanCommand = Command
+  .make('clean', emptyConfig, () => runAll(cleanSteps.map(step => step.command)))
+  .pipe(Command.withDescription('Clean build artifacts for all workspace packages.')) satisfies Command.Command<'clean', never, ShellRunError, Record<string, never>>;
 
-const installCommand = Command.make('install', {}, () =>
-  runShell(installWorkspace.command)).pipe(Command.withDescription('Install workspace dependencies using the frozen lockfile.')) satisfies Command.Command<'install', never, ShellRunError, {}>;
+const installCommand = Command
+  .make('install', emptyConfig, () => runShell(installWorkspace.command))
+  .pipe(Command.withDescription('Install workspace dependencies using the frozen lockfile.')) satisfies Command.Command<'install', never, ShellRunError, Record<string, never>>;
 
-const schemaCommand = Command.make('schema:generate', {}, () =>
-  runShell(generateGraphqlSchema.command)).pipe(Command.withDescription('Regenerate the GraphQL schema artifact.')) satisfies Command.Command<'schema:generate', never, ShellRunError, {}>;
+const schemaCommand = Command
+  .make('schema:generate', emptyConfig, () => runShell(generateGraphqlSchema.command))
+  .pipe(Command.withDescription('Regenerate the GraphQL schema artifact.')) satisfies Command.Command<'schema:generate', never, ShellRunError, Record<string, never>>;
 
-const lintCommand = Command.make('lint', {
-  fix: Options.boolean('fix').pipe(Options.optional),
-}, ({ fix }) => runAll([...fullBuildSteps, lintShellCommand(fix)].map(step => step.command))).pipe(Command.withDescription('Build everything, then lint (supports --fix).')) satisfies Command.Command<'lint', never, ShellRunError, {readonly fix: Option.Option<boolean>}>;
+const lintCommand = Command
+  .make('lint', { fix: Options.boolean('fix').pipe(Options.optional) }, ({ fix }) =>
+    runAll([...fullBuildSteps, lintShellCommand(fix)].map(step => step.command)))
+  .pipe(Command.withDescription('Build everything, then lint (supports --fix).')) satisfies Command.Command<'lint', never, ShellRunError, {readonly fix: Option.Option<boolean>}>;
 
-const docsCommand = Command.make('docs', {}, () =>
-  runAll([
-    ...fullBuildSteps,
-    docsPruneContent,
-    ...docsGenerateContentSteps,
-    docsMoveModuleIndexes,
-    docsDev,
-  ].map(step => step.command))).pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.')) satisfies Command.Command<'docs', never, ShellRunError, {}>;
+const docsCommand = Command
+  .make('docs', emptyConfig, () =>
+    runAll([
+      ...fullBuildSteps,
+      docsPruneContent,
+      ...docsGenerateContentSteps,
+      docsMoveModuleIndexes,
+      docsDev,
+    ].map(step => step.command)))
+  .pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.')) satisfies Command.Command<'docs', never, ShellRunError, Record<string, never>>;
 
-const testCommand = Command.make('test', {}, () =>
-  runAll([
-    ...fullBuildSteps,
-    migrateTestMasterdataUp,
-    testWorkspace,
-  ].map(step => step.command))).pipe(Command.withDescription('Build, run test DB migrations, then execute tests.')) satisfies Command.Command<'test', never, ShellRunError, {}>;
+const testCommand = Command
+  .make('test', emptyConfig, () =>
+    runAll([
+      ...fullBuildSteps,
+      migrateTestMasterdataUp,
+      testWorkspace,
+    ].map(step => step.command)))
+  .pipe(Command.withDescription('Build, run test DB migrations, then execute tests.')) satisfies Command.Command<'test', never, ShellRunError, Record<string, never>>;
 
-const iterateCommand = Command.make('iterate', {}, () =>
-  runAll(gitIterateSteps.map(step => step.command))).pipe(Command.withDescription('Git add ., commit "iterate", and push HEAD.')) satisfies Command.Command<'iterate', never, ShellRunError, {}>;
+const iterateCommand = Command
+  .make('iterate', emptyConfig, () => runAll(gitIterateSteps.map(step => step.command)))
+  .pipe(Command.withDescription('Git add ., commit "iterate", and push HEAD.')) satisfies Command.Command<'iterate', never, ShellRunError, Record<string, never>>;
 
-const archiveCommand = Command.make('archive', {}, () =>
-  runShell(gitArchiveHead.command)).pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, {}>;
+const archiveCommand = Command
+  .make('archive', emptyConfig, () => runShell(gitArchiveHead.command))
+  .pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, Record<string, never>>;
 
-const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonly subcommand: Option.Option<any>}> = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(
-  Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
-  Command.withSubcommands([
-    buildCommand,
-    cleanCommand,
-    installCommand,
-    schemaCommand,
-    startCommand,
-    startBackendCommand,
-    startFrontendCommand,
-    lintCommand,
-    docsCommand,
-    testCommand,
-    iterateCommand,
-    archiveCommand,
-  ]),
-);
+const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonly subcommand: Option.Option<any>}> = Command
+  .make('lect-effect', emptyConfig, () => Effect.succeed(undefined))
+  .pipe(
+    Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
+    Command.withSubcommands([
+      buildCommand,
+      cleanCommand,
+      installCommand,
+      schemaCommand,
+      startCommand,
+      startBackendCommand,
+      startFrontendCommand,
+      lintCommand,
+      docsCommand,
+      testCommand,
+      iterateCommand,
+      archiveCommand,
+    ]),
+  );
 
 const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
   name: 'lect-effect',

@@ -33,7 +33,16 @@ export const migrateTestMasterdataUp: ShellCommand = { name: 'migrateTestMasterd
 
 export const startBackendRuntime: ShellCommand = { name: 'startBackendRuntime', command: 'pnpm -C apps/backend start' };
 export const startFrontendRuntime: ShellCommand = { name: 'startFrontendRuntime', command: 'pnpm -C apps/frontend start' };
-export const startBackendAndFrontend: ShellCommand = { name: 'startBackendAndFrontend', command: 'pnpm concurrently --names backend,frontend --prefix-colors blue,green "pnpm -C apps/backend start" "pnpm -C apps/frontend start"' };
+export const startBackendAndFrontend: ShellCommand = {
+  name: 'startBackendAndFrontend',
+  command: [
+    'pnpm concurrently',
+    '--names backend,frontend',
+    '--prefix-colors blue,green',
+    '"pnpm -C apps/backend start"',
+    '"pnpm -C apps/frontend start"',
+  ].join(' '),
+};
 
 export const docsPruneContent: ShellCommand = { name: 'docsPruneContent', command: 'rm -rf docs/src/content/docs/{backend,frontend,domain}' };
 export const docsGenerateBackend: ShellCommand = { name: 'docsGenerateBackend', command: 'pnpm -C apps/backend docs:generate' };
