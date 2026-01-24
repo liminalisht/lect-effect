@@ -14,14 +14,21 @@ const runAll = (commands: ReadonlyArray<string>) =>
 
 const buildCommand = Command.make('build', {}, () =>
   runAll([
+    'pnpm install --frozen-lockfile --recursive',
+    'pnpm -C packages/domain clean',
+    'pnpm -C apps/backend clean',
+    'pnpm -C packages/graphql-schema clean',
+    'pnpm -C apps/frontend clean',
+    'pnpm -C docs clean',
     'pnpm -C packages/domain build',
     'pnpm -C apps/backend build',
     'pnpm -C packages/graphql-schema build',
     'pnpm -C packages/graphql-schema schema:generate',
+    'pnpm -C apps/frontend run graphql:codegen',
     'pnpm -C apps/frontend build',
     'pnpm -C docs build',
   ])
-).pipe(Command.withDescription('Build all workspace packages in dependency order.'));
+).pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.'));
 
 const cleanCommand = Command.make('clean', {}, () =>
   runAll([
