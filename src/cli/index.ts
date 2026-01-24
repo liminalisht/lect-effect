@@ -30,9 +30,12 @@ type ShellRunError = {
 };
 
 const runShell: (command: string) => Effect.Effect<void, ShellRunError, never> = (command: string) =>
-  Effect.try({
-    try: () => execSync(command, { stdio: 'inherit' }),
-    catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
+  Effect.gen(function * () {
+    yield * Effect.logDebug(`$ ${command}`);
+    return yield * Effect.try({
+      try: () => execSync(command, { stdio: 'inherit' }),
+      catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
+    });
   });
 
 const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError, never> = (commands: readonly string[]) =>

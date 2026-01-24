@@ -44,7 +44,7 @@ Creates a new product.
 export declare const createProduct: (
   input: ProductInput
 ) => Effect.Effect<
-  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null },
+  { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number },
   ProductRepoError,
   ProductRepoService
 >
@@ -63,8 +63,8 @@ export declare const createProductWithItems: (
   input: CreateProductWithItemsInput
 ) => Effect.Effect<
   {
-    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
-    items: { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
+    product: { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number }
+    items: { readonly description: string | null; readonly id: number; readonly pack_size: number }[]
   },
   SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
@@ -83,7 +83,7 @@ Fetches a single product by id or returns null.
 export declare const getProduct: (
   id: ProductId
 ) => Effect.Effect<
-  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
+  { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number } | null,
   ProductRepoError,
   ProductRepoService
 >
@@ -102,8 +102,8 @@ export declare const getProductWithItems: (
   id: ProductId
 ) => Effect.Effect<
   {
-    product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }
-    items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
+    product: { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number }
+    items: readonly { readonly description: string | null; readonly id: number; readonly pack_size: number }[]
   } | null,
   SqlError | ParseError | ProductNotFound,
   ItemRepoService | ProductRepoService
@@ -122,7 +122,7 @@ Lists items for a given product id.
 export declare const itemsForProduct: (
   productId: ProductId
 ) => Effect.Effect<
-  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  readonly { readonly description: string | null; readonly id: number; readonly pack_size: number }[],
   ItemRepoError,
   ItemRepoService
 >
@@ -138,7 +138,7 @@ Lists all products.
 
 ```ts
 export declare const listProducts: Effect.Effect<
-  readonly { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null }[],
+  readonly { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number }[],
   ProductRepoError,
   ProductRepoService
 >

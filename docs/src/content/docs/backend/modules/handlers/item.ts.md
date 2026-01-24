@@ -40,7 +40,7 @@ Creates a new item.
 export declare const createItem: (
   input: CreateItemInput
 ) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly pack_size: number },
+  { readonly description: string | null; readonly id: number; readonly pack_size: number },
   ItemRepoError,
   ItemRepoService
 >
@@ -58,7 +58,7 @@ Fetches an item by id.
 export declare const getItem: (
   id: ItemId
 ) => Effect.Effect<
-  { readonly id: number; readonly description: string | null; readonly pack_size: number } | null,
+  { readonly description: string | null; readonly id: number; readonly pack_size: number } | null,
   ItemRepoError,
   ItemRepoService
 >
@@ -74,7 +74,7 @@ Lists all items.
 
 ```ts
 export declare const listItems: Effect.Effect<
-  readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[],
+  readonly { readonly description: string | null; readonly id: number; readonly pack_size: number }[],
   ItemRepoError,
   ItemRepoService
 >
@@ -92,7 +92,7 @@ Looks up the product for a given item id, returning null when absent.
 export declare const productForItem: (
   itemId: ItemId
 ) => Effect.Effect<
-  { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null } | null,
+  { readonly description: string | null; readonly __typename?: "Product" | undefined; readonly id: number } | null,
   ProductRepoError,
   ProductRepoService
 >
