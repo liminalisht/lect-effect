@@ -284,3 +284,246 @@ This turns “consistency across the project” into enforceable laws rather tha
 
 ---
 
+-------
+
+
+Below is a focused “Effect‑ecosystem” review: places where you can replace ad‑hoc impurity (shell scripts, implicit caching, implicit logging) with explicit, composable morphisms in the Kleisli category of `Effect`, so you can *pipe / reroute / bracket / observe* consistently across backend, frontend, and tooling.
+
+I’m grouping suggestions by **effort** (XS/S/M/L) and **value** (DX/Correctness/Perf/Operability).
+
+---
+
+## XS effort, high value
+
+### 1) Multi‑sink logging: console ⊗ file (and later → OTEL)
+
+**Observed:** your backend logger layer only sets minimum log level; it doesn’t give you a “tee” to disk or structured routing.
+
+**Effect move:** use `@effect/platform`’s `PlatformLogger` for file logging, and compose with the existing logger (categorically: a product of log algebras).
+
+* `PlatformLogger.toFile(...)` gives you a logger backed by a file descriptor.
+* Then combine/zip loggers (or replace the default with a composite).
+
+**Actionable steps**
+
+1. Add a config for log file path (e.g. `LOG_FILE=var/log/app.log`).
+2. In `apps/backend/src/services/logger/layer.ts`, build a composite logger:
+
+   * current: `Logger.replace(Logger.defaultLogger, Logger.minimumLogLevel(logLevel))`
+   * target: `Logger.replace(Logger.defaultLogger, Logger.minimumLogLevel(logLevel) |> (consoleLogger ⊗ fileLogger))`
+3. Ensure file logger is in a `scoped` resource so rotation/close is guaranteed.
+
+**Why it matters**
+
+* Immediately enables: “run tests → capture logs to file → link from docs” without inventing more shell plumbing.
+* Becomes the same output substrate you later export to OTEL.
+
+---
+
+### 2) Replace bespoke top‑level runners with `NodeRuntime.runMain`
+
+**Observed:** you already have a clean `Effect.acquireRelease` server lifecycle in `createServer`.
+
+**Effect move:** standardize *every* “main” entrypoint (backend server, tooling commands) through `NodeRuntime.runMain`, which gives consistent fatal error handling + exit codes + fiber supervision.
+
+**Actionable steps**
+
+* In the backend `main` (where you currently run the server effect), do:
+
+  * `pipe(createServer, Effect.provide(AppLayer), NodeRuntime.runMain)`
+* Do the same for the future tooling CLI (see below).
+
+This gives one uniform notion of “main program” across the repo.
+
+---
+
+### 3) Apply bounded retries + timeouts at boundaries
+
+**Observed:** DB access is already isolated behind repos; the repo methods are the canonical boundary. E.g. `ItemRepoService.listForProduct` ultimately runs SQL and decodes.
+
+**Effect move:** wrap *only boundary effects* with `timeout` + `retry` schedules (so you don’t accidentally retry pure logic).
+
+* `Effect.retry` + `Schedule` is the standard algebra here.
+
+**Actionable steps**
+
+1. Define a small utility:
+
+   * `withDbResilience: Effect<A,E,R> -> Effect<A,E | TimeoutError,R>` that:
+
+     * times out (e.g. 2–5s per query)
+     * retries on **transient** `SqlError`/network errors (exponential + jitter + max recurs)
+2. Apply it inside repo implementations (`apps/backend/src/services/*Repo/implementation.ts`), *not* in handlers/resolvers.
+
+Value: correctness under partial failure + predictable latency tails.
+
+---
+
+## S effort, high value
+
+### 4) Turn your bash orchestration into an Effect pipeline (Command ⟶ Stream ⟶ FileSystem)
+
+**Observed:** `scripts/tests.sh` / `scripts/docs.sh` / `scripts/start.sh` are imperative bash pipelines with implicit IO routing. E.g. `tests.sh` runs install/build/test; `docs.sh` runs tests then docgen.
+
+**Effect move:** model these as an explicit *tooling program* using:
+
+* `@effect/platform/Command` to run external processes.
+* `@effect/platform/FileSystem` to write artifacts deterministically.
+* `Stream` to tee stdout/stderr to `(console ⊗ file)` (your “pipe and reroute effects” desire).
+
+**Concrete plan (minimal)**
+
+1. Create `tools/cli` (or `packages/tooling`) with a `main.ts` using `NodeRuntime.runMain`.
+2. Implement commands:
+
+   * `tool test`  (runs pnpm tests)
+   * `tool docs`  (runs test + docgen)
+   * `tool ci`    (install + build + test + docs)
+3. For each command:
+
+   * execute `Command.make("pnpm", …)`
+   * stream output:
+
+     * to console *and*
+     * to `artifacts/<cmd>.log` via `FileSystem` + `PlatformLogger.toFile` (or raw stream sinks)
+
+**Why this is a big deal**
+
+* You get a *single* abstract interface for “run a step, capture output, publish to docs”.
+* You can add phases as ordinary composition: `phase1 >=> phase2 >=> phase3` (Kleisli composition), rather than nested bash.
+
+---
+
+### 5) Adopt `@effect/cli` for consistent, typed tooling UX
+
+Once you build the tooling program above, use `@effect/cli` to make it discoverable and consistent (help text, args/options parsing, subcommands).
+
+This is low effort once you already have `Command`/`FileSystem` in place, and it locks in a consistent “one tool” interface for devs.
+
+---
+
+## M effort, very high value
+
+### 6) Kill GraphQL N+1 with Effect Request batching/caching
+
+**Observed (clear N+1 surfaces):**
+
+* `Product.items` field resolves by calling `itemRepo.listForProduct(product.id)` per product.
+* `Item.product` field resolves by calling `productRepo.getForItem(item.id)` per item.
+
+In a list query, that’s classic N+1 behavior.
+
+**Effect move:** represent “fetch items by productId” and “fetch product by itemId” as *requests* and interpret them with a batched resolver.
+Effect has built‑in request batching controls (e.g. `Effect.forEach(..., { batching: true })`), and explicit toggles via `withRequestBatching`.
+
+**Actionable steps**
+
+1. Extend repos with batched queries:
+
+   * `ItemRepoService.listForProducts(productIds: ReadonlyArray<ProductId>) -> Effect<Record<ProductId, Item[]>, DbError>`
+   * `ProductRepoService.getForItems(itemIds: ReadonlyArray<ItemId>) -> Effect<Record<ItemId, Option<Product>>, DbError>`
+     This is a pure SQL improvement; you already have joins in the single‑key versions.
+2. Implement request batching:
+
+   * a request type `ItemsByProductId(productId)` interpreted by a batched resolver calling `listForProducts`.
+   * similarly `ProductByItemId(itemId)` calling `getForItems`.
+3. Ensure **per GraphQL request** shared cache/batching context:
+
+   * today each resolver runs `runtime.runPromise` in isolation.
+   * you want the “request cache” object to be a shared comonadic environment for the whole GraphQL execution, not per field.
+
+**Outcome**
+
+* Asymptotic improvement: `O(n)` DB round‑trips → `O(1)` (per field group).
+* Cleaner semantics: field resolvers become *declarative requests*, not “do SQL now”.
+
+---
+
+### 7) Add transactions for multi‑step mutations (`createProductWithItems`)
+
+**Observed:** `createProductWithItemsMutation` creates a product, then loops and creates items + links. A mid‑loop failure leaves partial state.
+
+**Effect move:** bracket the entire mutation in a DB transaction using `SqlClient.withTransaction`. The `SqlClient` API exposes `withTransaction(self: Effect<…>)`. ([Effect TS][1])
+
+**Actionable steps**
+
+1. In your `MasterdataDbService` or `SqlClient` service layer, expose `withTransaction`.
+2. Wrap the handler effect:
+
+   * `sql.withTransaction(createProduct *> createItems *> linkItems)`
+3. Decide concurrency inside the transaction:
+
+   * sequential (safer) or bounded parallel with `Effect.forEach(..., { concurrency: k })`.
+
+Value: correctness (atomicity) + simpler retry semantics (you can retry the whole tx on serialization errors).
+
+---
+
+### 8) OpenTelemetry end‑to‑end: GraphQL request spans + SQL spans + log correlation
+
+**Observed:** no OTEL packages/layers are present in the backend dependencies snippet.
+
+**Effect move:** add OTEL via `@effect/opentelemetry` + Node SDK layer. The docs show a `NodeSdk.layer(() => ({ resource: { serviceName: … } }))`.
+
+**Actionable steps**
+
+1. Add OTEL layers:
+
+   * Node SDK layer (service name, exporter, sampler)
+2. Wrap GraphQL execution:
+
+   * create a span per operation (name = operationName or fallback)
+   * annotate with `requestId`, `userId`, query hash, etc.
+3. Wrap repo methods with spans (or use automatic instrumentation where available).
+4. Correlate logs:
+
+   * inject trace/span ids into log annotations (fiber refs) so file logs and OTEL traces line up.
+
+Value: production‑grade debugging (latency attribution + error provenance) with minimal future regret.
+
+---
+
+## L effort, high value
+
+### 9) Converge on Effect Platform for the HTTP edge (optional, but unifies everything)
+
+You currently embed Effect into Express/GraphQL Yoga by passing a runtime into the context.
+
+A deeper unification is to make the HTTP edge itself an Effect program (Platform Http server), so:
+
+* middleware becomes `Effect<Request, Response>`
+* lifecycle, telemetry, logging, and shutdown are *one* bracketing story
+
+This is a bigger migration, but it yields maximal consistency: one algebra for resources everywhere.
+
+---
+
+## A “roadmap” that preserves consistency
+
+Here is a sequencing that minimizes architectural divergence:
+
+1. **Logging tee + NodeRuntime.runMain** (XS)
+2. **Tooling CLI (Command/FileSystem/Stream) replacing bash** (S)
+3. **Retries/timeouts at repo + client boundaries** (S)
+4. **GraphQL N+1 batching** (M)
+5. **Transactions for multi‑step mutations** (M)
+6. **OTEL** (M)
+7. **(Optional) Effect Platform HTTP edge** (L)
+
+This keeps a single guiding invariant:
+
+> every side effect factors through a named, testable algebra (Service), with a small number of interpreters (Layers), and observable semantics (logs/traces) as a natural transformation over the whole program.
+
+---
+
+## If you want one concrete “first PR” to prove the thesis
+
+Make a single PR that:
+
+1. Adds `tool ci` implemented via `Command` + `FileSystem` (capture logs to `artifacts/ci.log`).
+2. Updates backend logger layer to tee logs to console + file.
+3. Switches backend main to `NodeRuntime.runMain`.
+
+That single move gives you the “pipe/reroute effects” capability immediately, and establishes the repo‑wide pattern for the next steps (batching + OTEL).
+
+[1]: https://effect-ts.github.io/effect/sql/SqlClient.ts.html "https://effect-ts.github.io/effect/sql/SqlClient.ts.html"
