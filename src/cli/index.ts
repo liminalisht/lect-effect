@@ -51,4 +51,6 @@ const cli = Command.run(rootCommand, {
   version: '1.0.0',
 });
 
-cli(process.argv).pipe(Effect.provide(NodeContext.layer), NodeRuntime.runMain);
+const argv = process.argv.length > 2 ? process.argv : [...process.argv, '--help'];
+
+cli(argv).pipe(Effect.provide(NodeContext.layer), NodeRuntime.runMain);
