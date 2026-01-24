@@ -11,9 +11,6 @@
     "serve:ssr": "node dist/frontend/server/server.mjs",
     "docs:generate": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\" --exclude \"**/*.d.ts\"",
     "graphql:codegen": "graphql-codegen --config codegen.ts",
-    "install": "pnpm --dir ../.. install --filter ./apps/frontend --frozen-lockfile",
-    "install:nofreeze": "pnpm --dir ../.. install --filter ./apps/frontend --no-frozen-lockfile",
-
     "ng": "ng",
     "serve:ssr:web": "node dist/frontend/server/server.mjs"
   },

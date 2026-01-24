@@ -39,7 +39,7 @@ const startCommand = Command.make('start', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm lect-effect/migrate/masterdata:up',
-    'pnpm lect-effect/start',
+    'pnpm concurrently --names backend,frontend --prefix-colors blue,green "pnpm -C apps/backend start" "pnpm -C apps/frontend start"',
   ])).pipe(Command.withDescription('Build everything, run migrations, then start backend+frontend.'));
 
 const startBackendCommand = Command.make('start:backend', {}, () =>
@@ -100,7 +100,7 @@ const testCommand = Command.make('test', {}, () =>
   runAll([
     ...fullBuildSteps,
     'pnpm lect-effect/migrate/test-masterdata:up',
-    'pnpm lect-effect/test',
+    'pnpm -C packages/domain test && pnpm -C apps/backend test && pnpm -C apps/frontend test',
   ])).pipe(Command.withDescription('Build, run test DB migrations, then execute tests.'));
 
 const rootCommand = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(

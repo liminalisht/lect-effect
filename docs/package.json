@@ -5,14 +5,9 @@
   "scripts": {
     "clean": "rm -rf dist .astro",
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "sync": "astro sync",
-    "install": "pnpm --dir .. install --filter ./docs --frozen-lockfile",
-    "install:nofreeze": "pnpm --dir .. install --filter ./docs --no-frozen-lockfile",
-
-    "clean:build": "pnpm run clean && pnpm run build",
     "predev": "pnpm run sync",
     "prestart": "pnpm run sync",
     "prebuild": "pnpm run sync",

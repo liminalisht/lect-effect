@@ -22,9 +22,7 @@
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --dir test",
-    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/domain/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\"",
-    "install": "pnpm --dir ../.. install --filter ./packages/domain --frozen-lockfile",
-    "install:nofreeze": "pnpm --dir ../.. install --filter ./packages/domain --no-frozen-lockfile"
+    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/domain/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\""
   },
   "dependencies": {
     "effect": "^3.19.15"
