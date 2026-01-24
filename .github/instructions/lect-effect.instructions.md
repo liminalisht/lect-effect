@@ -41,3 +41,15 @@ or
 ```sh
 ./lect-effect.sh lint --fix
 ```
+
+## 5. Help / Other
+
+To see the full list of available commands, just run it without an arguments:
+
+```sh
+./lect-effect.sh
+```
+or
+```sh
+./lect-effect.sh  --help
+```
