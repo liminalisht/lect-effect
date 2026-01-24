@@ -4,10 +4,16 @@ import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
 
+type RunShellError = {
+  _tag: 'RunShellError';
+  command: string;
+  cause: unknown;
+};
+
 const runShell = (command: string) =>
   Effect.try({
     try: () => execSync(command, { stdio: 'inherit' }),
-    catch: error => error as Error,
+    catch: cause => ({ _tag: 'RunShellError', command, cause } satisfies RunShellError),
   });
 
 const runAll = (commands: readonly string[]) =>
