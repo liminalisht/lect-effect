@@ -36,7 +36,16 @@ export const startFrontendRuntime: ShellCommand = { name: 'startFrontendRuntime'
 export const startBackendAndFrontend: ShellCommand = { name: 'startBackendAndFrontend', command: 'pnpm concurrently --names backend,frontend --prefix-colors blue,green "pnpm -C apps/backend start" "pnpm -C apps/frontend start"' };
 
 export const docsPruneContent: ShellCommand = { name: 'docsPruneContent', command: 'rm -rf docs/src/content/docs/{backend,frontend,domain}' };
-export const docsGenerateContent: ShellCommand = { name: 'docsGenerateContent', command: 'pnpm lect-effect/docs:generate' };
+export const docsGenerateBackend: ShellCommand = { name: 'docsGenerateBackend', command: 'pnpm -C apps/backend docs:generate' };
+export const docsGenerateDomain: ShellCommand = { name: 'docsGenerateDomain', command: 'pnpm -C packages/domain docs:generate' };
+export const docsGenerateGraphqlSchema: ShellCommand = { name: 'docsGenerateGraphqlSchema', command: 'pnpm -C packages/graphql-schema docs:generate' };
+export const docsGenerateFrontend: ShellCommand = { name: 'docsGenerateFrontend', command: 'pnpm -C apps/frontend docs:generate' };
+export const docsGenerateContentSteps: readonly ShellCommand[] = [
+  docsGenerateBackend,
+  docsGenerateDomain,
+  docsGenerateGraphqlSchema,
+  docsGenerateFrontend,
+];
 export const docsMoveModuleIndexes: ShellCommand = {
   name: 'docsMoveModuleIndexes',
   command: [

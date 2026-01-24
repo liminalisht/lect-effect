@@ -6,7 +6,7 @@ import { Effect, Option } from 'effect';
 import {
   cleanSteps,
   docsDev,
-  docsGenerateContent,
+  docsGenerateContentSteps,
   docsMoveModuleIndexes,
   docsPruneContent,
   fullBuildSteps,
@@ -81,7 +81,7 @@ const docsCommand = Command.make('docs', {}, () =>
   runAll([
     ...fullBuildSteps,
     docsPruneContent,
-    docsGenerateContent,
+    ...docsGenerateContentSteps,
     docsMoveModuleIndexes,
     docsDev,
   ].map(step => step.command))).pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.')) satisfies Command.Command<'docs', never, ShellRunError, {}>;

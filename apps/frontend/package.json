@@ -9,7 +9,7 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "watch": "ng build --watch --configuration development",
     "serve:ssr": "node dist/frontend/server/server.mjs",
-    "docs:generate": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\" --exclude \"**/*.d.ts\"",
+    "docs:generate": "docgen --project tsconfig.app.json --src ./src/ --out ../../docs/src/content/docs/frontend/ --exclude \"**/*.spec.ts\" --exclude \"**/*.test.ts\" --exclude \"**/*.d.ts\" --exclude \"src/graphql/generated/**\"",
     "graphql:codegen": "graphql-codegen --config codegen.ts",
     "ng": "ng",
     "serve:ssr:web": "node dist/frontend/server/server.mjs"

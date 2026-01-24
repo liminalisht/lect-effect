@@ -47,10 +47,10 @@ Minimal GraphQL client interface returning Effect results.
 
 ```ts
 export type GraphQLClient = {
-  readonly request: <A extends Record<string, Json>>(
-    doc: string,
-    variables?: Record<string, Json>
-  ) => Effect.Effect<A, GraphQLClientError>
+  readonly request: <TData, TVariables extends Record<string, Json> | undefined = undefined>(
+    doc: TypedDocumentNode<TData, TVariables>,
+    variables?: TVariables
+  ) => Effect.Effect<TData, GraphQLClientError>
 }
 ```
 
