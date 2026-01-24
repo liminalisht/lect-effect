@@ -1,10 +1,4 @@
-right now we have lots of package.json scripts with multiple dependencies across packages. for instance, lect-effect/build needs to build the other @lect-effect/<foo> packages in a specific order, calling schema:generate at the right moment, etc. same is true with other scripts that say, build the docs, or clean, etc.
-
-instead of that rat's nest I want our outermost lect-effect package to have a dependency on effect and to use @effect/cli to create a command line interface. we'll have one script, lect-effect, that is the entrypoint to this CLI interface. it will have help text and list all possible commands, etc. and we'll use effect under the hood to dispatch CLI calls to other commands, in the appropriate order, etc.
-
-below is the documentation for @effect/cli.
-
-----
+here's the @effect/cli docs:
 
 # Installation
 
