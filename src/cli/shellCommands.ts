@@ -5,6 +5,13 @@ export type ShellCommand = {
   readonly command: string;
 };
 
+export const gitAddAll: ShellCommand = { name: 'gitAddAll', command: 'git add .' };
+export const gitCommitIterate: ShellCommand = { name: 'gitCommitIterate', command: 'git commit -m "iterate"' };
+export const gitPushHead: ShellCommand = { name: 'gitPushHead', command: 'git push -u origin HEAD' };
+export const gitIterateSteps: readonly ShellCommand[] = [gitAddAll, gitCommitIterate, gitPushHead];
+
+export const gitArchiveHead: ShellCommand = { name: 'gitArchiveHead', command: 'git archive --format=zip HEAD -o archive.zip' };
+
 export const installWorkspace: ShellCommand = { name: 'installWorkspace', command: 'pnpm install --frozen-lockfile --recursive' };
 
 export const cleanDomain: ShellCommand = { name: 'cleanDomain', command: 'pnpm -C packages/domain clean' };

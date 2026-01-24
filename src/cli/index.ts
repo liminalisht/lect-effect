@@ -11,6 +11,8 @@ import {
   docsPruneContent,
   fullBuildSteps,
   generateGraphqlSchema,
+  gitArchiveHead,
+  gitIterateSteps,
   installWorkspace,
   lintShellCommand,
   migrateMasterdataUp,
@@ -91,6 +93,12 @@ const testCommand = Command.make('test', {}, () =>
     testWorkspace,
   ].map(step => step.command))).pipe(Command.withDescription('Build, run test DB migrations, then execute tests.')) satisfies Command.Command<'test', never, ShellRunError, {}>;
 
+const iterateCommand = Command.make('iterate', {}, () =>
+  runAll(gitIterateSteps.map(step => step.command))).pipe(Command.withDescription('Git add ., commit "iterate", and push HEAD.')) satisfies Command.Command<'iterate', never, ShellRunError, {}>;
+
+const archiveCommand = Command.make('archive', {}, () =>
+  runShell(gitArchiveHead.command)).pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, {}>;
+
 const rootCommand: Command.Command<'lect-effect', never, ShellRunError, { readonly subcommand: Option.Option<any> }> = Command.make('lect-effect', {}, () => Effect.succeed(undefined)).pipe(
   Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
   Command.withSubcommands([
@@ -104,6 +112,8 @@ const rootCommand: Command.Command<'lect-effect', never, ShellRunError, { readon
     lintCommand,
     docsCommand,
     testCommand,
+    iterateCommand,
+    archiveCommand,
   ]),
  );
 
