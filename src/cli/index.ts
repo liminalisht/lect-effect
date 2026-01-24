@@ -3,16 +3,28 @@ import process from 'node:process';
 import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
+import {
+  cleanSteps,
+  docsDev,
+  docsGenerateContent,
+  docsMoveModuleIndexes,
+  docsPruneContent,
+  fullBuildSteps,
+  generateGraphqlSchema,
+  installWorkspace,
+  lintShellCommand,
+  migrateMasterdataUp,
+  migrateTestMasterdataUp,
+  startBackendAndFrontend,
+  startBackendRuntime,
+  startFrontendRuntime,
+  testWorkspace,
+} from './shellCommands.js';
 
 type ShellRunError = {
   _tag: 'ShellRunError';
   command: string;
   cause: unknown;
-};
-
-type ShellCommand = {
-  readonly name: string;
-  readonly command: string;
 };
 
 const runShell: (command: string) => Effect.Effect<void, ShellRunError, never> = (command: string) =>
@@ -27,67 +39,6 @@ const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError
       yield * runShell(cmd);
     }
   });
-
-const installWorkspace: ShellCommand = { name: 'installWorkspace', command: 'pnpm install --frozen-lockfile --recursive' };
-
-const cleanDomain: ShellCommand = { name: 'cleanDomain', command: 'pnpm -C packages/domain clean' };
-const cleanBackend: ShellCommand = { name: 'cleanBackend', command: 'pnpm -C apps/backend clean' };
-const cleanGraphqlSchema: ShellCommand = { name: 'cleanGraphqlSchema', command: 'pnpm -C packages/graphql-schema clean' };
-const cleanFrontend: ShellCommand = { name: 'cleanFrontend', command: 'pnpm -C apps/frontend clean' };
-const cleanDocs: ShellCommand = { name: 'cleanDocs', command: 'pnpm -C docs clean' };
-
-const buildDomain: ShellCommand = { name: 'buildDomain', command: 'pnpm -C packages/domain build' };
-const buildBackend: ShellCommand = { name: 'buildBackend', command: 'pnpm -C apps/backend build' };
-const buildGraphqlSchema: ShellCommand = { name: 'buildGraphqlSchema', command: 'pnpm -C packages/graphql-schema build' };
-const generateGraphqlSchema: ShellCommand = { name: 'generateGraphqlSchema', command: 'pnpm -C packages/graphql-schema schema:generate' };
-const frontendCodegen: ShellCommand = { name: 'frontendCodegen', command: 'pnpm -C apps/frontend run graphql:codegen' };
-const buildFrontend: ShellCommand = { name: 'buildFrontend', command: 'pnpm -C apps/frontend build' };
-const buildDocs: ShellCommand = { name: 'buildDocs', command: 'pnpm -C docs build' };
-
-const migrateMasterdataUp: ShellCommand = { name: 'migrateMasterdataUp', command: 'pnpm lect-effect/migrate/masterdata:up' };
-const migrateTestMasterdataUp: ShellCommand = { name: 'migrateTestMasterdataUp', command: 'pnpm lect-effect/migrate/test-masterdata:up' };
-
-const startBackendRuntime: ShellCommand = { name: 'startBackendRuntime', command: 'pnpm -C apps/backend start' };
-const startFrontendRuntime: ShellCommand = { name: 'startFrontendRuntime', command: 'pnpm -C apps/frontend start' };
-const startBackendAndFrontend: ShellCommand = { name: 'startBackendAndFrontend', command: 'pnpm concurrently --names backend,frontend --prefix-colors blue,green "pnpm -C apps/backend start" "pnpm -C apps/frontend start"' };
-
-const docsPruneContent: ShellCommand = { name: 'docsPruneContent', command: 'rm -rf docs/src/content/docs/{backend,frontend,domain}' };
-const docsGenerateContent: ShellCommand = { name: 'docsGenerateContent', command: 'pnpm lect-effect/docs:generate' };
-const docsMoveModuleIndexes: ShellCommand = {
-  name: 'docsMoveModuleIndexes',
-  command: [
-    'for section in backend frontend domain graphql-schema; do',
-    'src="docs/src/content/docs/$section/modules/index.md";',
-    'dst="docs/src/content/docs/$section/modules/_index.md";',
-    'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',
-    'done',
-  ].join(' '),
-};
-const docsDev: ShellCommand = { name: 'docsDev', command: 'pnpm -C docs dev' };
-
-const lintShellCommand = (fix: Option.Option<boolean>): ShellCommand => ({
-  name: 'lintWorkspace',
-  command: `pnpm lect-effect/lint${Option.match(fix, { onNone: () => '', onSome: () => ' --fix' })}`,
-});
-
-const testWorkspace: ShellCommand = {
-  name: 'testWorkspace',
-  command: 'pnpm -C packages/domain test && pnpm -C apps/backend test && pnpm -C apps/frontend test',
-};
-
-const cleanSteps: readonly ShellCommand[] = [cleanDomain, cleanBackend, cleanGraphqlSchema, cleanFrontend, cleanDocs];
-
-const fullBuildSteps: readonly ShellCommand[] = [
-  installWorkspace,
-  ...cleanSteps,
-  buildDomain,
-  buildBackend,
-  buildGraphqlSchema,
-  generateGraphqlSchema,
-  frontendCodegen,
-  buildFrontend,
-  buildDocs,
-];
 
 const buildCommand = Command.make('build', {}, () => runAll(fullBuildSteps.map(step => step.command))).pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.')) satisfies Command.Command<'build', never, ShellRunError, {}>;
 

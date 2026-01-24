@@ -12,30 +12,30 @@ You are an AI coding agent collaborating on **lect-effect**. Your job is to prod
 
 After you make any code change, before thinking you're done, you should build the project and make sure that it compiles successfully:
 ```sh
-./build.sh
+./lect-effect.sh build
 ```
 
 ## 2. Testing
 
 To run tests, use:
 ```sh
-./tests.sh
+./lect-effect.sh test
 ```
 
 ## 3. Running
 
 If we need to run the project, we can do so with:
 ```sh
-./start.sh
+./lect-effect.sh start
 ```
 
 ## 4. Linting
 
 If we need to run the project, we can do so with:
 ```sh
-lint.sh
+./lect-effect.sh lint
 ```
 or
 ```sh
-lint.sh --fix
+./lect-effect.sh lint --fix
 ```
