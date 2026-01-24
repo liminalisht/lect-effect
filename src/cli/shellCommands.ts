@@ -44,7 +44,10 @@ export const startBackendAndFrontend: ShellCommand = {
   ].join(' '),
 };
 
-export const docsPruneContent: ShellCommand = { name: 'docsPruneContent', command: 'rm -rf docs/src/content/docs/{backend,frontend,domain}' };
+export const docsPruneContent: ShellCommand = {
+  name: 'docsPruneContent',
+  command: 'rm -rf docs/src/content/docs/{backend,frontend,domain,graphql-schema}',
+};
 export const docsGenerateBackend: ShellCommand = { name: 'docsGenerateBackend', command: 'pnpm -C apps/backend docs:generate' };
 export const docsGenerateDomain: ShellCommand = { name: 'docsGenerateDomain', command: 'pnpm -C packages/domain docs:generate' };
 export const docsGenerateGraphqlSchema: ShellCommand = { name: 'docsGenerateGraphqlSchema', command: 'pnpm -C packages/graphql-schema docs:generate' };

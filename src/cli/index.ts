@@ -2,8 +2,12 @@ import { execSync } from 'node:child_process';
 import process from 'node:process';
 import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Effect, type Option } from 'effect';
+import { Effect, Option } from 'effect';
 import {
+  buildBackend,
+  buildDomain,
+  buildFrontend,
+  buildGraphqlSchema,
   cleanSteps,
   docsDev,
   docsGenerateContentSteps,
@@ -11,6 +15,7 @@ import {
   docsPruneContent,
   fullBuildSteps,
   generateGraphqlSchema,
+  frontendCodegen,
   gitArchiveHead,
   gitIterateSteps,
   installWorkspace,
@@ -21,6 +26,7 @@ import {
   startBackendRuntime,
   startFrontendRuntime,
   testWorkspace,
+  type ShellCommand,
 } from './shellCommands.js';
 
 type ShellRunError = {
@@ -32,10 +38,13 @@ type ShellRunError = {
 const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
   Effect.gen(function * () {
     yield * Effect.logDebug(`$ ${command}`);
-    return yield * Effect.try({
-      try: () => execSync(command, { stdio: 'inherit' }),
-      catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
-    });
+    yield * Effect.as(
+      Effect.try({
+        try: () => execSync(command, { stdio: 'inherit' }),
+        catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
+      }),
+      undefined,
+    );
   });
 
 const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError> = (commands: readonly string[]) =>
@@ -45,6 +54,18 @@ const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError
     }
   });
 const emptyConfig = {} as const satisfies Record<string, never>;
+
+const docsPrerequisiteSteps: readonly ShellCommand[] = [
+  installWorkspace,
+  ...cleanSteps,
+  buildDomain,
+  buildBackend,
+  buildGraphqlSchema,
+  generateGraphqlSchema,
+  frontendCodegen,
+  buildFrontend,
+  lintShellCommand(Option.none()),
+];
 
 const buildCommand = Command
   .make('build', emptyConfig, () => runAll(fullBuildSteps.map(step => step.command)))
@@ -96,7 +117,7 @@ const lintCommand = Command
 const docsCommand = Command
   .make('docs', emptyConfig, () =>
     runAll([
-      ...fullBuildSteps,
+      ...docsPrerequisiteSteps,
       docsPruneContent,
       ...docsGenerateContentSteps,
       docsMoveModuleIndexes,
