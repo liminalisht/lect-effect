@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/codegen",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "codegen.ts"
+  ]
+}

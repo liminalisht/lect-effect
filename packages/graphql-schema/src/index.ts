@@ -29,9 +29,9 @@ const backendSchemaModulePath = fileURLToPath(new URL('../../../apps/backend/dis
 const backendResolversModulePath = fileURLToPath(new URL('../../../apps/backend/dist/src/graphql/resolvers.js', import.meta.url));
 
 const loadBackend = Effect.all({
-  app: Effect.promise<BackendAppModule>(async () => import(backendAppModulePath)),
-  schema: Effect.promise<BackendSchemaModule>(async () => import(backendSchemaModulePath)),
-  resolvers: Effect.promise<BackendResolversModule>(async () => import(backendResolversModulePath)),
+  app: Effect.promise<BackendAppModule>(async () => import(backendAppModulePath) as Promise<BackendAppModule>),
+  schema: Effect.promise<BackendSchemaModule>(async () => import(backendSchemaModulePath) as Promise<BackendSchemaModule>),
+  resolvers: Effect.promise<BackendResolversModule>(async () => import(backendResolversModulePath) as Promise<BackendResolversModule>),
 });
 
 const buildSchemaSDL = Effect.gen(function * () {

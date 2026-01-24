@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process';
+import process from 'node:process';
 import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
@@ -10,7 +11,11 @@ const runShell = (command: string) =>
   });
 
 const runAll = (commands: readonly string[]) =>
-  Effect.forEach(commands, cmd => runShell(cmd), { discard: true });
+  Effect.gen(function * () {
+    for (const cmd of commands) {
+      yield * runShell(cmd);
+    }
+  });
 
 const fullBuildSteps: readonly string[] = [
   'pnpm install --frozen-lockfile --recursive',
@@ -81,7 +86,13 @@ const docsCommand = Command.make('docs', {}, () =>
     ...fullBuildSteps,
     'rm -rf docs/src/content/docs/{backend,frontend,domain}',
     'pnpm lect-effect/docs:generate',
-    'for section in backend frontend domain graphql-schema; do src="docs/src/content/docs/${section}/modules/index.md"; dst="docs/src/content/docs/${section}/modules/_index.md"; if [ -f "$src" ]; then mv "$src" "$dst"; fi; done',
+    [
+      'for section in backend frontend domain graphql-schema; do',
+      'src="docs/src/content/docs/${section}/modules/index.md";',
+      'dst="docs/src/content/docs/${section}/modules/_index.md";',
+      'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',
+      'done',
+    ].join(' '),
     'pnpm -C docs dev',
   ])).pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.'));
 
@@ -115,4 +126,6 @@ const cli = Command.run(rootCommand, {
 
 const argv = process.argv.length > 2 ? process.argv : [...process.argv, '--help'];
 
-cli(argv).pipe(Effect.provide(NodeContext.layer), NodeRuntime.runMain);
+const main = cli(argv).pipe(Effect.provide(NodeContext.layer));
+
+NodeRuntime.runMain(main);

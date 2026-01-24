@@ -39,6 +39,7 @@ const xoConfig: FlatXoConfig = [
         project: [
           './apps/frontend/tsconfig.app.json',
           './apps/frontend/tsconfig.spec.json',
+          './apps/frontend/tsconfig.codegen.json',
         ],
         tsconfigRootDir: rootDir,
       },
@@ -54,6 +55,12 @@ const xoConfig: FlatXoConfig = [
           ignoreRestSiblings: true,
         },
       ],
+    },
+  },
+  {
+    files: ['apps/frontend/src/graphql/generated/**/*.ts'],
+    rules: {
+      '@stylistic/max-len': 'off',
     },
   },
   {
