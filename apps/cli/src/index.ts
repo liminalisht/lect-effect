@@ -50,7 +50,7 @@ type ShellRunError = {
  */
 const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
   Effect.gen(function * () {
-    yield * Effect.logDebug(`$ ${command}`);
+    yield * Effect.logInfo(`➜ ${command}`);
     yield * Effect.as(
       Effect.try({
         try: () => execSync(command, { stdio: 'inherit', cwd: repoRoot }),
