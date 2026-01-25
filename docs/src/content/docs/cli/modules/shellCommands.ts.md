@@ -1,5 +1,5 @@
 ---
-title: cli/shellCommands.ts
+title: shellCommands.ts
 nav_order: 2
 parent: Modules
 ---
@@ -23,11 +23,15 @@ Added in v1.0.0
   - [buildDomain](#builddomain)
   - [buildFrontend](#buildfrontend)
   - [buildGraphqlSchema](#buildgraphqlschema)
+  - [buildHandlers](#buildhandlers)
+  - [buildServices](#buildservices)
   - [cleanBackend](#cleanbackend)
   - [cleanDocs](#cleandocs)
   - [cleanDomain](#cleandomain)
   - [cleanFrontend](#cleanfrontend)
   - [cleanGraphqlSchema](#cleangraphqlschema)
+  - [cleanHandlers](#cleanhandlers)
+  - [cleanServices](#cleanservices)
   - [docsDev](#docsdev)
   - [docsGenerateBackend](#docsgeneratebackend)
   - [docsGenerateCLI](#docsgeneratecli)
@@ -42,7 +46,9 @@ Added in v1.0.0
   - [gitAddAll](#gitaddall)
   - [gitArchiveHead](#gitarchivehead)
   - [gitCommitIterate](#gitcommititerate)
+  - [gitCreateBranch](#gitcreatebranch)
   - [gitIterateSteps](#gititeratesteps)
+  - [gitListBranchesByDate](#gitlistbranchesbydate)
   - [gitPushHead](#gitpushhead)
   - [installWorkspace](#installworkspace)
   - [lintShellCommand](#lintshellcommand)
@@ -135,6 +141,30 @@ export declare const buildGraphqlSchema: ShellCommand
 
 Added in v1.0.0
 
+## buildHandlers
+
+Build handlers package.
+
+**Signature**
+
+```ts
+export declare const buildHandlers: ShellCommand
+```
+
+Added in v1.0.0
+
+## buildServices
+
+Build services package.
+
+**Signature**
+
+```ts
+export declare const buildServices: ShellCommand
+```
+
+Added in v1.0.0
+
 ## cleanBackend
 
 Clean backend app artifacts.
@@ -191,6 +221,30 @@ Clean GraphQL schema package artifacts.
 
 ```ts
 export declare const cleanGraphqlSchema: ShellCommand
+```
+
+Added in v1.0.0
+
+## cleanHandlers
+
+Clean handlers package artifacts.
+
+**Signature**
+
+```ts
+export declare const cleanHandlers: ShellCommand
+```
+
+Added in v1.0.0
+
+## cleanServices
+
+Clean services package artifacts.
+
+**Signature**
+
+```ts
+export declare const cleanServices: ShellCommand
 ```
 
 Added in v1.0.0
@@ -363,6 +417,18 @@ export declare const gitCommitIterate: ShellCommand
 
 Added in v1.0.0
 
+## gitCreateBranch
+
+Create a new branch under the lect-effect/ prefix.
+
+**Signature**
+
+```ts
+export declare const gitCreateBranch: (branchName: string) => ShellCommand
+```
+
+Added in v1.0.0
+
 ## gitIterateSteps
 
 Ordered steps for the iterate workflow.
@@ -371,6 +437,18 @@ Ordered steps for the iterate workflow.
 
 ```ts
 export declare const gitIterateSteps: readonly ShellCommand[]
+```
+
+Added in v1.0.0
+
+## gitListBranchesByDate
+
+List branches sorted by last commit date.
+
+**Signature**
+
+```ts
+export declare const gitListBranchesByDate: ShellCommand
 ```
 
 Added in v1.0.0

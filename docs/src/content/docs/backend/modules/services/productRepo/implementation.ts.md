@@ -1,6 +1,6 @@
 ---
 title: services/productRepo/implementation.ts
-nav_order: 40
+nav_order: 24
 parent: Modules
 ---
 

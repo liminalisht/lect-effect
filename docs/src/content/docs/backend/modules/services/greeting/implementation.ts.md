@@ -1,6 +1,6 @@
 ---
 title: services/greeting/implementation.ts
-nav_order: 26
+nav_order: 15
 parent: Modules
 ---
 

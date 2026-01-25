@@ -1,6 +1,6 @@
 ---
 title: services/config/layer.ts
-nav_order: 24
+nav_order: 14
 parent: Modules
 ---
 

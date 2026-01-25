@@ -1,6 +1,6 @@
 ---
 title: services/masterdataDbConfig/implementation.ts
-nav_order: 36
+nav_order: 22
 parent: Modules
 ---
 

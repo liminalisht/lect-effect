@@ -1,6 +1,6 @@
 ---
 title: services/logger/layer.ts
-nav_order: 32
+nav_order: 19
 parent: Modules
 ---
 
