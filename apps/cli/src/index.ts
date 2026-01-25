@@ -215,6 +215,17 @@ const archiveCommand = Command
   .make('archive', emptyConfig, () => runShell(gitArchiveHead.command))
   .pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, Record<string, never>>;
 
+/** Git utilities (iterate, archive).
+ * @since 1.0.0
+ * @category Cli
+ */
+const gitCommand = Command
+  .make('git', emptyConfig, () => Effect.succeed(undefined))
+  .pipe(
+    Command.withDescription('Git helpers for iterating and archiving.'),
+    Command.withSubcommands([iterateCommand, archiveCommand]),
+  ) satisfies Command.Command<'git', never, ShellRunError, {readonly subcommand: Option.Option<any>}>;
+
 /** Root command wiring all subcommands.
  * @since 1.0.0
  * @category Cli
@@ -234,8 +245,7 @@ const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonl
       lintCommand,
       docsCommand,
       testCommand,
-      iterateCommand,
-      archiveCommand,
+      gitCommand,
     ]),
   );
 
@@ -249,7 +259,9 @@ const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
 });
 
 // default to showing help if no args are provided
-const argv: readonly string[] = process.argv.length > 2 ? process.argv : [...process.argv, '--help'];
+const argv: readonly string[] = process.argv.length > 2
+  ? (process.argv.length === 3 && process.argv[2] === 'git' ? [...process.argv, '--help'] : process.argv)
+  : [...process.argv, '--help'];
 
 /** Program entrypoint wiring NodeContext.
  * @since 1.0.0

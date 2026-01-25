@@ -8,8 +8,4 @@ pnpm install --frozen-lockfile
 pnpm -C apps/cli clean
 pnpm -C apps/cli build
 
-if [ "$#" -eq 0 ]; then
-	pnpm -C apps/cli start
-else
-	pnpm -C apps/cli start -- "$@"
-fi
+node apps/cli/dist/index.js "$@"
