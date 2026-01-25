@@ -1,8 +1,8 @@
-export * from './errors.js';
-export * from './app/interface.js';
+export type * from './errors.js';
+export type * from './app/interface.js';
 export * from './appConfig/interface/index.js';
 export * from './appConfig/interface/environment.js';
-export * from './appConfig/interface/loglevel.js';
+export type * from './appConfig/interface/loglevel.js';
 export * from './appConfig/interface/port.js';
 export * from './config/interface.js';
 export * from './greeting/interface.js';

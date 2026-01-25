@@ -1,1 +1,1 @@
-export * from './app/interface.js';
+export type * from './app/interface.js';

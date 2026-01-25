@@ -4,7 +4,7 @@ import fc from 'fast-check';
 import { describe, expect } from 'vitest';
 import { environmentSchema, type Environment } from '@lect-effect/services/appConfig/interface/environment';
 
-const decodeEnvironment: (u: unknown) => Effect.Effect<Environment, unknown, never>
+const decodeEnvironment: (u: unknown) => Effect.Effect<Environment, unknown>
   = Schema.decodeUnknown(environmentSchema);
 const arbitraryEnvironment = Arbitrary.make(environmentSchema);
 const allowedEnvironments = environmentSchema.literals as readonly string[];

@@ -5,7 +5,7 @@ import fc from 'fast-check';
 import { describe, expect } from 'vitest';
 import { portSchema, type Port } from '@lect-effect/services/appConfig/interface/port';
 
-const decodePort: (u: unknown) => Effect.Effect<Port, unknown, never>
+const decodePort: (u: unknown) => Effect.Effect<Port, unknown>
   = Schema.decodeUnknown(portSchema);
 const arbitraryPort = Arbitrary.make(portSchema);
 

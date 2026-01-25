@@ -2,14 +2,14 @@ import { Arbitrary, Effect } from 'effect';
 import { describe, it, expect } from '@effect/vitest';
 import * as fc from 'fast-check';
 import { nameInputSchema, type NameInput } from '@lect-effect/domain/hello/nameInput';
-import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
-import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
 import { helloHandlers } from '@lect-effect/handlers/hello';
 import { itemHandlers } from '@lect-effect/handlers/item';
 import { productHandlers } from '@lect-effect/handlers/product';
+import { type AppServices } from '@lect-effect/services/app';
+import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
+import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
 import { makeYoga } from '../../../src/graphql/yoga.js';
 import { withTestAppLayer } from '../../testRuntime.js';
-import { type AppServices } from '@lect-effect/services/app';
 
 describe('GraphQL hello (property)', () => {
   it.effect('hello(name) matches handler semantics', () =>

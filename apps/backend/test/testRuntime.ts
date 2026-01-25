@@ -1,6 +1,6 @@
 import { Effect, Layer } from 'effect';
-import { type AppError } from '../src/errors.js';
 import { type AppServices } from '@lect-effect/services/app';
+import { type AppError } from '../src/errors.js';
 import { testAppLayer } from './services/app.js';
 
 // Memoize the test app layer once and share across tests.

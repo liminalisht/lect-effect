@@ -1,19 +1,19 @@
 import { Layer } from 'effect';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
-import { greetingLayer } from '../../src/services/greeting/layer.js';
-import { masterdataDbLayer } from '../../src/services/masterdataDb/layer.js';
-import { type AppError } from '../../src/errors.js';
 import { type AppServices } from '@lect-effect/services/app';
-import { productRepoLayer } from '../../src/services/productRepo/layer.js';
-import { itemRepoLayer } from '../../src/services/itemRepo/layer.js';
 import { type AppConfigService } from '@lect-effect/services/appConfig';
-import { loggerLayer } from '../../src/services/logger/layer.js';
 import { type MasterdataDbConfigService } from '@lect-effect/services/masterdataDbConfig';
 import { type MasterdataDbService } from '@lect-effect/services/masterdataDb';
 import { type ProductRepoService } from '@lect-effect/services/productRepo';
 import { type ItemRepoService } from '@lect-effect/services/itemRepo';
 import { type GreetService } from '@lect-effect/services/greeting';
+import { loggerLayer } from '../../src/services/logger/layer.js';
+import { itemRepoLayer } from '../../src/services/itemRepo/layer.js';
+import { productRepoLayer } from '../../src/services/productRepo/layer.js';
+import { type AppError } from '../../src/errors.js';
+import { masterdataDbLayer } from '../../src/services/masterdataDb/layer.js';
+import { greetingLayer } from '../../src/services/greeting/layer.js';
 import { testMasterdataDbConfigLayer } from './masterdataDbConfig/layer.js';
 import { testAppConfigLayer } from './appConfig/layer.js';
 
