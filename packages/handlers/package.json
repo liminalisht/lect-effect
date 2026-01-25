@@ -20,7 +20,8 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/handlers/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\""
   },
   "dependencies": {
     "@lect-effect/domain": "workspace:*",
@@ -28,6 +29,7 @@
     "effect": "^3.19.15"
   },
   "devDependencies": {
+    "@effect/docgen": "^0.5.2",
     "typescript": "^5.9.3"
   }
 }

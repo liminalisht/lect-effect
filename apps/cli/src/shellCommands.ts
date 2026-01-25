@@ -192,7 +192,7 @@ export const startBackendAndFrontend: ShellCommand = {
  */
 export const docsPruneContent: ShellCommand = {
   name: 'docsPruneContent',
-  command: 'rm -rf docs/src/content/docs/{backend,cli,frontend,domain,graphql-schema}',
+  command: 'rm -rf docs/src/content/docs/{backend,cli,frontend,domain,services,handlers,graphql-schema}',
 };
 /** Generate backend docs content.
  * @since 1.0.0
@@ -204,6 +204,11 @@ export const docsGenerateBackend: ShellCommand = { name: 'docsGenerateBackend', 
  * @category ShellCommand
  */
 export const docsGenerateDomain: ShellCommand = { name: 'docsGenerateDomain', command: 'pnpm -C packages/domain docs:generate' };
+/** Generate services docs content.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const docsGenerateServices: ShellCommand = { name: 'docsGenerateServices', command: 'pnpm -C packages/services docs:generate' };
 /** Generate GraphQL schema docs content.
  * @since 1.0.0
  * @category ShellCommand
@@ -214,6 +219,11 @@ export const docsGenerateGraphqlSchema: ShellCommand = { name: 'docsGenerateGrap
  * @category ShellCommand
  */
 export const docsGenerateFrontend: ShellCommand = { name: 'docsGenerateFrontend', command: 'pnpm -C apps/frontend docs:generate' };
+/** Generate handlers docs content.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const docsGenerateHandlers: ShellCommand = { name: 'docsGenerateHandlers', command: 'pnpm -C packages/handlers docs:generate' };
 /** Generate CLI docs content.
  * @since 1.0.0
  * @category ShellCommand
@@ -226,6 +236,8 @@ export const docsGenerateCLI: ShellCommand = { name: 'docsGenerateCLI', command:
 export const docsGenerateContentSteps: readonly ShellCommand[] = [
   docsGenerateBackend,
   docsGenerateDomain,
+  docsGenerateServices,
+  docsGenerateHandlers,
   docsGenerateGraphqlSchema,
   docsGenerateFrontend,
   docsGenerateCLI,
@@ -237,7 +249,7 @@ export const docsGenerateContentSteps: readonly ShellCommand[] = [
 export const docsMoveModuleIndexes: ShellCommand = {
   name: 'docsMoveModuleIndexes',
   command: [
-    'for section in backend frontend domain graphql-schema cli; do',
+    'for section in backend frontend domain services handlers graphql-schema cli; do',
     'src="docs/src/content/docs/$section/modules/index.md";',
     'dst="docs/src/content/docs/$section/modules/_index.md";',
     'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',

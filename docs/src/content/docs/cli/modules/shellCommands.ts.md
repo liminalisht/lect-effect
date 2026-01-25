@@ -39,6 +39,8 @@ Added in v1.0.0
   - [docsGenerateDomain](#docsgeneratedomain)
   - [docsGenerateFrontend](#docsgeneratefrontend)
   - [docsGenerateGraphqlSchema](#docsgenerategraphqlschema)
+  - [docsGenerateHandlers](#docsgeneratehandlers)
+  - [docsGenerateServices](#docsgenerateservices)
   - [docsMoveModuleIndexes](#docsmovemoduleindexes)
   - [docsPruneContent](#docsprunecontent)
   - [frontendCodegen](#frontendcodegen)
@@ -329,6 +331,30 @@ Generate GraphQL schema docs content.
 
 ```ts
 export declare const docsGenerateGraphqlSchema: ShellCommand
+```
+
+Added in v1.0.0
+
+## docsGenerateHandlers
+
+Generate handlers docs content.
+
+**Signature**
+
+```ts
+export declare const docsGenerateHandlers: ShellCommand
+```
+
+Added in v1.0.0
+
+## docsGenerateServices
+
+Generate services docs content.
+
+**Signature**
+
+```ts
+export declare const docsGenerateServices: ShellCommand
 ```
 
 Added in v1.0.0
