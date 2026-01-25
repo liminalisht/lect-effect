@@ -12,15 +12,13 @@
   "homepage": "https://github.com/liminalisht/lect-effect",
   "description": "",
   "keywords": [],
-  "scripts": {
-    "lect-effect/migrate/masterdata:up": "env-cmd -f .env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m apps/backend/migrations/masterdatadb up",
-    "lect-effect/migrate/test-masterdata:up": "env-cmd -f .env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m apps/backend/migrations/masterdatadb up"
-  },
+  "scripts": {},
   "devDependencies": {
     "@effect/language-service": "^0.64.1",
     "@tsconfig/node24": "^24.0.3",
     "@types/node": "^25.0.3",
     "env-cmd": "^11.0.0",
-    "node-pg-migrate": "^8.0.4"
+    "node-pg-migrate": "^8.0.4",
+    "vitest": "^3.2.4"
   }
 }

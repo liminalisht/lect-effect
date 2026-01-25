@@ -23,6 +23,9 @@ importers:
       node-pg-migrate:
         specifier: ^8.0.4
         version: 8.0.4(pg@8.16.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@25.0.3)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.97.1)(tsx@4.21.0)(yaml@2.8.2)
 
   apps/backend:
     dependencies:
@@ -221,6 +224,15 @@ importers:
       vitest:
         specifier: ^4.0.8
         version: 4.0.17(@types/node@20.19.30)(jiti@2.6.1)(jsdom@27.4.0)(sass@1.97.1)(tsx@4.21.0)(yaml@2.8.2)
+
+  apps/migrations:
+    dependencies:
+      env-cmd:
+        specifier: ^11.0.0
+        version: 11.0.0
+      node-pg-migrate:
+        specifier: ^8.0.4
+        version: 8.0.4(pg@8.16.3)
 
   packages/domain:
     dependencies:

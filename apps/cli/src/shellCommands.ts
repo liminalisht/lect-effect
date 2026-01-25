@@ -115,12 +115,12 @@ export const buildDocs: ShellCommand = { name: 'buildDocs', command: 'pnpm -C do
  * @since 1.0.0
  * @category ShellCommand
  */
-export const migrateMasterdataUp: ShellCommand = { name: 'migrateMasterdataUp', command: 'pnpm lect-effect/migrate/masterdata:up' };
+export const migrateMasterdataUp: ShellCommand = { name: 'migrateMasterdataUp', command: 'pnpm -C apps/migrations migrate:masterdata:up' };
 /** Run test DB migrations against TEST_MASTERDATA_PG_URL.
  * @since 1.0.0
  * @category ShellCommand
  */
-export const migrateTestMasterdataUp: ShellCommand = { name: 'migrateTestMasterdataUp', command: 'pnpm lect-effect/migrate/test-masterdata:up' };
+export const migrateTestMasterdataUp: ShellCommand = { name: 'migrateTestMasterdataUp', command: 'pnpm -C apps/migrations migrate:test-masterdata:up' };
 
 /** Start backend runtime.
  * @since 1.0.0

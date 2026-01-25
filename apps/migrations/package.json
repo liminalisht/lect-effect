@@ -1,0 +1,16 @@
+{
+  "name": "@lect-effect/migrations",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/liminalisht/lect-effect",
+  "type": "module",
+  "scripts": {
+    "migrate:masterdata:up": "env-cmd -f ../../.env --no-override node-pg-migrate --migration-filename-format utc -d MASTERDATA_PG_URL -m ../backend/migrations/masterdatadb up",
+    "migrate:test-masterdata:up": "env-cmd -f ../../.env.test --no-override node-pg-migrate --migration-filename-format utc -d TEST_MASTERDATA_PG_URL -m ../backend/migrations/masterdatadb up"
+  },
+  "dependencies": {
+    "env-cmd": "^11.0.0",
+    "node-pg-migrate": "^8.0.4"
+  },
+  "packageManager": "pnpm@10.22.0"
+}
