@@ -6,7 +6,7 @@
 import { execSync } from 'node:child_process';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { Command, Options } from '@effect/cli';
+import { Args, Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
 import {
@@ -23,7 +23,9 @@ import {
   generateGraphqlSchema,
   frontendCodegen,
   gitArchiveHead,
+  gitCreateBranch,
   gitIterateSteps,
+  gitListBranchesByDate,
   installWorkspace,
   lintShellCommand,
   migrateMasterdataUp,
@@ -215,6 +217,22 @@ const archiveCommand = Command
   .make('archive', emptyConfig, () => runShell(gitArchiveHead.command))
   .pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, Record<string, never>>;
 
+/** Create a branch under lect-effect/{name} from current HEAD.
+ * @since 1.0.0
+ * @category Cli
+ */
+const createBranchCommand = Command
+  .make('branch:create', { name: Args.text({ name: 'name' }) }, ({ name }) => runShell(gitCreateBranch(name).command))
+  .pipe(Command.withDescription('Create a branch named lect-effect/{name} from current HEAD.')) satisfies Command.Command<'branch:create', never, ShellRunError, {readonly name: string}>;
+
+/** List branches sorted by last commit date.
+ * @since 1.0.0
+ * @category Cli
+ */
+const listBranchesCommand = Command
+  .make('branch:list', emptyConfig, () => runShell(gitListBranchesByDate.command))
+  .pipe(Command.withDescription('List branches sorted by last commit date.')) satisfies Command.Command<'branch:list', never, ShellRunError, Record<string, never>>;
+
 /** Git utilities (iterate, archive).
  * @since 1.0.0
  * @category Cli
@@ -222,8 +240,8 @@ const archiveCommand = Command
 const gitCommand = Command
   .make('git', emptyConfig, () => Effect.succeed(undefined))
   .pipe(
-    Command.withDescription('Git helpers for iterating and archiving.'),
-    Command.withSubcommands([iterateCommand, archiveCommand]),
+    Command.withDescription('Git helpers for iterating, archiving, and managing branches.'),
+    Command.withSubcommands([iterateCommand, archiveCommand, createBranchCommand, listBranchesCommand]),
   ) satisfies Command.Command<'git', never, ShellRunError, {readonly subcommand: Option.Option<any>}>;
 
 /** Root command wiring all subcommands.

@@ -43,6 +43,24 @@ export const gitIterateSteps: readonly ShellCommand[] = [gitAddAll, gitCommitIte
  */
 export const gitArchiveHead: ShellCommand = { name: 'gitArchiveHead', command: 'git archive --format=zip HEAD -o archive.zip' };
 
+/** Create a new branch under the lect-effect/ prefix.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const gitCreateBranch = (branchName: string): ShellCommand => ({
+  name: 'gitCreateBranch',
+  command: `git checkout -b lect-effect/${branchName}`,
+});
+
+/** List branches sorted by last commit date.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const gitListBranchesByDate: ShellCommand = {
+  name: 'gitListBranchesByDate',
+  command: 'git for-each-ref --sort=-committerdate --format="%(committerdate:iso8601) %(refname:short)" refs/heads',
+};
+
 /** Install all workspace dependencies with frozen lockfile.
  * @since 1.0.0
  * @category ShellCommand
