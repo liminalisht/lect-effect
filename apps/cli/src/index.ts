@@ -26,6 +26,7 @@ import {
   frontendCodegen,
   gitArchiveHead,
   gitCreateBranch,
+  gitVersionSet,
   gitIterateSteps,
   gitListBranchesByDate,
   installWorkspace,
@@ -237,6 +238,14 @@ const listBranchesCommand = Command
   .make('branch:list', emptyConfig, () => runShell(gitListBranchesByDate.command))
   .pipe(Command.withDescription('List branches sorted by last commit date.')) satisfies Command.Command<'branch:list', never, ShellRunError, Record<string, never>>;
 
+/** Set the unified workspace version and tag the commit.
+ * @since 1.0.0
+ * @category Cli
+ */
+const versionSetCommand = Command
+  .make('version:set', { version: Args.text({ name: 'version' }) }, ({ version }) => runShell(gitVersionSet(version).command))
+  .pipe(Command.withDescription('Set the lect-effect version across all packages, commit, and tag v{version}.')) satisfies Command.Command<'version:set', never, ShellRunError, {readonly version: string}>;
+
 /** Git utilities (iterate, archive).
  * @since 1.0.0
  * @category Cli
@@ -245,7 +254,7 @@ const gitCommand = Command
   .make('git', emptyConfig, () => Effect.succeed(undefined))
   .pipe(
     Command.withDescription('Git helpers for iterating, archiving, and managing branches.'),
-    Command.withSubcommands([iterateCommand, archiveCommand, createBranchCommand, listBranchesCommand]),
+    Command.withSubcommands([iterateCommand, archiveCommand, createBranchCommand, listBranchesCommand, versionSetCommand]),
   ) satisfies Command.Command<'git', never, ShellRunError, {readonly subcommand: Option.Option<any>}>;
 
 /** Root command wiring all subcommands.

@@ -52,6 +52,22 @@ export const gitCreateBranch = (branchName: string): ShellCommand => ({
   command: `git checkout -b lect-effect/${branchName}`,
 });
 
+/** Bump the workspace version across all packages and tag the commit.
+ * Assumes a clean working tree and a shared version for all packages.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const gitVersionSet = (version: string): ShellCommand => ({
+  name: 'gitVersionSet',
+  command: [
+    `pnpm -r --workspace-root version ${version} --no-git-tag-version --no-commit-hooks`,
+    'pnpm install --lockfile-only',
+    'git add package.json pnpm-lock.yaml apps/*/package.json packages/*/package.json docs/package.json apps/migrations/package.json',
+    `git commit -m "chore: release v${version}"`,
+    `git tag v${version}`,
+  ].join(' && '),
+});
+
 /** List branches sorted by last commit date.
  * @since 1.0.0
  * @category ShellCommand
