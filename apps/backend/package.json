@@ -1,6 +1,6 @@
 {
   "name": "@lect-effect/backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "homepage": "https://github.com/liminalisht/lect-effect",
   "type": "module",
@@ -14,14 +14,14 @@
     "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/backend/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\""
   },
   "dependencies": {
-    "@lect-effect/domain": "workspace:*",
-    "@lect-effect/handlers": "workspace:*",
-    "@lect-effect/services": "workspace:*",
     "@effect/platform-node": "^0.104.0",
     "@effect/sql": "^0.49.0",
     "@effect/sql-pg": "^0.50.1",
     "@gqloom/core": "^0.15.0",
     "@gqloom/effect": "^0.13.0",
+    "@lect-effect/domain": "workspace:*",
+    "@lect-effect/handlers": "workspace:*",
+    "@lect-effect/services": "workspace:*",
     "dotenv": "^17.2.3",
     "effect": "^3.19.15",
     "graphql": "^16.12.0",

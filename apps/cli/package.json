@@ -1,6 +1,6 @@
 {
   "name": "@lect-effect/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "homepage": "https://github.com/liminalisht/lect-effect",
   "type": "module",
@@ -12,10 +12,10 @@
     "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/cli/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\""
   },
   "dependencies": {
-    "concurrently": "^9.0.0",
     "@effect/cli": "^0.73.1",
     "@effect/platform": "^0.94.2",
     "@effect/platform-node": "^0.104.0",
+    "concurrently": "^9.0.0",
     "effect": "^3.19.15"
   },
   "devDependencies": {
