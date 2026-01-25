@@ -9,7 +9,7 @@ import { type Item } from '@lect-effect/domain/item/item';
 import { type ProductId } from '@lect-effect/domain/product/productId';
 import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
 import { ItemRepoService } from '@lect-effect/services/itemRepo';
-import { decodeMany, decodeOne } from '../../utilities/decode.js';
+import { decodeMany, decodeOne } from '@lect-effect/domain/utilities/decode';
 
 const ItemRowSchema = Schema.Struct({
   id: itemIdSchema,

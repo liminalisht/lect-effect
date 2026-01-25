@@ -9,7 +9,7 @@ import { type ProductInput } from '@lect-effect/domain/product/productInput';
 import type { ItemId } from '@lect-effect/domain/item/itemId';
 import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
 import { ProductRepoService } from '@lect-effect/services/productRepo';
-import { decodeMany, decodeOne } from '../../utilities/decode.js';
+import { decodeMany, decodeOne } from '@lect-effect/domain/utilities/decode';
 
 // row schema matches DB columns (no __typename)
 const ProductRowSchema = Schema.Struct({
