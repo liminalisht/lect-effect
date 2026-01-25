@@ -5,6 +5,7 @@
  */
 import { execSync } from 'node:child_process';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 import { Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
@@ -34,11 +35,10 @@ import {
   type ShellCommand,
 } from './shellCommands.js';
 
-/** Error type for shell command execution failures.
- * @since 1.0.0
- * @category CLI
- */
-export type ShellRunError = {
+// dist/index.js sits three levels below repo root (dist -> cli -> apps -> repo)
+const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
+
+type ShellRunError = {
   _tag: 'ShellRunError';
   command: string;
   cause: unknown;
@@ -46,14 +46,14 @@ export type ShellRunError = {
 
 /** Execute a shell command, logging it at debug level and tagging failures.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
+const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
   Effect.gen(function * () {
     yield * Effect.logDebug(`$ ${command}`);
     yield * Effect.as(
       Effect.try({
-        try: () => execSync(command, { stdio: 'inherit' }),
+        try: () => execSync(command, { stdio: 'inherit', cwd: repoRoot }),
         catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
       }),
       undefined,
@@ -62,9 +62,9 @@ export const runShell: (command: string) => Effect.Effect<void, ShellRunError> =
 
 /** Run a sequence of shell commands in order.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError> = (commands: readonly string[]) =>
+const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellRunError> = (commands: readonly string[]) =>
   Effect.gen(function * () {
     for (const cmd of commands) {
       yield * runShell(cmd);
@@ -72,15 +72,15 @@ export const runAll: (commands: readonly string[]) => Effect.Effect<void, ShellR
   });
 /** Empty config placeholder for commands without options.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const emptyConfig = {} as const satisfies Record<string, never>;
+const emptyConfig = {} as const satisfies Record<string, never>;
 
 /** Prerequisites required before generating docs (install, clean, build, lint).
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const docsPrerequisiteSteps: readonly ShellCommand[] = [
+const docsPrerequisiteSteps: readonly ShellCommand[] = [
   installWorkspace,
   ...cleanSteps,
   buildDomain,
@@ -94,17 +94,17 @@ export const docsPrerequisiteSteps: readonly ShellCommand[] = [
 
 /** Build all workspace packages in dependency order.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const buildCommand = Command
+const buildCommand = Command
   .make('build', emptyConfig, () => runAll(fullBuildSteps.map(step => step.command)))
   .pipe(Command.withDescription('Install, clean, then build all workspace packages in dependency order.')) satisfies Command.Command<'build', never, ShellRunError, Record<string, never>>;
 
 /** Build, migrate, and start backend+frontend together.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const startCommand = Command
+const startCommand = Command
   .make('start', emptyConfig, () =>
     runAll([
       ...fullBuildSteps,
@@ -115,9 +115,9 @@ export const startCommand = Command
 
 /** Build, migrate, and start backend only.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const startBackendCommand = Command
+const startBackendCommand = Command
   .make('start:backend', emptyConfig, () =>
     runAll([
       ...fullBuildSteps,
@@ -128,9 +128,9 @@ export const startBackendCommand = Command
 
 /** Build and start frontend only.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const startFrontendCommand = Command
+const startFrontendCommand = Command
   .make('start:frontend', emptyConfig, () =>
     runAll([
       ...fullBuildSteps,
@@ -140,42 +140,42 @@ export const startFrontendCommand = Command
 
 /** Clean build artifacts across all workspaces.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const cleanCommand = Command
+const cleanCommand = Command
   .make('clean', emptyConfig, () => runAll(cleanSteps.map(step => step.command)))
   .pipe(Command.withDescription('Clean build artifacts for all workspace packages.')) satisfies Command.Command<'clean', never, ShellRunError, Record<string, never>>;
 
 /** Install workspace dependencies (frozen lockfile).
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const installCommand = Command
+const installCommand = Command
   .make('install', emptyConfig, () => runShell(installWorkspace.command))
   .pipe(Command.withDescription('Install workspace dependencies using the frozen lockfile.')) satisfies Command.Command<'install', never, ShellRunError, Record<string, never>>;
 
 /** Regenerate GraphQL schema artifacts.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const schemaCommand = Command
+const schemaCommand = Command
   .make('schema:generate', emptyConfig, () => runShell(generateGraphqlSchema.command))
   .pipe(Command.withDescription('Regenerate the GraphQL schema artifact.')) satisfies Command.Command<'schema:generate', never, ShellRunError, Record<string, never>>;
 
 /** Build, then lint (optionally fixing) across the workspace.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const lintCommand = Command
+const lintCommand = Command
   .make('lint', { fix: Options.boolean('fix').pipe(Options.optional) }, ({ fix }) =>
     runAll([...fullBuildSteps, lintShellCommand(fix)].map(step => step.command)))
   .pipe(Command.withDescription('Build everything, then lint (supports --fix).')) satisfies Command.Command<'lint', never, ShellRunError, {readonly fix: Option.Option<boolean>}>;
 
 /** Build, regenerate docs content, and start docs dev server.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const docsCommand = Command
+const docsCommand = Command
   .make('docs', emptyConfig, () =>
     runAll([
       ...docsPrerequisiteSteps,
@@ -188,9 +188,9 @@ export const docsCommand = Command
 
 /** Build, migrate test DB, then run tests.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const testCommand = Command
+const testCommand = Command
   .make('test', emptyConfig, () =>
     runAll([
       ...fullBuildSteps,
@@ -201,25 +201,25 @@ export const testCommand = Command
 
 /** Git iterate helper (add/commit/push).
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const iterateCommand = Command
+const iterateCommand = Command
   .make('iterate', emptyConfig, () => runAll(gitIterateSteps.map(step => step.command)))
   .pipe(Command.withDescription('Git add ., commit "iterate", and push HEAD.')) satisfies Command.Command<'iterate', never, ShellRunError, Record<string, never>>;
 
 /** Create archive.zip from HEAD.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const archiveCommand = Command
+const archiveCommand = Command
   .make('archive', emptyConfig, () => runShell(gitArchiveHead.command))
   .pipe(Command.withDescription('Create archive.zip from HEAD.')) satisfies Command.Command<'archive', never, ShellRunError, Record<string, never>>;
 
 /** Root command wiring all subcommands.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonly subcommand: Option.Option<any>}> = Command
+const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonly subcommand: Option.Option<any>}> = Command
   .make('lect-effect', emptyConfig, () => Effect.succeed(undefined))
   .pipe(
     Command.withDescription('Workspace CLI entrypoint for lect-effect.'),
@@ -241,23 +241,20 @@ export const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {
 
 /** CLI runner with name/version metadata.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
+const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
   name: 'lect-effect',
   version: '1.0.0',
 });
 
-/** Command-line arguments (defaults to --help if none provided).
- * @since 1.0.0
- * @category CLI
- */
-export const argv: readonly string[] = process.argv.length > 2 ? process.argv : [...process.argv, '--help'];
+// default to showing help if no args are provided
+const argv: readonly string[] = process.argv.length > 2 ? process.argv : [...process.argv, '--help'];
 
 /** Program entrypoint wiring NodeContext.
  * @since 1.0.0
- * @category CLI
+ * @category Cli
  */
-export const main: Effect.Effect<unknown, unknown, unknown> = cli(argv).pipe(Effect.provide(NodeContext.layer));
+const main: Effect.Effect<unknown, unknown, unknown> = cli(argv).pipe(Effect.provide(NodeContext.layer));
 
 NodeRuntime.runMain(main as Effect.Effect<unknown, unknown>);

@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure root dependencies are installed (not the workspace packages themselves)
+# Ensure workspace dependencies are installed
 pnpm install --frozen-lockfile
 
-# Build the CLI entrypoint
-pnpm run lect-effect/self:build
+# Build and execute the CLI from apps/cli with all user arguments
+pnpm -C apps/cli clean
+pnpm -C apps/cli build
 
-# Execute the compiled CLI with all user arguments
-node dist/cli/index.js "$@"
+if [ "$#" -eq 0 ]; then
+	pnpm -C apps/cli start
+else
+	pnpm -C apps/cli start -- "$@"
+fi

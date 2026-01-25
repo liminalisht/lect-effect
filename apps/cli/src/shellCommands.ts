@@ -179,7 +179,7 @@ export const docsGenerateFrontend: ShellCommand = { name: 'docsGenerateFrontend'
  * @since 1.0.0
  * @category ShellCommand
  */
-export const docsGenerateCLI: ShellCommand = { name: 'docsGenerateCLI', command: 'pnpm lect-effect/cli/docs:generate' };
+export const docsGenerateCLI: ShellCommand = { name: 'docsGenerateCLI', command: 'pnpm -C apps/cli docs:generate' };
 /** Ordered steps to regenerate docs content across packages.
  * @since 1.0.0
  * @category ShellCommand
@@ -198,7 +198,7 @@ export const docsGenerateContentSteps: readonly ShellCommand[] = [
 export const docsMoveModuleIndexes: ShellCommand = {
   name: 'docsMoveModuleIndexes',
   command: [
-    'for section in backend frontend domain graphql-schema; do',
+    'for section in backend frontend domain graphql-schema cli; do',
     'src="docs/src/content/docs/$section/modules/index.md";',
     'dst="docs/src/content/docs/$section/modules/_index.md";',
     'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',
