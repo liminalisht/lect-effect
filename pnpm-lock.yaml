@@ -23,9 +23,6 @@ importers:
       node-pg-migrate:
         specifier: ^8.0.4
         version: 8.0.4(pg@8.16.3)
-      xo:
-        specifier: ^1.2.3
-        version: 1.2.3(@types/eslint@8.56.12)(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(typescript@5.9.3)
 
   apps/backend:
     dependencies:
@@ -127,6 +124,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      xo:
+        specifier: ^1.2.3
+        version: 1.2.3(@types/eslint@8.56.12)(@typescript-eslint/utils@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(typescript@5.9.3)
 
   apps/frontend:
     dependencies:

@@ -217,10 +217,13 @@ export const docsDev: ShellCommand = { name: 'docsDev', command: 'pnpm -C docs d
  */
 export const lintShellCommand = (fix: Option.Option<boolean>): ShellCommand => ({
   name: 'lintWorkspace',
-  command: `pnpm lect-effect/lint${Option.match(fix, {
-    onNone: () => '',
-    onSome: value => (value ? ' --fix' : ''),
-  })}`,
+  command: [
+    'pnpx xo --ignore "docs-site/**" --ignore "apps/frontend/src/graphql/generated/**"',
+    Option.match(fix, {
+      onNone: () => '',
+      onSome: value => (value ? ' --fix' : ''),
+    }),
+  ].join(''),
 });
 
 /** Run test suites for domain, backend, and frontend.
