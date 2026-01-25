@@ -2,9 +2,10 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { environmentSchema } from '../../../../src/services/appConfig/interface/environment.js';
+import { environmentSchema, type Environment } from '@lect-effect/services/appConfig/interface/environment';
 
-const decodeEnvironment = Schema.decodeUnknown(environmentSchema);
+const decodeEnvironment: (u: unknown) => Effect.Effect<Environment, unknown, never>
+  = Schema.decodeUnknown(environmentSchema);
 const arbitraryEnvironment = Arbitrary.make(environmentSchema);
 const allowedEnvironments = environmentSchema.literals as readonly string[];
 

@@ -14,8 +14,8 @@ import { type ProductRepoService } from '../productRepo/interface.js';
  * @category Application Services
  */
 export type AppServices =
-	AppConfigService
-	| GreetService
-	| MasterdataDbService
-	| ItemRepoService
-	| ProductRepoService;
+  AppConfigService
+  | GreetService
+  | MasterdataDbService
+  | ItemRepoService
+  | ProductRepoService;

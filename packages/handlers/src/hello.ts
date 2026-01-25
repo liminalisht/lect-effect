@@ -5,7 +5,7 @@
 import { Effect, Option } from 'effect';
 import { nameInputSchema, type NameInput } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema, type HelloResponse } from '@lect-effect/domain/hello/helloResponse';
-import { GreetService } from '../services/greeting/interface.js';
+import { GreetService } from '@lect-effect/services/greeting';
 import { type QueryHandler } from './generic.js';
 /**
  * Produces a greeting response using the greeting service.

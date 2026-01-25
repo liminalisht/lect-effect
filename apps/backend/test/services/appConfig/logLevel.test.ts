@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@effect/vitest';
 import { Effect, LogLevel } from 'effect';
-import { AppConfigService } from '../../../src/services/appConfig/interface/index.js';
+import { AppConfigService } from '@lect-effect/services/appConfig';
 import { testAppLayer } from '../app.js';
 import { testAppConfigLayer } from './layer.js';
 

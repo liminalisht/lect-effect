@@ -4,7 +4,7 @@
  */
 import { Effect, Layer, Option } from 'effect';
 import { greetingSchema } from '@lect-effect/domain/hello/greeting';
-import { GreetService } from './interface.js';
+import { GreetService } from '@lect-effect/services/greeting';
 
 /**
  * Concrete greeting service implementation.

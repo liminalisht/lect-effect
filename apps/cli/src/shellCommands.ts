@@ -65,13 +65,23 @@ export const gitListBranchesByDate: ShellCommand = {
  * @since 1.0.0
  * @category ShellCommand
  */
-export const installWorkspace: ShellCommand = { name: 'installWorkspace', command: 'pnpm install --frozen-lockfile --recursive' };
+export const installWorkspace: ShellCommand = { name: 'installWorkspace', command: 'pnpm install --recursive' };
 
 /** Clean domain package artifacts.
  * @since 1.0.0
  * @category ShellCommand
  */
 export const cleanDomain: ShellCommand = { name: 'cleanDomain', command: 'pnpm -C packages/domain clean' };
+/** Clean services package artifacts.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const cleanServices: ShellCommand = { name: 'cleanServices', command: 'pnpm -C packages/services clean' };
+/** Clean handlers package artifacts.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const cleanHandlers: ShellCommand = { name: 'cleanHandlers', command: 'pnpm -C packages/handlers clean' };
 /** Clean backend app artifacts.
  * @since 1.0.0
  * @category ShellCommand
@@ -98,6 +108,16 @@ export const cleanDocs: ShellCommand = { name: 'cleanDocs', command: 'pnpm -C do
  * @category ShellCommand
  */
 export const buildDomain: ShellCommand = { name: 'buildDomain', command: 'pnpm -C packages/domain build' };
+/** Build services package.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const buildServices: ShellCommand = { name: 'buildServices', command: 'pnpm -C packages/services build' };
+/** Build handlers package.
+ * @since 1.0.0
+ * @category ShellCommand
+ */
+export const buildHandlers: ShellCommand = { name: 'buildHandlers', command: 'pnpm -C packages/handlers build' };
 /** Build backend app.
  * @since 1.0.0
  * @category ShellCommand
@@ -157,11 +177,12 @@ export const startFrontendRuntime: ShellCommand = { name: 'startFrontendRuntime'
 export const startBackendAndFrontend: ShellCommand = {
   name: 'startBackendAndFrontend',
   command: [
-    'pnpm concurrently',
+    // Run concurrently via the CLI package dependency; use --dir to target roots from apps/cli
+    'pnpm --filter @lect-effect/cli exec concurrently',
     '--names backend,frontend',
     '--prefix-colors blue,green',
-    '"pnpm -C apps/backend start"',
-    '"pnpm -C apps/frontend start"',
+    '"pnpm --dir ../../apps/backend start"',
+    '"pnpm --dir ../../apps/frontend start"',
   ].join(' '),
 };
 
@@ -257,7 +278,15 @@ export const testWorkspace: ShellCommand = {
  * @since 1.0.0
  * @category ShellCommand[]
  */
-export const cleanSteps: readonly ShellCommand[] = [cleanDomain, cleanBackend, cleanGraphqlSchema, cleanFrontend, cleanDocs];
+export const cleanSteps: readonly ShellCommand[] = [
+  cleanDomain,
+  cleanServices,
+  cleanHandlers,
+  cleanBackend,
+  cleanGraphqlSchema,
+  cleanFrontend,
+  cleanDocs,
+];
 
 /** Full build pipeline in dependency order.
  * @since 1.0.0
@@ -267,6 +296,8 @@ export const fullBuildSteps: readonly ShellCommand[] = [
   installWorkspace,
   ...cleanSteps,
   buildDomain,
+  buildServices,
+  buildHandlers,
   buildBackend,
   buildGraphqlSchema,
   generateGraphqlSchema,

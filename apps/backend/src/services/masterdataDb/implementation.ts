@@ -5,7 +5,7 @@
 
 import { Effect } from 'effect';
 import * as SqlClient from '@effect/sql/SqlClient';
-import { type MasterdataDb } from './interface.js';
+import { type MasterdataDb } from '@lect-effect/services/masterdataDb';
 
 /**
  * Live implementation of the MasterdataDb service

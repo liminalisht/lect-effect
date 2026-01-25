@@ -7,12 +7,12 @@ import {
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
 import { makeSchema, type GraphQLResolver } from '../../../src/graphql/schema.js';
 import { handlersToResolvers } from '../../../src/graphql/resolvers.js';
-import { helloHandlers } from '../../../src/handlers/hello.js';
-import { itemHandlers } from '../../../src/handlers/item.js';
-import { productHandlers } from '../../../src/handlers/product.js';
+import { helloHandlers } from '@lect-effect/handlers/hello';
+import { itemHandlers } from '@lect-effect/handlers/item';
+import { productHandlers } from '@lect-effect/handlers/product';
 import { makeYoga, type Yoga } from '../../../src/graphql/yoga.js';
-import { MasterdataDbService } from '../../../src/services/masterdataDb/interface.js';
-import { type AppServices } from '../../../src/services/app/interface.js';
+import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
+import { type AppServices } from '@lect-effect/services/app';
 import { withTestAppLayer } from '../../testRuntime.js';
 
 // todo: extract - maybe even explicitly in app.ts for reuse?

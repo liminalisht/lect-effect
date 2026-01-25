@@ -10,8 +10,8 @@ import { productWithItemsSchema, type ProductWithItems } from '@lect-effect/doma
 import { productInputSchema, type ProductInput } from '@lect-effect/domain/product/productInput';
 import { type Item, itemSchema } from '@lect-effect/domain/item/item';
 import { createProductWithItemsInputSchema, type CreateProductWithItemsInput } from '@lect-effect/domain/product/createProductWithItemsInput';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
+import { ItemRepoService, type ItemRepoError } from '@lect-effect/services/itemRepo';
+import { ProductRepoService, type ProductRepoError } from '@lect-effect/services/productRepo';
 import { type QueryHandler, type MutationHandler, type FieldHandler } from './generic.js';
 
 /**

@@ -3,9 +3,10 @@ import { Arbitrary, Effect, Schema } from 'effect';
 import { it } from '@effect/vitest';
 import fc from 'fast-check';
 import { describe, expect } from 'vitest';
-import { portSchema } from '../../../../src/services/appConfig/interface/port.js';
+import { portSchema, type Port } from '@lect-effect/services/appConfig/interface/port';
 
-const decodePort = Schema.decodeUnknown(portSchema);
+const decodePort: (u: unknown) => Effect.Effect<Port, unknown, never>
+  = Schema.decodeUnknown(portSchema);
 const arbitraryPort = Arbitrary.make(portSchema);
 
 const validPortProperty = fc.property(arbitraryPort, port => {

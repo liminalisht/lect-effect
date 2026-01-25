@@ -8,8 +8,8 @@ import { productInputSchema } from '@lect-effect/domain/product/productInput';
 import { itemSchema, type Item } from '@lect-effect/domain/item/item';
 import { itemIdSchema } from '@lect-effect/domain/item/itemId';
 import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
-import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
-import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
+import { ItemRepoService, type ItemRepoShape } from '@lect-effect/services/itemRepo';
+import { ProductRepoService, type ProductRepoShape } from '@lect-effect/services/productRepo';
 import {
   createProduct,
   createProductWithItems,
@@ -17,7 +17,7 @@ import {
   getProductWithItems,
   itemsForProduct,
   listProducts,
-} from '../../src/handlers/product.js';
+} from '@lect-effect/handlers/product';
 
 const arbitraryProductId: fc.Arbitrary<number> = Arbitrary.make(productIdSchema);
 const arbitraryProduct = Arbitrary.make(productSchema);

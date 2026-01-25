@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { ProductRepoService } from './interface.js';
+import { ProductRepoService } from '@lect-effect/services/productRepo';
 import { productRepoImplementation } from './implementation.js';
 
 /**

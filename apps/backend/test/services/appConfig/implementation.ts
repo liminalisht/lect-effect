@@ -1,10 +1,10 @@
 import {
   Config, ConfigError, Effect, LogLevel, Schema,
 } from 'effect';
-// import { ConfigService } from '../../../src/services/config/interface.js';
-import { environmentSchema } from '../../../src/services/appConfig/interface/environment.js';
-import { portSchema } from '../../../src/services/appConfig/interface/port.js';
-import { type AppConfig, AppConfigService } from '../../../src/services/appConfig/interface/index.js';
+// import { ConfigService } from '@lect-effect/services/config';
+import { environmentSchema } from '@lect-effect/services/appConfig/interface/environment';
+import { portSchema } from '@lect-effect/services/appConfig/interface/port';
+import { type AppConfig } from '@lect-effect/services/appConfig';
 
 const loadPort = Effect.gen(function * () {
   const port = yield * Config.number('TEST_BACKEND_PORT')

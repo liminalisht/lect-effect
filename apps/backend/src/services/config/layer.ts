@@ -5,11 +5,11 @@
 import {
   Config, ConfigError, Effect, Layer, LogLevel, Schema,
 } from 'effect';
-import { type Environment, environmentSchema } from '../appConfig/interface/environment.js';
-import { type Port, portSchema } from '../appConfig/interface/port.js';
-import { type MasterdataDbConfig } from '../masterdataDbConfig/interface.js';
-import { type ConfigurationError } from '../errors.js';
-import { ConfigService } from './interface.js';
+import { type Environment, environmentSchema } from '@lect-effect/services/appConfig/interface/environment';
+import { type Port, portSchema } from '@lect-effect/services/appConfig/interface/port';
+import { type MasterdataDbConfig } from '@lect-effect/services/masterdataDbConfig';
+import { type ConfigurationError } from '@lect-effect/services/errors';
+import { ConfigService } from '@lect-effect/services/config';
 
 const loadPort: Effect.Effect<Port, ConfigurationError> = Effect.gen(function * () {
   const port = yield * Config.number('BACKEND_PORT')

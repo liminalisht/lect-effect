@@ -6,7 +6,7 @@ import {
   field, mutation, query, resolver,
 } from '@gqloom/core';
 import { type Effect, Schema } from 'effect';
-import { type FieldHandler, type MutationHandler, type QueryHandler } from '../handlers/generic.js';
+import { type FieldHandler, type MutationHandler, type QueryHandler } from '@lect-effect/handlers/generic';
 import { runEffect } from './effect.js';
 
 /**

@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Layer } from 'effect';
-import { type MasterdataDbService } from '../masterdataDb/interface.js';
-import { ItemRepoService } from './interface.js';
+import { type MasterdataDbService } from '@lect-effect/services/masterdataDb';
+import { ItemRepoService } from '@lect-effect/services/itemRepo';
 import { itemRepoServiceImplementation } from './implementation.js';
 
 /**

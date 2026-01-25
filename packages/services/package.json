@@ -1,0 +1,34 @@
+{
+  "name": "@lect-effect/services",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/liminalisht/lect-effect",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@effect/sql": "^0.49.0",
+    "@effect/sql-pg": "^0.50.1",
+    "@lect-effect/domain": "workspace:*",
+    "effect": "^3.19.15"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

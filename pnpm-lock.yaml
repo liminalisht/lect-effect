@@ -47,6 +47,12 @@ importers:
       '@lect-effect/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@lect-effect/handlers':
+        specifier: workspace:*
+        version: link:../../packages/handlers
+      '@lect-effect/services':
+        specifier: workspace:*
+        version: link:../../packages/services
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -271,6 +277,41 @@ importers:
       '@effect/docgen':
         specifier: ^0.5.2
         version: 0.5.2(tsx@4.21.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/handlers:
+    dependencies:
+      '@lect-effect/domain':
+        specifier: workspace:*
+        version: link:../domain
+      '@lect-effect/services':
+        specifier: workspace:*
+        version: link:../services
+      effect:
+        specifier: ^3.19.15
+        version: 3.19.15
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/services:
+    dependencies:
+      '@effect/sql':
+        specifier: ^0.49.0
+        version: 0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.2(effect@3.19.15))(effect@3.19.15)(lmdb@3.4.4))(@effect/platform@0.94.2(effect@3.19.15))(effect@3.19.15)
+      '@effect/sql-pg':
+        specifier: ^0.50.1
+        version: 0.50.1(@effect/experimental@0.58.0(@effect/platform@0.94.2(effect@3.19.15))(effect@3.19.15)(lmdb@3.4.4))(@effect/platform@0.94.2(effect@3.19.15))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.2(effect@3.19.15))(effect@3.19.15)(lmdb@3.4.4))(@effect/platform@0.94.2(effect@3.19.15))(effect@3.19.15))(effect@3.19.15)
+      '@lect-effect/domain':
+        specifier: workspace:*
+        version: link:../domain
+      effect:
+        specifier: ^3.19.15
+        version: 3.19.15
+    devDependencies:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

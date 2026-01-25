@@ -8,8 +8,8 @@ import { itemSchema } from '@lect-effect/domain/item/item';
 import { createItemInputSchema, type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
 import { type ItemIdInput, itemIdInputSchema } from '@lect-effect/domain/item/itemIdInput';
 import { productSchema } from '@lect-effect/domain/product/product';
-import { ProductRepoService, type ProductRepoError } from '../services/productRepo/interface.js';
-import { ItemRepoService, type ItemRepoError } from '../services/itemRepo/interface.js';
+import { ProductRepoService, type ProductRepoError } from '@lect-effect/services/productRepo';
+import { ItemRepoService, type ItemRepoError } from '@lect-effect/services/itemRepo';
 import { type QueryHandler, type FieldHandler, type MutationHandler } from './generic.js';
 
 /**

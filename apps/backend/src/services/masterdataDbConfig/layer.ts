@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Layer} from 'effect';
-import { type ConfigurationError } from '../errors.js';
-import { MasterdataDbConfigService } from './interface.js';
+import { type ConfigurationError } from '@lect-effect/services/errors';
+import { MasterdataDbConfigService } from '@lect-effect/services/masterdataDbConfig';
 import { masterdataDbConfigServiceImplementation } from './implementation.js';
 
 /**

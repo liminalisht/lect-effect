@@ -10,10 +10,12 @@ import { Args, Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
 import {
-  buildBackend,
   buildDomain,
-  buildFrontend,
+  buildServices,
+  buildHandlers,
+  buildBackend,
   buildGraphqlSchema,
+  buildFrontend,
   cleanSteps,
   docsDev,
   docsGenerateContentSteps,
@@ -86,6 +88,8 @@ const docsPrerequisiteSteps: readonly ShellCommand[] = [
   installWorkspace,
   ...cleanSteps,
   buildDomain,
+  buildServices,
+  buildHandlers,
   buildBackend,
   buildGraphqlSchema,
   generateGraphqlSchema,

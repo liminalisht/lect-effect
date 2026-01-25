@@ -11,4 +11,3 @@ import { type PgClientConfig } from '@effect/sql-pg/PgClient';
  * @category Services
  */
 export class PgClientConfigService extends Context.Tag('services/pgClientConfig')<PgClientConfigService, PgClientConfig>() {}
-

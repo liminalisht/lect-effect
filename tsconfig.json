@@ -8,7 +8,11 @@
     "emitDecoratorMetadata": true,
     "paths": {
       "@lect-effect/domain": ["./packages/domain/src/index"],
-      "@lect-effect/domain/*": ["./packages/domain/src/*"]
+      "@lect-effect/domain/*": ["./packages/domain/src/*"],
+      "@lect-effect/services": ["./packages/services/src/index"],
+      "@lect-effect/services/*": ["./packages/services/src/*"],
+      "@lect-effect/handlers": ["./packages/handlers/src/index"],
+      "@lect-effect/handlers/*": ["./packages/handlers/src/*"]
     },
     "plugins": [
       {
@@ -16,6 +20,6 @@
       }
     ]
   },
-  "include": ["src", "test", "tests", "packages/domain/src"],
+  "include": ["src", "test", "tests", "packages/domain/src", "packages/services/src", "packages/handlers/src"],
   "exclude": ["node_modules"]
 }

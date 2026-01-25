@@ -8,13 +8,13 @@ import { type GraphQLSchema } from 'graphql';
 import { logSchema, makeSchema, type GraphQLResolver } from './graphql/schema.js';
 import * as server from './graphql/server.js';
 import { type Yoga, makeYoga } from './graphql/yoga.js';
-import { type AppServices } from './services/app/interface.js';
+import { type AppServices } from '@lect-effect/services/app';
+import { type AppConfig, AppConfigService } from '@lect-effect/services/appConfig';
 import { type ServerStartError } from './graphql/errors.js';
 import { handlersToResolvers, type AnyHandler } from './graphql/resolvers.js';
-import { helloHandlers } from './handlers/hello.js';
-import { itemHandlers } from './handlers/item.js';
-import { productHandlers } from './handlers/product.js';
-import { type AppConfig, AppConfigService } from './services/appConfig/interface/index.js';
+import { helloHandlers } from '@lect-effect/handlers/hello';
+import { itemHandlers } from '@lect-effect/handlers/item';
+import { productHandlers } from '@lect-effect/handlers/product';
 
 /**
  * Loads configuration from the AppConfigService.

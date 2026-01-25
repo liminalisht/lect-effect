@@ -7,14 +7,14 @@ import { itemSchema } from '@lect-effect/domain/item/item';
 import { createItemInputSchema } from '@lect-effect/domain/item/createItemInput';
 import { productSchema } from '@lect-effect/domain/product/product';
 import { productIdSchema } from '@lect-effect/domain/product/productId';
-import { ProductRepoService, type ProductRepoShape } from '../../src/services/productRepo/interface.js';
-import { ItemRepoService, type ItemRepoShape } from '../../src/services/itemRepo/interface.js';
+import { ProductRepoService, type ProductRepoShape } from '@lect-effect/services/productRepo';
+import { ItemRepoService, type ItemRepoShape } from '@lect-effect/services/itemRepo';
 import {
   createItem,
   getItem,
   listItems,
   productForItem,
-} from '../../src/handlers/item.js';
+} from '@lect-effect/handlers/item';
 
 const arbitraryItemId = Arbitrary.make(itemIdSchema);
 const arbitraryItem = Arbitrary.make(itemSchema);

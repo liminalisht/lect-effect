@@ -21,4 +21,3 @@ export const portSchema = Schema.Number.pipe(
   Schema.between(1, 65_535),
   Schema.brand('Port'),
 ).annotations({ description: 'TCP port (1-65535)' });
-

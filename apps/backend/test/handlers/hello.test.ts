@@ -4,7 +4,7 @@ import { describe, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
 import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
-import { helloHandler } from '../../src/handlers/hello.js';
+import { helloHandler } from '@lect-effect/handlers/hello';
 import { greetingLayer } from '../../src/services/greeting/layer.js';
 
 const decodeHelloResponse = Schema.decodeUnknown(helloResponseSchema);

@@ -3,8 +3,8 @@
  * @since 1.0.0
  */
 import { Layer} from 'effect';
-import { type ConfigurationError } from '../errors.js';
-import { AppConfigService } from './interface/index.js';
+import { type ConfigurationError } from '@lect-effect/services/errors';
+import { AppConfigService } from '@lect-effect/services/appConfig';
 import { appConfigServiceImplementation } from './implementation.js';
 
 /**

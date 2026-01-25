@@ -29,4 +29,3 @@ export type MasterdataDbConfig = {
  * @category Services
  */
 export class MasterdataDbConfigService extends Context.Tag('services/masterdataDbConfig')<MasterdataDbConfigService, MasterdataDbConfig>() {}
-

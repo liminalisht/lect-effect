@@ -8,8 +8,8 @@ import { itemIdSchema, type ItemId } from '@lect-effect/domain/item/itemId';
 import { type Item } from '@lect-effect/domain/item/item';
 import { type ProductId } from '@lect-effect/domain/product/productId';
 import { decodeMany, decodeOne } from '../../utilities/decode.js';
-import { MasterdataDbService } from '../masterdataDb/interface.js';
-import { ItemRepoService } from './interface.js';
+import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
+import { ItemRepoService } from '@lect-effect/services/itemRepo';
 
 const ItemRowSchema = Schema.Struct({
   id: itemIdSchema,

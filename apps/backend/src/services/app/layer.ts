@@ -11,15 +11,15 @@ import { greetingLayer } from '../greeting/layer.js';
 import { masterdataDbLayer } from '../masterdataDb/layer.js';
 import { productRepoLayer } from '../productRepo/layer.js';
 import { itemRepoLayer } from '../itemRepo/layer.js';
-import { type MasterdataDbService } from '../masterdataDb/interface.js';
-import { type ItemRepoService } from '../itemRepo/interface.js';
-import { type ProductRepoService } from '../productRepo/interface.js';
-import { type AppConfigService } from '../appConfig/interface/index.js';
+import { type MasterdataDbService } from '@lect-effect/services/masterdataDb';
+import { type ItemRepoService } from '@lect-effect/services/itemRepo';
+import { type ProductRepoService } from '@lect-effect/services/productRepo';
+import { type AppConfigService } from '@lect-effect/services/appConfig';
 import { appConfigLayer } from '../appConfig/layer.js';
 import { masterdataDbConfigLayer } from '../masterdataDbConfig/layer.js';
-import { type MasterdataDbConfigService } from '../masterdataDbConfig/interface.js';
-import { type GreetService } from '../greeting/interface.js';
-import { type AppServices } from './interface.js';
+import { type MasterdataDbConfigService } from '@lect-effect/services/masterdataDbConfig';
+import { type GreetService } from '@lect-effect/services/greeting';
+import { type AppServices } from '@lect-effect/services/app';
 
 /**
  * Layer loading app configuration.

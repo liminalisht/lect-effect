@@ -8,8 +8,8 @@ import type * as SqlClient from '@effect/sql/SqlClient';
 import type { PgClientConfig } from '@effect/sql-pg/PgClient';
 import { type ConfigError } from 'effect/ConfigError';
 import { type SqlError } from '@effect/sql/SqlError';
-import { MasterdataDbConfigService } from '../masterdataDbConfig/interface.js';
-import { MasterdataDbService } from './interface.js';
+import { MasterdataDbConfigService } from '@lect-effect/services/masterdataDbConfig';
+import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
 import { masterdataDbImplementation } from './implementation.js';
 
 /**

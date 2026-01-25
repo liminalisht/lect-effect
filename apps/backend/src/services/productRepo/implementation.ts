@@ -8,8 +8,8 @@ import { type ProductId, productIdSchema } from '@lect-effect/domain/product/pro
 import { type ProductInput } from '@lect-effect/domain/product/productInput';
 import type { ItemId } from '@lect-effect/domain/item/itemId';
 import { decodeMany, decodeOne } from '../../utilities/decode.js';
-import { MasterdataDbService } from '../masterdataDb/interface.js';
-import { ProductRepoService } from './interface.js';
+import { MasterdataDbService } from '@lect-effect/services/masterdataDb';
+import { ProductRepoService } from '@lect-effect/services/productRepo';
 
 // row schema matches DB columns (no __typename)
 const ProductRowSchema = Schema.Struct({

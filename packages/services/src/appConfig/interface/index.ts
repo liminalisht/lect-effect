@@ -24,4 +24,3 @@ export type AppConfig = {
  * @category Services
  */
 export class AppConfigService extends Context.Tag('services/appConfig')<AppConfigService, AppConfig>() {}
-
