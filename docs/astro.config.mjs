@@ -18,6 +18,10 @@ export default defineConfig({
 					autogenerate: {directory: 'guides', collapsed: true},
 				},
 				{
+					label: '@lect-effect/backend',
+					autogenerate: {directory: 'backend/modules', collapsed: true},
+				},
+				{
 					label: '@lect-effect/cli',
 					autogenerate: {directory: 'cli/modules', collapsed: true},
 				},
@@ -26,16 +30,20 @@ export default defineConfig({
 					autogenerate: {directory: 'domain/modules', collapsed: true},
 				},
 				{
+					label: '@lect-effect/frontend',
+					autogenerate: {directory: 'frontend/modules', collapsed: true},
+				},
+				{
 					label: '@lect-effect/graphql-schema',
 					autogenerate: {directory: 'graphql-schema/modules', collapsed: true},
 				},
 				{
-					label: '@lect-effect/backend',
-					autogenerate: {directory: 'backend/modules', collapsed: true},
+					label: '@lect-effect/handlers',
+					autogenerate: {directory: 'handlers/modules', collapsed: true},
 				},
 				{
-					label: '@lect-effect/frontend',
-					autogenerate: {directory: 'frontend/modules', collapsed: true},
+					label: '@lect-effect/services',
+					autogenerate: {directory: 'services/modules', collapsed: true},
 				},
 			],
 		}),
