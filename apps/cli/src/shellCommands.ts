@@ -204,77 +204,21 @@ export const startBackendAndFrontend: ShellCommand = {
     '"pnpm --dir ../../apps/frontend start"',
   ].join(' '),
 };
-
 /** Remove generated docs content before regeneration.
  * @since 1.0.0
  * @category ShellCommand
  */
 export const docsPruneContent: ShellCommand = {
   name: 'docsPruneContent',
-  command: 'rm -rf docs/src/content/docs/{backend,cli,frontend,domain,services,handlers,graphql-schema}',
+  command: 'rm -rf docs/src/content/docs/{backend,cli,frontend,domain,services,handlers,graphql-schema}/modules',
 };
-/** Generate backend docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateBackend: ShellCommand = { name: 'docsGenerateBackend', command: 'pnpm -C apps/backend docs:generate' };
-/** Generate domain docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateDomain: ShellCommand = { name: 'docsGenerateDomain', command: 'pnpm -C packages/domain docs:generate' };
-/** Generate services docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateServices: ShellCommand = { name: 'docsGenerateServices', command: 'pnpm -C packages/services docs:generate' };
-/** Generate GraphQL schema docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateGraphqlSchema: ShellCommand = { name: 'docsGenerateGraphqlSchema', command: 'pnpm -C packages/graphql-schema docs:generate' };
-/** Generate frontend docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateFrontend: ShellCommand = { name: 'docsGenerateFrontend', command: 'pnpm -C apps/frontend docs:generate' };
-/** Generate handlers docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateHandlers: ShellCommand = { name: 'docsGenerateHandlers', command: 'pnpm -C packages/handlers docs:generate' };
-/** Generate CLI docs content.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsGenerateCLI: ShellCommand = { name: 'docsGenerateCLI', command: 'pnpm -C apps/cli docs:generate' };
-/** Ordered steps to regenerate docs content across packages.
+/** Generate docs for all packages from the docs workspace.
  * @since 1.0.0
  * @category ShellCommand
  */
 export const docsGenerateContentSteps: readonly ShellCommand[] = [
-  docsGenerateBackend,
-  docsGenerateDomain,
-  docsGenerateServices,
-  docsGenerateHandlers,
-  docsGenerateGraphqlSchema,
-  docsGenerateFrontend,
-  docsGenerateCLI,
+  { name: 'docsGenerateAll', command: 'pnpm -C docs run docs:generate' },
 ];
-/** Move module indexes to _index.md for Starlight routing expectations.
- * @since 1.0.0
- * @category ShellCommand
- */
-export const docsMoveModuleIndexes: ShellCommand = {
-  name: 'docsMoveModuleIndexes',
-  command: [
-    'for section in backend frontend domain services handlers graphql-schema cli; do',
-    'src="docs/src/content/docs/$section/modules/index.md";',
-    'dst="docs/src/content/docs/$section/modules/_index.md";',
-    'if [ -f "$src" ]; then mv "$src" "$dst"; fi;',
-    'done',
-  ].join(' '),
-};
 /** Start the docs dev server.
  * @since 1.0.0
  * @category ShellCommand

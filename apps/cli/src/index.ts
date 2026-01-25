@@ -19,7 +19,6 @@ import {
   cleanSteps,
   docsDev,
   docsGenerateContentSteps,
-  docsMoveModuleIndexes,
   docsPruneContent,
   fullBuildSteps,
   generateGraphqlSchema,
@@ -188,7 +187,6 @@ const docsCommand = Command
       ...docsPrerequisiteSteps,
       docsPruneContent,
       ...docsGenerateContentSteps,
-      docsMoveModuleIndexes,
       docsDev,
     ].map(step => step.command)))
   .pipe(Command.withDescription('Build, regenerate docs content, and start docs dev server.')) satisfies Command.Command<'docs', never, ShellRunError, Record<string, never>>;
@@ -243,8 +241,17 @@ const listBranchesCommand = Command
  * @category Cli
  */
 const versionSetCommand = Command
-  .make('version:set', { version: Args.text({ name: 'version' }) }, ({ version }) => runShell(gitVersionSet(version).command))
-  .pipe(Command.withDescription('Set the lect-effect version across all packages, commit, and tag v{version}.')) satisfies Command.Command<'version:set', never, ShellRunError, {readonly version: string}>;
+  .make(
+    'version:set',
+    { version: Args.text({ name: 'version' }) },
+    ({ version }) => runShell(gitVersionSet(version).command),
+  )
+  .pipe(Command.withDescription('Set the lect-effect version across all packages, commit, and tag v{version}.')) satisfies Command.Command<
+    'version:set',
+    never,
+    ShellRunError,
+    {readonly version: string}
+  >;
 
 /** Git utilities (iterate, archive).
  * @since 1.0.0
@@ -254,8 +261,19 @@ const gitCommand = Command
   .make('git', emptyConfig, () => Effect.succeed(undefined))
   .pipe(
     Command.withDescription('Git helpers for iterating, archiving, and managing branches.'),
-    Command.withSubcommands([iterateCommand, archiveCommand, createBranchCommand, listBranchesCommand, versionSetCommand]),
-  ) satisfies Command.Command<'git', never, ShellRunError, {readonly subcommand: Option.Option<any>}>;
+    Command.withSubcommands([
+      iterateCommand,
+      archiveCommand,
+      createBranchCommand,
+      listBranchesCommand,
+      versionSetCommand,
+    ]),
+  ) satisfies Command.Command<
+    'git',
+    never,
+    ShellRunError,
+    {readonly subcommand: Option.Option<any>}
+  >;
 
 /** Root command wiring all subcommands.
  * @since 1.0.0

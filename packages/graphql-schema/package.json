@@ -14,7 +14,6 @@
   "scripts": {
     "clean": "rm -rf dist schema.graphql",
     "build": "tsc -p tsconfig.json",
-    "docs:generate": "docgen --project tsconfig.json --src ./src/ --out ../../docs/src/content/docs/graphql-schema/ --exclude \"**/test/**\" --exclude \"**/*.d.ts\"",
     "schema:generate": "pnpm run build && node dist/index.js"
   },
   "dependencies": {
@@ -23,7 +22,6 @@
     "effect": "^3.19.15"
   },
   "devDependencies": {
-    "@effect/docgen": "^0.5.2",
     "typescript": "^5.9.3"
   }
 }

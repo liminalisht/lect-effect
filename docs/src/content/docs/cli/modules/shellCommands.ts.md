@@ -33,15 +33,7 @@ Added in v1.0.0
   - [cleanHandlers](#cleanhandlers)
   - [cleanServices](#cleanservices)
   - [docsDev](#docsdev)
-  - [docsGenerateBackend](#docsgeneratebackend)
-  - [docsGenerateCLI](#docsgeneratecli)
   - [docsGenerateContentSteps](#docsgeneratecontentsteps)
-  - [docsGenerateDomain](#docsgeneratedomain)
-  - [docsGenerateFrontend](#docsgeneratefrontend)
-  - [docsGenerateGraphqlSchema](#docsgenerategraphqlschema)
-  - [docsGenerateHandlers](#docsgeneratehandlers)
-  - [docsGenerateServices](#docsgenerateservices)
-  - [docsMoveModuleIndexes](#docsmovemoduleindexes)
   - [docsPruneContent](#docsprunecontent)
   - [frontendCodegen](#frontendcodegen)
   - [generateGraphqlSchema](#generategraphqlschema)
@@ -52,6 +44,7 @@ Added in v1.0.0
   - [gitIterateSteps](#gititeratesteps)
   - [gitListBranchesByDate](#gitlistbranchesbydate)
   - [gitPushHead](#gitpushhead)
+  - [gitVersionSet](#gitversionset)
   - [installWorkspace](#installworkspace)
   - [lintShellCommand](#lintshellcommand)
   - [migrateMasterdataUp](#migratemasterdataup)
@@ -263,110 +256,14 @@ export declare const docsDev: ShellCommand
 
 Added in v1.0.0
 
-## docsGenerateBackend
-
-Generate backend docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateBackend: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsGenerateCLI
-
-Generate CLI docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateCLI: ShellCommand
-```
-
-Added in v1.0.0
-
 ## docsGenerateContentSteps
 
-Ordered steps to regenerate docs content across packages.
+Generate docs for all packages from the docs workspace.
 
 **Signature**
 
 ```ts
 export declare const docsGenerateContentSteps: readonly ShellCommand[]
-```
-
-Added in v1.0.0
-
-## docsGenerateDomain
-
-Generate domain docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateDomain: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsGenerateFrontend
-
-Generate frontend docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateFrontend: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsGenerateGraphqlSchema
-
-Generate GraphQL schema docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateGraphqlSchema: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsGenerateHandlers
-
-Generate handlers docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateHandlers: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsGenerateServices
-
-Generate services docs content.
-
-**Signature**
-
-```ts
-export declare const docsGenerateServices: ShellCommand
-```
-
-Added in v1.0.0
-
-## docsMoveModuleIndexes
-
-Move module indexes to \_index.md for Starlight routing expectations.
-
-**Signature**
-
-```ts
-export declare const docsMoveModuleIndexes: ShellCommand
 ```
 
 Added in v1.0.0
@@ -487,6 +384,19 @@ Git push HEAD to origin with upstream tracking.
 
 ```ts
 export declare const gitPushHead: ShellCommand
+```
+
+Added in v1.0.0
+
+## gitVersionSet
+
+Bump the workspace version across all packages and tag the commit.
+Assumes a clean working tree and a shared version for all packages.
+
+**Signature**
+
+```ts
+export declare const gitVersionSet: (version: string) => ShellCommand
 ```
 
 Added in v1.0.0
