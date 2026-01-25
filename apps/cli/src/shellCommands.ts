@@ -60,7 +60,10 @@ export const gitCreateBranch = (branchName: string): ShellCommand => ({
 export const gitVersionSet = (version: string): ShellCommand => ({
   name: 'gitVersionSet',
   command: [
-    `pnpm -r --workspace-root version ${version} --no-git-tag-version --no-commit-hooks`,
+    // bump every workspace package.json version field
+    `pnpm -r exec npm pkg set version=${version}`,
+    // bump the workspace root package.json too
+    `pnpm --workspace-root exec npm pkg set version=${version}`,
     'pnpm install --lockfile-only',
     'git add package.json pnpm-lock.yaml apps/*/package.json packages/*/package.json docs/package.json apps/migrations/package.json',
     `git commit -m "chore: release v${version}"`,
