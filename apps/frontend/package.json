@@ -1,6 +1,6 @@
 {
   "name": "@lect-effect/frontend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/liminalisht/lect-effect",
   "scripts": {
     "clean": "rm -rf dist .angular/cache src/graphql/generated",
