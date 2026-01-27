@@ -142,10 +142,19 @@ const moveSectionIndex = (section: string) =>
   Effect.gen(function * () {
     const src = path.join(repoRoot, 'docs', 'src', 'content', 'docs', section, 'index.md');
     const dst = path.join(repoRoot, 'docs', 'src', 'content', 'docs', section, '_index.md');
-    yield * Effect.tryPromise(async () => rename(src, dst)).pipe(
-      Effect.tapError(() => Effect.unit),
-      Effect.orElse(() => Effect.unit),
-    );
+    const exists = yield * Effect.tryPromise(async () => {
+      try {
+        await access(src, fsConstants.F_OK);
+        return true;
+      } catch {
+        return false;
+      }
+    });
+
+    if (exists) {
+      yield * Effect.tryPromise(async () => rename(src, dst));
+      yield * Effect.logInfo(`→ moved section index for ${section}`);
+    }
   });
 
 const program = Effect.gen(function * () {

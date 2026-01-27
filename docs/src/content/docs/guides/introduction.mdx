@@ -3,6 +3,8 @@ title: Getting Started
 description: Project goals, mental model, scripts, and the shortest path from zero to a running GraphQL server.
 ---
 
+import {Code} from '@astrojs/starlight/components';
+
 **lect-effect** is organized around a simple idea:
 
 > **Make the domain canonical, then reindex everything else against it.**
@@ -113,16 +115,18 @@ Example URLs matching `docker-compose.yml`:
 * `MASTERDATA_PG_URL=postgres://user:password@localhost:5432/masterdatadb`
 * `TEST_MASTERDATA_PG_URL=postgres://testuser:testpassword@localhost:5433/testmasterdatadb`
 
-### 4) Run migrations
+### 4) Run the guided wizard (recommended)
 
 ```bash
-pnpm migrate:masterdata
+./lect-effect.sh --wizard
 ```
 
-### 5) Run the server
+The wizard will walk you through the typical local flow (install, migrate, start) and surface the right subcommands.
+
+### 5) Manual commands (if you prefer)
 
 ```bash
-pnpm start
+./lect-effect.sh start
 ```
 
 You should see a log like:
@@ -131,46 +135,103 @@ You should see a log like:
 
 ---
 
-## Developer scripts (the “standard arrows”)
+## Workspace CLI (one entrypoint)
 
-These scripts are intended to be the canonical morphisms for local workflows:
+Use `./lect-effect.sh` for everything: build, test, lint, docs, and releases.
 
-### Build + typecheck
+- Discover commands: `./lect-effect.sh --help`
+- Guided setup and workflows: `./lect-effect.sh --wizard`
+- Common tasks: `./lect-effect.sh build`, `./lect-effect.sh test`, `./lect-effect.sh lint --fix`, `./lect-effect.sh docs`, `./lect-effect.sh start`
 
-```bash
-./build.sh
-# (clean -> pnpm install --frozen-lockfile -> pnpm run buildtest)
-```
+<Code lang="bash" code={`
+lect-effect
 
-### Run (build + migrate + start)
+lect-effect 1.0.0
 
-```bash
-./run.sh
-```
+USAGE
 
-### Test (including test DB migrations)
+$ lect-effect
 
-```bash
-./tests.sh
-# pnpm install
-# pnpm migrate:test-masterdata
-# pnpm run test
-```
+DESCRIPTION
 
-### Lint
+Workspace CLI entrypoint for lect-effect.
 
-```bash
-./lint.sh
-# pnpx xo --ignore 'docs-site/**'
-```
+OPTIONS
 
-### Docs site (generate API docs, then run the Starlight dev server)
+--completions sh | bash | fish | zsh
 
-```bash
-./docs.sh
-# pnpm docs:generate
-# cd docs && pnpm dev
-```
+   One of the following: sh, bash, fish, zsh
+
+   Generate a completion script for a specific shell.
+
+   This setting is optional.
+
+--log-level all | trace | debug | info | warning | error | fatal | none
+
+   One of the following: all, trace, debug, info, warning, error, fatal, none
+
+   Sets the minimum log level for a command.
+
+   This setting is optional.
+
+(-h, --help)
+
+   A true or false value.
+
+   Show the help documentation for a command.
+
+   This setting is optional.
+
+--wizard
+
+   A true or false value.
+
+   Start wizard mode for a command.
+
+   This setting is optional.
+
+--version
+
+   A true or false value.
+
+   Show the version of the application.
+
+   This setting is optional.
+
+COMMANDS
+
+   - build                      Install, clean, then build all workspace packages in dependency order.
+
+   - clean                      Clean build artifacts for all workspace packages.
+
+   - install                    Install workspace dependencies using the frozen lockfile.
+
+   - schema:generate            Regenerate the GraphQL schema artifact.
+
+   - start                      Build everything, run migrations, then start backend+frontend.
+
+   - start:backend              Build everything, migrate, then start backend only.
+
+   - start:frontend             Build everything, then start frontend only.
+
+   - lint [--fix]               Build everything, then lint (supports --fix).
+
+   - docs                       Build, regenerate docs content, and start docs dev server.
+
+   - test                       Build, run test DB migrations, then execute tests.
+
+   - git                        Git helpers for iterating, archiving, and managing branches.
+
+   - git iterate                Git add ., commit "iterate", and push HEAD.
+
+   - git archive                Create archive.zip from HEAD.
+
+   - git branch:create <name>   Create a branch named lect-effect/{name} from current HEAD.
+
+   - git branch:list            List branches sorted by last commit date.
+
+   - git version:set <version>  Set the lect-effect version across all packages, commit, and tag v{version}.
+`} />
 
 ---
 

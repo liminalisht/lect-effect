@@ -11,28 +11,23 @@ hero:
       link: /guides/introduction
       icon: open-book
     - text: Architecture
-      link: /guides/architecture
+      link: /guides/architectural-decisions
       icon: document
-    - text: Code Organization
-      link: /guides/code-organization
-      icon: seti:git
-    - text: Contributing
-      link: /guides/contributing
-      icon: seti:plan
 ---
-import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { Aside, Card, LinkCard, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
 
-**lect-effect** is an ecosystem of Effect-first packages and runnable apps. You define your domain once (schemas + handlers), and everything else—GraphQL surface, backend wiring, generated docs, frontend types—falls out with minimal glue.
+<Card title="lect-effect">
+is an ecosystem of `Effect` packages and runnable apps. Define your domain once (schemas + handlers), and everything else falls out with minimal glue.
+</Card>
 
-## Core Principles
+<Aside type="tip">
+Define your domain once (schemas + handlers), and everything else falls out with minimal glue.
+</Aside>
 
-- **Domain schemas are the center.** Schema definitions drive validation, decoding/encoding, arbitrary generation for tests, and shape every boundary.
-- **Functions as morphisms.** Handlers take schema-defined inputs and return schema-defined outputs, typed with inputs, success, errors, and required services (DI-friendly, property-testable).
-- **Effect everywhere.** Handlers and orchestration are Effect programs—cancellable, inspectable, schedulable—on both backend and frontend.
-- **Derive interfaces, don’t handcraft.** GraphQL schema and resolvers wrap handlers; frontend GraphQL types and shared validators reuse the same schemas.
-- **Explicit dependencies.** Packages enforce direction: domain is foundational; handlers/services depend on domain; backend and frontend consume but don’t leak back; the CLI codifies pipelines so generation and builds reflect those edges.
+<Tabs>
+  <TabItem label="packages">
 
-## Packages (importable)
+
 
 <CardGrid>
   <LinkCard
@@ -67,7 +62,11 @@ import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
   />
 </CardGrid>
 
-## Apps (runnable)
+
+  </TabItem>
+  <TabItem label="apps">
+
+
 
 <CardGrid>
   <LinkCard
@@ -90,7 +89,21 @@ import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
   />
 </CardGrid>
 
-## How the pieces fit
+
+
+  </TabItem>
+</Tabs>
+
+<Card title="Core Principles">
+
+- **Domain schemas are the center.** Schema definitions drive validation, decoding/encoding, arbitrary generation for tests, and shape every boundary.
+- **Functions as morphisms.** Handlers take schema-defined inputs and return schema-defined outputs, typed with inputs, success, errors, and required services (DI-friendly, property-testable).
+- **Effect everywhere.** Handlers and orchestration are Effect programs—cancellable, inspectable, schedulable—on both backend and frontend.
+- **Derive interfaces, don’t handcraft.** GraphQL schema and resolvers wrap handlers; frontend GraphQL types and shared validators reuse the same schemas.
+- **Explicit dependencies.** Packages enforce direction: domain is foundational; handlers/services depend on domain; backend and frontend consume but don’t leak back; the CLI codifies pipelines so generation and builds reflect those edges.
+</Card>
+
+<Card title="How the pieces fit">
 
 - **Domain-first:** Define schemas in `@lect-effect/domain`; property tests come from arbitraries; validation/decoding is consistent across all consumers.
 - **Handlers compose services:** `@lect-effect/handlers` binds schema inputs to Effectful business logic, declaring service dependencies (`R`), success (`A`), and errors (`E`).
@@ -99,15 +112,19 @@ import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
 - **Apps consume, never back-depend:** Backend and frontend import domain/handlers/services/graphql-schema; they do not contribute types back upstream, keeping edges clear.
 - **Pipelines enforce edges:** The CLI codifies builds/codegen/docgen so dependency direction stays honest and coordinated releases stay in lockstep.
 
-## Usage snapshots
+</Card>
+
+<Card title="Usage snapshots">
 
 - **Add a domain type:** create a `Schema` in `@lect-effect/domain`; arbitraries and validators come along for tests and UIs.
 - **Implement a handler:** write an Effect that accepts the input schema, returns the output schema, and lists required services. It’s immediately usable by GraphQL, backend, and tests.
 - **Expose via GraphQL:** weave handler + schemas in `@lect-effect/graphql-schema`; Yoga server picks it up; frontend codegen updates its typed operations.
 - **Call from frontend:** use generated GraphQL types plus shared domain validators to keep forms and network boundaries in sync.
 - **Document automatically:** run `pnpm -C docs run docs:generate` (or `./lect-effect.sh docs`) to regenerate typed API docs for every package.
+</Card>
 
-## External references
+
+<Card title="External references">
 
 <Aside type="tip" icon="star" title="Effect & Schema">
 [Effect](https://effect.website/docs/getting-started/introduction/), [Effect Schema](https://effect.website/docs/schema/introduction/), [Layers](https://effect.website/docs/requirements-management/layers/)
@@ -124,3 +141,5 @@ import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
 <Aside type="tip" icon="star" title="Docs pipeline">
 [@effect/docgen](https://github.com/Effect-TS/docgen), [Starlight](https://starlight.astro.build/)
 </Aside>
+
+</Card>
