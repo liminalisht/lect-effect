@@ -1,0 +1,57 @@
+---
+title: lect-effect/migrations
+description: Node PG migrations for the master data database, with scripts for dev and test environments.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/migrations** owns the database schema for master data (products, items, and their linkage). It packages `node-pg-migrate` scripts plus npm commands for running them against dev (`.env`) and test (`.env.test`) URLs.
+
+## What it provides
+
+- **Migration scripts** for the master data schema: product table and item + item→product join ([apps/migrations/masterdatadb/20251204000000000_create_product.js](apps/migrations/masterdatadb/20251204000000000_create_product.js), [apps/migrations/masterdatadb/20251205000000000_create_item_and_item_prod.js](apps/migrations/masterdatadb/20251205000000000_create_item_and_item_prod.js)).
+- **NPM scripts** to apply migrations with env-cmd: `migrate:masterdata:up` (uses `MASTERDATA_PG_URL` from `.env`) and `migrate:test-masterdata:up` (uses `TEST_MASTERDATA_PG_URL` from `.env.test`) defined in [apps/migrations/package.json](apps/migrations/package.json).
+- **Tooling**: `node-pg-migrate` with UTC filenames, `env-cmd` for loading environment files.
+
+## Dependency boundaries
+
+- **Depends on**: `node-pg-migrate`, `env-cmd`.
+- **Consumed by**: backend/services that query Postgres via `@effect/sql`, and CLI flows (`lect-effect start` / `test`) that run migrations before booting runtimes.
+- **No application logic**: this package only manages schema evolution.
+
+## Key migration steps
+
+- [Create product table](apps/migrations/masterdatadb/20251204000000000_create_product.js): serial `id`, nullable `description`.
+- [Create item and item_prod tables](apps/migrations/masterdatadb/20251205000000000_create_item_and_item_prod.js): serial `item.id`, `pack_size` required, bridge table with FKs and unique pair constraint plus indexes.
+
+## Usage patterns
+
+### Apply migrations to dev DB
+
+```bash
+pnpm --filter @lect-effect/migrations run migrate:masterdata:up
+```
+
+Requires `.env` with `MASTERDATA_PG_URL`. Updates the live master data DB used by backend.
+
+### Apply migrations to test DB
+
+```bash
+pnpm --filter @lect-effect/migrations run migrate:test-masterdata:up
+```
+
+Loads `.env.test` and migrates the test database (used by `lect-effect test`).
+
+### Integrate with CLI flows
+
+`lect-effect start` and `lect-effect test` call these scripts automatically (via `apps/cli`). Keep migrations forward-only and regenerate schema if tables change.
+
+## Principles reinforced here
+
+- **Schema-as-code**: database shape lives in versioned migrations.
+- **Environment safety**: separate scripts for dev vs test URLs; env-cmd keeps secrets outside code.
+- **Determinism**: UTC filename format produces monotonic ordering for repeatable apply.
+
+<Aside type="tip" icon="star" title="Next steps">
+After changing migrations, run `lect-effect start` to rebuild, migrate, and boot services, or `lect-effect test` to migrate the test DB before running suites.
+</Aside>

@@ -1,0 +1,67 @@
+---
+title: lect-effect/docs
+description: Starlight/astro-powered docs site with automated docgen across the monorepo and a shared gruvbox theme.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/docs** is the Starlight site for all lect-effect packages. It owns doc generation (via `@effect/docgen`) for backend, domain, services, handlers, GraphQL schema, frontend, and CLI, and ships a themed Astro build with an autoloaded sidebar.
+
+## What it provides
+
+- **Astro + Starlight site** configured with Gruvbox theme, social link, and sidebar autogeneration for each package section ([docs/astro.config.ts](docs/astro.config.ts)).
+- **Content collections** using Starlight loader/schema ([docs/src/content.config.ts](docs/src/content.config.ts)).
+- **Docgen pipeline** that runs `@effect/docgen` per package and rewrites `modules/index.md` → `_index.md` for Starlight nav ([docs/scripts/generate-docs.ts](docs/scripts/generate-docs.ts)).
+- **NPM scripts**: `dev`, `build`, `preview`, `sync`, `clean`, and `docs:generate` to refresh API docs (see [docs/package.json](docs/package.json)).
+- **Starter assets** in `public/` and `src/assets/`; markdown/MDX live under `src/content/docs/` (handwritten pages plus generated module docs).
+
+## Dependency boundaries
+
+- **Depends on**: `astro`, `@astrojs/starlight`, `starlight-theme-gruvbox`, `@effect/docgen`, `tsx`, `sharp`.
+- **Consumes** source from other packages during docgen; does not expose runtime code.
+- **Produces** static docs consumed by contributors and CI previews.
+
+## Key modules
+
+- **Site config**: theme + sidebar sections for backend, cli, domain, frontend, graphql-schema, handlers, services ([docs/astro.config.ts](docs/astro.config.ts)).
+- **Docgen runner**: sequenced tasks for each package with excludes and tsconfig selection; renames module indexes for Starlight ([docs/scripts/generate-docs.ts](docs/scripts/generate-docs.ts)).
+- **Content schema**: Starlight docs collection declaration ([docs/src/content.config.ts](docs/src/content.config.ts)).
+- **Starter guide**: initial README living at [docs/README.md](docs/README.md).
+
+## Usage patterns
+
+### Develop docs locally
+
+```bash
+pnpm --filter @lect-effect/docs run dev
+```
+
+Runs `astro dev` after `astro sync`, serving docs at the default dev port.
+
+### Regenerate API docs and build
+
+```bash
+pnpm --filter @lect-effect/docs run docs:generate
+pnpm --filter @lect-effect/docs run build
+```
+
+Docgen pulls types from workspace packages, rewrites module indexes, then Astro builds the static site.
+
+### Clean and preview
+
+```bash
+pnpm --filter @lect-effect/docs run clean
+pnpm --filter @lect-effect/docs run preview
+```
+
+Removes `.astro`/`dist`, then serves the built site for verification.
+
+## Principles reinforced here
+
+- **Docs live with code**: API docs are generated from TypeScript sources via `@effect/docgen` under one command.
+- **Single themed experience**: shared Gruvbox theme + sidebar sections keep packages consistent.
+- **Repeatable pipeline**: `docs:generate` encodes tsconfig/src/out/excludes per package to avoid drift.
+
+<Aside type="tip" icon="star" title="Next steps">
+After updating code or schemas, run `pnpm --filter @lect-effect/docs run docs:generate` then `pnpm --filter @lect-effect/docs run dev` to preview the refreshed site.
+</Aside>

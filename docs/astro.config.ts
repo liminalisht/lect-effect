@@ -15,31 +15,60 @@ export default defineConfig({
         },
         {
           label: '@lect-effect/backend',
-          autogenerate: {directory: 'backend/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/backend'},
+            {label: 'API', autogenerate: {directory: 'backend/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/cli',
-          autogenerate: {directory: 'cli/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/cli'},
+            {label: 'API', autogenerate: {directory: 'cli/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/domain',
-          autogenerate: {directory: 'domain/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/domain'},
+            {label: 'API', autogenerate: {directory: 'domain/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/frontend',
-          autogenerate: {directory: 'frontend/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/frontend'},
+            {label: 'API', autogenerate: {directory: 'frontend/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/graphql-schema',
-          autogenerate: {directory: 'graphql-schema/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/graphql-schema'},
+            {label: 'API', autogenerate: {directory: 'graphql-schema/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/handlers',
-          autogenerate: {directory: 'handlers/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/handlers'},
+            {label: 'API', autogenerate: {directory: 'handlers/modules', collapsed: true}},
+          ],
         },
         {
           label: '@lect-effect/services',
-          autogenerate: {directory: 'services/modules', collapsed: true},
+          items: [
+            {label: 'Overview', link: '/services'},
+            {label: 'API', autogenerate: {directory: 'services/modules', collapsed: true}},
+          ],
+        },
+        {
+          label: '@lect-effect/migrations',
+          items: [{label: 'Overview', link: '/migrations'}],
+        },
+        {
+          label: '@lect-effect/docs site',
+          items: [{label: 'Overview', link: '/docs'}],
         },
       ],
     }),

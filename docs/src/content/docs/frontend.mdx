@@ -1,0 +1,68 @@
+---
+title: lect-effect/frontend
+description: Angular SSR app that consumes the generated GraphQL schema with Effect-powered runtime, GraphQL codegen, and feature stores for hello and product flows.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/frontend** is the Angular (standalone, SSR-ready) UI for lect-effect. It bootstraps an Effect runtime in the browser/server, wires GraphQL through typed document nodes generated from the monorepo schema, and exposes feature stores that keep UI state in sync with Effect programs.
+
+## What it provides
+
+- **Angular app + SSR** entrypoints for browser and server bootstrapping ([apps/frontend/src/main.ts](apps/frontend/src/main.ts), [apps/frontend/src/main.server.ts](apps/frontend/src/main.server.ts)) and an Express SSR host ([apps/frontend/src/server.ts](apps/frontend/src/server.ts)).
+- **App configuration** with DI-provided raw config (GraphQL endpoint, log level), client hydration, zoneless change detection, and routing ([apps/frontend/src/app/app.config.ts](apps/frontend/src/app/app.config.ts), [apps/frontend/src/app/app.routes.ts](apps/frontend/src/app/app.routes.ts)).
+- **Effect runtime wiring** that decodes config, builds the composed layer (frontend config, logger, GraphQL client, hello/product APIs), and exposes `UiRuntime` helpers to run Effects from components ([apps/frontend/src/app/core/effect/ui-runtime.ts](apps/frontend/src/app/core/effect/ui-runtime.ts), [apps/frontend/src/app/core/effect/app-layer.ts](apps/frontend/src/app/core/effect/app-layer.ts)).
+- **GraphQL client + errors** wrapping fetch with Effect, plus typed error classes and JSON decoding guards ([apps/frontend/src/app/core/graphql/graphql-client.ts](apps/frontend/src/app/core/graphql/graphql-client.ts), [apps/frontend/src/app/core/graphql/graphql-errors.ts](apps/frontend/src/app/core/graphql/graphql-errors.ts)).
+- **Feature API layers** for hello and product mutations that validate inputs with domain schemas, call the generated GraphQL documents, and decode results ([apps/frontend/src/api/hello/hello.api.live.ts](apps/frontend/src/api/hello/hello.api.live.ts), [apps/frontend/src/api/product/product.api.live.ts](apps/frontend/src/api/product/product.api.live.ts)).
+- **Stores and pages** for hello and create-product flows using `RemoteData` signals to track loading/success/failure ([apps/frontend/src/app/features/hello/hello.store.ts](apps/frontend/src/app/features/hello/hello.store.ts), [apps/frontend/src/app/features/products/create-product.store.ts](apps/frontend/src/app/features/products/create-product.store.ts)).
+- **GraphQL codegen** configuration that generates typed document nodes from the monorepo SDL artifact ([apps/frontend/codegen.ts](apps/frontend/codegen.ts), `schema` is resolved from `@lect-effect/graphql-schema/schema.graphql`).
+- **NPM scripts** for build (`graphql:codegen` + `ng build`), dev serve with proxy, tests (Vitest via `ng test`), SSR serve, and clean (see [apps/frontend/package.json](apps/frontend/package.json)).
+
+## Dependency boundaries
+
+- **Depends on**: Angular core/router/SSR, `@graphql-codegen/*`, `@graphql-typed-document-node/core`, `graphql`, `effect`, and internal packages `@lect-effect/domain` (schemas) and `@lect-effect/graphql-schema` (SDL artifact consumed by codegen).
+- **Consumes** the generated SDL from `@lect-effect/graphql-schema` to keep document types in lockstep with backend handlers.
+- **Provides** typed API layers and UI state stores; no backend logic lives here.
+
+## Key modules
+
+- **Config + DI**: Raw config token and decoder to typed config ([apps/frontend/src/app/core/config/frontend-config.ts](apps/frontend/src/app/core/config/frontend-config.ts), [apps/frontend/src/app/core/config/raw-frontend-config-token.ts](apps/frontend/src/app/core/config/raw-frontend-config-token.ts)).
+- **Logging layer**: sets minimum log level from config ([apps/frontend/src/app/core/logging/logging.layer.ts](apps/frontend/src/app/core/logging/logging.layer.ts)).
+- **UI runtime**: managed Effect runtime tied to Angular destroy lifecycle ([apps/frontend/src/app/core/effect/ui-runtime.ts](apps/frontend/src/app/core/effect/ui-runtime.ts)).
+- **Remote data helpers**: discriminated union for loading/error/success states ([apps/frontend/src/app/core/effect/remote-data.ts](apps/frontend/src/app/core/effect/remote-data.ts)).
+- **Hello feature**: store + page using `HelloApiService.greet` and `NameInput` schema ([apps/frontend/src/app/features/hello/hello.store.ts](apps/frontend/src/app/features/hello/hello.store.ts), [apps/frontend/src/app/features/hello/hello.page.ts](apps/frontend/src/app/features/hello/hello.page.ts)).
+- **Product feature**: store + page for `createProductWithItems` with normalized nullable fields ([apps/frontend/src/app/features/products/create-product.store.ts](apps/frontend/src/app/features/products/create-product.store.ts), [apps/frontend/src/app/features/products/create-product.page.ts](apps/frontend/src/app/features/products/create-product.page.ts)).
+
+## Usage patterns
+
+### Develop against the local backend
+
+```bash
+pnpm --filter @lect-effect/frontend run start
+```
+
+Starts Angular dev server (proxying `/graphql` by default). Ensure backend is running and `@lect-effect/graphql-schema/schema.graphql` is up to date.
+
+### Build and serve SSR bundle
+
+```bash
+pnpm --filter @lect-effect/frontend run build
+pnpm --filter @lect-effect/frontend run serve:ssr
+```
+
+Build runs GraphQL codegen first, then Angular build; SSR server serves the built app (port defaults to 4200 unless `FRONTEND_PORT` is set).
+
+### Run feature Effects from components
+
+Inject `UiRuntime` and run typed Effects from stores; errors stay typed via `Cause`/`Exit`, and UI binds to `RemoteData` for status rendering.
+
+## Principles reinforced here
+
+- **Single SDL source**: GraphQL documents/codegen rely on the repo’s generated schema artifact to mirror backend handlers.
+- **Effectful UI**: Angular DI provides an Effect runtime and service layers so pages run typed programs without ad-hoc fetches.
+- **Schema-first validation**: Inputs/outputs for API calls are validated with shared domain schemas before hitting GraphQL.
+- **Directional deps**: frontend depends on domain + generated schema and talks to backend over GraphQL; it holds no server/stateful infra.
+
+<Aside type="tip" icon="star" title="Next steps">
+After backend/handler changes, regenerate SDL (`pnpm --filter @lect-effect/graphql-schema run schema:generate`) and rerun frontend codegen (`pnpm --filter @lect-effect/frontend run build` or `run graphql:codegen`) to keep types aligned.
+</Aside>

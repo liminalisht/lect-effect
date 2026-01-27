@@ -1,0 +1,96 @@
+---
+title: lect-effect/handlers
+description: Effect-first handlers that connect domain schemas and services to GraphQL operations.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/handlers** defines the Effect programs that back your GraphQL operations. Each handler is described by its input/output schemas, error type, and required services, making contracts explicit and keeping resolver wiring declarative.
+
+## What it provides
+
+- **Handler shapes**: `QueryHandler`, `MutationHandler`, `FieldHandler` describe operation kind, key, schemas, handler function, and dependencies.
+- **Ready-made handlers**:
+  - Hello: `helloHandler`, `greetQuery` using `GreetService` and `NameInput`/`HelloResponse` schemas.
+  - Item: queries, list, create, and item→product field resolvers over `ItemRepoService`/`ProductRepoService`.
+  - Product: queries, list, create, fetch with items, create with items, and product→items field resolvers over repo services.
+- **Schema-first, effectful logic**: every handler consumes domain schemas and returns typed effects with declared error and service requirements.
+
+## Dependency boundaries
+
+- **Depends on**: `@lect-effect/domain` (schemas), `@lect-effect/services` (service tags/interfaces), `effect`.
+- **Consumed by**: `@lect-effect/graphql-schema` (to derive GraphQL schema/resolvers) and `@lect-effect/backend` (to run them). Frontend indirectly benefits via generated GraphQL types.
+- **No app-specific code**: pure handler layer; live implementations stay in services/backend.
+
+## Key modules
+
+- `generic.ts`: `QueryHandler`, `MutationHandler`, `FieldHandler` shapes with input/output schemas, error `E`, and requirement `R`.
+- `hello.ts`: `helloHandler` (Effect over `NameInput` → `HelloResponse`, needs `GreetService`), `greetQuery` metadata.
+- `item.ts`: `getItemQuery`, `listItemsQuery`, `createItemMutation`, `productForItemField`; uses item/product schemas and item/product repos.
+- `product.ts`: product queries/mutations and field resolvers, including `createProductWithItemsMutation` and `getProductWithItemsQuery` combining repos.
+
+## Usage patterns
+
+### Describe a query
+
+```ts
+import { QueryHandler } from '@lect-effect/handlers/generic';
+import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
+import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
+import { helloHandler } from '@lect-effect/handlers/hello';
+import { GreetService } from '@lect-effect/services/greeting';
+
+export const greetQuery: QueryHandler<
+  typeof nameInputSchema,
+  typeof helloResponseSchema,
+  never,
+  GreetService
+> = {
+  kind: 'query',
+  key: 'greet',
+  descriptionString: 'greet a user by name',
+  inputSchema: nameInputSchema,
+  outputSchema: helloResponseSchema,
+  handler: helloHandler,
+};
+```
+
+### Compose a mutation with services
+
+```ts
+import { createProductWithItemsInputSchema, productWithItemsSchema } from '@lect-effect/domain/product';
+import { ProductRepoService, ItemRepoService } from '@lect-effect/services';
+import { createProductWithItems } from '@lect-effect/handlers/product';
+import { MutationHandler } from '@lect-effect/handlers/generic';
+
+type Repos = ProductRepoService | ItemRepoService;
+
+export const createProductWithItemsMutation: MutationHandler<
+  typeof createProductWithItemsInputSchema,
+  typeof productWithItemsSchema,
+  unknown,
+  Repos
+> = {
+  kind: 'mutation',
+  key: 'createProductWithItems',
+  descriptionString: 'create product and its items',
+  inputSchema: createProductWithItemsInputSchema,
+  outputSchema: productWithItemsSchema,
+  handler: createProductWithItems,
+};
+```
+
+### Feed GraphQL schema generation
+
+`@lect-effect/graphql-schema` consumes these handlers to derive GraphQL types and resolvers automatically. Changing a handler’s schemas updates the GraphQL surface and the frontend’s generated types.
+
+## Principles reinforced here
+
+- **Schema-first operations**: every handler declares its input/output schemas.
+- **Explicit effects**: success, error, and required services are part of the type, aiding tests and wiring.
+- **Directional deps**: handlers depend on domain + services, never on apps; backend/GraphQL consume handlers.
+- **Reusability**: the same handler powers GraphQL, tests, and any other caller that can provide the required services.
+
+<Aside type="tip" icon="star" title="Where to look next">
+Check the generated API docs under **Handlers** in the sidebar, or open `/handlers/modules/index` for the full handler catalog.
+</Aside>

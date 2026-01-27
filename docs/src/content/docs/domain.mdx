@@ -1,0 +1,75 @@
+---
+title: lect-effect/domain
+description: Core domain schemas and types that define the shape of every boundary in lect-effect.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/domain** is the foundation of the ecosystem. It contains Effect Schema definitions for every domain value, input, and output used across handlers, services, GraphQL, and the frontend. By centralizing shapes here, all other packages share validation, decoding/encoding, and type safety.
+
+## What it provides
+
+- **Schemas for core entities**: `Product`, `Item`, and their IDs/descriptions (see `/product` and `/item`).
+- **Operation inputs/outputs**: Hello flow (`NameInput`, `HelloResponse`), product creation payloads (`ProductInput`, `CreateProductWithItemsInput`), item creation (`CreateItemInput`).
+- **Decode helpers**: `decodeOne` and `decodeMany` wrap `Schema.decodeUnknown` for single values and arrays.
+- **Pure types only**: No side effects or infrastructure code—just schemas, derived types, and helpers.
+
+## Dependency boundaries
+
+- **Depends on**: `effect` (for `Schema`, `Effect`).
+- **Consumed by**: `@lect-effect/handlers`, `@lect-effect/services`, `@lect-effect/backend`, `@lect-effect/graphql-schema`, and `@lect-effect/frontend` (shared validation and generated GraphQL types).
+- **Never depends on app packages**: domain stays import-only to keep boundaries clean.
+
+## Key modules
+
+- `hello/`: `nameSchema`, `nameInputSchema`, `greetingSchema`, `helloResponseSchema` for the greeting flow.
+- `item/`: `itemSchema`, `createItemInputSchema`, plus `itemId`, `itemDescription`, `packSize` schemas.
+- `product/`: `productSchema`, `productInputSchema`, `createProductWithItemsInputSchema`, IDs and descriptions.
+- `utilities/decode.ts`: `decodeOne`, `decodeMany` helpers for decoding unknown data with schemas.
+
+## Usage patterns
+
+### Validate and decode inputs
+
+```ts
+import { Effect, Schema } from 'effect';
+import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
+import { decodeOne } from '@lect-effect/domain/utilities/decode';
+
+const decodeNameInput = decodeOne(nameInputSchema);
+
+const program = Effect.gen(function* () {
+  const input = yield* decodeNameInput({ name: 'Ada' });
+  // input is fully typed and validated here
+  return input.name;
+});
+```
+
+### Shape handler signatures
+
+Use the schemas to type handler inputs/outputs and keep contracts explicit:
+
+```ts
+import { Effect } from 'effect';
+import { nameInputSchema, NameInput } from '@lect-effect/domain/hello/nameInput';
+import { helloResponseSchema, HelloResponse } from '@lect-effect/domain/hello/helloResponse';
+
+// Effect<E, A, R> style: errors and requirements stay explicit
+export const greet = (input: NameInput) : Effect.Effect<HelloResponse, never> =>
+  Effect.succeed({ greeting: `Hello ${input.name ?? 'world'}` });
+```
+
+### Feed GraphQL and codegen
+
+`@lect-effect/graphql-schema` consumes these schemas to derive GraphQL types and resolvers; the frontend codegen then reuses the same shapes for strongly typed queries and UI validation.
+
+## Principles reinforced here
+
+- **Single source of truth**: all boundary shapes live in domain schemas.
+- **Reusability**: the same schema powers backend validation, GraphQL, frontend forms, and tests.
+- **Testability**: schemas pair naturally with property-based testing (`fast-check` via handlers/services) and decoding helpers for fixtures.
+- **Directional dependencies**: keeping domain leaf-only makes architectural edges obvious and enforceable.
+
+<Aside type="tip" icon="star" title="Where to go next">
+Browse the generated API docs for this package under **Domain** in the sidebar, or open `/domain/modules/index` for full schema references.
+</Aside>

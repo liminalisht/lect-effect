@@ -138,6 +138,16 @@ const moveModuleIndex = (section: string) =>
     }
   });
 
+const moveSectionIndex = (section: string) =>
+  Effect.gen(function * () {
+    const src = path.join(repoRoot, 'docs', 'src', 'content', 'docs', section, 'index.md');
+    const dst = path.join(repoRoot, 'docs', 'src', 'content', 'docs', section, '_index.md');
+    yield * Effect.tryPromise(async () => rename(src, dst)).pipe(
+      Effect.tapError(() => Effect.unit),
+      Effect.orElse(() => Effect.unit),
+    );
+  });
+
 const program = Effect.gen(function * () {
   for (const task of docgenTasks) {
     yield * runDocgenTask(task);
@@ -145,6 +155,7 @@ const program = Effect.gen(function * () {
 
   for (const section of sectionNames) {
     yield * moveModuleIndex(section);
+    yield * moveSectionIndex(section);
   }
 
   yield * Effect.logInfo('docs:generate complete');

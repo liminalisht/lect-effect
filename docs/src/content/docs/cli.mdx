@@ -1,0 +1,77 @@
+---
+title: lect-effect/cli
+description: Workspace CLI that composes Effect-powered commands to build, lint, migrate, start, and release the lect-effect stack.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/cli** wraps all project workflows in a single Effect-based command surface. It stitches together shell primitives (builds, migrations, codegen, docs, git ops) into typed @effect/cli commands and runs them from the repo root with consistent logging and error tagging.
+
+## What it provides
+
+- **Root command** `lect-effect` with subcommands for build, start, lint, schema generation, docs, tests, and git helpers ([apps/cli/src/index.ts](apps/cli/src/index.ts)).
+- **Shell primitives** centralizing every action as a named command (build, clean, migrations, codegen, git) for reuse across flows ([apps/cli/src/shellCommands.ts](apps/cli/src/shellCommands.ts)).
+- **Orchestrated pipelines**: `build`, `start`, `start:backend`, `start:frontend`, `schema:generate`, `lint [--fix]`, `docs`, `test`, plus git helpers (iterate, archive, branch create/list, version set).
+- **Effect integration**: commands run as Effects, log steps, and surface failures as tagged `ShellRunError`; Node runtime/context provided via `@effect/platform-node`.
+- **Repo-root execution**: shell commands run from the monorepo root (computed from dist location) so paths stay consistent.
+
+## Dependency boundaries
+
+- **Depends on**: `@effect/cli`, `@effect/platform`/`@effect/platform-node`, `effect`, `concurrently` (for dual runtime start).
+- **Drives** other packages via shell commands: builds domain/services/handlers/backend/frontend/docs, runs migrations, regenerates GraphQL schema, triggers frontend codegen, and invokes git workflows.
+- **Contains no business logic**: purely orchestration/glue for workspace tasks.
+
+## Key commands
+
+- **Build**: `lect-effect build` → install, clean all, build domain → services → handlers → backend → graphql-schema → generate SDL → frontend codegen → frontend → docs.
+- **Start stacks**:
+  - `lect-effect start` → full build, masterdata migrations, start backend & frontend concurrently (labeled output via `concurrently`).
+  - `lect-effect start:backend` / `start:frontend` for single-side runs.
+- **Schema/codegen**: `lect-effect schema:generate` regenerates SDL; frontend codegen is part of build.
+- **Lint**: `lect-effect lint [--fix]` builds then runs workspace XO (ignores docs-site and generated GraphQL).
+- **Docs**: `lect-effect docs` installs/cleans/builds dependencies, prunes generated docs content, regenerates docs, then starts docs dev server.
+- **Tests**: `lect-effect test` builds, runs test DB migrations, then executes domain/backend/frontend tests.
+- **Git helpers**: `lect-effect git iterate|archive|branch:create|branch:list|version:set` for common flows (add/commit/push, archive zip, branching, version bump + tag).
+
+## Usage patterns
+
+### Run a full build
+
+```bash
+pnpm --filter @lect-effect/cli run start -- build
+```
+
+Invokes `lect-effect build` (install, clean, build everything, regenerate SDL, codegen, docs).
+
+### Start both runtimes with migrations
+
+```bash
+pnpm --filter @lect-effect/cli run start -- start
+```
+
+Runs full build, applies masterdata migrations, and starts backend and frontend with colored concurrent output.
+
+### Regenerate schema + frontend codegen
+
+```bash
+pnpm --filter @lect-effect/cli run start -- schema:generate
+pnpm --filter @lect-effect/frontend run build   # to refresh generated documents
+```
+
+### Use git helpers
+
+```bash
+pnpm --filter @lect-effect/cli run start -- git iterate
+pnpm --filter @lect-effect/cli run start -- git version:set 1.2.3
+```
+
+## Principles reinforced here
+
+- **Single entrypoint** for all workspace automation, keeping flows discoverable and repeatable.
+- **Directional orchestration**: CLI depends on packages; packages stay independent of the CLI.
+- **Type-safe commands** via @effect/cli with structured error tagging and consistent logging.
+- **Reuse via primitives**: all shell actions live in one place, making pipelines easy to adjust without scattering scripts.
+
+<Aside type="tip" icon="star" title="Next steps">
+Use `lect-effect docs` to regenerate docs after code changes, or `lect-effect start` to spin up the full stack locally with migrations applied.
+</Aside>

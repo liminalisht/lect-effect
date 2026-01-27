@@ -1,0 +1,53 @@
+---
+title: lect-effect/graphql-schema
+description: CLI pipeline that materializes the backend GraphQL schema into SDL for codegen and publishing.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/graphql-schema** runs the backend's handler-derived schema and resolvers, prints a sorted SDL, and writes it to `schema.graphql` alongside the package. It is the single source artifact that the frontend and external clients consume for typed GraphQL access.
+
+## What it provides
+
+- **Effect-driven CLI** that loads the compiled backend app, schema builder, and resolvers, then prints a sorted schema ([packages/graphql-schema/src/index.ts](packages/graphql-schema/src/index.ts)).
+- **Deterministic SDL output** written to `packages/graphql-schema/schema.graphql`, ensuring stable diff-able schema changes.
+- **Logging and error surfacing** via `Effect.log*` with Node runtime wiring.
+- **NPM script** `schema:generate` that builds the package and emits the SDL.
+
+## Dependency boundaries
+
+- **Depends on**: `effect`, `@effect/platform`, `@effect/platform-node` for runtime, FS access, and logging.
+- **Runtime expects**: a built backend (`apps/backend/dist/**`) exposing `selectHandlers`, `makeSchema`, and `handlersToResolvers`; run backend build first so imports succeed.
+- **Consumed by**: frontend GraphQL codegen, docs, and any external client needing the canonical SDL artifact.
+- **No domain/handler logic**: this package only orchestrates schema emission; business logic stays in handlers/services/backend.
+
+## Key modules
+
+- Entry point: [packages/graphql-schema/src/index.ts](packages/graphql-schema/src/index.ts) orchestrates loading backend modules, deriving the schema from handlers, and writing the SDL.
+- Artifact: `packages/graphql-schema/schema.graphql` is the generated SDL checked into the repo for consumers/codegen.
+
+## Usage patterns
+
+### Generate the schema locally
+
+Ensure the backend is built (`pnpm --filter @lect-effect/backend run build` or `./lect-effect.sh build`), then run:
+
+```bash
+pnpm --filter @lect-effect/graphql-schema run schema:generate
+```
+
+This builds the CLI, executes it, and writes `schema.graphql` with sorted definitions.
+
+### Keep schema in sync with handlers
+
+Any change to handler input/output schemas or added resolvers in the backend will be reflected the next time you generate. Commit the updated SDL so frontend codegen and external clients stay aligned.
+
+## Principles reinforced here
+
+- **Single artifact**: one generated SDL ensures GraphQL consumers share the same contract.
+- **Deterministic output**: sorted schema keeps diffs clean and reviewable.
+- **Directional dependency**: schema generation depends on backend builds and handlers, never the other way around.
+
+<Aside type="tip" icon="star" title="Next steps">
+Run codegen on the frontend after regenerating the schema, or inspect the updated SDL in `packages/graphql-schema/schema.graphql` to review breaking changes.
+</Aside>

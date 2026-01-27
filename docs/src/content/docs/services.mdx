@@ -1,0 +1,82 @@
+---
+title: lect-effect/services
+description: Service contracts and live-layer boundaries for infrastructure used by handlers and backend wiring.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**@lect-effect/services** defines the service interfaces and tags that handlers rely on: configuration, logging, database access, repositories, and greeting. It keeps infrastructure requirements explicit and Effect-friendly, while remaining free of app-specific code.
+
+## What it provides
+
+- **Service tags & shapes** for application config, greeting, item/product repositories, master data DB, and PG client config.
+- **Error surfaces** for configuration and repository operations (`ConfigurationError`, `ItemRepoError`, `ProductRepoError`).
+- **Config schemas** for environment, log level, and port.
+- **Pure interfaces**: no live wiring here—just contracts and types that live layers implement downstream.
+
+## Dependency boundaries
+
+- **Depends on**: `effect`, `@effect/sql` (error/client types), and `@lect-effect/domain` (shared schemas).
+- **Consumed by**: `@lect-effect/handlers` (declares requirements), `@lect-effect/backend` (provides live layers), GraphQL resolvers, and tests.
+- **Does not depend on apps**: keeps infra contracts reusable and directionally correct.
+
+## Key modules
+
+- `appConfig/interface`: `AppConfig` tag plus `Environment`, `ConfiguredLogLevel`, and `Port` schemas.
+- `greeting/interface`: `GreetService` with `greet(name: Option<Name>) -> Effect<Greeting>`.
+- `itemRepo/interface`: `ItemRepoService` with CRUD operations and `ItemRepoError` (SQL | ParseError).
+- `productRepo/interface`: `ProductRepoService` with find/list/create and `ProductRepoError` (SQL | ProductNotFound | ParseError).
+- `masterdataDb/interface`: `MasterdataDbService` exposing a `SqlClient` handle.
+- `pgClientConfig/interface`: PG connection config schema/tag.
+- `config/interface`: shared config layer contract.
+- `errors.ts`: `ConfigurationError` alias for config load/validation failures.
+
+## Usage patterns
+
+### Declare handler requirements
+
+```ts
+import { Effect, Option } from 'effect';
+import { GreetService } from '@lect-effect/services/greeting/interface';
+import { Name } from '@lect-effect/domain/hello/name';
+
+export const helloHandler = (name: Option.Option<Name>) =>
+  Effect.gen(function* () {
+    const svc = yield* GreetService;
+    return yield* svc.greet(name);
+  });
+```
+
+### Compose live layers (backend)
+
+Provide implementations in the backend app and feed them to handlers:
+
+```ts
+import { Layer } from 'effect';
+import { GreetService } from '@lect-effect/services/greeting/interface';
+import { makeLiveGreeting } from './greeting.live';
+
+export const GreetingLive = Layer.succeed(GreetService, makeLiveGreeting());
+```
+
+### Share config schemas
+
+Use the provided schemas to validate environment/config inputs:
+
+```ts
+import { Schema } from 'effect';
+import { environmentSchema } from '@lect-effect/services/appConfig/interface/environment';
+
+const decodeEnv = Schema.decodeUnknown(environmentSchema);
+```
+
+## Principles reinforced here
+
+- **Explicit requirements**: every handler’s `R` includes service tags, making dependencies visible and testable.
+- **Swappable implementations**: tests can provide mock layers; backend wires live layers; frontend never needs them.
+- **Shared domain types**: repositories operate on domain schemas to stay consistent with GraphQL and handlers.
+- **Error clarity**: typed error unions per service keep failure modes explicit.
+
+<Aside type="tip" icon="star" title="Next steps">
+Check the generated API docs under **Services** in the sidebar, or explore `/services/modules/index` for full interfaces and error types.
+</Aside>
