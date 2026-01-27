@@ -20,8 +20,8 @@ export type RemoteData<A, E> =
  * @category Constructors
  */
 export const remoteData = {
-	initial: <A, E>(): RemoteData<A, E> => ({ _tag: 'Initial' }),
-	loading: <A, E>(): RemoteData<A, E> => ({ _tag: 'Loading' }),
-	failure: <A, E>(error: E): RemoteData<A, E> => ({ _tag: 'Failure', error }),
-	success: <A, E>(value: A): RemoteData<A, E> => ({ _tag: 'Success', value }),
+  initial: <A, E>(): RemoteData<A, E> => ({ _tag: 'Initial' }),
+  loading: <A, E>(): RemoteData<A, E> => ({ _tag: 'Loading' }),
+  failure: <A, E>(error: E): RemoteData<A, E> => ({ _tag: 'Failure', error }),
+  success: <A, E>(value: A): RemoteData<A, E> => ({ _tag: 'Success', value }),
 } as const;

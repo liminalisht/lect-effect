@@ -3,7 +3,7 @@
  * @since 1.0.0
  */
 import { Effect, Schema } from 'effect';
-import { type NameInput, nameInputSchema } from '@lect-effect/domain/hello/nameInput';
+import { type NameInput } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { HelloDocument } from '../../graphql/generated/graphql.js';

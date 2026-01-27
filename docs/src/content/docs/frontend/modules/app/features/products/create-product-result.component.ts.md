@@ -42,7 +42,6 @@ Remote data to render.
 
 ```ts
 state: RemoteData<
-  unknown,
   {
     readonly product: {
       readonly __typename?: "Product" | undefined
@@ -50,7 +49,8 @@ state: RemoteData<
       readonly description: string | null
     }
     readonly items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number }[]
-  }
+  },
+  unknown
 >
 ```
 

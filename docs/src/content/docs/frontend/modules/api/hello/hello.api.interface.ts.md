@@ -47,7 +47,7 @@ Public surface of the hello API service.
 
 ```ts
 export type HelloApi = {
-  readonly greet: (name: unknown) => Effect.Effect<HelloResponse, HelloApiError>
+  readonly greet: (input: NameInput) => Effect.Effect<HelloResponse, HelloApiError>
 }
 ```
 

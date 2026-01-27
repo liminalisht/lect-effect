@@ -95,7 +95,7 @@ const docsPrerequisiteSteps: readonly ShellCommand[] = [
   generateGraphqlSchema,
   frontendCodegen,
   buildFrontend,
-  lintShellCommand(Option.none()),
+  lintShellCommand(Option.some(true)), //lint with --fix
 ];
 
 /** Build all workspace packages in dependency order.

@@ -52,7 +52,7 @@ Remote data state reflected into the view.
 **Signature**
 
 ```ts
-readonly state: WritableSignal<RemoteData<unknown, number>>
+readonly state: WritableSignal<RemoteData<number, unknown>>
 ```
 
 Added in v1.0.0

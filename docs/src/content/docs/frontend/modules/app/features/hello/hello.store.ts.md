@@ -81,7 +81,7 @@ Remote data state for the hello request.
 **Signature**
 
 ```ts
-readonly state: Signal<RemoteData<Cause.Cause<HelloApiError>, { readonly greeting: string & Brand<"Greeting">; }>>
+readonly state: Signal<RemoteData<{ readonly greeting: string & Brand<"Greeting">; }, Cause.Cause<HelloApiError>>>
 ```
 
 Added in v1.0.0
@@ -93,7 +93,7 @@ Derived greeting when available.
 **Signature**
 
 ```ts
-readonly greeting: Signal<(string & Brand<"Greeting">) | null>
+readonly greeting: Signal<string | null>
 ```
 
 Added in v1.0.0

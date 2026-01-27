@@ -4,7 +4,7 @@
  */
 /* eslint-disable @typescript-eslint/member-ordering */
 import {
-  computed, inject, Injectable, signal,
+  computed, inject, Injectable, signal, type Signal, type WritableSignal,
 } from '@angular/core';
 import { type Cause, Effect, Exit } from 'effect';
 import type { HelloResponse } from '@lect-effect/domain/hello/helloResponse';
@@ -12,7 +12,6 @@ import type { NameInput } from '@lect-effect/domain/hello/nameInput';
 import { remoteData, type RemoteData } from '../../core/effect/remote-data.js';
 import { UiRuntime } from '../../core/effect/ui-runtime.js';
 import { HelloApiService, type HelloApiError } from '../../../api/hello/hello.api.interface.js';
-import { type Signal, type WritableSignal } from '@angular/core';
 
 /**
  * Feature store coordinating hello input and Effect execution.
@@ -23,8 +22,10 @@ import { type Signal, type WritableSignal } from '@angular/core';
 export class HelloStore {
   private readonly runtime: UiRuntime
     = inject(UiRuntime);
+
   private readonly name_: WritableSignal<string>
     = signal<string>('');
+
   private readonly state_: WritableSignal<RemoteData<HelloResponse, Cause.Cause<HelloApiError>>>
     = signal<RemoteData<HelloResponse, Cause.Cause<HelloApiError>>>(remoteData.initial<HelloResponse, Cause.Cause<HelloApiError>>());
 
@@ -35,6 +36,7 @@ export class HelloStore {
    */
   readonly name: Signal<string>
     = this.name_.asReadonly();
+
   /**
    * Remote data state for the hello request.
    * @since 1.0.0

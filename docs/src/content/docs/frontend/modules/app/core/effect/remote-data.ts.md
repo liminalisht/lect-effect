@@ -31,10 +31,10 @@ Helpers to construct remote data values.
 
 ```ts
 export declare const remoteData: {
-  readonly initial: <E, A>() => RemoteData<E, A>
-  readonly loading: <E, A>() => RemoteData<E, A>
-  readonly failure: <E, A>(error: E) => RemoteData<E, A>
-  readonly success: <E, A>(value: A) => RemoteData<E, A>
+  readonly initial: <A, E>() => RemoteData<A, E>
+  readonly loading: <A, E>() => RemoteData<A, E>
+  readonly failure: <A, E>(error: E) => RemoteData<A, E>
+  readonly success: <A, E>(value: A) => RemoteData<A, E>
 }
 ```
 
@@ -49,7 +49,7 @@ Remote data helpers for representing async UI states.
 **Signature**
 
 ```ts
-export type RemoteData<E, A> =
+export type RemoteData<A, E> =
   | { readonly _tag: "Initial" }
   | { readonly _tag: "Loading" }
   | { readonly _tag: "Failure"; readonly error: E }
