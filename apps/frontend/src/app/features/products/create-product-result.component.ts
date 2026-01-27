@@ -26,5 +26,5 @@ export class CreateProductResultComponent {
    * @since 1.0.0
    * @category Inputs
    */
-  @Input({required: true}) state!: RemoteData<unknown, ProductWithItems>;
+  @Input({required: true}) state!: RemoteData<ProductWithItems, unknown>;
 }

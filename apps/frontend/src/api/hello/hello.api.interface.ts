@@ -5,6 +5,7 @@
 import { Context, type Effect } from 'effect';
 import type { ParseError } from 'effect/ParseResult';
 import type { HelloResponse } from '@lect-effect/domain/hello/helloResponse';
+import type { NameInput } from '@lect-effect/domain/hello/nameInput';
 import type { GraphQLClientError } from '../../app/core/graphql/graphql-errors';
 
 /**
@@ -20,7 +21,7 @@ export type HelloApiError = GraphQLClientError | ParseError;
  * @category Service Interfaces
  */
 export type HelloApi = {
-  readonly greet: (name: unknown) => Effect.Effect<HelloResponse, HelloApiError>;
+  readonly greet: (input: NameInput) => Effect.Effect<HelloResponse, HelloApiError>;
 };
 
 /**

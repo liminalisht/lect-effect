@@ -20,7 +20,7 @@ export class ToyStore {
    * @since 1.0.0
    * @category signals
    */
-  readonly state: WritableSignal<RemoteData<unknown, number>> = signal(remoteData.initial());
+  readonly state: WritableSignal<RemoteData<number, unknown>> = signal(remoteData.initial<number, unknown>());
 
   constructor(private readonly runtime: UiRuntime) {}
 
@@ -30,20 +30,20 @@ export class ToyStore {
    * @category Methods
    */
   run(): void {
-    this.state.set(remoteData.loading());
+    this.state.set(remoteData.loading<number, unknown>());
 
     void (async () => {
       try {
         const exit = await this.runtime.runExit(Effect.succeed(123));
 
         if (Exit.isSuccess(exit)) {
-          this.state.set(remoteData.success(exit.value));
+          this.state.set(remoteData.success<number, unknown>(exit.value));
           return;
         }
 
-        this.state.set(remoteData.failure(exit.cause));
+        this.state.set(remoteData.failure<number, unknown>(exit.cause));
       } catch (error: unknown) {
-        this.state.set(remoteData.failure(error));
+        this.state.set(remoteData.failure<number, unknown>(error));
       }
     })();
   }

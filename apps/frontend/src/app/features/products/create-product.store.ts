@@ -21,7 +21,7 @@ export class CreateProductStore {
    * @since 1.0.0
    * @category Signals
    */
-  readonly state = signal<RemoteData<Cause.Cause<ProductApiError>, ProductWithItems>>(remoteData.initial<Cause.Cause<ProductApiError>, ProductWithItems>());
+  readonly state = signal<RemoteData<ProductWithItems, Cause.Cause<ProductApiError>>>(remoteData.initial<ProductWithItems, Cause.Cause<ProductApiError>>());
 
   private readonly runtime = inject(UiRuntime);
 
@@ -31,7 +31,7 @@ export class CreateProductStore {
    * @category Methods
    */
   async create(input: unknown): Promise<void> {
-    this.state.set(remoteData.loading<Cause.Cause<ProductApiError>, ProductWithItems>());
+    this.state.set(remoteData.loading<ProductWithItems, Cause.Cause<ProductApiError>>());
 
     const program = Effect.gen(function * () {
       const api = yield * ProductApiService;
@@ -41,10 +41,10 @@ export class CreateProductStore {
     const exit = await this.runtime.runExit(program);
 
     if (Exit.isSuccess(exit)) {
-      this.state.set(remoteData.success<Cause.Cause<ProductApiError>, ProductWithItems>(exit.value));
+      this.state.set(remoteData.success<ProductWithItems, Cause.Cause<ProductApiError>>(exit.value));
       return;
     }
 
-    this.state.set(remoteData.failure<Cause.Cause<ProductApiError>, ProductWithItems>(exit.cause));
+    this.state.set(remoteData.failure<ProductWithItems, Cause.Cause<ProductApiError>>(exit.cause));
   }
 }

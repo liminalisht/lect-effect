@@ -3,11 +3,13 @@
  * @since 1.0.0
  */
 import { Effect, Schema } from 'effect';
-import { nameInputSchema } from '@lect-effect/domain/hello/nameInput';
+import { type NameInput, nameInputSchema } from '@lect-effect/domain/hello/nameInput';
 import { helloResponseSchema } from '@lect-effect/domain/hello/helloResponse';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { HelloDocument } from '../../graphql/generated/graphql.js';
 import { HelloApiService } from './hello.api.interface.js';
+
+const decodeResponse = Schema.decodeUnknown(Schema.Struct({greet: helloResponseSchema}));
 
 /**
  * Layer constructor yielding the live hello API service.
@@ -18,13 +20,12 @@ export const helloApiLive = Effect.gen(function * () {
   const client = yield * GraphQLClientService;
 
   return HelloApiService.of({
-    greet: (name: unknown) =>
+    greet: (input: NameInput) =>
       Effect.gen(function * () {
-        const decoded = yield * Schema.decodeUnknown(nameInputSchema)({ name });
-        const variables = { name: decoded.name ?? null };
+        const variables = {name: input.name ?? null};
         const response = yield * client.request(HelloDocument, variables);
-        const decodedResponse = yield * Schema.decodeUnknown(Schema.Struct({ greet: helloResponseSchema }))(response);
-        return decodedResponse.greet;
+        const {greet} = yield * decodeResponse(response);
+        return greet;
       }),
   });
 });
