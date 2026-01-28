@@ -85,15 +85,20 @@ const docgenTasks: readonly DocgenTask[] = [
 
 const sectionNames = docgenTasks.map(task => task.name);
 
-const buildDocgenArgs = (task: DocgenTask) => [
-  '--project',
-  task.tsconfig,
-  '--src',
-  task.src,
-  '--out',
-  resolveFromRoot(task.out),
-  ...task.excludes.flatMap(pattern => ['--exclude', pattern]),
-];
+const buildDocgenArgs = (task: DocgenTask) => {
+  const cwd = resolveFromRoot(task.cwd);
+  const out = path.relative(cwd, resolveFromRoot(task.out));
+
+  return [
+    '--project',
+    task.tsconfig,
+    '--src',
+    task.src,
+    '--out',
+    out,
+    ...task.excludes.flatMap(pattern => ['--exclude', pattern]),
+  ];
+};
 
 const runDocgenTask = (task: DocgenTask) =>
   Effect.gen(function * () {
