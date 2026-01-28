@@ -11,64 +11,74 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Introduction to lect-effect',
-          autogenerate: {directory: 'guides', collapsed: true},
+          autogenerate: {directory: 'guides'},
+          collapsed: true,
         },
         {
           label: '@lect-effect/backend',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/backend'},
-            {label: 'API', autogenerate: {directory: 'backend/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'backend/modules'}},
           ],
         },
         {
           label: '@lect-effect/cli',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/cli'},
-            {label: 'API', autogenerate: {directory: 'cli/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'cli/modules'}, collapsed: true},
           ],
         },
         {
+          label: '@lect-effect/docs',
+          collapsed: true,
+          items: [{label: 'Overview', link: '/docs'}],
+        },
+        {
           label: '@lect-effect/domain',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/domain'},
-            {label: 'API', autogenerate: {directory: 'domain/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'domain/modules'}, collapsed: true},
           ],
         },
         {
           label: '@lect-effect/frontend',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/frontend'},
-            {label: 'API', autogenerate: {directory: 'frontend/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'frontend/modules'}, collapsed: true},
           ],
         },
         {
           label: '@lect-effect/graphql-schema',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/graphql-schema'},
-            {label: 'API', autogenerate: {directory: 'graphql-schema/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'graphql-schema/modules'}, collapsed: true},
           ],
         },
         {
           label: '@lect-effect/handlers',
+          collapsed: true,
           items: [
             {label: 'Overview', link: '/handlers'},
-            {label: 'API', autogenerate: {directory: 'handlers/modules', collapsed: true}},
-          ],
-        },
-        {
-          label: '@lect-effect/services',
-          items: [
-            {label: 'Overview', link: '/services'},
-            {label: 'API', autogenerate: {directory: 'services/modules', collapsed: true}},
+            {label: 'API', autogenerate: {directory: 'handlers/modules'}, collapsed: true},
           ],
         },
         {
           label: '@lect-effect/migrations',
+          collapsed: true,
           items: [{label: 'Overview', link: '/migrations'}],
         },
         {
-          label: '@lect-effect/docs site',
-          items: [{label: 'Overview', link: '/docs'}],
+          label: '@lect-effect/services',
+          collapsed: true,
+          items: [
+            {label: 'Overview', link: '/services'},
+            {label: 'API', autogenerate: {directory: 'services/modules'}, collapsed: true},
+          ],
         },
       ],
     }),
