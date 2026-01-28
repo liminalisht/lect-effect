@@ -1,12 +1,17 @@
 import {defineConfig} from 'astro/config';
+import mermaid from 'astro-mermaid';
 import starlight from '@astrojs/starlight';
 import gruvbox from 'starlight-theme-gruvbox';
 
 export default defineConfig({
   integrations: [
+    mermaid({
+      autoTheme: true
+    }), // ⚠️ Must come BEFORE starlight, per https://github.com/joesaby/astro-mermaid
     starlight({
       plugins: [gruvbox()],
       title: 'lect-effect',
+      favicon: './src/assets/monad.svg',
       social: [{icon: 'github', label: 'GitHub', href: 'https://github.com/liminalisht/lect-effect'}],
       sidebar: [
         {
