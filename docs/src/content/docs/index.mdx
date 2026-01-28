@@ -17,17 +17,11 @@ hero:
 import { Aside, Card, LinkCard, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Card title="lect-effect">
-is an ecosystem of `Effect` packages and runnable apps. Define your domain once (schemas + handlers), and everything else falls out with minimal glue.
+is an ecosystem of `Effect` packages and runnable apps.
 </Card>
-
-<Aside type="tip">
-Define your domain once (schemas + handlers), and everything else falls out with minimal glue.
-</Aside>
 
 <Tabs>
   <TabItem label="packages">
-
-
 
 <CardGrid>
   <LinkCard
@@ -96,6 +90,8 @@ Define your domain once (schemas + handlers), and everything else falls out with
 
 <Card title="Core Principles">
 
+> Make the domain canonical, and re-index everything else against it.
+
 - **Domain schemas are the center.** Schema definitions drive validation, decoding/encoding, arbitrary generation for tests, and shape every boundary.
 - **Functions as morphisms.** Handlers take schema-defined inputs and return schema-defined outputs, typed with inputs, success, errors, and required services (DI-friendly, property-testable).
 - **Effect everywhere.** Handlers and orchestration are Effect programs—cancellable, inspectable, schedulable—on both backend and frontend.
@@ -120,7 +116,7 @@ Define your domain once (schemas + handlers), and everything else falls out with
 - **Implement a handler:** write an Effect that accepts the input schema, returns the output schema, and lists required services. It’s immediately usable by GraphQL, backend, and tests.
 - **Expose via GraphQL:** weave handler + schemas in `@lect-effect/graphql-schema`; Yoga server picks it up; frontend codegen updates its typed operations.
 - **Call from frontend:** use generated GraphQL types plus shared domain validators to keep forms and network boundaries in sync.
-- **Document automatically:** run `pnpm -C docs run docs:generate` (or `./lect-effect.sh docs`) to regenerate typed API docs for every package.
+- **Document automatically:** run `./lect-effect.sh docs` to regenerate typed API docs for every package.
 </Card>
 
 

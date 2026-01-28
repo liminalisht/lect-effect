@@ -5,50 +5,81 @@ description: The invariants that guide how lect-effect is structured and assembl
 
 import { Aside } from '@astrojs/starlight/components';
 
-This page captures the decisions that keep lect-effect coherent as we extend the system. They distill the plans in `/plans/*.md` into a small set of invariants and how the current codebase realizes them.
+**lect-effect** is organized around a simple idea:
 
-## Effect-first boundary
+> **Make the domain canonical, then reindex everything else against it.**
+
+Concretely, the domain is expressed as **Effect Schema** objects (runtime validation + static types), and computations are expressed as **Effect** programs whose requirements are explicit in the type parameter `R` of `Effect<A, E, R>`.
+
+GraphQL is not the “center” of the system; it is a **view** (a representation) of the domain, constructed by *weaving* resolvers and schemas via **GQLoom**.
+
+Categorically, the codebase is biased toward making the *Kleisli category* of `Effect` the primary arena of composition, while GraphQL is a boundary functor from “requests” into that Kleisli category.
+
+---
+
+## Effect-centric workflow
+
+- Effects target service interfaces: each computation represents a logical interaction, describing its input, possible successes, possible errors, and the services it needs—without directly performing side effects.
+- These computations compose freely; GraphQL resolvers can be derived from them and wrapped with any middleware or extra effects using the full Effect toolkit.
+- GraphQL codegen gives type-safe client (UI) contracts, and the same schemas can be reused for validation.
+- The same source of truth yields shapes/types, validators, generators for property tests, and resolvers that lift “do what the handler says” into GraphQL behavior (and variations thereof).
+
+## Project goals
+
+1. **Single source of truth for types and validation**: Domains are defined using `Schema`s; TypeScript types are derived from those schemas.
+
+2. **Explicit dependencies, compositional construction**: Every computation declares what it needs as its requirement type `R` (a union of services); services are provided by a `Layer` graph.
+
+3. **Transport layer stays thin**: GraphQL resolvers should be small adapters: decode input, run a handler, return output.
+
+4. **Testability by construction**: Property tests for schemas, handler tests for semantics, and GraphQL-level tests for end-to-end behavior.
+
+5. **Docs as a build artifact**: JSDoc is part of the interface: `docgen` turns it into navigable reference material.
+
+## Key design decisions
+
+### Effect-first boundary
 
 - **Runtime lives in context.** GraphQL Yoga injects an `Effect` runtime for `AppServices` into the request context, and `runEffect` is the single interpreter `Effect ⟶ Promise`. Resolvers do `runEffect(handler(args))`; handlers stay pure `Effect<A, E, R>` over services.
 - **Layers wire the world.** `appLayer` is the wiring diagram: config → logger → DB → repos → handlers. New services extend the union `AppServices` and are provided by composing layers, not by threading values through handlers.
 - **Async context is canonical.** GQLoom’s `asyncContextProvider` is enabled so resolvers never reach for `payload.context`; `useContext` is the single source of truth for request-scoped data.
 
-## Schema assembly and lects
+### Schema assembly and lects
 
 - **Schema is parametric, not global.** Resolvers are assembled and woven into a schema; plans call for `makeSchema(resolvers)` so we can build subsets without changing handler code.
 - **Lect manifest controls surface.** A “lect” is a set of modules (resolvers + layers + config obligations). Selecting a lect should induce the schema, required services, and config keys as a join—no duplicate handlers. This keeps unused services/config out of the runtime when a lect is smaller than “all modules”.
 
-## Configuration strategy
+### Configuration strategy
 
 - **Config is modular.** Today `ConfigService` reads app + DB settings; plans call for splitting into `AppConfig` and `MasterdataDbConfig` (or lazily reading DB config) so a lect that omits DB does not parse DB env vars.
 - **Config stays effectful.** Config is read/validated via `Effect.Config` and provided as a layer. Service layers depend on config; handlers never read env directly.
 
-## Services, handlers, and packages
+### Services, handlers, and packages
 
 - **Interfaces before implementations.** Service algebras (e.g., greeting, repos, logging) are the contracts; live layers provide implementations. Plans outline extracting interfaces into `@lect-effect/services` and handler logic into `@lect-effect/handlers`, leaving infrastructure in apps.
 - **Direction is enforced.** Domain → services → handlers → apps (backend/frontend); there is no back-edge into domain from apps. Docs/CLI consume these packages but do not inject runtime dependencies back upstream.
 
-## Database and persistence
+### Database and persistence
 
 - **Effect-native SQL.** Postgres uses `@effect/sql` + `@effect/sql-pg`; queries validate inputs/outputs with `Schema`/`SqlSchema`. Oracle (when added) will be wrapped as an Effect layer around `oracledb` with bind parameters and Schema decoding.
 - **Transactions as boundaries.** Multi-step mutations (e.g., create product with items) execute in a transaction provided by the DB/repo layer. Handlers declare repo services; repos own retries/timeouts and optional batching (DataLoader) to avoid N+1s.
 
-## GraphQL contract
+### GraphQL contract
 
 - **Derived, typed surface.** GraphQL types come from Effect Schemas via GQLoom; resolvers are thin wrappers over handlers. Plans emphasize exporting SDL and generating typed operations for the frontend to eliminate raw string queries and schema drift.
 - **Error interpretation at the edge.** Internal error coproducts are translated once into GraphQL errors (codes + extensions) rather than leaking internal types across the boundary.
 
-## Frontend alignment
+### Frontend alignment
 
 - **Stores run effects.** Angular stores execute `Effect` programs; components stay push-based (OnPush, zoneless) and react to signals. The UI runtime widens the environment to include only the services a store needs.
 - **Typed GraphQL client.** Frontend GraphQL calls are meant to use generated `TypedDocumentNode`s and shared schemas; runtime decoding remains as a belt-and-suspenders check, but compile-time query validation is the target.
 
-## Docs and tooling
+### Docs and tooling
 
 - **Docgen is first-class.** `@effect/docgen` generates package API docs; the Starlight site owns content and theming. Plans keep docgen paths stable and rewrites module indexes for navigation.
 - **CLI orchestrates pipelines.** The workspace CLI proxies build/test/lint/docgen commands into packages, so scripts reflect dependency order (domain → backend → frontend) and keep “public” commands stable even as internals move.
 
-## Testing posture
+### Testing posture
 
 - **Three strata.** (1) Domain/service/handler tests with mock layers; (2) resolver tests via `yoga.fetch` without sockets; (3) end-to-end HTTP if needed. Arbitraries come from schemas; layers make service substitution explicit.
 - **Data hygiene.** DB-facing tests run against real services with cleanup/transactions; mocks live at the service layer, not by stubbing global clients.

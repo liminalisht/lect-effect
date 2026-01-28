@@ -5,79 +5,23 @@ description: Project goals, mental model, scripts, and the shortest path from ze
 
 import {Code} from '@astrojs/starlight/components';
 
-**lect-effect** is organized around a simple idea:
-
-> **Make the domain canonical, then reindex everything else against it.**
-
-Concretely, the domain is expressed as **Effect Schema** objects (runtime validation + static types), and computations are expressed as **Effect** programs whose requirements are explicit in the type parameter `R` of `Effect<A, E, R>`.
-
-GraphQL is not the “center” of the system; it is a **view** (a representation) of the domain, constructed by *weaving* resolvers and schemas via **GQLoom**.
-
-If you like categorical language: the codebase is biased toward making the *Kleisli category* of `Effect` the primary arena of composition, while GraphQL is a boundary functor from “requests” into that Kleisli category.
-
----
-
-## Project goals
-
-1. **Single source of truth for types and validation**
-   Domain value objects and DTOs are defined as `Schema`s; TypeScript types are derived from those schemas.
-
-2. **Explicit dependencies, compositional construction**
-   Every computation declares what it needs as `R` (a union of services); services are provided by a `Layer` graph.
-
-3. **Transport layer stays thin**
-   GraphQL resolvers should be small adapters: decode input, run a handler, return output.
-
-4. **Testability by construction**
-   Property tests for schemas, handler tests for semantics, and GraphQL-level tests for end-to-end behavior.
-
-5. **Docs as a build artifact**
-   JSDoc is part of the interface: `docgen` turns it into navigable reference material.
-
----
-
-## Mental model (how to read the code)
-
-Think in four strata, each a different “presentation” of the same underlying intent:
-
-1. **Domain (`src/domain/`)**
-   Value objects and composite structures as `Schema`s (and their inferred types).
-
-2. **Services (`src/services/`)**
-   Abstract capabilities (tags) living in an Effect `Context`.
-   These are the *objects of dependency*, referenced by handlers and repositories.
-
-3. **Layers (`src/services/layers/`)**
-   Concrete constructions of services, assembled into a dependency DAG.
-
-4. **Boundary (`src/graphql/`)**
-   GraphQL schema + resolvers, woven from the above and executed by injecting an `Effect` runtime into GraphQL context.
-
----
-
 ## Prerequisites
 
-- Node.js (this repo targets modern Node; TypeScript config extends `@tsconfig/node24`).
-- pnpm
-- Docker (recommended) for PostgreSQL containers.
+- `node.js` (this repo targets modern Node; TypeScript config extends `@tsconfig/node24`).
+- `pnpm`
+- `docker` (recommended) for PostgreSQL containers.
 
 Useful docs:
-- pnpm install: https://pnpm.io/cli/install
-- node-pg-migrate: https://salsita.github.io/node-pg-migrate/getting-started
-- GraphQL Yoga: https://the-guild.dev/graphql/yoga-server/docs
-- Effect: https://effect.website/docs/getting-started/introduction/
+- [`pnpm`](https://pnpm.io/cli/install)
+- [`node-pg-migrate`](https://salsita.github.io/node-pg-migrate/getting-started)
+- [`graphql-yoga`](https://the-guild.dev/graphql/yoga-server/docs)
+- [`effect`](https://effect.website/docs/getting-started/introduction/)
 
 ---
 
 ## Quickstart (local dev)
 
-### 1) Install dependencies
-
-```bash
-pnpm install
-```
-
-### 2) Start Postgres
+### Start local service dependencies (e.g Postgres)
 
 The repo includes `docker-compose.yml` with two databases:
 
@@ -88,7 +32,7 @@ The repo includes `docker-compose.yml` with two databases:
 docker compose up -d
 ```
 
-### 3) Set environment variables
+### Set environment variables
 
 Config is read through Effect `Config` and typically provided by `.env` / `.env.test` via `dotenv` + `env-cmd`.
 
@@ -115,15 +59,15 @@ Example URLs matching `docker-compose.yml`:
 * `MASTERDATA_PG_URL=postgres://user:password@localhost:5432/masterdatadb`
 * `TEST_MASTERDATA_PG_URL=postgres://testuser:testpassword@localhost:5433/testmasterdatadb`
 
-### 4) Run the guided wizard (recommended)
+### Run commands interactively via the guided wizard
 
 ```bash
 ./lect-effect.sh --wizard
 ```
 
-The wizard will walk you through the typical local flow (install, migrate, start) and surface the right subcommands.
+The wizard will walk you through the typical local flow (install, migrate, starand surface the right subcommands.
 
-### 5) Manual commands (if you prefer)
+### Run commands
 
 ```bash
 ./lect-effect.sh start
