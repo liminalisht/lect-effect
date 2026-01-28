@@ -56,6 +56,14 @@ Added in v1.0.0
 - [ShellCommand[]](#shellcommand)
   - [cleanSteps](#cleansteps)
   - [fullBuildSteps](#fullbuildsteps)
+- [utils](#utils)
+  - [gitBranchesContainingTag](#gitbranchescontainingtag)
+  - [gitTagDeleteLocal](#gittagdeletelocal)
+  - [gitTagDeleteRemote](#gittagdeleteremote)
+  - [gitTagSha](#gittagsha)
+  - [gitTagShow](#gittagshow)
+  - [gitTagsListLex](#gittagslistlex)
+  - [gitTagsListSemver](#gittagslistsemver)
 
 ---
 
@@ -519,6 +527,92 @@ Full build pipeline in dependency order.
 
 ```ts
 export declare const fullBuildSteps: readonly ShellCommand[]
+```
+
+Added in v1.0.0
+
+# utils
+
+## gitBranchesContainingTag
+
+List branches containing a tag's commit.
+
+**Signature**
+
+```ts
+export declare const gitBranchesContainingTag: (tag: string) => ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagDeleteLocal
+
+Delete a tag locally.
+
+**Signature**
+
+```ts
+export declare const gitTagDeleteLocal: (tag: string) => ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagDeleteRemote
+
+Delete a tag from origin.
+
+**Signature**
+
+```ts
+export declare const gitTagDeleteRemote: (tag: string) => ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagSha
+
+Show the full SHA for a given tag.
+
+**Signature**
+
+```ts
+export declare const gitTagSha: (tag: string) => ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagShow
+
+Show details for a given tag (commit, diff).
+
+**Signature**
+
+```ts
+export declare const gitTagShow: (tag: string) => ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagsListLex
+
+List all tags lexicographically (default refname sort).
+
+**Signature**
+
+```ts
+export declare const gitTagsListLex: ShellCommand
+```
+
+Added in v1.0.0
+
+## gitTagsListSemver
+
+List all tags with semver-friendly ordering (version sort).
+
+**Signature**
+
+```ts
+export declare const gitTagsListSemver: ShellCommand
 ```
 
 Added in v1.0.0

@@ -3,9 +3,11 @@
  * Keeps primitives in shellCommands.ts and wires them into @effect/cli commands.
  * @since 1.0.0
  */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, n/prefer-global/buffer */
 import { execSync } from 'node:child_process';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import rootPackageJson from '../../../package.json' with { type: 'json' };
 import { Args, Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
@@ -26,6 +28,13 @@ import {
   gitArchiveHead,
   gitCreateBranch,
   gitVersionSet,
+  gitTagSha,
+  gitTagShow,
+  gitTagsListLex,
+  gitTagsListSemver,
+  gitBranchesContainingTag,
+  gitTagDeleteLocal,
+  gitTagDeleteRemote,
   gitIterateSteps,
   gitListBranchesByDate,
   installWorkspace,
@@ -46,6 +55,8 @@ type ShellRunError = {
   _tag: 'ShellRunError';
   command: string;
   cause: unknown;
+  stderr?: string;
+  stdout?: string;
 };
 
 /** Execute a shell command, logging it at debug level and tagging failures.
@@ -55,13 +66,27 @@ type ShellRunError = {
 const runShell: (command: string) => Effect.Effect<void, ShellRunError> = (command: string) =>
   Effect.gen(function * () {
     yield * Effect.logInfo(`➜ ${command}`);
-    yield * Effect.as(
-      Effect.try({
-        try: () => execSync(command, { stdio: 'inherit', cwd: repoRoot }),
-        catch: cause => ({ _tag: 'ShellRunError', command, cause } satisfies ShellRunError),
-      }),
-      undefined,
-    );
+    try {
+      execSync(command, { stdio: 'inherit', cwd: repoRoot });
+    } catch (error) {
+      const stderr = typeof (error as any)?.stderr === 'string'
+        ? (error as any).stderr
+        : (Buffer.isBuffer((error as any)?.stderr) ? (error as any).stderr.toString() : undefined);
+      const stdout = typeof (error as any)?.stdout === 'string'
+        ? (error as any).stdout
+        : (Buffer.isBuffer((error as any)?.stdout) ? (error as any).stdout.toString() : undefined);
+
+      const message = [
+        `command failed: ${command}`,
+        stderr ? `stderr: ${stderr}` : undefined,
+        stdout ? `stdout: ${stdout}` : undefined,
+      ].filter(Boolean).join('\n');
+
+      yield * Effect.logError(message);
+      return yield * Effect.fail({
+        _tag: 'ShellRunError', command, cause: error, stderr, stdout,
+      } satisfies ShellRunError);
+    }
   });
 
 /** Run a sequence of shell commands in order.
@@ -95,7 +120,7 @@ const docsPrerequisiteSteps: readonly ShellCommand[] = [
   generateGraphqlSchema,
   frontendCodegen,
   buildFrontend,
-  lintShellCommand(Option.some(true)), //lint with --fix
+  lintShellCommand(Option.some(true)), // lint with --fix
 ];
 
 /** Build all workspace packages in dependency order.
@@ -253,6 +278,41 @@ const versionSetCommand = Command
     {readonly version: string}
   >;
 
+/** Show the full commit SHA for a tag. */
+const tagShaCommand = Command
+  .make('tag:sha', { tag: Args.text({ name: 'tag' }) }, ({ tag }) => runShell(gitTagSha(tag).command))
+  .pipe(Command.withDescription('Print the full commit SHA for a tag.')) satisfies Command.Command<'tag:sha', never, ShellRunError, {readonly tag: string}>;
+
+/** Show details for a tag. */
+const tagShowCommand = Command
+  .make('tag:show', { tag: Args.text({ name: 'tag' }) }, ({ tag }) => runShell(gitTagShow(tag).command))
+  .pipe(Command.withDescription('Show the commit and diff for a tag.')) satisfies Command.Command<'tag:show', never, ShellRunError, {readonly tag: string}>;
+
+/** List tags lexicographically. */
+const tagsListCommand = Command
+  .make('tags:list', emptyConfig, () => runShell(gitTagsListLex.command))
+  .pipe(Command.withDescription('List all tags (lexicographic refname sort).')) satisfies Command.Command<'tags:list', never, ShellRunError, Record<string, never>>;
+
+/** List tags with semver-friendly ordering. */
+const tagsListSemverCommand = Command
+  .make('tags:list:semver', emptyConfig, () => runShell(gitTagsListSemver.command))
+  .pipe(Command.withDescription('List version-like tags sorted by version:refname.')) satisfies Command.Command<'tags:list:semver', never, ShellRunError, Record<string, never>>;
+
+/** List branches containing a tag commit. */
+const tagBranchesCommand = Command
+  .make('tag:branches', { tag: Args.text({ name: 'tag' }) }, ({ tag }) => runShell(gitBranchesContainingTag(tag).command))
+  .pipe(Command.withDescription('List branches (local+remote) that contain the tag commit.')) satisfies Command.Command<'tag:branches', never, ShellRunError, {readonly tag: string}>;
+
+/** Delete a tag locally. */
+const tagDeleteCommand = Command
+  .make('tag:delete', { tag: Args.text({ name: 'tag' }) }, ({ tag }) => runShell(gitTagDeleteLocal(tag).command))
+  .pipe(Command.withDescription('Delete a tag locally.')) satisfies Command.Command<'tag:delete', never, ShellRunError, {readonly tag: string}>;
+
+/** Delete a tag on origin. */
+const tagDeleteRemoteCommand = Command
+  .make('tag:delete:remote', { tag: Args.text({ name: 'tag' }) }, ({ tag }) => runShell(gitTagDeleteRemote(tag).command))
+  .pipe(Command.withDescription('Delete a tag on origin.')) satisfies Command.Command<'tag:delete:remote', never, ShellRunError, {readonly tag: string}>;
+
 /** Git utilities (iterate, archive).
  * @since 1.0.0
  * @category Cli
@@ -267,6 +327,13 @@ const gitCommand = Command
       createBranchCommand,
       listBranchesCommand,
       versionSetCommand,
+      tagShaCommand,
+      tagShowCommand,
+      tagsListCommand,
+      tagsListSemverCommand,
+      tagBranchesCommand,
+      tagDeleteCommand,
+      tagDeleteRemoteCommand,
     ]),
   ) satisfies Command.Command<
     'git',
@@ -304,7 +371,7 @@ const rootCommand: Command.Command<'lect-effect', never, ShellRunError, {readonl
  */
 const cli: ReturnType<typeof Command.run> = Command.run(rootCommand, {
   name: 'lect-effect',
-  version: '1.0.0',
+  version: rootPackageJson.version,
 });
 
 // default to showing help if no args are provided

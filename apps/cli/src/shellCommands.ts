@@ -71,6 +71,62 @@ export const gitVersionSet = (version: string): ShellCommand => ({
   ].join(' && '),
 });
 
+/** Show the full SHA for a given tag.
+ * @since 1.0.0
+ */
+export const gitTagSha = (tag: string): ShellCommand => ({
+  name: 'gitTagSha',
+  command: `git rev-parse ${tag}`,
+});
+
+/** Show details for a given tag (commit, diff).
+ * @since 1.0.0
+ */
+export const gitTagShow = (tag: string): ShellCommand => ({
+  name: 'gitTagShow',
+  command: `git show ${tag}`,
+});
+
+/** List all tags lexicographically (default refname sort).
+ * @since 1.0.0
+ */
+export const gitTagsListLex: ShellCommand = {
+  name: 'gitTagsListLex',
+  command: 'git tag --list --sort=refname',
+};
+
+/** List all tags with semver-friendly ordering (version sort).
+ * @since 1.0.0
+ */
+export const gitTagsListSemver: ShellCommand = {
+  name: 'gitTagsListSemver',
+  command: 'git tag --list \'v*\' --sort=version:refname',
+};
+
+/** List branches containing a tag's commit.
+ * @since 1.0.0
+ */
+export const gitBranchesContainingTag = (tag: string): ShellCommand => ({
+  name: 'gitBranchesContainingTag',
+  command: `git branch -a --contains ${tag}`,
+});
+
+/** Delete a tag locally.
+ * @since 1.0.0
+ */
+export const gitTagDeleteLocal = (tag: string): ShellCommand => ({
+  name: 'gitTagDeleteLocal',
+  command: `git tag -d ${tag}`,
+});
+
+/** Delete a tag from origin.
+ * @since 1.0.0
+ */
+export const gitTagDeleteRemote = (tag: string): ShellCommand => ({
+  name: 'gitTagDeleteRemote',
+  command: `git push origin :refs/tags/${tag}`,
+});
+
 /** List branches sorted by last commit date.
  * @since 1.0.0
  * @category ShellCommand
