@@ -14,10 +14,14 @@ hero:
       link: /guides/architectural-decisions
       icon: document
 ---
-import { Aside, Card, LinkCard, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+import {docsVersion} from '../../data/version';
+import { Aside, Badge, Card, LinkCard, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+
 
 <Card title="lect-effect">
 is an ecosystem of `Effect` packages and runnable apps.
+<Badge text="experimental" variant="caution" /> <Badge text={`version: ${docsVersion}`} variant="danger" />
 </Card>
 
 <Tabs>
@@ -87,6 +91,12 @@ is an ecosystem of `Effect` packages and runnable apps.
 
   </TabItem>
 </Tabs>
+
+<Aside type="tip" icon="star" title="Try it, then make it yours">
+- Clone the repo.
+- Run `./lect-effect.sh --wizard` to build, migrate, and start everything with guided prompts.
+- Tweak packages, handlers, and services to match your domain; the CLI keeps codegen, builds, and docs in sync.
+</Aside>
 
 <Card title="Core Principles">
 
