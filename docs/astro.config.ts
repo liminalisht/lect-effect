@@ -6,7 +6,7 @@ import gruvbox from 'starlight-theme-gruvbox';
 export default defineConfig({
   integrations: [
     mermaid({
-      autoTheme: true
+      autoTheme: true,
     }), // ⚠️ Must come BEFORE starlight, per https://github.com/joesaby/astro-mermaid
     starlight({
       plugins: [gruvbox()],

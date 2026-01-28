@@ -7,6 +7,42 @@ import { Aside } from '@astrojs/starlight/components';
 
 **@lect-effect/backend** is the runnable GraphQL server. It selects the handler catalog, builds a typed schema with gqloom, injects the Effect runtime into Yoga, and wires live infrastructure (config, logging, Postgres repos) via layers.
 
+
+```mermaid
+graph TD
+    subgraph Configuration
+      cfg[appConfigLayer]
+      mcfg[masterdataDbConfigLayer]
+    end
+
+    subgraph Logging
+      cfg --> logger[loggerLayer]
+    end
+
+    subgraph Database
+      mcfg --> mdb[masterdataDbLayer]
+    end
+
+    subgraph Data Repositories
+      mdb --> itemRepo[itemRepoLayer]
+      mdb --> productRepo[productRepoLayer]
+      itemRepo --> repos[masterdataRepos]
+      productRepo --> repos
+    end
+
+    subgraph Services
+      greeting[greetingLayer]
+      cfg --> appConfig[appConfig]
+      logger --> configuredLogger[configuredLogger]
+      mdb --> configuredMasterdataDb[configuredMasterdataDb]
+      repos --> app[appLayer]
+      greeting --> app
+      configuredLogger --> app
+      appConfig --> app
+      configuredMasterdataDb --> app
+    end
+```
+
 ## What it provides
 
 - **Application wiring** that loads config, selects handlers, turns them into gqloom resolvers, builds the schema, and starts Yoga HTTP server ([apps/backend/src/app.ts](apps/backend/src/app.ts)).
