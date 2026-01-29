@@ -1,6 +1,6 @@
 /**
  * Layer for loading and providing application configuration.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {
   Config, ConfigError, Effect, LogLevel, Schema,
@@ -35,7 +35,7 @@ const loadLogLevel: Effect.Effect<LogLevel.LogLevel, ConfigurationError> = Effec
 
 /**
  * Loads application configuration from environment variables.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Implementations
  */
 export const appConfigServiceImplementation: Effect.Effect<AppConfig, ConfigError.ConfigError>

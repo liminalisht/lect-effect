@@ -1,6 +1,6 @@
 /**
  * Standalone form component for creating a product with items (no Angular Forms).
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {
   ChangeDetectionStrategy,
@@ -43,7 +43,7 @@ const makeItemDraft = (): ItemDraft => ({
 
 /**
  * Angular standalone form component for creating a product with items.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Components
  */
 @Component({
@@ -57,14 +57,14 @@ const makeItemDraft = (): ItemDraft => ({
 export class CreateProductFormComponent {
   /**
    * Emits validated create-product payloads.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Outputs
    */
   @Output() readonly submitted = new EventEmitter<CreateProductWithItemsInput>();
 
   /**
    * Field for the optional product description (blank → null).
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly productDescription = schemaField({
@@ -75,14 +75,14 @@ export class CreateProductFormComponent {
 
   /**
    * Draft items being edited in the form.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly items = signal<readonly ItemDraft[]>([makeItemDraft()]);
 
   /**
    * Whether the form is currently valid and can be submitted.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly canSubmit = computed(() => {
@@ -92,7 +92,7 @@ export class CreateProductFormComponent {
 
   /**
    * Adds a blank item draft row.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   addItem(): void {
@@ -101,7 +101,7 @@ export class CreateProductFormComponent {
 
   /**
    * Removes an item draft by index (keeps at least one row).
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   removeItem(index: number): void {
@@ -116,7 +116,7 @@ export class CreateProductFormComponent {
 
   /**
    * Handles product description edits.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   onProductDescriptionInput(event: Event): void {
@@ -126,7 +126,7 @@ export class CreateProductFormComponent {
 
   /**
    * Handles item description edits.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   onItemDescriptionInput(index: number, event: Event): void {
@@ -137,7 +137,7 @@ export class CreateProductFormComponent {
 
   /**
    * Handles item pack size edits.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   onItemPackSizeInput(index: number, event: Event): void {
@@ -148,7 +148,7 @@ export class CreateProductFormComponent {
 
   /**
    * Emits a validated payload when the draft is valid.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   submit(): void {

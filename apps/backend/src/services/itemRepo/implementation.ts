@@ -1,6 +1,6 @@
 /**
  * Item repository service implementation.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Schema } from 'effect';
 import { type CreateItemInput } from '@lect-effect/domain/item/createItemInput';
@@ -24,7 +24,7 @@ const toDomain = (r: Schema.Schema.Type<typeof ItemRowSchema>): Item => ({
 
 /**
  * Live implementation of the ItemRepo.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Implementations
  */
 export const itemRepoServiceImplementation = Effect.gen(function * () {

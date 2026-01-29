@@ -1,5 +1,5 @@
 /**
- * @since 1.0.0
+ * @since 0.1.0
  * @fileoverview Toy feature page rendering remote data from the store.
  * */
 import {ChangeDetectionStrategy, Component} from '@angular/core';
@@ -8,7 +8,7 @@ import {ToyStore} from './toy.store.js';
 
 /**
  * Page component for the toy feature.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Components
  */
 @Component({
@@ -23,7 +23,7 @@ import {ToyStore} from './toy.store.js';
 export class ToyPage {
   /**
    * Injected store managing toy feature state.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Properties
    */
   constructor(readonly store: ToyStore) {}

@@ -1,6 +1,6 @@
 /**
  * Layer for loading and providing application configuration.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {
   Config, type ConfigError, Effect,
@@ -26,6 +26,6 @@ const loadMasterdataDbConfig: Effect.Effect<MasterdataDbConfig, ConfigurationErr
 
 /**
  * Provides configuration values to the environment.
- * @since 1.0.0
+ * @since 0.1.0
  */
 export const testMasterdataDbConfigServiceImplementation: Effect.Effect<MasterdataDbConfig, ConfigError.ConfigError> = loadMasterdataDbConfig;

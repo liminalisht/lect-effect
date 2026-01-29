@@ -1,6 +1,6 @@
 /**
  * MasterdataDb service implementation.
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 import { Effect } from 'effect';
@@ -9,7 +9,7 @@ import { type MasterdataDb } from '@lect-effect/services/masterdataDb';
 
 /**
  * Live implementation of the MasterdataDb service
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Implementations
  */
 export const masterdataDbImplementation: Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>

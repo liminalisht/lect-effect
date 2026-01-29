@@ -1,6 +1,6 @@
 /**
  * Logging layer wiring for the frontend runtime.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Layer, Logger } from 'effect';
 import { FrontendConfigService } from '../config/frontend-config.js';
@@ -12,7 +12,7 @@ const program: Effect.Effect<Layer.Layer<never>, never, FrontendConfigService> =
 
 /**
  * Layer that configures the Effect logger based on the frontend config.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const FrontendLoggerLayer: Layer.Layer<never, never, FrontendConfigService> = Layer.unwrapEffect(program);

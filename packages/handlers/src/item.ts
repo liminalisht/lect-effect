@@ -1,6 +1,6 @@
 /**
  * Item handlers bridging GraphQL operations to item and product repositories.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Option, Schema } from 'effect';
 import type { ItemId } from '@lect-effect/domain/item/itemId';
@@ -14,7 +14,7 @@ import { type QueryHandler, type FieldHandler, type MutationHandler } from './ge
 
 /**
  * Fetches an item by id.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handler Effects
  */
 export const getItem = (id: ItemId) =>
@@ -31,7 +31,7 @@ const nullableProductSchema = Schema.NullOr(productSchema);
 
 /**
  * Query handler for fetching a single item.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handlers
  */
 export const getItemQuery: QueryHandler<
@@ -50,7 +50,7 @@ export const getItemQuery: QueryHandler<
 
 /**
  * Lists all items.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handler Effects
  */
 export const listItems = Effect.gen(function * () {
@@ -60,7 +60,7 @@ export const listItems = Effect.gen(function * () {
 
 /**
  * Query handler for listing all items.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handlers
  */
 export const listItemsQuery: QueryHandler<
@@ -79,7 +79,7 @@ export const listItemsQuery: QueryHandler<
 
 /**
  * Creates a new item.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handler Effects
  */
 export const createItem = (input: CreateItemInput) =>
@@ -90,7 +90,7 @@ export const createItem = (input: CreateItemInput) =>
 
 /**
  * Mutation handler for creating a new item.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handlers
  */
 export const createItemMutation: MutationHandler<
@@ -109,7 +109,7 @@ export const createItemMutation: MutationHandler<
 
 /**
  * Looks up the product for a given item id, returning null when absent.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handler Effects
  */
 export const productForItem = (itemId: ItemId) =>
@@ -121,7 +121,7 @@ export const productForItem = (itemId: ItemId) =>
 
 /**
  * Field resolver for loading the product related to an item.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handlers
  */
 export const productForItemField: FieldHandler<
@@ -142,7 +142,7 @@ export const productForItemField: FieldHandler<
 
 /**
  * Registered item handlers for GraphQL resolver conversion.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Item Handlers
  */
 export const itemHandlers = [

@@ -1,6 +1,6 @@
 /**
  * Browser application configuration providers.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { type ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -16,7 +16,7 @@ const rawFrontendConfig: RawFrontendConfig = {
 
 /**
  * Application configuration used when bootstrapping in the browser.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Configuration
  */
 export const appConfig: ApplicationConfig = {

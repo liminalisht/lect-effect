@@ -1,6 +1,6 @@
 /**
  * GraphQL client service wiring for frontend Effect programs.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {Context, Effect, Layer} from 'effect';
 import { print } from 'graphql';
@@ -17,7 +17,7 @@ import {
 
 /**
  * Minimal GraphQL client interface returning Effect results.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Interfaces
  */
 export type GraphQLClient = {
@@ -29,7 +29,7 @@ export type GraphQLClient = {
 
 /**
  * Tag for locating the GraphQL client service in an Effect environment.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class GraphQLClientService extends Context.Tag('GraphQLClientService')<
@@ -40,7 +40,7 @@ export class GraphQLClientService extends Context.Tag('GraphQLClientService')<
 // todo: extract implementation
 /**
  * Live GraphQL client layer backed by fetch.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const GraphQLClientLive: Layer.Layer<

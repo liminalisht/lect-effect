@@ -1,6 +1,6 @@
 /**
  * GraphQL schema construction helpers.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { weave } from '@gqloom/core';
 import { asyncContextProvider } from '@gqloom/core/context';
@@ -10,14 +10,14 @@ import { Effect } from 'effect';
 
 /**
  * Resolver type accepted by schema weaving.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Resolver Types
  */
 export type GraphQLResolver = Parameters<typeof weave>[2];
 
 /**
  * Builds the GraphQL schema from registered resolvers.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Schema Utilities
  */
 export const makeSchema = (resolvers: readonly GraphQLResolver[]): GraphQLSchema =>
@@ -25,7 +25,7 @@ export const makeSchema = (resolvers: readonly GraphQLResolver[]): GraphQLSchema
 
 /**
  * Produces a stable SDL string for a schema.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Schema Utilities
  */
 export const printSortedSchema = (schema: GraphQLSchema): string =>
@@ -33,7 +33,7 @@ export const printSortedSchema = (schema: GraphQLSchema): string =>
 
 /**
  * Logs a printable version of the schema for debugging.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Schema Utilities
  */
 export const logSchema = (schema: GraphQLSchema): Effect.Effect<void> => Effect.gen(function * () {

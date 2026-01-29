@@ -1,6 +1,6 @@
 /**
  * Greeting service contract.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Context, type Effect, type Option } from 'effect';
 import { type Name } from '@lect-effect/domain/hello/name';
@@ -8,7 +8,7 @@ import { type Greeting } from '@lect-effect/domain/hello/greeting';
 
 /**
  * Service tag for greeting operations.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class GreetService extends Context.Tag('services/greeting')<
@@ -18,7 +18,7 @@ export class GreetService extends Context.Tag('services/greeting')<
 
 /**
  * Interface for the greeting service implementation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Interfaces
  */
 export type Greet = {

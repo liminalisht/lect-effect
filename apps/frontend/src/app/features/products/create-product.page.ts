@@ -1,6 +1,6 @@
 /**
  * Composition page for creating a product with items.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -11,7 +11,7 @@ import {CreateProductStore} from './create-product.store.js';
 
 /**
  * Composition page that wires form, result, and store for product creation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Components
  */
 @Component({
@@ -28,7 +28,7 @@ export class CreateProductPage {
 
   /**
    * Handles form submit by delegating to the store.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   onSubmit(input: CreateProductWithItemsInput): void {

@@ -1,12 +1,12 @@
 /**
  * Shared handler shapes used to describe GraphQL operations in a schema-first way.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { type Effect, type Schema } from 'effect';
 
 /**
  * Describes a field resolver operating on a parent type.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Resolver Types
  */
 export type FieldHandler<
@@ -27,7 +27,7 @@ export type FieldHandler<
 
 /**
  * Describes a query resolver for a root-level operation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Resolver Types
  */
 export type QueryHandler<
@@ -46,7 +46,7 @@ export type QueryHandler<
 
 /**
  * Describes a mutation resolver for a root-level operation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Resolver Types
  */
 export type MutationHandler<

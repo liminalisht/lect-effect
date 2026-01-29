@@ -1,6 +1,6 @@
 /**
  * Managed Effect runtime wiring for the UI layer.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import {
@@ -12,7 +12,7 @@ import { makeAppLayer, type AppEnv } from './app-layer.js';
 
 /**
  * Facade for running Effect programs within the Angular app lifecycle.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 @Injectable({ providedIn: 'root' })
@@ -38,7 +38,7 @@ export class UiRuntime {
 
   /**
    * Run an Effect and capture its Exit using the shared runtime.
-   * @since 1.0.0
+   * @since 0.1.0
    */
   runExit = async <A, E, R extends AppEnv>(
     effect: Effect.Effect<A, E, R>,
@@ -46,7 +46,7 @@ export class UiRuntime {
 
   /**
    * Run an Effect and resolve its success value using the shared runtime.
-   * @since 1.0.0
+   * @since 0.1.0
    */
   runPromise = async <A, E, R extends AppEnv>(
     effect: Effect.Effect<A, E, R>,

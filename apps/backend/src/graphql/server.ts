@@ -1,6 +1,6 @@
 /**
  * HTTP server lifecycle helpers for GraphQL Yoga.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { createServer, type Server } from 'node:http';
 import { Effect} from 'effect';
@@ -11,7 +11,7 @@ import { type Yoga } from './yoga.js';
 // todo: grok Effect acquireRelease and Effect.async better
 /**
  * Starts an HTTP server for the provided Yoga instance.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Server Utilities
  */
 export const listen = <R>(

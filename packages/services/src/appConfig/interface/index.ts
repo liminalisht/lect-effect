@@ -1,6 +1,6 @@
 /**
  * Application configuration module surface.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Context } from 'effect';
 import { type Environment } from './environment.js';
@@ -9,7 +9,7 @@ import { type Port } from './port.js';
 
 /**
  * Application runtime configuration values.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Interfaces
  */
 export type AppConfig = {
@@ -20,7 +20,7 @@ export type AppConfig = {
 
 /**
  * Tag for accessing application configuration values.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class AppConfigService extends Context.Tag('services/appConfig')<AppConfigService, AppConfig>() {}

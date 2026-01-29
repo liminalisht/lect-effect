@@ -1,6 +1,6 @@
 /**
  * Store backing the Hello feature page.
- * @since 1.0.0
+ * @since 0.1.0
  */
 /* eslint-disable @typescript-eslint/member-ordering */
 import {
@@ -15,7 +15,7 @@ import { HelloApiService, type HelloApiError } from '../../../api/hello/hello.ap
 
 /**
  * Feature store coordinating hello input and Effect execution.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Stores
  */
 @Injectable()
@@ -31,7 +31,7 @@ export class HelloStore {
 
   /**
    * Current input value as a readonly signal.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly name: Signal<string>
@@ -39,7 +39,7 @@ export class HelloStore {
 
   /**
    * Remote data state for the hello request.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly state: Signal<RemoteData<HelloResponse, Cause.Cause<HelloApiError>>>
@@ -47,7 +47,7 @@ export class HelloStore {
 
   /**
    * Derived greeting when available.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly greeting: Signal<string | null> = computed(() => {
@@ -57,7 +57,7 @@ export class HelloStore {
 
   /**
    * Update the name input.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   setName(name: string): void {
@@ -66,7 +66,7 @@ export class HelloStore {
 
   /**
    * Execute the greet program and update remote data state.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   async run(): Promise<void> {

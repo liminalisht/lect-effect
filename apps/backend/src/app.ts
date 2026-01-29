@@ -1,6 +1,6 @@
 /**
  * Application bootstrap wiring for GraphQL server startup.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect } from 'effect';
 import { type Scope } from 'effect/Scope';
@@ -18,7 +18,7 @@ import { handlersToResolvers, type AnyHandler } from './graphql/resolvers.js';
 
 /**
  * Loads configuration from the AppConfigService.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Setup
  */
 export const getAppConfig = (): Effect.Effect<AppConfig, never, AppConfigService> => Effect.gen(function * () {
@@ -30,7 +30,7 @@ export const getAppConfig = (): Effect.Effect<AppConfig, never, AppConfigService
 
 /**
  * Builds and logs the GraphQL schema.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Setup
  */
 export const makeGraphQLSchema = (resolvers: readonly GraphQLResolver[]): Effect.Effect<GraphQLSchema, never, AppServices> => Effect.gen(function * () {
@@ -43,7 +43,7 @@ export const makeGraphQLSchema = (resolvers: readonly GraphQLResolver[]): Effect
 
 /**
  * Constructs the Yoga server instance with the provided schema.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Setup
  */
 export const makeYogaServer = (schema: GraphQLSchema): Effect.Effect<Yoga<AppServices>, never, AppServices> => Effect.gen(function * () {
@@ -61,7 +61,7 @@ const runYogaServer = (yoga: Yoga<AppServices>, appConfig: AppConfig): Effect.Ef
 
 /**
  * Selects the set of GraphQL handlers to be included in the application.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Setup
  */
 export const selectHandlers = (_appConfig?: AppConfig): readonly AnyHandler[] => ([
@@ -75,7 +75,7 @@ const makeResolvers = (handlers: readonly AnyHandler[]): readonly GraphQLResolve
 
 /**
  * Top-level application Effect that wires configuration, schema, and server startup.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Setup
  */
 export const app: Effect.Effect<never, ServerStartError, AppServices>

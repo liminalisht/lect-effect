@@ -1,13 +1,13 @@
 /**
  * GraphQL execution context bindings.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import type { Runtime } from 'effect';
 import type { YogaInitialContext } from 'graphql-yoga';
 
 /**
  * GraphQL context enriched with an Effect runtime for `AppServices`.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Context
  */
 export type GraphQLContext<R> = YogaInitialContext & RuntimeForServiceRequirements<R>;

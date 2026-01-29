@@ -1,6 +1,6 @@
 /**
  * Application client routes.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {type Routes} from '@angular/router';
 import { HelloPage } from './features/hello/hello.page.js';
@@ -9,7 +9,7 @@ import {CreateProductPage} from './features/products/create-product.page.js';
 
 /**
  * Client-side route configuration for the app shell.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Routes
  */
 export const routes: Routes = [

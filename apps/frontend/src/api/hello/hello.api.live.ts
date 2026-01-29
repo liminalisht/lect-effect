@@ -1,6 +1,6 @@
 /**
  * Live implementation of the hello API backed by GraphQL.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Schema } from 'effect';
 import { type NameInput } from '@lect-effect/domain/hello/nameInput';
@@ -13,7 +13,7 @@ const decodeResponse = Schema.decodeUnknown(Schema.Struct({greet: helloResponseS
 
 /**
  * Layer constructor yielding the live hello API service.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Implementations
  */
 export const helloApiLive = Effect.gen(function * () {

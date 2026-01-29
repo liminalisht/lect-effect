@@ -1,6 +1,6 @@
 /**
  * Greeting service layer wiring.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Layer, Option } from 'effect';
 import { greetingSchema } from '@lect-effect/domain/hello/greeting';
@@ -8,7 +8,7 @@ import { GreetService } from '@lect-effect/services/greeting';
 
 /**
  * Concrete greeting service implementation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Implementations
  */
 export const GreetServiceImplementation = GreetService.of({
@@ -16,7 +16,7 @@ export const GreetServiceImplementation = GreetService.of({
 });
 /**
  * Provides the GreetService implementation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const greetingLayer: Layer.Layer<GreetService> = Layer.succeed(

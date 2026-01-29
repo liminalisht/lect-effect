@@ -1,6 +1,6 @@
 /**
  * Item repository layer wiring.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Layer } from 'effect';
 import { type MasterdataDbService } from '@lect-effect/services/masterdataDb';
@@ -9,7 +9,7 @@ import { itemRepoServiceImplementation } from './implementation.js';
 
 /**
  * Provides the live ItemRepo implementation.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const itemRepoLayer: Layer.Layer<ItemRepoService, never, MasterdataDbService>

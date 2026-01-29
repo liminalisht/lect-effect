@@ -1,6 +1,6 @@
 /**
  * Application Effect layer composition for the frontend runtime.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Layer } from 'effect';
 import { type FrontendConfig, FrontendConfigService } from '../config/frontend-config.js';
@@ -13,7 +13,7 @@ import { type ProductApiService } from '../../../api/product/product.api.interfa
 
 /**
  * Union of services required by the UI Effect runtime.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Services
  */
 export type AppEnv =
@@ -24,7 +24,7 @@ export type AppEnv =
 
 /**
  * Build the composed application layer used by UiRuntime.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Layers
  */
 export const makeAppLayer = (cfg: FrontendConfig): Layer.Layer<AppEnv> => {

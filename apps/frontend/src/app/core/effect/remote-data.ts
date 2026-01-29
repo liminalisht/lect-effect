@@ -1,11 +1,11 @@
 /**
  * Remote data discriminated union for UI loading states.
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 /**
  * Remote data helpers for representing async UI states.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Types
  */
 export type RemoteData<A, E> =
@@ -16,7 +16,7 @@ export type RemoteData<A, E> =
 
 /**
  * Helpers to construct remote data values.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Constructors
  */
 export const remoteData = {

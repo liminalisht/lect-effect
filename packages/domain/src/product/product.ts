@@ -1,6 +1,6 @@
 /**
  * Product domain schema module.
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 import { Schema } from 'effect';
@@ -9,14 +9,14 @@ import { productDescriptionSchema } from './productDescription.js';
 
 /**
  * Product domain entity.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Domain Types
  */
 export type Product = Schema.Schema.Type<typeof productSchema>;
 
 /**
  * Product schema used across persistence and GraphQL layers.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Domain Schemas
  */
 export const productSchema = Schema.Struct({

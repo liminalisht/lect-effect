@@ -1,6 +1,6 @@
 /**
  * Hello handler providing a greeting based on optional name input.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect, Option } from 'effect';
 import { nameInputSchema, type NameInput } from '@lect-effect/domain/hello/nameInput';
@@ -9,7 +9,7 @@ import { GreetService } from '@lect-effect/services/greeting';
 import { type QueryHandler } from './generic.js';
 /**
  * Produces a greeting response using the greeting service.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Hello Handler Effects
  */
 export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, never, GreetService> =>
@@ -25,7 +25,7 @@ export const helloHandler = (input: NameInput): Effect.Effect<HelloResponse, nev
 
 /**
  * Query handler for greeting users.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Hello Handlers
  */
 export const greetQuery: QueryHandler<
@@ -44,7 +44,7 @@ export const greetQuery: QueryHandler<
 
 /**
  * Registered hello handlers for GraphQL resolver conversion.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Hello Handlers
  */
 export const helloHandlers = [

@@ -1,6 +1,6 @@
 /**
  * Result renderer for createProductWithItems remote data.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -9,7 +9,7 @@ import type {RemoteData} from '../../core/effect/remote-data.js';
 
 /**
  * Angular component rendering remote data from createProductWithItems.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Components
  */
 @Component({
@@ -23,7 +23,7 @@ import type {RemoteData} from '../../core/effect/remote-data.js';
 export class CreateProductResultComponent {
   /**
    * Remote data to render.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Inputs
    */
   @Input({required: true}) state!: RemoteData<ProductWithItems, unknown>;

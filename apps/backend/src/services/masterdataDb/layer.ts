@@ -1,6 +1,6 @@
 /**
  * Masterdata database layer wiring.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Config, Effect, Layer } from 'effect';
 import * as PgClient from '@effect/sql-pg/PgClient';
@@ -14,7 +14,7 @@ import { masterdataDbImplementation } from './implementation.js';
 
 /**
  * Provides the live masterdata database client.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const masterdataDbLayer: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService>

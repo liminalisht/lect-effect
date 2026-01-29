@@ -1,6 +1,6 @@
 /**
  * Application error union definitions.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { type SqlError } from '@effect/sql/SqlError';
 import { type DomainError } from '@lect-effect/domain/errors';
@@ -11,7 +11,7 @@ import { type GraphqlError } from './graphql/errors.js';
 // where is ItemRepoError, e.g.? is that getting caught or transformed or pattern-matched away somewhere else?
 /**
  * Union type of all application-specific errors.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Errors
  */
 export type AppError =

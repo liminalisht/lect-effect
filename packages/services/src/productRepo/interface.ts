@@ -1,6 +1,6 @@
 /**
  * Product repository service contract and live implementation.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {
   Context, type Effect, type Option,
@@ -15,7 +15,7 @@ import type { ItemId } from '@lect-effect/domain/item/itemId';
 // todo: this is not how we do errors... why not use TaggedError like elsewhere?
 /**
  * Error thrown when a product lookup fails.
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class ProductNotFound extends Error {
   get _tag(): 'ProductNotFound' {
@@ -30,13 +30,13 @@ export class ProductNotFound extends Error {
 // todo: move / import in AppError
 /**
  * Error type union for product repository operations.
- * @since 1.0.0
+ * @since 0.1.0
  */
 export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError;
 
 /**
  * Interface for product repository capabilities.
- * @since 1.0.0
+ * @since 0.1.0
  */
 export type ProductRepoShape = {
   readonly getById: (id: ProductId) => Effect.Effect<Option.Option<Product>, ProductRepoError>;
@@ -47,7 +47,7 @@ export type ProductRepoShape = {
 
 /**
  * Service tag for the product repository.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class ProductRepoService extends Context.Tag('services/productRepo')<

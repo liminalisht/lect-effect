@@ -1,6 +1,6 @@
 /**
  * GraphQL Yoga server setup.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Effect } from 'effect';
 import { createYoga, type YogaServerInstance } from 'graphql-yoga';
@@ -10,14 +10,14 @@ import type { GraphQLContext } from './context.js';
 // todo: extract so that schema is passed in here as a param
 /**
  * Alias for the configured Yoga server instance.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Yoga Server Type
  */
 export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>;
 
 /**
  * Constructs a Yoga server with the Effect runtime injected into context.
- * @since 1.0.0
+ * @since 0.1.0
  * @category GraphQL Yoga Server Utilities
  */
 export const makeYoga

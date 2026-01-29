@@ -1,6 +1,6 @@
 /**
  * Hello API interface definitions and service tag.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Context, type Effect } from 'effect';
 import type { ParseError } from 'effect/ParseResult';
@@ -10,14 +10,14 @@ import type { GraphQLClientError } from '../../app/core/graphql/graphql-errors';
 
 /**
  * Error union produced by hello API operations.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Errors
  */
 export type HelloApiError = GraphQLClientError | ParseError;
 
 /**
  * Public surface of the hello API service.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Interfaces
  */
 export type HelloApi = {
@@ -26,7 +26,7 @@ export type HelloApi = {
 
 /**
  * Tag for locating the hello API service in an Effect environment.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class HelloApiService extends Context.Tag('HelloApiService')<

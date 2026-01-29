@@ -1,6 +1,6 @@
 /**
  * Item repository service contract and live implementation.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Context, type Effect } from 'effect';
 import type * as SqlError from '@effect/sql/SqlError';
@@ -13,14 +13,14 @@ import { type ProductId } from '@lect-effect/domain/product/productId';
 // todo: extract error
 /**
  * Error type union for item repository operations.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Errors
  */
 export type ItemRepoError = SqlError.SqlError | ParseError;
 
 /**
  * Interface for item repository capabilities.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Service Interfaces
  */
 export type ItemRepoShape = {
@@ -33,7 +33,7 @@ export type ItemRepoShape = {
 
 /**
  * Service tag for the item repository.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Services
  */
 export class ItemRepoService extends Context.Tag('services/itemRepo')<ItemRepoService, ItemRepoShape>() {}

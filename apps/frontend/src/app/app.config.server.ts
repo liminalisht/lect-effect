@@ -1,6 +1,6 @@
 /**
  * Server-only application configuration used for SSR.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { mergeApplicationConfig, type ApplicationConfig } from '@angular/core';
 import { provideServerRendering, withRoutes } from '@angular/ssr';
@@ -15,7 +15,7 @@ const serverConfig: ApplicationConfig = {
 
 /**
  * Merged application configuration for server bootstrap.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Application Configuration
  */
 export const config: ApplicationConfig = mergeApplicationConfig(appConfig, serverConfig);

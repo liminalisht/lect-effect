@@ -1,6 +1,6 @@
 /**
  * Schema-governed form field helpers built on Angular signals.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {
   computed, signal, type Signal, type WritableSignal,
@@ -18,7 +18,7 @@ type SchemaFieldOptions<Raw, A> = {
 
 /**
  * Schema-backed form field interface with raw + derived validation signals.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Types
  */
 export type SchemaField<Raw, A> = {
@@ -35,7 +35,7 @@ const decodeEither = <A>(schema: Schema.Schema<A>) =>
 
 /**
  * Builds a schema-backed form field with derived validation signals.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Constructors
  */
 export const schemaField = <Raw, A>(options: SchemaFieldOptions<Raw, A>): SchemaField<Raw, A> => {
@@ -70,7 +70,7 @@ export const schemaField = <Raw, A>(options: SchemaFieldOptions<Raw, A>): Schema
 
 /**
  * Trims a string and returns null when blank.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Conversions
  */
 export const stringToNullIfBlank = (value: string): string | null => {
@@ -80,7 +80,7 @@ export const stringToNullIfBlank = (value: string): string | null => {
 
 /**
  * Parses an integer or returns null when blank/invalid.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Conversions
  */
 export const stringToInt = (value: string): number | null => {

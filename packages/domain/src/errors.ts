@@ -1,11 +1,11 @@
 /**
  * Domain errors module.
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 /**
  * Errors specific to the domain layer.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Domain Errors
  */
 export type DomainError = never;

@@ -1,6 +1,6 @@
 /**
  * Store orchestrating the createProductWithItems mutation.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import {Injectable, inject, signal} from '@angular/core';
 import {type Cause, Effect, Exit} from 'effect';
@@ -11,14 +11,14 @@ import {ProductApiService, type ProductApiError} from '../../../api/product/prod
 
 /**
  * Feature store for product creation with associated items.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Stores
  */
 @Injectable()
 export class CreateProductStore {
   /**
    * Remote data state for the view.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Signals
    */
   readonly state = signal<RemoteData<ProductWithItems, Cause.Cause<ProductApiError>>>(remoteData.initial<ProductWithItems, Cause.Cause<ProductApiError>>());
@@ -27,7 +27,7 @@ export class CreateProductStore {
 
   /**
    * Runs the createProductWithItems mutation and updates remote data.
-   * @since 1.0.0
+   * @since 0.1.0
    * @category Methods
    */
   async create(input: unknown): Promise<void> {

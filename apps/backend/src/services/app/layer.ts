@@ -1,6 +1,6 @@
 /**
  * Application layer composition.
- * @since 1.0.0
+ * @since 0.1.0
  */
 import { Layer } from 'effect';
 import { type ConfigError } from 'effect/ConfigError';
@@ -23,58 +23,58 @@ import { masterdataDbConfigLayer } from '../masterdataDbConfig/layer.js';
 
 /**
  * Layer loading app configuration.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const appConfig: Layer.Layer<AppConfigService, ConfigError> = appConfigLayer;
 /**
  * Logger layer requiring app config.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  *
  */
 export const logger: Layer.Layer<never, never, AppConfigService> = loggerLayer;
 /**
  * Logger provided with configuration.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const configuredLogger: Layer.Layer<never, ConfigError> = logger.pipe(Layer.provide(appConfig));
 
 /**
  * Layer loading DB configuration.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const masterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError> = masterdataDbConfigLayer;
 /**
  * Raw masterdata DB layer.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const masterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError, MasterdataDbConfigService> = masterdataDbLayer;
 /**
  * Masterdata DB provided with configuration.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const configuredMasterdataDb: Layer.Layer<MasterdataDbService, SqlError | ConfigError> = masterdataDb.pipe(Layer.provide(masterdataDbConfig));
 
 /**
  * Product repository layer.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const productRepo: Layer.Layer<ProductRepoService, SqlError | ConfigError, MasterdataDbService> = productRepoLayer;
 /**
  * Item repository layer.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const itemRepo: Layer.Layer<ItemRepoService, SqlError | ConfigError, MasterdataDbService> = itemRepoLayer;
 /**
  * Combined repository layers with DB provided.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const masterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, SqlError | ConfigError>
@@ -85,14 +85,14 @@ export const masterdataRepos: Layer.Layer<ProductRepoService | ItemRepoService, 
 
 /**
  * Greeting service layer.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const greeting: Layer.Layer<GreetService> = greetingLayer;
 
 /**
  * Full application layer wiring services and infrastructure.
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const app: Layer.Layer<AppServices, AppError>
@@ -106,7 +106,7 @@ export const app: Layer.Layer<AppServices, AppError>
 
 /**
  * Exported application layer alias (memoized once per runtime).
- * @since 1.0.0
+ * @since 0.1.0
  * @category Layers
  */
 export const appLayer: Layer.Layer<AppServices, AppError> = app;
