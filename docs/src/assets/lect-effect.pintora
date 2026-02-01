@@ -3,12 +3,13 @@ componentDiagram
 @config(
   {
   "themeConfig": {
-    "theme": "duskfox"
+    "theme": "larkDark"
   },
   "sequence": {},
   "er": {},
   "component": {
-    "edgeType": "curved"
+    "edgeType": "curved",
+    "hideGroupType": true
   },
   "activity": {},
   "mindmap": {}
@@ -28,7 +29,6 @@ node "live" {
   }
 }
 node "test" {
-  () "config" as testConfig
   node "test deployed services" {
     () "frontend" as testFrontend
     () "backend" as testBackend
@@ -40,6 +40,9 @@ node "test" {
     () "APIs" as testApis
     () "DBs" as testDatabases
   }
+
+  () "config" as testConfig
+
 }
 
 package "lect-effect" {
@@ -58,7 +61,7 @@ package "lect-effect" {
     () handlers
   }
   package "@lect-effect/backend" {
-    () "app" as backend
+    () "backend app" as backend
     folder "src/graphql" {
       () server
       () resolvers
@@ -74,16 +77,25 @@ package "lect-effect" {
     () "services" as frontendServices
     () components
     () pages
-    () "app" as frontend
+    () "frontend app" as frontend
   }
   package "@lect-effect/cli" {
     () cli
   }
   package "@lect-effect/docs" {
-    () "app" as docsapp
+    () "docs app" as docsapp
   }
 
 }
+
+() devs
+
+devs --> cli
+devs --> docsapp
+devs --> lect-effect
+devs --> live
+devs --> test
+
 
 testBackend ..> testApis
 testBackend ..> testDatabases
