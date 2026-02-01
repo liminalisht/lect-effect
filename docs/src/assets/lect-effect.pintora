@@ -1,71 +1,83 @@
 componentDiagram
 
+@config(
+  {
+  "themeConfig": {
+    "theme": "larkLight"
+  },
+  "sequence": {},
+  "er": {},
+  "component": {
+    "edgeType": "curved"
+  },
+  "activity": {},
+  "mindmap": {}
+}
+)
+
   package "lect-effect" {
 
-    folder "packages" {
-
-      package "@lect-effect/domain" {
-        () schemas
-        () types
-        () validations
-      }
-
-      types ..> schemas
-      validations ..> schemas
-
-      package "@lect-effect/services" {
-        () services
-        () interfaces
-      }
-
-      interfaces ..> types
-      services ..> interfaces
-
-      package "@lect-effect/handlers" {
-        () effects
-        () handlers
-      }
-
-      effects ..> types
-      effects ..> services
-
-      handlers ..> schemas
-      handlers ..> effects
-
+    package "@lect-effect/domain" {
+      () schemas
+      () types
+      () validations
     }
 
-    folder "apps" {
+    types ..> schemas
+    validations ..> schemas
 
-      package "@lect-effect/backend" {
+    package "@lect-effect/services" {
+      () services
+      () interfaces
+    }
 
-        folder "src/graphql" {
-          () server
-          () resolvers
-          () graphqlschema
-        }
+    interfaces ..> types
+    services ..> interfaces
 
-        folder "src/services" {
-          () implementations
-          () layers
-        }
+    package "@lect-effect/handlers" {
+      () effects
+      () handlers
+    }
 
-      }
+    effects ..> types
+    effects ..> services
 
-      resolvers ..> handlers
-      graphqlschema ..> resolvers
-      server ..> graphqlschema
-      server ..> resolvers
+    handlers ..> schemas
+    handlers ..> effects
 
-      implementations ..> types
-      implementations ..> interfaces
-      layers ..> implementations
-      layers ..> services
+
+    package "@lect-effect/backend" {
 
       () "backend app" as backend
-      backend ..> server
-      backend ..> layers
+
+
+      folder "src/graphql" {
+        () server
+        () resolvers
+        () graphqlschema
+      }
+
+      folder "src/services" {
+        () implementations
+        () layers
+      }
 
     }
+
+    resolvers ..> handlers
+    graphqlschema ..> resolvers
+    server ..> graphqlschema
+    server ..> resolvers
+
+    implementations ..> types
+    implementations ..> interfaces
+    layers ..> implementations
+    layers ..> services
+
+    backend ..> server
+    backend ..> layers
+
+
 
     implementations ..> apis
     implementations ..> dbs
@@ -75,8 +87,11 @@ componentDiagram
       () "services" as frontendServices
       () components
       () pages
+      () "frontend app" as frontend
+
     }
 
+    frontendEffects ..> backend
     frontendEffects ..> types
     frontendEffects ..> validations
     frontendServices ..> frontendEffects
@@ -85,7 +100,6 @@ componentDiagram
     components ..> validations
     pages ..> components
 
-    () "frontend app" as frontend
     frontend ..> components
     frontend ..> pages
     frontend ..> backend
@@ -102,11 +116,14 @@ componentDiagram
     }
   }
 
-  () users
+  rectangle "people" {
+    () users
+    () devs
+  }
+
   users ..> frontend
   users ..> docssite
 
-  () devs
   devs ..> cli
   devs ..> frontend
   devs ..> backend
