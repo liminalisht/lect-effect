@@ -12,134 +12,138 @@ componentDiagram
   },
   "activity": {},
   "mindmap": {}
+})
+
+
+rectangle "live" {
+  () "config" as liveConfig
+  node "live deployed services" {
+    () "frontend" as liveFrontend
+    () "backend" as liveBackend
+    () "docs site" as docsSite
+
+  }
+  node "live service dependencies" {
+    () "APIs" as liveApis
+    () "DBs" as liveDatabases
+  }
 }
-)
-
-  package "lect-effect" {
-
-    package "@lect-effect/domain" {
-      () schemas
-      () types
-      () validations
-    }
-
-    types ..> schemas
-    validations ..> schemas
-
-    package "@lect-effect/services" {
-      () services
-      () interfaces
-    }
-
-    interfaces ..> types
-    services ..> interfaces
-
-    package "@lect-effect/handlers" {
-      () effects
-      () handlers
-    }
-
-    effects ..> types
-    effects ..> services
-
-    handlers ..> schemas
-    handlers ..> effects
+rectangle "test" {
+  () "config" as testConfig
+  node "test deployed services" {
+    () "frontend" as testFrontend
+    () "backend" as testBackend
+    () "docs site" as testDocsSite
 
 
-    package "@lect-effect/backend" {
-
-      () "backend app" as backend
-
-
-      folder "src/graphql" {
-        () server
-        () resolvers
-        () graphqlschema
-      }
-
-      folder "src/services" {
-        () implementations
-        () layers
-      }
-
-    }
-
-    resolvers ..> handlers
-    graphqlschema ..> resolvers
-    server ..> graphqlschema
-    server ..> resolvers
-
-    implementations ..> types
-    implementations ..> interfaces
-    layers ..> implementations
-    layers ..> services
-
-    backend ..> server
-    backend ..> layers
-
-
-
-    implementations ..> apis
-    implementations ..> dbs
-
-    package "@lect-effect/frontend" {
-      () "effects" as frontendEffects
-      () "services" as frontendServices
-      () components
-      () pages
-      () "frontend app" as frontend
-
-    }
-
-    frontendEffects ..> backend
-    frontendEffects ..> types
-    frontendEffects ..> validations
-    frontendServices ..> frontendEffects
-    components ..> frontendServices
-    components ..> types
-    components ..> validations
-    pages ..> components
-
-    frontend ..> components
-    frontend ..> pages
-    frontend ..> backend
-
-    package "@lect-effect/cli" {
-      () cli
-    }
-
-    cli ..> frontend
-    cli ..> backend
-
-    package "@lect-effect/docs" {
-      () docssite
-    }
   }
 
-  rectangle "people" {
-    () users
-    () devs
+  node "test service dependencies" {
+    () "APIs" as testApis
+    () "DBs" as testDatabases
   }
-
-  users ..> frontend
-  users ..> docssite
-
-  devs ..> cli
-  devs ..> frontend
-  devs ..> backend
-  devs ..> docssite
-
-  () "users" as users
-  users ..> frontend
-
-  node "external services" {
+}
 
 
-    cloud "external apis" {
-      () apis
+
+
+
+
+
+
+
+
+package "lect-effect" {
+  package "@lect-effect/domain" {
+    () schemas
+    () types
+    () validations
+  }
+  package "@lect-effect/services" {
+    () services
+    () interfaces
+  }
+  package "@lect-effect/handlers" {
+    () effects
+    () handlers
+  }
+  package "@lect-effect/backend" {
+    () "app" as backend
+    folder "src/graphql" {
+      () server
+      () resolvers
+      () graphqlschema
     }
-
-    database "databases" {
-      () dbs
+    folder "src/services" {
+      () implementations
+      () layers
     }
   }
+  package "@lect-effect/frontend" {
+    () "effects" as frontendEffects
+    () "services" as frontendServices
+    () components
+    () pages
+    () "app" as frontend
+  }
+  package "@lect-effect/cli" {
+    () cli
+  }
+  package "@lect-effect/docs" {
+    () "app" as docsapp
+  }
+}
+
+
+
+testBackend ..> testApis
+testBackend ..> testDatabases
+types ..> schemas
+validations ..> schemas
+interfaces ..> types
+services ..> interfaces
+liveFrontend ..> liveConfig
+liveBackend ..> liveConfig
+liveFrontend ..> frontend
+liveBackend ..> backend
+liveFrontend ..> liveBackend
+testFrontend ..> testConfig
+testBackend ..> testConfig
+testFrontend ..> frontend
+testBackend ..> backend
+testFrontend ..> testBackend
+docsSite ..> docsapp
+testDocsSite ..> docsapp
+
+
+frontendEffects ..> backend
+frontendEffects ..> types
+frontendEffects ..> validations
+frontendServices ..> frontendEffects
+components ..> frontendServices
+components ..> types
+components ..> validations
+pages ..> components
+frontend ..> components
+frontend ..> pages
+frontend ..> backend
+liveBackend ..> liveDatabases
+liveBackend ..> liveApis
+resolvers ..> handlers
+graphqlschema ..> resolvers
+server ..> graphqlschema
+server ..> resolvers
+implementations ..> types
+implementations ..> interfaces
+
+layers ..> implementations
+layers ..> services
+backend ..> server
+backend ..> layers
+effects ..> types
+effects ..> services
+handlers ..> schemas
+handlers ..> effects
+
+
+
