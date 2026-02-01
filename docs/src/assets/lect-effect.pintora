@@ -3,7 +3,7 @@ componentDiagram
 @config(
   {
   "themeConfig": {
-    "theme": "larkLight"
+    "theme": "duskfox"
   },
   "sequence": {},
   "er": {},
