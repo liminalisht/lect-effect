@@ -8,7 +8,7 @@ parent: Modules
 
 Application entrypoint wiring runtime and top-level effects.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -32,7 +32,7 @@ Logs an exhaustive failure cause in a human-readable format.
 export declare const logFailure: (cause: Cause.Cause<unknown>) => Effect.Effect<[void, void], never, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## main
 
@@ -44,4 +44,4 @@ Main Effect wiring the app with its layer and exit logging.
 export declare const main: Effect.Effect<never, AppError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

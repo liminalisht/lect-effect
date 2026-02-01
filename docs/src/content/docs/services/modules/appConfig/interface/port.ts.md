@@ -8,7 +8,7 @@ parent: Modules
 
 TCP port configuration bindings.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for validating TCP ports.
 export declare const portSchema: Schema.brand<Schema.filter<Schema.filter<typeof Schema.Number>>, "Port">
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Types
 
@@ -47,4 +47,4 @@ TCP port value object.
 export type Port = Schema.Schema.Type<typeof portSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

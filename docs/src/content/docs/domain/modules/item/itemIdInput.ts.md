@@ -8,7 +8,7 @@ parent: Modules
 
 Item identifier input module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Input schema for selecting an item by id.
 export declare const itemIdInputSchema: Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ GraphQL input for selecting an item by id.
 export type ItemIdInput = Schema.Schema.Type<typeof itemIdInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

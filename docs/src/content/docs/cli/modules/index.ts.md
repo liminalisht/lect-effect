@@ -9,7 +9,7 @@ parent: Modules
 lect-effect CLI entrypoint and command composition layer.
 Keeps primitives in shellCommands.ts and wires them into @effect/cli commands.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 

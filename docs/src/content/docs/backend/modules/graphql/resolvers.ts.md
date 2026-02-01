@@ -8,7 +8,7 @@ parent: Modules
 
 Helpers for turning typed handlers into gqloom resolvers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -42,7 +42,7 @@ export type AnyHandler =
   | MutationHandler<Schema.Schema.AnyNoContext, Schema.Schema.AnyNoContext, unknown, unknown>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # GraphQL Resolver Types
 
@@ -63,7 +63,7 @@ export type ResolverFromHandler<H> =
         : never
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # GraphQL Resolver Utilities
 
@@ -95,7 +95,7 @@ export declare const genericFieldResolver: <
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## genericMutationResolver
 
@@ -119,7 +119,7 @@ export declare const genericMutationResolver: <
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## genericQueryResolver
 
@@ -143,7 +143,7 @@ export declare const genericQueryResolver: <
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## handlerToResolver
 
@@ -155,7 +155,7 @@ Dispatches a handler to the appropriate resolver factory.
 export declare const handlerToResolver: <H extends AnyHandler>(handler: H) => ResolverFromHandler<H>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## handlersToResolvers
 
@@ -169,4 +169,4 @@ export declare const handlersToResolvers: <HS extends readonly AnyHandler[]>(
 ) => { [K in keyof HS]: ResolverFromHandler<HS[K]> }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

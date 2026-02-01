@@ -8,7 +8,7 @@ parent: Modules
 
 Item pack size value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for item pack size.
 export declare const packSizeSchema: Schema.refine<number, typeof Schema.Number>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Pack size value object.
 export type PackSize = Schema.Schema.Type<typeof packSizeSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

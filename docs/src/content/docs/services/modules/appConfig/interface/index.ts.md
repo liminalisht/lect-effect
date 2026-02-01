@@ -8,7 +8,7 @@ parent: Modules
 
 Application configuration module surface.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -37,7 +37,7 @@ export type AppConfig = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -51,4 +51,4 @@ Tag for accessing application configuration values.
 export declare class AppConfigService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

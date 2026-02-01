@@ -8,7 +8,7 @@ parent: Modules
 
 Item creation/update input module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -36,7 +36,7 @@ export declare const createItemInputSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -50,4 +50,4 @@ GraphQL input for creating or updating an item.
 export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

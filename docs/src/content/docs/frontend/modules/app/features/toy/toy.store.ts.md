@@ -6,7 +6,7 @@ parent: Modules
 
 ## toy.store overview
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,7 +31,7 @@ Toy feature store that runs an Effect and maps it to remote data state.
 export declare class ToyStore { constructor(private readonly runtime: UiRuntime) }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### run (method)
 
@@ -43,7 +43,7 @@ Runs the example effect and updates the remote data signal.
 run(): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### state (property)
 
@@ -55,4 +55,4 @@ Remote data state reflected into the view.
 readonly state: WritableSignal<RemoteData<number, unknown>>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

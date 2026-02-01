@@ -8,7 +8,7 @@ parent: Modules
 
 Master data database configuration contracts.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -40,7 +40,7 @@ export type MasterdataDbConfig = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -54,4 +54,4 @@ Tag for accessing master data DB configuration.
 export declare class MasterdataDbConfigService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

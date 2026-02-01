@@ -8,7 +8,7 @@ parent: Modules
 
 Product-with-items creation input module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -41,7 +41,7 @@ export declare const createProductWithItemsInputSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -55,4 +55,4 @@ Mutation payload for creating a product with its items.
 export type CreateProductWithItemsInput = Schema.Schema.Type<typeof createProductWithItemsInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

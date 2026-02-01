@@ -8,7 +8,7 @@ parent: Modules
 
 Frontend configuration schemas and service tag.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -41,7 +41,7 @@ Decode and map a raw config object into the runtime frontend config.
 export declare const decodeFrontendConfigEither: (raw: unknown) => Either.Either<FrontendConfig, ParseError>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Schemas
 
@@ -57,7 +57,7 @@ export declare const LogLevelNameSchema: Schema.Literal<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## RawFrontendConfigSchema
 
@@ -72,7 +72,7 @@ export declare const RawFrontendConfigSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Interfaces
 
@@ -89,7 +89,7 @@ export type FrontendConfig = Readonly<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -103,7 +103,7 @@ Tag for locating the decoded frontend configuration in an Effect environment.
 export declare class FrontendConfigService
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Types
 
@@ -117,7 +117,7 @@ Parsed log level literal type.
 export type LogLevelName = Schema.Schema.Type<typeof LogLevelNameSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## RawFrontendConfig (type alias)
 
@@ -129,4 +129,4 @@ Raw config shape prior to decoding.
 export type RawFrontendConfig = Schema.Schema.Type<typeof RawFrontendConfigSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

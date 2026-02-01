@@ -8,7 +8,7 @@ parent: Modules
 
 Product repository service contract and live implementation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Service tag for the product repository.
 export declare class ProductRepoService
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # utils
 
@@ -49,7 +49,7 @@ Error thrown when a product lookup fails.
 export declare class ProductNotFound { constructor(readonly id: ProductId) }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## ProductRepoError (type alias)
 
@@ -61,7 +61,7 @@ Error type union for product repository operations.
 export type ProductRepoError = SqlError.SqlError | ProductNotFound | ParseError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## ProductRepoShape (type alias)
 
@@ -78,4 +78,4 @@ export type ProductRepoShape = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

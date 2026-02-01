@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL utilities for running Effect programs.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -32,4 +32,4 @@ E.g., pass any Effect whose requirements are a sub-union of `AppServices`.
 export declare const runEffect: <A, E, R>(eff: Effect.Effect<A, E, R>) => Promise<A>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

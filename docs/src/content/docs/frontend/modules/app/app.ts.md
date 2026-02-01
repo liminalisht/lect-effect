@@ -8,7 +8,7 @@ parent: Modules
 
 Root application shell component.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -32,7 +32,7 @@ Application root component hosting the router.
 export declare class App
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### title (property)
 
@@ -44,4 +44,4 @@ Application title signal used in the shell.
 readonly title: WritableSignal<string>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Product handlers bridging GraphQL operations to repositories.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -50,7 +50,7 @@ export declare const createProduct: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## createProductWithItems
 
@@ -71,7 +71,7 @@ export declare const createProductWithItems: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getProduct
 
@@ -89,7 +89,7 @@ export declare const getProduct: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getProductWithItems
 
@@ -110,7 +110,7 @@ export declare const getProductWithItems: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## itemsForProduct
 
@@ -128,7 +128,7 @@ export declare const itemsForProduct: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## listProducts
 
@@ -144,7 +144,7 @@ export declare const listProducts: Effect.Effect<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Product Handlers
 
@@ -167,7 +167,7 @@ export declare const createProductMutation: MutationHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## createProductWithItemsMutation
 
@@ -205,7 +205,7 @@ export declare const createProductWithItemsMutation: MutationHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getProductQuery
 
@@ -228,7 +228,7 @@ export declare const getProductQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getProductWithItemsQuery
 
@@ -260,7 +260,7 @@ export declare const getProductWithItemsQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## itemsForProductField
 
@@ -288,7 +288,7 @@ export declare const itemsForProductField: FieldHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## listProductsQuery
 
@@ -311,7 +311,7 @@ export declare const listProductsQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## productHandlers
 
@@ -425,4 +425,4 @@ export declare const productHandlers: (
 )[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0

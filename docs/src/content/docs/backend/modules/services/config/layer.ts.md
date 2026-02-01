@@ -8,7 +8,7 @@ parent: Modules
 
 Layer for loading and providing application configuration.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Provides configuration values to the environment.
 export declare const configLayer: Layer.Layer<ConfigService, ConfigError.ConfigError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

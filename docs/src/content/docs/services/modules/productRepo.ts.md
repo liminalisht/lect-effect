@@ -8,7 +8,7 @@ parent: Modules
 
 Public surface for the product repository service.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Public surface for the product repository service.
 export * from "./productRepo/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

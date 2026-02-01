@@ -8,7 +8,7 @@ parent: Modules
 
 Layer for loading and providing masterdata database configuration.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Loads and provides masterdata database configuration to the environment.
 export declare const masterdataDbConfigLayer: Layer.Layer<MasterdataDbConfigService, ConfigError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

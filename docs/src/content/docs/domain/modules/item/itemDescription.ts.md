@@ -8,7 +8,7 @@ parent: Modules
 
 Item description value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for nullable item descriptions.
 export declare const itemDescriptionSchema: Schema.NullOr<typeof Schema.String>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Item description value.
 export type ItemDescription = Schema.Schema.Type<typeof itemDescriptionSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

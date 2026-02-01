@@ -9,7 +9,7 @@ parent: Modules
 Public surface for the application service.
 Re-exports the service contract for downstream consumers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,4 +33,4 @@ Re-exports the service contract for downstream consumers.
 export * from "./app/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

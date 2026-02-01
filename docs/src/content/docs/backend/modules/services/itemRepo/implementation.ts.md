@@ -8,7 +8,7 @@ parent: Modules
 
 Item repository service implementation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Live implementation of the ItemRepo.
 export declare const itemRepoServiceImplementation: Effect.Effect<ItemRepoShape, never, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

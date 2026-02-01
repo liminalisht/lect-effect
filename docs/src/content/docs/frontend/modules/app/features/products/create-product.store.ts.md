@@ -8,7 +8,7 @@ parent: Modules
 
 Store orchestrating the createProductWithItems mutation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Feature store for product creation with associated items.
 export declare class CreateProductStore
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### create (method)
 
@@ -45,7 +45,7 @@ Runs the createProductWithItems mutation and updates remote data.
 async create(input: unknown): Promise<void>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### state (property)
 
@@ -57,4 +57,4 @@ Remote data state for the view.
 readonly state: WritableSignal<RemoteData<{ readonly product: { readonly __typename?: "Product" | undefined; readonly id: number; readonly description: string | null; }; readonly items: readonly { readonly id: number; readonly description: string | null; readonly pack_size: number; }[]; }, Cause.Cause<ProductApiError>>>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

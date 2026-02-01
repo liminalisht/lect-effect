@@ -8,7 +8,7 @@ parent: Modules
 
 Hello API interface definitions and service tag.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Error union produced by hello API operations.
 export type HelloApiError = GraphQLClientError | ParseError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Interfaces
 
@@ -51,7 +51,7 @@ export type HelloApi = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -65,4 +65,4 @@ Tag for locating the hello API service in an Effect environment.
 export declare class HelloApiService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

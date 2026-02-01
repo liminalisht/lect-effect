@@ -8,7 +8,7 @@ parent: Modules
 
 Standalone form component for creating a product with items (no Angular Forms).
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -41,7 +41,7 @@ Angular standalone form component for creating a product with items.
 export declare class CreateProductFormComponent
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### addItem (method)
 
@@ -53,7 +53,7 @@ Adds a blank item draft row.
 addItem(): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### removeItem (method)
 
@@ -65,7 +65,7 @@ Removes an item draft by index (keeps at least one row).
 removeItem(index: number): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### onProductDescriptionInput (method)
 
@@ -77,7 +77,7 @@ Handles product description edits.
 onProductDescriptionInput(event: Event): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### onItemDescriptionInput (method)
 
@@ -89,7 +89,7 @@ Handles item description edits.
 onItemDescriptionInput(index: number, event: Event): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### onItemPackSizeInput (method)
 
@@ -101,7 +101,7 @@ Handles item pack size edits.
 onItemPackSizeInput(index: number, event: Event): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### submit (method)
 
@@ -113,7 +113,7 @@ Emits a validated payload when the draft is valid.
 submit(): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### submitted (property)
 
@@ -125,7 +125,7 @@ Emits validated create-product payloads.
 readonly submitted: EventEmitter<{ readonly product: { readonly description?: string | null | undefined; }; readonly items: readonly { readonly description?: string | null | undefined; readonly pack_size: number; }[]; }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### productDescription (property)
 
@@ -137,7 +137,7 @@ Field for the optional product description (blank → null).
 readonly productDescription: SchemaField<string, string | null>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### items (property)
 
@@ -149,7 +149,7 @@ Draft items being edited in the form.
 readonly items: WritableSignal<readonly ItemDraft[]>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### canSubmit (property)
 
@@ -161,4 +161,4 @@ Whether the form is currently valid and can be submitted.
 readonly canSubmit: Signal<boolean>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

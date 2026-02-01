@@ -8,7 +8,7 @@ parent: Modules
 
 Product description value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for product descriptions.
 export declare const productDescriptionSchema: Schema.SchemaClass<string, string, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Product description value object.
 export type ProductDescription = Schema.Schema.Type<typeof productDescriptionSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

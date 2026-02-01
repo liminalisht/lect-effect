@@ -8,7 +8,7 @@ parent: Modules
 
 Angular token for supplying the raw frontend configuration object.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -34,4 +34,4 @@ export declare const RAW_FRONTEND_CONFIG: InjectionToken<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

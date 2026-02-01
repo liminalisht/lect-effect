@@ -8,7 +8,7 @@ parent: Modules
 
 Public surface for the greeting service.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Public surface for the greeting service.
 export * from "./greeting/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

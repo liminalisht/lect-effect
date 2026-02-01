@@ -8,7 +8,7 @@ parent: Modules
 
 Hello API layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Layer providing the live hello API implementation.
 export declare const HelloApiLayer: Layer.Layer<HelloApiService, never, GraphQLClientService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

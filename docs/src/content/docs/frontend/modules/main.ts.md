@@ -8,7 +8,7 @@ parent: Modules
 
 Browser bootstrap entrypoint for the Angular app.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 

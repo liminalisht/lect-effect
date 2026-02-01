@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL Yoga server setup.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Alias for the configured Yoga server instance.
 export type Yoga<R> = YogaServerInstance<GraphQLContext<R>, Record<string, any>>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # GraphQL Yoga Server Utilities
 
@@ -47,4 +47,4 @@ Constructs a Yoga server with the Effect runtime injected into context.
 export declare const makeYoga: <R>(schema: GraphQLSchema) => Effect.Effect<Yoga<R>, never, R>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

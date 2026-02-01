@@ -6,7 +6,7 @@ parent: Modules
 
 ## toy.page overview
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -29,4 +29,4 @@ Page component for the toy feature.
 export declare class ToyPage { constructor(readonly store: ToyStore) }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

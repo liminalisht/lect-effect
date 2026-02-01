@@ -8,7 +8,7 @@ parent: Modules
 
 Hello domain input payloads.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ export declare const nameInputSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -49,4 +49,4 @@ Input payload for greeting by name.
 export type NameInput = Schema.Schema.Type<typeof nameInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

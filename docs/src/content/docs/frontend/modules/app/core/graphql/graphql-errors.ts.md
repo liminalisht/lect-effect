@@ -8,7 +8,7 @@ parent: Modules
 
 Error types for the GraphQL client.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Failure to decode response content.
 export declare class DecodeError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## GraphQLClientError (type alias)
 
@@ -47,7 +47,7 @@ Union of all GraphQL client error types.
 export type GraphQLClientError = TransportError | HttpError | GraphqlError | DecodeError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## GraphqlError (class)
 
@@ -59,7 +59,7 @@ GraphQL-level error payloads.
 export declare class GraphqlError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## HttpError (class)
 
@@ -71,7 +71,7 @@ HTTP error response returned by the GraphQL endpoint.
 export declare class HttpError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## TransportError (class)
 
@@ -83,4 +83,4 @@ Transport-level failure when reaching the GraphQL endpoint.
 export declare class TransportError
 ```
 
-Added in v1.0.0
+Added in v0.1.0

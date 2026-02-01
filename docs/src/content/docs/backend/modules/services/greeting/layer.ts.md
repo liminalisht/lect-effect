@@ -8,7 +8,7 @@ parent: Modules
 
 Greeting service layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Provides the GreetService implementation.
 export declare const greetingLayer: Layer.Layer<GreetService, never, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Implementations
 
@@ -47,4 +47,4 @@ Concrete greeting service implementation.
 export declare const GreetServiceImplementation: Greet
 ```
 
-Added in v1.0.0
+Added in v0.1.0

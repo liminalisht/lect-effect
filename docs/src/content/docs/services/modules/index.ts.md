@@ -8,7 +8,7 @@ parent: Modules
 
 Primary entrypoint exporting all services package contracts.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -43,7 +43,7 @@ App service contract exports.
 export * from "./app/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './appConfig/interface/environment.js'
 
@@ -55,7 +55,7 @@ App environment schema exports.
 export * from "./appConfig/interface/environment.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './appConfig/interface/index.js'
 
@@ -67,7 +67,7 @@ AppConfig service exports.
 export * from "./appConfig/interface/index.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './appConfig/interface/loglevel.js'
 
@@ -79,7 +79,7 @@ App log level exports.
 export * from "./appConfig/interface/loglevel.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './appConfig/interface/port.js'
 
@@ -91,7 +91,7 @@ App port schema exports.
 export * from "./appConfig/interface/port.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './config/interface.js'
 
@@ -103,7 +103,7 @@ Shared config exports.
 export * from "./config/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './errors.js'
 
@@ -115,7 +115,7 @@ Primary entrypoint exporting all services package contracts.
 export * from "./errors.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './greeting/interface.js'
 
@@ -127,7 +127,7 @@ Greeting service exports.
 export * from "./greeting/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './itemRepo/interface.js'
 
@@ -139,7 +139,7 @@ Item repository exports.
 export * from "./itemRepo/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './masterdataDb/interface.js'
 
@@ -151,7 +151,7 @@ Masterdata DB exports.
 export * from "./masterdataDb/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './masterdataDbConfig/interface.js'
 
@@ -163,7 +163,7 @@ Masterdata DB config exports.
 export * from "./masterdataDbConfig/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './pgClientConfig/interface.js'
 
@@ -175,7 +175,7 @@ PG client config exports.
 export * from "./pgClientConfig/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './productRepo/interface.js'
 
@@ -187,4 +187,4 @@ Product repository exports.
 export * from "./productRepo/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

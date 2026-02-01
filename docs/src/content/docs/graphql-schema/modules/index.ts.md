@@ -8,7 +8,7 @@ parent: Modules
 
 CLI pipeline that materializes the backend GraphQL schema into SDL.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 

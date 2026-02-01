@@ -8,7 +8,7 @@ parent: Modules
 
 Product composite (product plus items) module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -46,7 +46,7 @@ export declare const productWithItemsSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -60,4 +60,4 @@ Product paired with its items.
 export type ProductWithItems = Schema.Schema.Type<typeof productWithItemsSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

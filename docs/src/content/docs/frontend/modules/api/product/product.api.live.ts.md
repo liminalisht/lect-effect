@@ -8,7 +8,7 @@ parent: Modules
 
 Live implementation of the product API backed by GraphQL.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Layer constructor yielding the live product API service.
 export declare const productApiLive: Effect.Effect<ProductApi, never, GraphQLClientService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

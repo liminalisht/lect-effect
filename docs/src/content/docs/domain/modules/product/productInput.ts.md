@@ -8,7 +8,7 @@ parent: Modules
 
 Product input module for create/update operations.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ export declare const productInputSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -49,4 +49,4 @@ GraphQL input for creating or updating a product.
 export type ProductInput = Schema.Schema.Type<typeof productInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

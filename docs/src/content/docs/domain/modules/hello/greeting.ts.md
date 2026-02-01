@@ -8,7 +8,7 @@ parent: Modules
 
 Hello domain greeting message definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for greeting messages.
 export declare const greetingSchema: Schema.brand<typeof Schema.String, "Greeting">
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Greeting message value object.
 export type Greeting = Schema.Schema.Type<typeof greetingSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

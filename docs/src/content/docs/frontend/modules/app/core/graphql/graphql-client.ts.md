@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL client service wiring for frontend Effect programs.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Live GraphQL client layer backed by fetch.
 export declare const GraphQLClientLive: Layer.Layer<GraphQLClientService, never, FrontendConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Interfaces
 
@@ -54,7 +54,7 @@ export type GraphQLClient = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -68,4 +68,4 @@ Tag for locating the GraphQL client service in an Effect environment.
 export declare class GraphQLClientService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

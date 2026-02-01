@@ -8,7 +8,7 @@ parent: Modules
 
 Error mappers for configuration loading/validation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Error type raised when configuration loading or validation fails.
 export type ConfigurationError = ConfigError.ConfigError
 ```
 
-Added in v1.0.0
+Added in v0.1.0

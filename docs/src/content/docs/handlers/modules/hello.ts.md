@@ -8,7 +8,7 @@ parent: Modules
 
 Hello handler providing a greeting based on optional name input.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -34,7 +34,7 @@ Produces a greeting response using the greeting service.
 export declare const helloHandler: (input: NameInput) => Effect.Effect<HelloResponse, never, GreetService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Hello Handlers
 
@@ -53,7 +53,7 @@ export declare const greetQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## helloHandlers
 
@@ -70,4 +70,4 @@ export declare const helloHandlers: QueryHandler<
 >[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Decoding helpers for Effect schemas.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -34,7 +34,7 @@ export declare const decodeMany: <A>(
 ) => (rows: readonly unknown[]) => Effect.Effect<A[], ParseError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## decodeOne
 
@@ -46,4 +46,4 @@ Decodes a single unknown value with the provided schema.
 export declare const decodeOne: <A>(schema: Schema.Schema<A>) => (u: unknown) => Effect.Effect<A, ParseError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

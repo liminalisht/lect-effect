@@ -8,7 +8,7 @@ parent: Modules
 
 Logger configuration layer.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Provides a minimum log level based on configuration.
 export declare const loggerLayer: Layer.Layer<never, never, AppConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

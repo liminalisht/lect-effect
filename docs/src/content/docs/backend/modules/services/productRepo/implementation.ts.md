@@ -8,7 +8,7 @@ parent: Modules
 
 Product repository service implementation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Live implementation of the ProductRepo.
 export declare const productRepoImplementation: Effect.Effect<ProductRepoShape, never, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Remote data discriminated union for UI loading states.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -38,7 +38,7 @@ export declare const remoteData: {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Types
 
@@ -56,4 +56,4 @@ export type RemoteData<A, E> =
   | { readonly _tag: "Success"; readonly value: A }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

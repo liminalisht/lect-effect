@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL execution context bindings.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ GraphQL context enriched with an Effect runtime for `AppServices`.
 export type GraphQLContext<R> = YogaInitialContext & RuntimeForServiceRequirements<R>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

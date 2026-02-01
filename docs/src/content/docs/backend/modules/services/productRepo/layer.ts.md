@@ -8,7 +8,7 @@ parent: Modules
 
 Product repository layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Provides the live ProductRepo implementation.
 export declare const productRepoLayer: Layer.Layer<ProductRepoService, never, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

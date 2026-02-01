@@ -8,7 +8,7 @@ parent: Modules
 
 Product identifier value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for product identifiers.
 export declare const productIdSchema: Schema.refine<number, typeof Schema.Number>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Product identifier.
 export type ProductId = Schema.Schema.Type<typeof productIdSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

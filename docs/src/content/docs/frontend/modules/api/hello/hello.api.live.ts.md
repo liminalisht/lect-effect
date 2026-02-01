@@ -8,7 +8,7 @@ parent: Modules
 
 Live implementation of the hello API backed by GraphQL.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Layer constructor yielding the live hello API service.
 export declare const helloApiLive: Effect.Effect<HelloApi, never, GraphQLClientService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

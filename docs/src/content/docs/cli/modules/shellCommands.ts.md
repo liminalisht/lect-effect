@@ -10,7 +10,7 @@ Primitive shell command definitions used by the lect-effect CLI.
 Each command is intentionally kept as a single shell string so higher-level
 composition can orchestrate ordering without bundling behavior here.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -82,7 +82,7 @@ export type ShellCommand = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildBackend
 
@@ -94,7 +94,7 @@ Build backend app.
 export declare const buildBackend: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildDocs
 
@@ -106,7 +106,7 @@ Build docs site.
 export declare const buildDocs: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildDomain
 
@@ -118,7 +118,7 @@ Build domain package.
 export declare const buildDomain: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildFrontend
 
@@ -130,7 +130,7 @@ Build frontend app.
 export declare const buildFrontend: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildGraphqlSchema
 
@@ -142,7 +142,7 @@ Build GraphQL schema package.
 export declare const buildGraphqlSchema: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildHandlers
 
@@ -154,7 +154,7 @@ Build handlers package.
 export declare const buildHandlers: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## buildServices
 
@@ -166,7 +166,7 @@ Build services package.
 export declare const buildServices: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanBackend
 
@@ -178,7 +178,7 @@ Clean backend app artifacts.
 export declare const cleanBackend: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanDocs
 
@@ -190,7 +190,7 @@ Clean docs build artifacts.
 export declare const cleanDocs: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanDomain
 
@@ -202,7 +202,7 @@ Clean domain package artifacts.
 export declare const cleanDomain: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanFrontend
 
@@ -214,7 +214,7 @@ Clean frontend app artifacts.
 export declare const cleanFrontend: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanGraphqlSchema
 
@@ -226,7 +226,7 @@ Clean GraphQL schema package artifacts.
 export declare const cleanGraphqlSchema: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanHandlers
 
@@ -238,7 +238,7 @@ Clean handlers package artifacts.
 export declare const cleanHandlers: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## cleanServices
 
@@ -250,7 +250,7 @@ Clean services package artifacts.
 export declare const cleanServices: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## docsDev
 
@@ -262,7 +262,7 @@ Start the docs dev server.
 export declare const docsDev: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## docsGenerateContentSteps
 
@@ -274,7 +274,7 @@ Generate docs for all packages from the docs workspace.
 export declare const docsGenerateContentSteps: readonly ShellCommand[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## docsPruneContent
 
@@ -286,7 +286,7 @@ Remove generated docs content before regeneration.
 export declare const docsPruneContent: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## frontendCodegen
 
@@ -298,7 +298,7 @@ Run frontend GraphQL codegen.
 export declare const frontendCodegen: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## generateGraphqlSchema
 
@@ -310,7 +310,7 @@ Generate GraphQL schema artifacts.
 export declare const generateGraphqlSchema: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitAddAll
 
@@ -322,7 +322,7 @@ Git add all tracked/untracked files.
 export declare const gitAddAll: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitArchiveHead
 
@@ -334,7 +334,7 @@ Archive the current HEAD to archive.zip.
 export declare const gitArchiveHead: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitCommitIterate
 
@@ -346,7 +346,7 @@ Git commit with the fixed "iterate" message.
 export declare const gitCommitIterate: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitCreateBranch
 
@@ -358,7 +358,7 @@ Create a new branch under the lect-effect/ prefix.
 export declare const gitCreateBranch: (branchName: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitIterateSteps
 
@@ -370,7 +370,7 @@ Ordered steps for the iterate workflow.
 export declare const gitIterateSteps: readonly ShellCommand[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitListBranchesByDate
 
@@ -382,7 +382,7 @@ List branches sorted by last commit date.
 export declare const gitListBranchesByDate: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitPushHead
 
@@ -394,7 +394,7 @@ Git push HEAD to origin with upstream tracking.
 export declare const gitPushHead: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitVersionSet
 
@@ -407,7 +407,7 @@ Assumes a clean working tree and a shared version for all packages.
 export declare const gitVersionSet: (version: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## installWorkspace
 
@@ -419,7 +419,7 @@ Install all workspace dependencies with frozen lockfile.
 export declare const installWorkspace: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## lintShellCommand
 
@@ -431,7 +431,7 @@ Workspace lint command with optional --fix flag.
 export declare const lintShellCommand: (fix: Option.Option<boolean>) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## migrateMasterdataUp
 
@@ -443,7 +443,7 @@ Run main DB migrations against MASTERDATA_PG_URL.
 export declare const migrateMasterdataUp: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## migrateTestMasterdataUp
 
@@ -455,7 +455,7 @@ Run test DB migrations against TEST_MASTERDATA_PG_URL.
 export declare const migrateTestMasterdataUp: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## startBackendAndFrontend
 
@@ -467,7 +467,7 @@ Start backend and frontend concurrently with labeled output.
 export declare const startBackendAndFrontend: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## startBackendRuntime
 
@@ -479,7 +479,7 @@ Start backend runtime.
 export declare const startBackendRuntime: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## startFrontendRuntime
 
@@ -491,7 +491,7 @@ Start frontend runtime.
 export declare const startFrontendRuntime: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## testWorkspace
 
@@ -503,7 +503,7 @@ Run test suites for domain, backend, and frontend.
 export declare const testWorkspace: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # ShellCommand[]
 
@@ -517,7 +517,7 @@ Ordered clean steps across all workspaces.
 export declare const cleanSteps: readonly ShellCommand[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## fullBuildSteps
 
@@ -529,7 +529,7 @@ Full build pipeline in dependency order.
 export declare const fullBuildSteps: readonly ShellCommand[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # utils
 
@@ -543,7 +543,7 @@ List branches containing a tag's commit.
 export declare const gitBranchesContainingTag: (tag: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagDeleteLocal
 
@@ -555,7 +555,7 @@ Delete a tag locally.
 export declare const gitTagDeleteLocal: (tag: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagDeleteRemote
 
@@ -567,7 +567,7 @@ Delete a tag from origin.
 export declare const gitTagDeleteRemote: (tag: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagSha
 
@@ -579,7 +579,7 @@ Show the full SHA for a given tag.
 export declare const gitTagSha: (tag: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagShow
 
@@ -591,7 +591,7 @@ Show details for a given tag (commit, diff).
 export declare const gitTagShow: (tag: string) => ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagsListLex
 
@@ -603,7 +603,7 @@ List all tags lexicographically (default refname sort).
 export declare const gitTagsListLex: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## gitTagsListSemver
 
@@ -615,4 +615,4 @@ List all tags with semver-friendly ordering (version sort).
 export declare const gitTagsListSemver: ShellCommand
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Application service union definition.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Union of all services the app provides.
 export type AppServices = AppConfigService | GreetService | MasterdataDbService | ItemRepoService | ProductRepoService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

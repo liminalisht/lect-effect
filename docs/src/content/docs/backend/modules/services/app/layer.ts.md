@@ -8,7 +8,7 @@ parent: Modules
 
 Application layer composition.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -42,7 +42,7 @@ Full application layer wiring services and infrastructure.
 export declare const app: Layer.Layer<AppServices, AppError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## appConfig
 
@@ -54,7 +54,7 @@ Layer loading app configuration.
 export declare const appConfig: Layer.Layer<AppConfigService, ConfigError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## appLayer
 
@@ -66,7 +66,7 @@ Exported application layer alias (memoized once per runtime).
 export declare const appLayer: Layer.Layer<AppServices, AppError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## configuredLogger
 
@@ -78,7 +78,7 @@ Logger provided with configuration.
 export declare const configuredLogger: Layer.Layer<never, ConfigError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## configuredMasterdataDb
 
@@ -90,7 +90,7 @@ Masterdata DB provided with configuration.
 export declare const configuredMasterdataDb: Layer.Layer<MasterdataDbService, ConfigError | SqlError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## greeting
 
@@ -102,7 +102,7 @@ Greeting service layer.
 export declare const greeting: Layer.Layer<GreetService, never, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## itemRepo
 
@@ -114,7 +114,7 @@ Item repository layer.
 export declare const itemRepo: Layer.Layer<ItemRepoService, ConfigError | SqlError, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## logger
 
@@ -126,7 +126,7 @@ Logger layer requiring app config.
 export declare const logger: Layer.Layer<never, never, AppConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## masterdataDb
 
@@ -138,7 +138,7 @@ Raw masterdata DB layer.
 export declare const masterdataDb: Layer.Layer<MasterdataDbService, ConfigError | SqlError, MasterdataDbConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## masterdataDbConfig
 
@@ -150,7 +150,7 @@ Layer loading DB configuration.
 export declare const masterdataDbConfig: Layer.Layer<MasterdataDbConfigService, ConfigError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## masterdataRepos
 
@@ -162,7 +162,7 @@ Combined repository layers with DB provided.
 export declare const masterdataRepos: Layer.Layer<ItemRepoService | ProductRepoService, ConfigError | SqlError, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## productRepo
 
@@ -174,4 +174,4 @@ Product repository layer.
 export declare const productRepo: Layer.Layer<ProductRepoService, ConfigError | SqlError, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Item repository layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Provides the live ItemRepo implementation.
 export declare const itemRepoLayer: Layer.Layer<ItemRepoService, never, MasterdataDbService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

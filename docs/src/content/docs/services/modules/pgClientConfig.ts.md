@@ -8,7 +8,7 @@ parent: Modules
 
 Public surface for PostgreSQL client configuration service.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Public surface for PostgreSQL client configuration service.
 export * from "./pgClientConfig/interface.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -6,7 +6,7 @@ parent: Modules
 
 ## hello.page overview
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,7 +31,7 @@ Hello feature page component.
 export declare class HelloPage
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### onNameInput (method)
 
@@ -43,7 +43,7 @@ Handles input changes and updates the store name.
 protected onNameInput(ev: Event): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### store (property)
 
@@ -55,4 +55,4 @@ Injected store backing the Hello feature.
 readonly store: HelloStore
 ```
 
-Added in v1.0.0
+Added in v0.1.0

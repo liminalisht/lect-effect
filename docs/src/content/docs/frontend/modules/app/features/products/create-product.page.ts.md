@@ -8,7 +8,7 @@ parent: Modules
 
 Composition page for creating a product with items.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -32,7 +32,7 @@ Composition page that wires form, result, and store for product creation.
 export declare class CreateProductPage { constructor(readonly store: CreateProductStore) }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### onSubmit (method)
 
@@ -44,4 +44,4 @@ Handles form submit by delegating to the store.
 onSubmit(input: CreateProductWithItemsInput): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0

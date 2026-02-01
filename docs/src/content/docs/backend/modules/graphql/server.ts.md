@@ -8,7 +8,7 @@ parent: Modules
 
 HTTP server lifecycle helpers for GraphQL Yoga.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Starts an HTTP server for the provided Yoga instance.
 export declare const listen: <R>(yoga: Yoga<R>, port: number) => Effect.Effect<Server, ServerStartError, Scope>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

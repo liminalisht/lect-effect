@@ -8,7 +8,7 @@ parent: Modules
 
 Server-only application configuration used for SSR.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Merged application configuration for server bootstrap.
 export declare const config: ApplicationConfig
 ```
 
-Added in v1.0.0
+Added in v0.1.0

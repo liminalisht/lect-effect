@@ -8,7 +8,7 @@ parent: Modules
 
 Deployment environment configuration bindings.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for allowed deployment environments.
 export declare const environmentSchema: Schema.Literal<["dev", "test", "staging", "prod"]>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Types
 
@@ -47,4 +47,4 @@ Deployment environment discriminator.
 export type Environment = Schema.Schema.Type<typeof environmentSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

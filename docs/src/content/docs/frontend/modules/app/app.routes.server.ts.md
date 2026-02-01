@@ -8,7 +8,7 @@ parent: Modules
 
 Server-only route configuration.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Server routes instructing Angular SSR to prerender all paths.
 export declare const serverRoutes: ServerRoute[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0

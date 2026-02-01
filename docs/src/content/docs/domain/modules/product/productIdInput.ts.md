@@ -8,7 +8,7 @@ parent: Modules
 
 Product id input module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Input schema for selecting a product by id.
 export declare const productIdInputSchema: Schema.Struct<{ id: Schema.refine<number, typeof Schema.Number> }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ GraphQL input for selecting a product by id.
 export type ProductIdInput = Schema.Schema.Type<typeof productIdInputSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

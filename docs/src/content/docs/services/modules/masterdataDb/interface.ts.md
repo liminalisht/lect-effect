@@ -8,7 +8,7 @@ parent: Modules
 
 Masterdata database service contract.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ export type MasterdataDb = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -49,4 +49,4 @@ Service tag for accessing the masterdata database client.
 export declare class MasterdataDbService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

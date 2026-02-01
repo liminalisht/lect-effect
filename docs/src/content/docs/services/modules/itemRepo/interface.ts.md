@@ -8,7 +8,7 @@ parent: Modules
 
 Item repository service contract and live implementation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Error type union for item repository operations.
 export type ItemRepoError = SqlError.SqlError | ParseError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Interfaces
 
@@ -55,7 +55,7 @@ export type ItemRepoShape = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -69,4 +69,4 @@ Service tag for the item repository.
 export declare class ItemRepoService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

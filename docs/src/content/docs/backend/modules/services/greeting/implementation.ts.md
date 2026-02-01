@@ -8,7 +8,7 @@ parent: Modules
 
 Greeting service implementation helpers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Concrete GreetService implementation.
 export declare const greetServiceImplementation: Greet
 ```
 
-Added in v1.0.0
+Added in v0.1.0

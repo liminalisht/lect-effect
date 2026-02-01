@@ -8,7 +8,7 @@ parent: Modules
 
 Item handlers bridging GraphQL operations to item and product repositories.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -46,7 +46,7 @@ export declare const createItem: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getItem
 
@@ -64,7 +64,7 @@ export declare const getItem: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## listItems
 
@@ -80,7 +80,7 @@ export declare const listItems: Effect.Effect<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## productForItem
 
@@ -98,7 +98,7 @@ export declare const productForItem: (
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Item Handlers
 
@@ -124,7 +124,7 @@ export declare const createItemMutation: MutationHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getItemQuery
 
@@ -147,7 +147,7 @@ export declare const getItemQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## itemHandlers
 
@@ -214,7 +214,7 @@ export declare const itemHandlers: (
 )[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## listItemsQuery
 
@@ -237,7 +237,7 @@ export declare const listItemsQuery: QueryHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## productForItemField
 
@@ -265,4 +265,4 @@ export declare const productForItemField: FieldHandler<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0

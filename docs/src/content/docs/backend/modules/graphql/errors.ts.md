@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL error types.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Aggregate union of GraphQL errors.
 export type GraphqlError = ServerStartError | RuntimeMissingFromContextError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## RuntimeMissingFromContextError (class)
 
@@ -45,7 +45,7 @@ Error raised when GraphQLContext lacks the Effect runtime.
 export declare class RuntimeMissingFromContextError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## ServerStartError (class)
 
@@ -57,4 +57,4 @@ Error raised when the server fails to start.
 export declare class ServerStartError
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Domain errors module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Errors specific to the domain layer.
 export type DomainError = never
 ```
 
-Added in v1.0.0
+Added in v0.1.0

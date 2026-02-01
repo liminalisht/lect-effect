@@ -8,7 +8,7 @@ parent: Modules
 
 Item domain schema module.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -37,7 +37,7 @@ export declare const itemSchema: Schema.Struct<{
 }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -51,4 +51,4 @@ Item domain entity.
 export type Item = Schema.Schema.Type<typeof itemSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

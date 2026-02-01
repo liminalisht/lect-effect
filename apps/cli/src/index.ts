@@ -7,10 +7,10 @@
 import { execSync } from 'node:child_process';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import rootPackageJson from '../../../package.json' with { type: 'json' };
 import { Args, Command, Options } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Effect, Option } from 'effect';
+import rootPackageJson from '../../../package.json' with { type: 'json' };
 import {
   buildDomain,
   buildServices,

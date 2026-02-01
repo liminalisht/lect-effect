@@ -8,7 +8,7 @@ parent: Modules
 
 Logging level configuration bindings.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Allowed logging level derived from environment configuration.
 export type ConfiguredLogLevel = LogLevel.LogLevel
 ```
 
-Added in v1.0.0
+Added in v0.1.0

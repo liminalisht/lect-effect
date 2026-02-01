@@ -8,7 +8,7 @@ parent: Modules
 
 Primary entrypoint exporting all HTTP/GraphQL handlers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -34,7 +34,7 @@ Primary entrypoint exporting all HTTP/GraphQL handlers.
 export * from "./generic.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './hello.js'
 
@@ -46,7 +46,7 @@ Hello handler exports.
 export * from "./hello.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './item.js'
 
@@ -58,7 +58,7 @@ Item handler exports.
 export * from "./item.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## From './product.js'
 
@@ -70,4 +70,4 @@ Product handler exports.
 export * from "./product.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

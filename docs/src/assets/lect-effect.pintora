@@ -1,0 +1,128 @@
+componentDiagram
+
+  package "lect-effect" {
+
+    folder "packages" {
+
+      package "@lect-effect/domain" {
+        () schemas
+        () types
+        () validations
+      }
+
+      types ..> schemas
+      validations ..> schemas
+
+      package "@lect-effect/services" {
+        () services
+        () interfaces
+      }
+
+      interfaces ..> types
+      services ..> interfaces
+
+      package "@lect-effect/handlers" {
+        () effects
+        () handlers
+      }
+
+      effects ..> types
+      effects ..> services
+
+      handlers ..> schemas
+      handlers ..> effects
+
+    }
+
+    folder "apps" {
+
+      package "@lect-effect/backend" {
+
+        folder "src/graphql" {
+          () server
+          () resolvers
+          () graphqlschema
+        }
+
+        folder "src/services" {
+          () implementations
+          () layers
+        }
+
+      }
+
+      resolvers ..> handlers
+      graphqlschema ..> resolvers
+      server ..> graphqlschema
+      server ..> resolvers
+
+      implementations ..> types
+      implementations ..> interfaces
+      layers ..> implementations
+      layers ..> services
+
+      () "backend app" as backend
+      backend ..> server
+      backend ..> layers
+
+    }
+
+    implementations ..> apis
+    implementations ..> dbs
+
+    package "@lect-effect/frontend" {
+      () "effects" as frontendEffects
+      () "services" as frontendServices
+      () components
+      () pages
+    }
+
+    frontendEffects ..> types
+    frontendEffects ..> validations
+    frontendServices ..> frontendEffects
+    components ..> frontendServices
+    components ..> types
+    components ..> validations
+    pages ..> components
+
+    () "frontend app" as frontend
+    frontend ..> components
+    frontend ..> pages
+    frontend ..> backend
+
+    package "@lect-effect/cli" {
+      () cli
+    }
+
+    cli ..> frontend
+    cli ..> backend
+
+    package "@lect-effect/docs" {
+      () docssite
+    }
+  }
+
+  () users
+  users ..> frontend
+  users ..> docssite
+
+  () devs
+  devs ..> cli
+  devs ..> frontend
+  devs ..> backend
+  devs ..> docssite
+
+  () "users" as users
+  users ..> frontend
+
+  node "external services" {
+
+
+    cloud "external apis" {
+      () apis
+    }
+
+    database "databases" {
+      () dbs
+    }
+  }

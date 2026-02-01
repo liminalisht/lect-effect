@@ -8,7 +8,7 @@ parent: Modules
 
 MasterdataDb service implementation.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Live implementation of the MasterdataDb service
 export declare const masterdataDbImplementation: Effect.Effect<MasterdataDb, never, SqlClient.SqlClient>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

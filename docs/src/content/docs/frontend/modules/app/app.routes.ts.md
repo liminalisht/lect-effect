@@ -8,7 +8,7 @@ parent: Modules
 
 Application client routes.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Client-side route configuration for the app shell.
 export declare const routes: Routes
 ```
 
-Added in v1.0.0
+Added in v0.1.0

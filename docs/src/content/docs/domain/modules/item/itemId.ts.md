@@ -8,7 +8,7 @@ parent: Modules
 
 Item identifier value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Identifier schema for items.
 export declare const itemIdSchema: Schema.refine<number, typeof Schema.Number>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Item identifier.
 export type ItemId = Schema.Schema.Type<typeof itemIdSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

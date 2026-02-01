@@ -8,7 +8,7 @@ parent: Modules
 
 Product API layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Layer providing the live product API implementation.
 export declare const ProductApiLayer: Layer.Layer<ProductApiService, never, GraphQLClientService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Masterdata database layer wiring.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,4 +35,4 @@ export declare const masterdataDbLayer: Layer.Layer<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0

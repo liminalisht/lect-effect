@@ -9,7 +9,7 @@ parent: Modules
 Public surface for application configuration services.
 Exposes the app config contract and related schemas.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,4 +33,4 @@ Exposes the app config contract and related schemas.
 export * from "./appConfig/interface/index.js"
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Configuration service tag and shape.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -36,7 +36,7 @@ export type Config = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -50,4 +50,4 @@ Service tag for application configuration.
 export declare class ConfigService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Node server entrypoint for the Angular SSR app.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Request handler used by the Angular CLI (for dev-server and during build) or Fir
 export declare const reqHandler: express.Express
 ```
 
-Added in v1.0.0
+Added in v0.1.0

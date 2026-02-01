@@ -8,7 +8,7 @@ parent: Modules
 
 Shared handler shapes used to describe GraphQL operations in a schema-first way.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -47,7 +47,7 @@ export type FieldHandler<
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## MutationHandler (type alias)
 
@@ -66,7 +66,7 @@ export type MutationHandler<I extends Schema.Schema.AnyNoContext, O extends Sche
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## QueryHandler (type alias)
 
@@ -85,4 +85,4 @@ export type QueryHandler<I extends Schema.Schema.AnyNoContext, O extends Schema.
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

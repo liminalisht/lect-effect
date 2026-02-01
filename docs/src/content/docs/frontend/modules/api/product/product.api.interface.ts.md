@@ -8,7 +8,7 @@ parent: Modules
 
 Product API interface definitions and service tag.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Error union produced by product API operations.
 export type ProductApiError = GraphQLClientError | ParseError
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Service Interfaces
 
@@ -51,7 +51,7 @@ export type ProductApi = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -65,4 +65,4 @@ Tag for locating the product API service in an Effect environment.
 export declare class ProductApiService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

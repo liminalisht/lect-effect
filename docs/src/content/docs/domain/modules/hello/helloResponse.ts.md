@@ -8,7 +8,7 @@ parent: Modules
 
 Hello domain response envelope definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for the hello response envelope.
 export declare const helloResponseSchema: Schema.Struct<{ greeting: Schema.brand<typeof Schema.String, "Greeting"> }>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Response structure returned by the hello operation.
 export type HelloResponse = Schema.Schema.Type<typeof helloResponseSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

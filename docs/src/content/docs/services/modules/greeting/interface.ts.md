@@ -8,7 +8,7 @@ parent: Modules
 
 Greeting service contract.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ export type Greet = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Services
 
@@ -49,4 +49,4 @@ Service tag for greeting operations.
 export declare class GreetService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

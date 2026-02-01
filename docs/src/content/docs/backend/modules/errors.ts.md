@@ -8,7 +8,7 @@ parent: Modules
 
 Application error union definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Union type of all application-specific errors.
 export type AppError = ConfigurationError | DomainError | GraphqlError | SqlError
 ```
 
-Added in v1.0.0
+Added in v0.1.0

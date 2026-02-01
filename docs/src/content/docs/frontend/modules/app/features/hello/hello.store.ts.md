@@ -8,7 +8,7 @@ parent: Modules
 
 Store backing the Hello feature page.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -36,7 +36,7 @@ Feature store coordinating hello input and Effect execution.
 export declare class HelloStore
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### setName (method)
 
@@ -48,7 +48,7 @@ Update the name input.
 setName(name: string): void
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### run (method)
 
@@ -60,7 +60,7 @@ Execute the greet program and update remote data state.
 async run(): Promise<void>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### name (property)
 
@@ -72,7 +72,7 @@ Current input value as a readonly signal.
 readonly name: Signal<string>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### state (property)
 
@@ -84,7 +84,7 @@ Remote data state for the hello request.
 readonly state: Signal<RemoteData<{ readonly greeting: string & Brand<"Greeting">; }, Cause.Cause<HelloApiError>>>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### greeting (property)
 
@@ -96,4 +96,4 @@ Derived greeting when available.
 readonly greeting: Signal<string | null>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

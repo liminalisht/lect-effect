@@ -8,7 +8,7 @@ parent: Modules
 
 Schema-governed form field helpers built on Angular signals.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -36,7 +36,7 @@ Builds a schema-backed form field with derived validation signals.
 export declare const schemaField: <Raw, A>(options: SchemaFieldOptions<Raw, A>) => SchemaField<Raw, A>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Conversions
 
@@ -50,7 +50,7 @@ Parses an integer or returns null when blank/invalid.
 export declare const stringToInt: (value: string) => number | null
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## stringToNullIfBlank
 
@@ -62,7 +62,7 @@ Trims a string and returns null when blank.
 export declare const stringToNullIfBlank: (value: string) => string | null
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Types
 
@@ -83,4 +83,4 @@ export type SchemaField<Raw, A> = {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0

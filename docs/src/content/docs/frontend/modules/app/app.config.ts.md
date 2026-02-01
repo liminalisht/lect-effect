@@ -8,7 +8,7 @@ parent: Modules
 
 Browser application configuration providers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Application configuration used when bootstrapping in the browser.
 export declare const appConfig: ApplicationConfig
 ```
 
-Added in v1.0.0
+Added in v0.1.0

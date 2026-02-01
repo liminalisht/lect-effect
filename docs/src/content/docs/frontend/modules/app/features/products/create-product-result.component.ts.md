@@ -8,7 +8,7 @@ parent: Modules
 
 Result renderer for createProductWithItems remote data.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -32,7 +32,7 @@ Angular component rendering remote data from createProductWithItems.
 export declare class CreateProductResultComponent
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### state (property)
 
@@ -54,4 +54,4 @@ state: RemoteData<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0

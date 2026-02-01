@@ -8,7 +8,7 @@ parent: Modules
 
 GraphQL schema construction helpers.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Resolver type accepted by schema weaving.
 export type GraphQLResolver = Parameters<typeof weave>[2]
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # GraphQL Schema Utilities
 
@@ -49,7 +49,7 @@ Logs a printable version of the schema for debugging.
 export declare const logSchema: (schema: GraphQLSchema) => Effect.Effect<void>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## makeSchema
 
@@ -61,7 +61,7 @@ Builds the GraphQL schema from registered resolvers.
 export declare const makeSchema: (resolvers: readonly GraphQLResolver[]) => GraphQLSchema
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## printSortedSchema
 
@@ -73,4 +73,4 @@ Produces a stable SDL string for a schema.
 export declare const printSortedSchema: (schema: GraphQLSchema) => string
 ```
 
-Added in v1.0.0
+Added in v0.1.0

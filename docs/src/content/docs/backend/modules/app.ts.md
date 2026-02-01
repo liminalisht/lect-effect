@@ -8,7 +8,7 @@ parent: Modules
 
 Application bootstrap wiring for GraphQL server startup.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ Top-level application Effect that wires configuration, schema, and server startu
 export declare const app: Effect.Effect<never, ServerStartError, AppServices>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## getAppConfig
 
@@ -47,7 +47,7 @@ Loads configuration from the AppConfigService.
 export declare const getAppConfig: () => Effect.Effect<AppConfig, never, AppConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## makeGraphQLSchema
 
@@ -61,7 +61,7 @@ export declare const makeGraphQLSchema: (
 ) => Effect.Effect<GraphQLSchema, never, AppServices>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## makeYogaServer
 
@@ -73,7 +73,7 @@ Constructs the Yoga server instance with the provided schema.
 export declare const makeYogaServer: (schema: GraphQLSchema) => Effect.Effect<Yoga<AppServices>, never, AppServices>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ## selectHandlers
 
@@ -85,4 +85,4 @@ Selects the set of GraphQL handlers to be included in the application.
 export declare const selectHandlers: (_appConfig?: AppConfig) => readonly AnyHandler[]
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Application Effect layer composition for the frontend runtime.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Build the composed application layer used by UiRuntime.
 export declare const makeAppLayer: (cfg: FrontendConfig) => Layer.Layer<AppEnv>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Application Services
 
@@ -47,4 +47,4 @@ Union of services required by the UI Effect runtime.
 export type AppEnv = FrontendConfigService | GraphQLClientService | HelloApiService | ProductApiService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Layer for loading and providing application configuration.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,4 +35,4 @@ export declare const masterdataDbConfigServiceImplementation: Effect.Effect<
 >
 ```
 
-Added in v1.0.0
+Added in v0.1.0

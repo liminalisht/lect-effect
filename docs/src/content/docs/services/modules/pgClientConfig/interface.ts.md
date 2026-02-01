@@ -8,7 +8,7 @@ parent: Modules
 
 PG client configuration service contract.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Tag for accessing Postgres client configuration.
 export declare class PgClientConfigService
 ```
 
-Added in v1.0.0
+Added in v0.1.0

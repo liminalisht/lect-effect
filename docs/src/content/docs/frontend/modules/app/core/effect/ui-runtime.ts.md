@@ -8,7 +8,7 @@ parent: Modules
 
 Managed Effect runtime wiring for the UI layer.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -35,7 +35,7 @@ export declare class UiRuntime {
 }
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### runExit (property)
 
@@ -47,7 +47,7 @@ Run an Effect and capture its Exit using the shared runtime.
 runExit: <A, E, R extends AppEnv>(effect: Effect.Effect<A, E, R>) => Promise<Exit.Exit<A, E>>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 ### runPromise (property)
 
@@ -59,4 +59,4 @@ Run an Effect and resolve its success value using the shared runtime.
 runPromise: <A, E, R extends AppEnv>(effect: Effect.Effect<A, E, R>) => Promise<A>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

@@ -8,7 +8,7 @@ parent: Modules
 
 Logging layer wiring for the frontend runtime.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -31,4 +31,4 @@ Layer that configures the Effect logger based on the frontend config.
 export declare const FrontendLoggerLayer: Layer.Layer<never, never, FrontendConfigService>
 ```
 
-Added in v1.0.0
+Added in v0.1.0

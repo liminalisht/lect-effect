@@ -8,7 +8,7 @@ parent: Modules
 
 Hello domain name value object definitions.
 
-Added in v1.0.0
+Added in v0.1.0
 
 ---
 
@@ -33,7 +33,7 @@ Schema for validated names.
 export declare const nameSchema: Schema.SchemaClass<string, string, never>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
 
 # Domain Types
 
@@ -47,4 +47,4 @@ Person name value object.
 export type Name = Schema.Schema.Type<typeof nameSchema>
 ```
 
-Added in v1.0.0
+Added in v0.1.0
