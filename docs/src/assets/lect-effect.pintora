@@ -15,12 +15,11 @@ componentDiagram
 })
 
 
-rectangle "live" {
+node "live" {
   () "config" as liveConfig
   node "live deployed services" {
     () "frontend" as liveFrontend
     () "backend" as liveBackend
-    () "docs site" as docsSite
 
   }
   node "live service dependencies" {
@@ -28,12 +27,11 @@ rectangle "live" {
     () "DBs" as liveDatabases
   }
 }
-rectangle "test" {
+node "test" {
   () "config" as testConfig
   node "test deployed services" {
     () "frontend" as testFrontend
     () "backend" as testBackend
-    () "docs site" as testDocsSite
 
 
   }
@@ -44,16 +42,8 @@ rectangle "test" {
   }
 }
 
-
-
-
-
-
-
-
-
-
 package "lect-effect" {
+
   package "@lect-effect/domain" {
     () schemas
     () types
@@ -92,9 +82,8 @@ package "lect-effect" {
   package "@lect-effect/docs" {
     () "app" as docsapp
   }
+
 }
-
-
 
 testBackend ..> testApis
 testBackend ..> testDatabases
@@ -112,10 +101,6 @@ testBackend ..> testConfig
 testFrontend ..> frontend
 testBackend ..> backend
 testFrontend ..> testBackend
-docsSite ..> docsapp
-testDocsSite ..> docsapp
-
-
 frontendEffects ..> backend
 frontendEffects ..> types
 frontendEffects ..> validations
@@ -135,7 +120,6 @@ server ..> graphqlschema
 server ..> resolvers
 implementations ..> types
 implementations ..> interfaces
-
 layers ..> implementations
 layers ..> services
 backend ..> server
@@ -144,6 +128,3 @@ effects ..> types
 effects ..> services
 handlers ..> schemas
 handlers ..> effects
-
-
-
