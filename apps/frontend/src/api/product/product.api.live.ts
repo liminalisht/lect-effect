@@ -9,7 +9,11 @@ import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { CreateProductWithItemsDocument } from '../../graphql/generated/graphql.js';
 import { ProductApiService } from './product.api.interface.js';
 
-const CreateProductWithItemsResultSchema = Schema.Struct({
+type CreateProductWithItemsInput = Schema.Schema.Type<typeof createProductWithItemsInputSchema>;
+type ProductWithItems = Schema.Schema.Type<typeof productWithItemsSchema>;
+type CreateProductWithItemsResult = {createProductWithItems: ProductWithItems};
+
+const CreateProductWithItemsResultSchema: Schema.Schema<CreateProductWithItemsResult> = Schema.Struct({
   createProductWithItems: productWithItemsSchema,
 });
 
@@ -24,13 +28,13 @@ export const productApiLive = Effect.gen(function * () {
   return ProductApiService.of({
     createProductWithItems: (input: unknown) =>
       Effect.gen(function * () {
-        const validated = yield * Schema.decodeUnknown(createProductWithItemsInputSchema)(input);
-        const items = validated.items.map(item => ({...item}));
+        const validated: CreateProductWithItemsInput = yield * Schema.decodeUnknown(createProductWithItemsInputSchema)(input);
+        const items: Array<CreateProductWithItemsInput['items'][number]> = validated.items.map(item => ({...item}));
         const response = yield * client.request(CreateProductWithItemsDocument, {
           product: validated.product,
           items,
         });
-        const decoded = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
+        const decoded: CreateProductWithItemsResult = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
         return decoded.createProductWithItems;
       }),
   });
