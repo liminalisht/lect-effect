@@ -25,24 +25,10 @@ export const productApiLive = Effect.gen(function * () {
     createProductWithItems: (input: unknown) =>
       Effect.gen(function * () {
         const validated = yield * Schema.decodeUnknown(createProductWithItemsInputSchema)(input);
-
-        // normalize (keep your current semantics)
-        const normalized = {
-          ...validated,
-          product: {
-            ...validated.product,
-            description: validated.product.description ?? null, // todo: is this necessary?
-          },
-          items: validated.items.map(item => ({
-            ...item,
-            description: item.description ?? null,
-            pack_size: item.pack_size,
-          })),
-        };
-
+        const items = validated.items.map(item => ({...item}));
         const response = yield * client.request(CreateProductWithItemsDocument, {
-          product: normalized.product,
-          items: normalized.items,
+          product: validated.product,
+          items,
         });
         const decoded = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
         return decoded.createProductWithItems;

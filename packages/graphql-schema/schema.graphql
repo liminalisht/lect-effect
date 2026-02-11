@@ -1,6 +1,6 @@
 """input for creating an item"""
 input CreateItemInput {
-  """item description (nullable & optional)"""
+  """item description (nullable & optional, defaults null)"""
   description: String
 
   """item pack size"""
@@ -8,7 +8,7 @@ input CreateItemInput {
 }
 
 input CreateProductWithItemsProductInput {
-  """product description (nullable & optional)"""
+  """product description (nullable & optional, defaults null)"""
   description: String
 }
 
@@ -43,7 +43,7 @@ type Item {
 type Mutation {
   """create a new item"""
   createItem(
-    """item description (nullable & optional)"""
+    """item description (nullable & optional, defaults null)"""
     description: String
 
     """item pack size"""
@@ -52,7 +52,7 @@ type Mutation {
 
   """create product"""
   createProduct(
-    """product description (nullable & optional)"""
+    """product description (nullable & optional, defaults null)"""
     description: String
   ): Product!
 

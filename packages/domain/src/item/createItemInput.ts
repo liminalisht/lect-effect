@@ -19,7 +19,9 @@ export type CreateItemInput = Schema.Schema.Type<typeof createItemInputSchema>;
  * @category Domain Schemas
  */
 export const createItemInputSchema = Schema.Struct({
-  description: Schema.optional(itemDescriptionSchema).annotations({ description: 'item description (nullable & optional)' }),
+  description: Schema.optionalWith(Schema.NullOr(itemDescriptionSchema), {
+    default: () => null,
+  }).annotations({ description: 'item description (nullable & optional, defaults null)' }),
   pack_size: packSizeSchema,
 }).annotations({
   title: 'CreateItemInput',

@@ -17,14 +17,14 @@ export type Scalars = {
 
 /** input for creating an item */
 export type CreateItemInput = {
-  /** item description (nullable & optional) */
+  /** item description (nullable & optional, defaults null) */
   description: InputMaybe<Scalars['String']['input']>;
   /** item pack size */
   pack_size: Scalars['Int']['input'];
 };
 
 export type CreateProductWithItemsProductInput = {
-  /** product description (nullable & optional) */
+  /** product description (nullable & optional, defaults null) */
   description: InputMaybe<Scalars['String']['input']>;
 };
 
