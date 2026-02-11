@@ -3,14 +3,12 @@
  * @since 0.1.0
  */
 import { Effect, Schema } from 'effect';
-import { createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
-import { productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
+import { CreateProductWithItemsInput, createProductWithItemsInputSchema } from '@lect-effect/domain/product/createProductWithItemsInput';
+import { ProductWithItems, productWithItemsSchema } from '@lect-effect/domain/product/productWithItems';
 import { GraphQLClientService } from '../../app/core/graphql/graphql-client.js';
 import { CreateProductWithItemsDocument } from '../../graphql/generated/graphql.js';
 import { ProductApiService } from './product.api.interface.js';
 
-type CreateProductWithItemsInput = Schema.Schema.Type<typeof createProductWithItemsInputSchema>;
-type ProductWithItems = Schema.Schema.Type<typeof productWithItemsSchema>;
 type CreateProductWithItemsResult = {createProductWithItems: ProductWithItems};
 
 const CreateProductWithItemsResultSchema: Schema.Schema<CreateProductWithItemsResult> = Schema.Struct({
@@ -34,7 +32,7 @@ export const productApiLive = Effect.gen(function * () {
           product: validated.product,
           items,
         });
-        const decoded: CreateProductWithItemsResult = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
+        const decoded: {createProductWithItems: ProductWithItems} = yield * Schema.decodeUnknown(CreateProductWithItemsResultSchema)(response);
         return decoded.createProductWithItems;
       }),
   });
